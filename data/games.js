@@ -14,6 +14,7 @@ import limbo from "@/public/assets/img/icons/thumbnails3/limbo.jpg";
 import dragon from "@/public/assets/img/icons/thumbnails3/dragon2.jpg";
 import chicken from "@/public/assets/img/icons/thumbnails3/chicken.jpg";
 import hilo from "@/public/assets/img/icons/thumbnails3/hilo.jpg";
+import punch from "@/public/assets/img/icons/thumbnails3/punch.jpg";
 
 export const games = [
   {
@@ -88,6 +89,15 @@ export const games = [
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=14fdde34d95011f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
     aspectRatio: "4/3",
+  },
+  {
+    id: "16",
+    category: "Originals",
+    title: "Punch",
+    image: punch,
+    status: "active",
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5539fc3e4671414fb3229a9eee641720&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    aspectRatio: "16/9",
   },
   {
     id: "3",
