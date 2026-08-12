@@ -27,6 +27,7 @@ const GAMES = [
   { slug: "keno", file: "keno.jpg", title: "Keno", desc: "Pick your numbers, match the draw." },
   { slug: "limbo", file: "limbo.jpg", title: "Limbo", desc: "Set a target, beat the multiplier." },
   { slug: "dragon", file: "dragon2.jpg", title: "Dragon", desc: "Climb the tower, dodge the traps." },
+  { slug: "punch", file: "punch.jpg", title: "Punch", desc: "Keep punching, cash out before the bag tears." },
 ];
 
 const logo = readFileSync("public/assets/img/b4w-logo.svg", "utf8")

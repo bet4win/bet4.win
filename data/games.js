@@ -15,12 +15,48 @@ import dragon from "@/public/assets/img/icons/thumbnails3/dragon2.jpg";
 import chicken from "@/public/assets/img/icons/thumbnails3/chicken.jpg";
 import hilo from "@/public/assets/img/icons/thumbnails3/hilo.jpg";
 import punch from "@/public/assets/img/icons/thumbnails3/punch.jpg";
+// Wide key art per game: `<slug>.jpg` (680x440) for the homepage spotlight,
+// `<slug>-wide.jpg` (1400x430) for the banner on /games/<slug>.
+import crashBanner from "@/public/assets/img/banners/crash.jpg";
+import crashWide from "@/public/assets/img/banners/crash-wide.jpg";
+import dragonBanner from "@/public/assets/img/banners/dragon.jpg";
+import dragonWide from "@/public/assets/img/banners/dragon-wide.jpg";
+import punchBanner from "@/public/assets/img/banners/punch.jpg";
+import punchWide from "@/public/assets/img/banners/punch-wide.jpg";
+import minesBanner from "@/public/assets/img/banners/mines.jpg";
+import minesWide from "@/public/assets/img/banners/mines-wide.jpg";
+import plinkoBanner from "@/public/assets/img/banners/plinko.jpg";
+import plinkoWide from "@/public/assets/img/banners/plinko-wide.jpg";
+import diceBanner from "@/public/assets/img/banners/dice.jpg";
+import diceWide from "@/public/assets/img/banners/dice-wide.jpg";
+import wheelBanner from "@/public/assets/img/banners/wheel.jpg";
+import wheelWide from "@/public/assets/img/banners/wheel-wide.jpg";
+import diamondsBanner from "@/public/assets/img/banners/diamonds.jpg";
+import diamondsWide from "@/public/assets/img/banners/diamonds-wide.jpg";
+import kenoBanner from "@/public/assets/img/banners/keno.jpg";
+import kenoWide from "@/public/assets/img/banners/keno-wide.jpg";
+import limboBanner from "@/public/assets/img/banners/limbo.jpg";
+import limboWide from "@/public/assets/img/banners/limbo-wide.jpg";
 
+// Per-game card figures. All three are game-specific — there is no catalogue-wide
+// default, so a game that omits a field simply doesn't show it on its card.
+//
+//   maxMultiplier — the client's default max-win cap, read from the game sources
+//                   in ../ui/apps/<game>/. The backend can enforce a lower
+//                   per-bet cap per operator.
+//   rtp           — quoted as a range: it moves with the game version and the
+//                   operator's configuration rather than being one fixed number.
+//   volatility    — the title's risk profile.
 export const games = [
   {
     id: "15",
     category: "Originals",
     title: "Crash",
+    banner: crashBanner,
+    bannerWide: crashWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 1000000, // crash/src/app/app.tsx
     image: crash,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=a444355ce84b419ea48869d9c15734ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win&branding=test",
@@ -29,6 +65,11 @@ export const games = [
     id: "9",
     category: "Originals",
     title: "Dragon",
+    banner: dragonBanner,
+    bannerWide: dragonWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 251658.24, // dragon-tower IDragonTowerPaytableConfig.ts default
     image: dragon,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=14fdde34d95011f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -38,15 +79,39 @@ export const games = [
     id: "16",
     category: "Originals",
     title: "Punch",
+    banner: punchBanner,
+    bannerWide: punchWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 1000000, // punch-game/src/app/app.tsx
     image: punch,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5539fc3e4671414fb3229a9eee641720&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
     aspectRatio: "16/9",
+    // Drives the homepage spotlight. Move this block to another game to change
+    // which original is featured — see <FeaturedGame /> in app/page.jsx.
+    // Figures come from the game spec (manual-crash archetype, growth 1.06,
+    // rtp 96, uncapped ladder).
+    featured: {
+      eyebrow: "New original · Live now",
+      headline: "Every punch climbs the ladder. One too many tears the bag.",
+      body: "A first-person comic-book boxer built on our crash ladder. Every landed punch steps the multiplier up 6%, but the bust rung is drawn server-side before the round opens — so players can cash out whenever their nerve goes, then verify the round they just played.",
+      stats: [
+        { value: "96%", label: "RTP" },
+        { value: "×1.06", label: "per punch" },
+        { value: "∞", label: "uncapped ladder" },
+      ],
+    },
   },
   {
     id: "1",
     category: "Originals",
     title: "Mines",
+    banner: minesBanner,
+    bannerWide: minesWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 5096294, // mines/src/app/app.tsx
     image: mines,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9943920c44b211f0be34cdfe93e2b2d7&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -55,6 +120,11 @@ export const games = [
     id: "2",
     category: "Originals",
     title: "Plinko",
+    banner: plinkoBanner,
+    bannerWide: plinkoWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 1000, // plinko/src/app/app.tsx
     image: plinko,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=78106d6ed4d247fbb7ac517ad8aa40d5&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -63,6 +133,11 @@ export const games = [
     id: "4",
     category: "Originals",
     title: "Dice",
+    banner: diceBanner,
+    bannerWide: diceWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 9600, // dice getMaxWin(96) = floor(10001*96/100)
     image: dice,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5dcfc14083094c6b963d0dc6ad82ba68&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -71,6 +146,10 @@ export const games = [
     id: "6",
     category: "Originals",
     title: "Wheel",
+    banner: wheelBanner,
+    bannerWide: wheelWide,
+    rtp: "94–99%",
+    volatility: "High",
     image: wheel,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=8d74f1b250c74e0ca003ca551ec9bd90&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -79,6 +158,11 @@ export const games = [
     id: "7",
     category: "Originals",
     title: "Diamonds",
+    banner: diamondsBanner,
+    bannerWide: diamondsWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 50, // diamonds/src/app/app.tsx fallback (?? 50)
     image: diamonds,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=e07d949ed84911f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -87,6 +171,11 @@ export const games = [
     id: "8",
     category: "Originals",
     title: "Keno",
+    banner: kenoBanner,
+    bannerWide: kenoWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 1000, // keno/src/app/app.tsx
     image: keno,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=25eb025cd4bf11f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -95,6 +184,11 @@ export const games = [
     id: "10",
     category: "Originals",
     title: "Limbo",
+    banner: limboBanner,
+    bannerWide: limboWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 1000000, // limbo/src/app/app.tsx
     image: limbo,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=17709360010649fa8f081e5c9920c42c&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",

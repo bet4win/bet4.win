@@ -154,7 +154,7 @@ export default function FairnessVerifier() {
       </div>
 
       <button type="submit" disabled={loading}
-        className="!mt-4 w-full !rounded-md bg-brand-strong px-4 py-2.5 font-JetBrainsMono text-[12px] font-semibold uppercase tracking-[0.04em] !text-white transition-colors hover:bg-brand disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
+        className="!mt-4 w-full !rounded-md b4w-sheen bg-cyan px-4 py-2.5 font-JetBrainsMono text-[12px] font-semibold uppercase tracking-[0.04em] !text-black transition-colors hover:bg-cyan/85 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
         {loading ? "Verifying…" : "Verify fairness"}
       </button>
 

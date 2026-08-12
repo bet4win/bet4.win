@@ -36,7 +36,7 @@ export default function GameModal({ game, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="game-modal-header flex min-h-11 shrink-0 items-center justify-between border-b border-line bg-bg/80">
-          <span className="font-JetBrainsMono text-[12px] uppercase tracking-[0.06em] text-cyan">
+          <span className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-cyan">
             {game.title} · demo
           </span>
           <button

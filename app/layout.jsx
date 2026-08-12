@@ -1,11 +1,15 @@
 import "./globals.css";
-import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
-import Script from "next/script";
+import { Space_Grotesk, JetBrains_Mono, Archivo_Black } from "next/font/google";
+import { cookies } from "next/headers";
+import AgeGate from "@/app/components/AgeGate";
+import CookieConsent from "@/app/components/CookieConsent";
+import { AGE_COOKIE, AGE_COOKIE_VALUE } from "@/app/lib/ageGate";
+import { CONSENT_COOKIE, CONSENT_COOKIE_VALUE } from "@/app/lib/consent";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/app/lib/site";
 
 // Self-hosted at build time (no render-blocking Google Fonts <link>, no FOUT).
 // The CSS variables are wired into the Tailwind @theme tokens in globals.css so
-// the existing font-SpaceGrotesk / font-JetBrainsMono utilities resolve to them.
+// the existing font utilities resolve to them.
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -20,8 +24,18 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+// Poster-weight display face, used only for headline moments and the ticker.
+// Space Grotesk alone reads like a SaaS dashboard; the catalogue is comic-book
+// arcade art and needs a voice with some shout in it. Deliberately not one of
+// the ubiquitous condensed poster faces.
+const archivoBlack = Archivo_Black({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-archivo-black",
+  display: "swap",
+});
+
 const TITLE = "Bet4.win — Provably-fair originals, built for operators";
-const GA_ID = "G-0GHLVCP489";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -61,26 +75,47 @@ export const viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({ children }) {
+// Reading the age cookie here makes every route dynamic. "/" already is (its
+// generateMetadata reads searchParams for per-game share cards), so the only
+// cost is not-found losing static rendering — worth it to render the gate in
+// the initial HTML rather than flashing the site before a client-side check.
+export default async function RootLayout({ children }) {
+  const store = await cookies();
+  const showAgeGate = store.get(AGE_COOKIE)?.value !== AGE_COOKIE_VALUE;
+  const hasConsent = store.get(CONSENT_COOKIE)?.value === CONSENT_COOKIE_VALUE;
+
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${archivoBlack.variable}`}
+      // The inline script below adds `js` to this element before React hydrates,
+      // so the server markup and the live DOM legitimately differ by that one
+      // class. Scoped to <html>'s own attributes — descendants are still checked.
+      suppressHydrationWarning
     >
-      <body className="home-dark">
+      <head>
+        {/* Marks scripting as available before first paint. Every entrance
+            animation's hidden state is scoped to html.js, so a reader without
+            JS (or a crawler that doesn't run it) gets the content outright
+            instead of a page of invisible sections. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
+      </head>
+      {/* Locking scroll via a class (not an effect) holds before hydration too;
+          AgeGate clears it once the visitor confirms. */}
+      <body className={`home-dark${showAgeGate ? " age-gate-locked" : ""}`}>
+        {showAgeGate && <AgeGate />}
         {children}
 
-        {/* GA4 — loads after the page is interactive so it never blocks paint */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-          strategy="afterInteractive"
+        {/* Owns the cookie notice AND the GA4 tags: analytics is not injected
+            until consent exists, so a first visit sets no tracking cookies. */}
+        <CookieConsent
+          initialConsent={hasConsent}
+          ageGatePending={showAgeGate}
         />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA_ID}');`}
-        </Script>
       </body>
     </html>
   );

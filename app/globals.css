@@ -41,7 +41,16 @@
   --color-brand-ink: #001833;
   --color-cyan: #22d3ee;
   --color-violet: #818cf8;
+  /*
+   * The existing brand palette, with roles rather than free-for-all use — the
+   * discipline is what was missing before, not the hues:
+   *   brand  — primary actions, links, emphasis.
+   *   cyan   — live status and the provably-fair layer (seeds, verification).
+   *   violet — the bespoke-branding section only.
+   * Anything else is a neutral. No fourth accent.
+   */
   --font-JetBrainsMono: var(--font-jetbrains-mono), "JetBrains Mono", "SFMono-Regular", "Menlo", monospace;
+  --font-Display: var(--font-archivo-black), "Archivo Black", "Helvetica Neue", sans-serif;
   /* responsive Breakpoint */
   --breakpoint-*: initial;
   --breakpoint-xxl: 1400px;
@@ -97,6 +106,241 @@ body.home-dark {
   background-color: #0b1120;
   font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
 }
+/* Contains the decorative glows, which are deliberately larger than their
+   sections (negative insets, blur, and the drift animation's scale) and would
+   otherwise let the page scroll sideways on phones.
+   Applied per-section, NOT to <html>: making <html> non-visible stops viewport
+   overflow propagation, at which point body's own `overflow-y: auto` turns body
+   into the scroll container and window.scrollTo/anchor scrolling silently
+   stop working. `clip` on one axis keeps the vertical bleed intact. */
+.b4w-contain-x {
+  overflow-x: clip;
+}
+/* Set server-side by the root layout while the 18+ gate is up, so the page
+   behind it can't be scrolled even before hydration. AgeGate removes it. */
+body.age-gate-locked {
+  overflow: hidden;
+}
+/* --- Arcade treatment ------------------------------------------------------
+ * The catalogue is comic-book key art; the chrome around it should read like
+ * the bezel of a machine, not a settings panel. Depth, warm light and weight.
+ */
+
+/* Poster display face. Tight tracking because Archivo Black is already wide —
+   at headline sizes the default spacing reads loose and corporate. */
+.b4w-display {
+  font-family: var(--font-Display);
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+/* Raised panel: a lit top edge and a deep shadow underneath, so cards sit like
+   physical objects rather than flat rectangles with a hairline border. */
+.b4w-bezel {
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0) 45%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 14px 34px -20px rgba(0, 0, 0, 0.95);
+}
+
+/* Light sweeps across a control on hover, and it presses in on click. */
+.b4w-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.b4w-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.3) 48%,
+    transparent 64%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.b4w-sheen:hover::after,
+.b4w-sheen:focus-visible::after {
+  transform: translateX(130%);
+}
+.b4w-sheen:active {
+  transform: translateY(1px);
+}
+
+/* Ticker: an infinite strip of the catalogue's real max multipliers. The track
+   holds the list twice, so translating it exactly -50% loops seamlessly. */
+@keyframes b4w-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.b4w-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: b4w-marquee 46s linear infinite;
+  will-change: transform;
+}
+.b4w-marquee:hover .b4w-marquee-track {
+  animation-play-state: paused;
+}
+
+/* Long-form policy copy. Scoped so the template's bare-tag styles don't have to
+   be fought element by element on every paragraph. */
+.b4w-prose h2 {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  margin: 2.5rem 0 0.85rem;
+}
+.b4w-prose h2:first-child {
+  margin-top: 0;
+}
+.b4w-prose h3 {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 1.75rem 0 0.5rem;
+}
+.b4w-prose p,
+.b4w-prose li {
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+.b4w-prose p {
+  margin-bottom: 1rem;
+}
+.b4w-prose ul {
+  list-style: disc;
+  padding-left: 1.35rem;
+  margin-bottom: 1rem;
+}
+.b4w-prose li {
+  margin-bottom: 0.45rem;
+}
+.b4w-prose a {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.b4w-prose a:hover,
+.b4w-prose a:focus-visible {
+  color: var(--color-cyan);
+}
+.b4w-prose strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+.b4w-prose code {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.85em;
+  color: var(--color-cyan);
+}
+/* Flags a clause that still needs the client's own details before publishing. */
+.b4w-prose .b4w-todo {
+  display: block;
+  border-left: 2px solid var(--color-brand);
+  background: var(--color-panel-low);
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--color-faint);
+}
+
+/* --- Motion system ---------------------------------------------------------
+ * Entrance animations are gated behind `html.js` (set by an inline script in the
+ * root layout). Without scripting the hidden state is never applied, so content
+ * can't get stranded at opacity 0 for a reader or a crawler.
+ */
+html.js .b4w-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+html.js .b4w-reveal.is-revealed {
+  opacity: 1;
+  /* `none`, not translateY(0) — a live transform would make this element the
+     containing block for the fixed-position game modal nested inside it. */
+  transform: none;
+}
+
+/* Log-scaled ceiling meter on each game card; grows once the card reveals.
+   Masked into discrete rungs rather than drawn as a smooth bar — every game in
+   this catalogue is a ladder you climb until it busts, so the meter reads as
+   rungs on that ladder. Hot at the base, gold at the top: risk paying out. */
+.b4w-magnitude {
+  width: var(--w);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-brand) 0%,
+    var(--color-cyan) 100%
+  );
+  -webkit-mask-image: repeating-linear-gradient(
+    90deg,
+    #000 0 5px,
+    transparent 5px 8px
+  );
+  mask-image: repeating-linear-gradient(90deg, #000 0 5px, transparent 5px 8px);
+}
+html.js .b4w-magnitude {
+  width: 0;
+  transition: width 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.1s;
+}
+html.js .b4w-magnitude[data-grown] {
+  width: var(--w);
+}
+
+/* Card hover: lift, warm the border, and lay a cyan edge-glow under it. */
+.b4w-card {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.b4w-card--live:hover,
+:focus-visible > .b4w-card--live {
+  transform: translateY(-7px);
+  border-color: color-mix(in srgb, #22d3ee 55%, transparent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 22px 46px -18px rgba(0, 0, 0, 0.9),
+    0 0 30px -8px rgba(34, 211, 238, 0.38);
+}
+
+/* Ambient drift for the decorative radial washes, so the canvas is never
+   perfectly still. Long and small enough to register as atmosphere, not motion. */
+@keyframes b4w-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -2%, 0) scale(1.08);
+  }
+}
+.b4w-drift {
+  animation: b4w-drift 26s ease-in-out infinite;
+  will-change: transform;
+}
+
 @keyframes b4w-pulse {
   0%,
   100% {
@@ -109,9 +353,36 @@ body.home-dark {
 .b4w-pulse {
   animation: b4w-pulse 2.4s ease-in-out infinite;
 }
+/* One switch for the whole motion system. Everything lands in its final state
+   instantly — reveals stay visible, bars stay at full width, nothing animates. */
 @media (prefers-reduced-motion: reduce) {
-  .b4w-pulse {
+  .b4w-pulse,
+  .b4w-drift,
+  .b4w-marquee-track {
     animation: none;
+  }
+  .b4w-sheen::after {
+    display: none;
+  }
+  .b4w-sheen:active {
+    transform: none;
+  }
+  html.js .b4w-reveal,
+  html.js .b4w-reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html.js .b4w-magnitude {
+    width: var(--w);
+    transition: none;
+  }
+  .b4w-card {
+    transition: none;
+  }
+  .b4w-card--live:hover,
+  :focus-visible > .b4w-card--live {
+    transform: none;
   }
 }
 :root {

@@ -34,12 +34,12 @@ export default function Services() {
     <section
       id="platform"
       aria-labelledby="platform-heading"
-      className="mx-auto max-w-[1280px] px-5 py-20 md:px-12"
+      className="b4w-contain-x mx-auto max-w-[1280px] px-5 py-20 md:px-12"
     >
       <div className="mb-10">
         <h2
           id="platform-heading"
-          className="font-SpaceGrotesk !text-[1.6rem] !font-bold !tracking-[-0.02em] !text-ink"
+          className="b4w-display !text-[1.75rem] !text-ink"
         >
           Engineered for scale
         </h2>
@@ -52,9 +52,9 @@ export default function Services() {
         {items.map(({ img, title, body }) => (
           <div
             key={title}
-            className="group relative overflow-hidden rounded-xl border border-line bg-panel p-6 transition-colors hover:border-line/0 hover:ring-1 hover:ring-cyan/40"
+            className="group relative overflow-hidden rounded-xl border border-line bg-panel p-6 transition-colors hover:border-line/0 hover:ring-1 hover:ring-brand/40"
           >
-            <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-cyan/10 opacity-60 blur-[40px] transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-brand-strong/10 opacity-60 blur-[40px] transition-opacity duration-300 group-hover:opacity-100" />
             <Image
               src={img}
               alt=""

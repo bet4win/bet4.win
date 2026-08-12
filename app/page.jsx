@@ -1,12 +1,13 @@
-import Header from "@/app/components/Header";
+import PageShell from "@/app/components/PageShell";
 import Hero from "@/app/components/Hero";
+import FeaturedGame from "@/app/components/FeaturedGame";
 import TrustBar from "@/app/components/TrustBar";
-import Services from "@/app/components/Services";
-import Games from "@/app/components/Games";
-import ProvablyFair from "@/app/components/ProvablyFair";
-import Theming from "@/app/components/Theming";
+import Ticker from "@/app/components/Ticker";
+import Partners from "@/app/components/Partners";
+import GamesPreview from "@/app/components/GamesPreview";
+import ExploreLinks from "@/app/components/ExploreLinks";
 import ClosingCta from "@/app/components/ClosingCta";
-import Footer from "@/app/components/Footer";
+import Reveal from "@/app/components/Reveal";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/app/lib/site";
 import { games } from "@/data/games";
 import React from "react";
@@ -113,30 +114,35 @@ const jsonLd = {
   ],
 };
 
+// Home is now a hub, not the whole site: establish who we are, prove it, show
+// the newest game, sample the catalogue, then hand off to the four real pages.
+// Platform / provably-fair / branding live at their own routes.
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-bg font-SpaceGrotesk text-ink antialiased">
+    <PageShell>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-brand-strong focus:px-4 focus:py-2 focus:font-JetBrainsMono focus:text-[13px] focus:!text-white"
-      >
-        Skip to content
-      </a>
-      <Header />
-      <main id="main" className="flex-grow">
-        <Hero />
-        <TrustBar />
-        <Services />
-        <Games />
-        <ProvablyFair />
-        <Theming />
+      {/* Hero and the spotlight are above the fold and deliberately not wrapped
+          in <Reveal>: starting them at opacity 0 would push LCP out by the
+          length of the reveal transition. Scroll motion begins below them. */}
+      <Hero />
+      {/* The catalogue's real ceilings, on a loop. Signature moment: the numbers
+          do the selling, and it reads as a games company rather than a SaaS. */}
+      <Ticker />
+      <TrustBar />
+      <Reveal>
+        <Partners />
+      </Reveal>
+      <FeaturedGame slug="punch" />
+      <GamesPreview />
+      <Reveal>
+        <ExploreLinks />
+      </Reveal>
+      <Reveal>
         <ClosingCta />
-      </main>
-      <Footer />
-    </div>
+      </Reveal>
+    </PageShell>
   );
 }

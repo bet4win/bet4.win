@@ -52,7 +52,6 @@ export default function Theming() {
 
   return (
     <section id="branding" className="relative overflow-hidden py-20">
-      <span id="integration" className="absolute -top-1" aria-hidden="true" />
 
       <div
         className="pointer-events-none absolute inset-0 -z-10 opacity-50 blur-[130px]"
@@ -66,10 +65,10 @@ export default function Theming() {
 
         {/* Copy */}
         <div>
-          <span className="mb-5 inline-block rounded border border-violet/30 bg-violet/10 px-2.5 py-1 font-JetBrainsMono text-[12px] uppercase tracking-[0.06em] text-violet">
+          <span className="mb-5 inline-block rounded border border-violet/30 bg-violet/10 px-2.5 py-1 font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-violet">
             Bespoke branding
           </span>
-          <h2 className="mb-4 max-w-md font-SpaceGrotesk !text-[clamp(1.9rem,1.3rem+2vw,2.75rem)] !font-bold !leading-[1.1] !tracking-[-0.03em] !text-ink">
+          <h2 className="mb-4 max-w-md b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] !text-ink">
             Every pixel,<br />your brand.
           </h2>
           <p className="mb-10 max-w-md font-SpaceGrotesk leading-[1.6] text-muted">
@@ -110,7 +109,7 @@ export default function Theming() {
             >
               <div className="flex items-center gap-2.5">
                 <span
-                  className="flex h-6 w-6 items-center justify-center rounded font-JetBrainsMono text-[10px] font-bold transition-colors duration-500"
+                  className="flex h-6 w-6 items-center justify-center rounded font-SpaceGrotesk text-[10px] font-bold transition-colors duration-500"
                   style={{ backgroundColor: brand.accent, color: brand.btnText }}
                 >
                   {brand.initials}
@@ -119,14 +118,14 @@ export default function Theming() {
                   {brand.label}
                 </span>
               </div>
-              <span className="font-JetBrainsMono text-[11px] text-muted">
+              <span className="font-SpaceGrotesk text-[11px] text-muted">
                 ◎ 1,000.00
               </span>
             </div>
 
             {/* Game label */}
             <div className="px-4 pb-1.5 pt-3">
-              <span className="font-JetBrainsMono text-[10px] uppercase tracking-[0.08em] text-muted">
+              <span className="font-SpaceGrotesk text-[10px] uppercase tracking-[0.08em] text-muted">
                 Mines
               </span>
             </div>
@@ -151,7 +150,7 @@ export default function Theming() {
               style={{ borderTop: `1px solid ${brand.cellBorder}` }}
             >
               <div
-                className="flex-1 rounded-lg px-3 py-2 font-JetBrainsMono text-[12px] text-muted"
+                className="flex-1 rounded-lg px-3 py-2 font-SpaceGrotesk text-[12px] text-muted"
                 style={{
                   backgroundColor: brand.cellBg,
                   border: `1px solid ${brand.cellBorder}`,
@@ -163,7 +162,7 @@ export default function Theming() {
                 {["½", "2×"].map((q) => (
                   <div
                     key={q}
-                    className="rounded-lg px-2 py-2 font-JetBrainsMono text-[11px] text-muted transition-colors duration-500"
+                    className="rounded-lg px-2 py-2 font-SpaceGrotesk text-[11px] text-muted transition-colors duration-500"
                     style={{
                       backgroundColor: brand.cellBg,
                       border: `1px solid ${brand.cellBorder}`,
@@ -174,7 +173,7 @@ export default function Theming() {
                 ))}
               </div>
               <div
-                className="flex-1 rounded-lg py-2 text-center font-JetBrainsMono text-[12px] font-bold uppercase tracking-[0.06em] transition-colors duration-500"
+                className="flex-1 rounded-lg py-2 text-center font-SpaceGrotesk text-[12px] font-bold uppercase tracking-[0.06em] transition-colors duration-500"
                 style={{ backgroundColor: brand.accent, color: brand.btnText }}
               >
                 Play
@@ -188,7 +187,7 @@ export default function Theming() {
               <button
                 key={b.id}
                 onClick={() => setBrand(b)}
-                className="rounded-lg px-4 py-2 font-JetBrainsMono text-[11px] uppercase tracking-[0.05em] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="rounded-lg px-4 py-2 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                 style={
                   b.id === brand.id
                     ? {
@@ -208,7 +207,7 @@ export default function Theming() {
             ))}
           </div>
 
-          <p className="font-JetBrainsMono text-[11px] uppercase tracking-[0.06em] text-faint">
+          <p className="font-SpaceGrotesk text-[11px] uppercase tracking-[0.06em] text-faint">
             Try switching brands ↑
           </p>
         </div>

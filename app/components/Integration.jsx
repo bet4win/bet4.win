@@ -18,37 +18,37 @@ export default function Integration() {
         {/* Real launch endpoint — mirrors the pattern in data/games.js */}
         <div className="order-2 overflow-x-auto rounded-xl border border-line bg-panel-low p-6 lg:order-1">
           <div className="whitespace-pre font-JetBrainsMono text-[13px] leading-[1.7] !text-muted">
-            <span className="!text-brand">GET</span> /api/launch{"\n"}
-            {"  "}?<span className="!text-violet">game</span>=
+            <span className="!text-cyan">GET</span> /api/launch{"\n"}
+            {"  "}?<span className="!text-cyan">game</span>=
             <span className="!text-cyan">9943920c44b211f0be34cdfe93e2b2d7</span>
             {"\n"}
-            {"  "}&<span className="!text-violet">token</span>=
+            {"  "}&<span className="!text-cyan">token</span>=
             <span className="!text-cyan">{"{SESSION_TOKEN}"}</span>
             {"\n"}
-            {"  "}&<span className="!text-violet">operator</span>=
+            {"  "}&<span className="!text-cyan">operator</span>=
             <span className="!text-cyan">{"{OPERATOR_ID}"}</span>
             {"\n"}
-            {"  "}&<span className="!text-violet">lang</span>=
+            {"  "}&<span className="!text-cyan">lang</span>=
             <span className="!text-cyan">en</span>
             {"\n"}
-            {"  "}&<span className="!text-violet">site</span>=
+            {"  "}&<span className="!text-cyan">site</span>=
             <span className="!text-cyan">bet4.win</span>
             {"\n"}
-            {"  "}&<span className="!text-violet">branding</span>=
+            {"  "}&<span className="!text-cyan">branding</span>=
             <span className="!text-cyan">{"{BRAND}"}</span>
             {"\n\n"}
             <span className="!text-faint">{"// 200 OK"}</span>
             {"\n"}
             {"{\n"}
             {"  "}
-            <span className="!text-violet">"launch_url"</span>:{" "}
+            <span className="!text-cyan">"launch_url"</span>:{" "}
             <span className="!text-cyan">"https://…/games/mines?session=…"</span>
             {"\n}"}
           </div>
         </div>
 
         <div className="order-1 lg:order-2">
-          <h2 className="mb-3 font-SpaceGrotesk !text-[1.6rem] !font-bold !tracking-[-0.02em] !text-ink">
+          <h2 className="mb-3 b4w-display !text-[1.75rem] !text-ink">
             One API. Every game.
           </h2>
           <p className="mb-6 max-w-md font-SpaceGrotesk leading-[1.6] text-muted">

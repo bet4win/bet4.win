@@ -12,13 +12,13 @@ const steps = [
     n: "02",
     title: "Input",
     body: "The player contributes their own client seed. From this point neither party can know the result alone.",
-    tone: "text-brand",
+    tone: "text-cyan",
   },
   {
     n: "03",
     title: "Resolution",
     body: "Server seed, client seed and nonce combine into a deterministic, unalterable result you can re-hash and confirm.",
-    tone: "text-violet",
+    tone: "text-cyan",
   },
 ];
 
@@ -35,10 +35,10 @@ export default function ProvablyFair() {
       />
       <div className="mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-14 px-5 md:px-12 lg:grid-cols-2">
         <div>
-          <span className="mb-5 inline-block rounded border border-cyan/30 bg-cyan/10 px-2.5 py-1 font-JetBrainsMono text-[12px] uppercase tracking-[0.06em] text-cyan">
+          <span className="mb-5 inline-block rounded border border-cyan/30 bg-cyan/10 px-2.5 py-1 font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-cyan">
             Absolute transparency
           </span>
-          <h2 className="mb-8 max-w-md font-SpaceGrotesk !text-[clamp(1.9rem,1.3rem+2vw,2.75rem)] !font-bold !leading-[1.1] !tracking-[-0.03em] !text-ink">
+          <h2 className="mb-8 max-w-md b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] !text-ink">
             Verify every result yourself.
           </h2>
 
@@ -46,7 +46,7 @@ export default function ProvablyFair() {
             {steps.map((s) => (
               <div key={s.n} className="flex items-start gap-5">
                 <span
-                  className={`mt-0.5 font-JetBrainsMono text-[14px] font-semibold ${s.tone}`}
+                  className={`mt-0.5 font-SpaceGrotesk text-[14px] font-semibold ${s.tone}`}
                 >
                   {s.n}
                 </span>
