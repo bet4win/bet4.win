@@ -49,33 +49,6 @@ import limboWide from "@/public/assets/img/banners/limbo-wide.jpg";
 //   volatility    — the title's risk profile.
 export const games = [
   {
-    id: "15",
-    category: "Originals",
-    title: "Crash",
-    banner: crashBanner,
-    bannerWide: crashWide,
-    rtp: "94–99%",
-    volatility: "High",
-    maxMultiplier: 1000000, // crash/src/app/app.tsx
-    image: crash,
-    status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=a444355ce84b419ea48869d9c15734ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win&branding=test",
-  },
-  {
-    id: "9",
-    category: "Originals",
-    title: "Dragon",
-    banner: dragonBanner,
-    bannerWide: dragonWide,
-    rtp: "94–99%",
-    volatility: "High",
-    maxMultiplier: 251658.24, // dragon-tower IDragonTowerPaytableConfig.ts default
-    image: dragon,
-    status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=14fdde34d95011f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
-    aspectRatio: "4/3",
-  },
-  {
     id: "16",
     category: "Originals",
     title: "Punch",
@@ -102,6 +75,33 @@ export const games = [
         { value: "∞", label: "uncapped ladder" },
       ],
     },
+  },
+  {
+    id: "15",
+    category: "Originals",
+    title: "Crash",
+    banner: crashBanner,
+    bannerWide: crashWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 1000000, // crash/src/app/app.tsx
+    image: crash,
+    status: "active",
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=a444355ce84b419ea48869d9c15734ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win&branding=test",
+  },
+  {
+    id: "9",
+    category: "Originals",
+    title: "Dragon",
+    banner: dragonBanner,
+    bannerWide: dragonWide,
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 251658.24, // dragon-tower IDragonTowerPaytableConfig.ts default
+    image: dragon,
+    status: "active",
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=14fdde34d95011f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    aspectRatio: "4/3",
   },
   {
     id: "1",

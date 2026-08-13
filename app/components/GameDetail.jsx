@@ -109,21 +109,11 @@ export default function GameDetail({ game, content }) {
               <button
                 type="button"
                 onClick={launch}
-                // !uppercase — globals.css resets `button` to normal-case, which
-                // otherwise silently beats the plain `uppercase` utility.
-                className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-md b4w-sheen bg-brand-strong px-6 py-4 font-SpaceGrotesk text-[15px] font-semibold !uppercase tracking-[0.04em] !text-white shadow-[0_0_26px_-4px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-low"
+                className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-md b4w-sheen bg-brand-strong px-6 py-4 font-SpaceGrotesk text-[15px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_0_26px_-4px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-low"
               >
                 <Play className="h-4 w-4" />
                 Play demo
               </button>
-
-              <Link
-                href="/provably-fair"
-                className="mt-4 inline-flex w-full items-center justify-center gap-1.5 font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] !text-cyan transition-colors hover:!text-ink focus-visible:outline-none focus-visible:!text-cyan"
-              >
-                <ShieldCheck className="h-4 w-4" />
-                Verify a round
-              </Link>
 
               <p className="!mb-0 mt-6 border-t border-line/60 pt-5 font-SpaceGrotesk text-[0.8rem] leading-[1.6] text-faint">
                 Figures show the default configuration. Live values follow the

@@ -132,9 +132,6 @@ export default function HomePage() {
           do the selling, and it reads as a games company rather than a SaaS. */}
       <Ticker />
       <TrustBar />
-      <Reveal>
-        <Partners />
-      </Reveal>
       <FeaturedGame slug="punch" />
       <GamesPreview />
       <Reveal>

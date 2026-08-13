@@ -63,6 +63,50 @@
   margin-inline: auto;
   padding-inline: 2rem;
 }
+
+/* Keyframes stay unlayered — they define animations, never compete. */
+@keyframes b4w-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes b4w-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -2%, 0) scale(1.08);
+  }
+}
+
+@keyframes b4w-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * CASCADE LAYERS. `@import "tailwindcss"` establishes:
+ *     @layer theme, base, components, utilities;
+ * Anything written OUTSIDE a layer beats everything inside one, whatever its
+ * specificity. This file used to put the inherited template reset at the top
+ * level, so bare-tag rules (h1, p, dd, button…) silently outranked every
+ * Tailwind utility — which is why call sites needed !text-ink, !mb-0 and
+ * !uppercase to do ordinary things.
+ *
+ * Now: template reset -> base, our own classes -> components, so plain
+ * utilities win by default and `!` is only for genuine exceptions.
+ * ------------------------------------------------------------------------- */
+@layer components {
 /*
  * Game modal sizing.
  * Fullscreen path (phones, any orientation): the header keeps clear of the
@@ -177,14 +221,6 @@ body.age-gate-locked {
 
 /* Ticker: an infinite strip of the catalogue's real max multipliers. The track
    holds the list twice, so translating it exactly -50% loops seamlessly. */
-@keyframes b4w-marquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
 .b4w-marquee-track {
   display: flex;
   width: max-content;
@@ -327,29 +363,11 @@ html.js .b4w-magnitude[data-grown] {
 
 /* Ambient drift for the decorative radial washes, so the canvas is never
    perfectly still. Long and small enough to register as atmosphere, not motion. */
-@keyframes b4w-drift {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(2%, -2%, 0) scale(1.08);
-  }
-}
 .b4w-drift {
   animation: b4w-drift 26s ease-in-out infinite;
   will-change: transform;
 }
 
-@keyframes b4w-pulse {
-  0%,
-  100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 1;
-  }
-}
 .b4w-pulse {
   animation: b4w-pulse 2.4s ease-in-out infinite;
 }
@@ -385,6 +403,9 @@ html.js .b4w-magnitude[data-grown] {
     transform: none;
   }
 }
+}
+
+@layer base {
 :root {
   @apply text-[20px];
 }
@@ -512,19 +533,19 @@ h2 {
 }
 .h3,
 h3 {
-  @apply !leading-[1.4];
+  @apply leading-[1.4];
 }
 .h4,
 h4 {
-  @apply !leading-[1.45];
+  @apply leading-[1.45];
 }
 .h5,
 h5 {
-  @apply !leading-normal;
+  @apply leading-normal;
 }
 .h6,
 h6 {
-  @apply !leading-[1.55];
+  @apply leading-[1.55];
 }
 body,
 html {
@@ -589,7 +610,6 @@ p {
 /* ol,ul {
         @apply pl-8
     } */
-dl,
 ol,
 ul {
   @apply mt-0 mb-4;
@@ -826,4 +846,6 @@ progress {
 select,
 textarea {
   -webkit-appearance: none !important;
+}
+
 }
