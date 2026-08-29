@@ -74,37 +74,32 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
         />
         {/* Grounds the art into the card body so the seam doesn't read as a cut */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel to-transparent" />
-        {/* Stacked so a NEW title carries both pills without either moving the
-            other — the play button owns the opposite corner. */}
-        <div className="absolute right-2.5 top-2.5 flex flex-col items-end gap-1.5">
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-1 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em] backdrop-blur ${
-              live ? "border-line bg-bg/70 text-cyan" : "border-line bg-bg/70 text-muted"
-            }`}
-            aria-hidden="true"
-          >
-            {live ? (
-              <>
-                <span className="h-1.5 w-1.5 rounded-full bg-brand-strong b4w-pulse" />
-                Live
-              </>
-            ) : (
-              <>
-                <Clock className="h-3 w-3" />
-                {game.status}
-              </>
-            )}
+        {game.isNew && (
+          // Opposite corner to the status pill so the two read as separate
+          // facts rather than a stack. Not aria-hidden — unlike the Live pill,
+          // this is information the card states nowhere else.
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-cyan/40 bg-brand-strong/15 px-2 py-1 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.08em] text-cyan backdrop-blur">
+            New
           </span>
-          {game.isNew && (
-            // Gold, not cyan: the chrome is cool everywhere else, so warm reads
-            // as "look here" without competing with the live dot. Not
-            // aria-hidden — unlike the Live pill this is information the card
-            // states nowhere else.
-            <span className="inline-flex items-center rounded-md border border-cyan/40 bg-brand-strong/15 px-2 py-1 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.08em] text-cyan backdrop-blur">
-              New
-            </span>
+        )}
+        <span
+          className={`absolute right-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-md border px-2 py-1 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em] backdrop-blur ${
+            live ? "border-line bg-bg/70 text-cyan" : "border-line bg-bg/70 text-muted"
+          }`}
+          aria-hidden="true"
+        >
+          {live ? (
+            <>
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-strong b4w-pulse" />
+              Live
+            </>
+          ) : (
+            <>
+              <Clock className="h-3 w-3" />
+              {game.status}
+            </>
           )}
-        </div>
+        </span>
       </div>
 
       <div className="machined-surface flex flex-1 flex-col gap-3 p-4 md:p-5">
@@ -195,9 +190,11 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
             type="button"
             onClick={() => onLaunch(game)}
             aria-label={`Play ${game.title} demo`}
-            // Top-left: the status badge already owns the top-right corner.
-            // Always visible on touch, where there is no hover to reveal it.
-            className="absolute left-2.5 top-2.5 z-10 flex h-9 w-9 items-center justify-center rounded-md border border-cyan/50 bg-brand-strong text-black opacity-0 shadow-[0_0_20px_-4px_rgba(37,99,235,0.7)] transition-all duration-300 hover:bg-brand focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand group-hover:opacity-100 max-md:opacity-100"
+            // Tucked under the status pill on the right. The top-left corner is
+            // the NEW badge's, and on touch this button never hides, so sharing
+            // that corner would bury the badge on exactly the devices where it
+            // can't be revealed by hovering. `top-12` clears the pill's height.
+            className="absolute right-2.5 top-12 z-10 flex h-9 w-9 items-center justify-center rounded-md border border-cyan/50 bg-brand-strong text-black opacity-0 shadow-[0_0_20px_-4px_rgba(37,99,235,0.7)] transition-all duration-300 hover:bg-brand focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand group-hover:opacity-100 max-md:opacity-100"
           >
             <Play className="h-4 w-4" />
           </button>
