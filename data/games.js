@@ -15,6 +15,8 @@ import dragon from "@/public/assets/img/icons/thumbnails3/dragon2.jpg";
 import chicken from "@/public/assets/img/icons/thumbnails3/chicken.jpg";
 import hilo from "@/public/assets/img/icons/thumbnails3/hilo.jpg";
 import punch from "@/public/assets/img/icons/thumbnails3/punch.jpg";
+import roulette from "@/public/assets/img/icons/thumbnails3/roulette.jpg";
+import americanRoulette from "@/public/assets/img/icons/thumbnails3/american-roulette.jpg";
 // Wide key art per game: `<slug>.jpg` (680x440) for the homepage spotlight,
 // `<slug>-wide.jpg` (1400x430) for the banner on /games/<slug>.
 import crashBanner from "@/public/assets/img/banners/crash.jpg";
@@ -37,6 +39,10 @@ import kenoBanner from "@/public/assets/img/banners/keno.jpg";
 import kenoWide from "@/public/assets/img/banners/keno-wide.jpg";
 import limboBanner from "@/public/assets/img/banners/limbo.jpg";
 import limboWide from "@/public/assets/img/banners/limbo-wide.jpg";
+import rouletteBanner from "@/public/assets/img/banners/roulette.jpg";
+import rouletteWide from "@/public/assets/img/banners/roulette-wide.jpg";
+import americanRouletteBanner from "@/public/assets/img/banners/american-roulette.jpg";
+import americanRouletteWide from "@/public/assets/img/banners/american-roulette-wide.jpg";
 
 // Per-game card figures. All three are game-specific — there is no catalogue-wide
 // default, so a game that omits a field simply doesn't show it on its card.
@@ -46,7 +52,19 @@ import limboWide from "@/public/assets/img/banners/limbo-wide.jpg";
 //                   per-bet cap per operator.
 //   rtp           — quoted as a range: it moves with the game version and the
 //                   operator's configuration rather than being one fixed number.
+//                   The two roulette tables are the exception — their RTP is
+//                   fixed by the wheel's pocket count (36/37 and 36/38), not by
+//                   configuration, so they carry a single exact figure.
 //   volatility    — the title's risk profile.
+//
+// Optional per-game fields:
+//
+//   slug          — URL segment, when it can't be derived from the title. Titles
+//                   are lowercased to build /games/<slug>, which breaks on any
+//                   multi-word title ("American Roulette" -> "american roulette",
+//                   a URL with a literal space). Set this and `slugFor` uses it.
+//   isNew         — renders a NEW badge on the card. Drop the flag once the
+//                   title is no longer a recent release; nothing expires it.
 export const games = [
   {
     id: "16",
@@ -88,6 +106,43 @@ export const games = [
     image: crash,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=a444355ce84b419ea48869d9c15734ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win&branding=test",
+  },
+  {
+    id: "17",
+    category: "Originals",
+    title: "Roulette",
+    banner: rouletteBanner,
+    bannerWide: rouletteWide,
+    // Fixed by the wheel, not by configuration: a straight-up number pays 36x
+    // against 37 pockets, so 36/37 = 97.3%. Every bet type on a single-zero
+    // table returns the same figure.
+    rtp: "97.3%",
+    // Spans the range by design — an even-chance field (red/black, odd/even) is
+    // near coin-flip, a straight-up number hits 1 in 37.
+    volatility: "Low–High",
+    maxMultiplier: 36, // roulette/game.spec.yaml maxWin
+    image: roulette,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9abd83cf9b4542909b127c814eba03cb&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
+    id: "18",
+    category: "Originals",
+    title: "American Roulette",
+    // Two words, so the title can't produce the URL segment on its own.
+    slug: "american-roulette",
+    banner: americanRouletteBanner,
+    bannerWide: americanRouletteWide,
+    // 36/38 = 94.74%. The double zero is the whole difference between the two
+    // tables, and it costs the player 2.56 points of RTP.
+    rtp: "94.74%",
+    volatility: "Low–High",
+    maxMultiplier: 36, // american-roulette/game.spec.yaml maxWin
+    image: americanRoulette,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=35886cb3d441489a845c089d47264058&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
     id: "9",

@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/app/lib/site";
+import { slugFor } from "@/app/lib/slug";
 import { games } from "@/data/games";
 
 // Served at /sitemap.xml. Every url must byte-match the canonical declared on
@@ -36,7 +37,7 @@ export default function sitemap() {
     ...games
       .filter((g) => g.status === "active")
       .map((g) => ({
-        url: `${SITE_URL}/games/${g.title.toLowerCase()}`,
+        url: `${SITE_URL}/games/${slugFor(g)}`,
         lastModified,
         changeFrequency: "monthly",
         priority: 0.8,

@@ -5,11 +5,11 @@ import GameCard from "./GameCard";
 import GameModal from "./GameModal";
 import { registerGameLauncher } from "@/app/lib/gameLauncher";
 import { trackEvent } from "@/app/lib/analytics";
+// Shareable URL slug for a game (matches the ?game= param + the OG card name).
+import { slugFor } from "@/app/lib/slug";
 
 const isLive = (game) => game.status === "active";
 
-// Shareable URL slug for a game (matches the ?game= param + the OG card name).
-const slugFor = (game) => game.title.toLowerCase();
 // Deliberately searches the whole catalogue, not the rendered subset: the home
 // page shows only a few cards but a shared ?game= link must still open any game.
 const findBySlug = (slug) => {

@@ -8,8 +8,8 @@ import GameDetail from "@/app/components/GameDetail";
 import { games } from "@/data/games";
 import { gameContent } from "@/data/gameContent";
 import { SITE_URL, SITE_NAME } from "@/app/lib/site";
+import { slugFor } from "@/app/lib/slug";
 
-const slugFor = (game) => game.title.toLowerCase();
 const liveGames = () => games.filter((g) => g.status === "active");
 const findGame = (slug) =>
   liveGames().find((g) => slugFor(g) === (slug || "").toLowerCase()) || null;

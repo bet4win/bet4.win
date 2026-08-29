@@ -4,6 +4,22 @@
 // describe a mechanic the game does not actually have. Runtime placeholders
 // (e.g. the {{maxWin}} sentence) are dropped — those values are per operator.
 export const gameContent = {
+  roulette: {
+    source: "roulette/public/locales/en/game.json",
+    paragraphs: [
+      "European roulette on a 37-pocket wheel: 0 and the numbers 1 to 36. Place chips on any mix of straight-up numbers, dozens, columns, red or black, odd or even, and low or high, then spin. A single spin settles every chip on the table at once.",
+      "A straight-up number pays 36x, a dozen or a column pays 3x, and the even-chance fields pay 2x. 0 wins only for a chip placed directly on that pocket — it belongs to no dozen, column, colour, parity or half.",
+      "Winnings are rounded down to the smallest currency unit (e.g., one cent).",
+    ],
+  },
+  "american-roulette": {
+    source: "american-roulette/public/locales/en/game.json",
+    paragraphs: [
+      "American roulette on a 38-pocket wheel: 0, 00 and the numbers 1 to 36. Place chips on any mix of straight-up numbers, dozens, columns, red or black, odd or even, and low or high, then spin. A single spin settles every chip on the table at once.",
+      "A straight-up number pays 36x, a dozen or a column pays 3x, and the even-chance fields pay 2x. 0 and 00 win only for a chip placed directly on that pocket — they belong to no dozen, column, colour, parity or half.",
+      "Winnings are rounded down to the smallest currency unit (e.g., one cent).",
+    ],
+  },
   crash: {
     source: "crash/public/locales/en/game.json",
     paragraphs: [

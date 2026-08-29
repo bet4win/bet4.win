@@ -5,13 +5,14 @@ import { games } from "@/data/games";
 import { Play } from "./Icons";
 import { launchGame } from "@/app/lib/gameLauncher";
 import { trackEvent } from "@/app/lib/analytics";
+import { slugFor } from "@/app/lib/slug";
 
 // Spotlight for one original: wide key art beside the pitch and a big demo CTA.
 // Everything it renders comes from that game's `featured` block in data/games.js,
 // so featuring next month's release is a data change, not a component change.
 export default function FeaturedGame({ slug }) {
   const game = games.find(
-    (g) => g.status === "active" && g.title.toLowerCase() === slug && g.featured,
+    (g) => g.status === "active" && slugFor(g) === slug && g.featured,
   );
   if (!game) return null;
 

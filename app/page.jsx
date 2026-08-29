@@ -9,6 +9,7 @@ import ExploreLinks from "@/app/components/ExploreLinks";
 import ClosingCta from "@/app/components/ClosingCta";
 import Reveal from "@/app/components/Reveal";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/app/lib/site";
+import { slugFor } from "@/app/lib/slug";
 import { games } from "@/data/games";
 import React from "react";
 
@@ -23,8 +24,7 @@ export async function generateMetadata({ searchParams }) {
   const game = slug
     ? games.find(
         (g) =>
-          g.status === "active" &&
-          (g.id === slug || g.title.toLowerCase() === slug),
+          g.status === "active" && (g.id === slug || slugFor(g) === slug),
       )
     : null;
 
@@ -41,7 +41,7 @@ export async function generateMetadata({ searchParams }) {
 
   const title = `Play ${game.title} · Provably-fair original — Bet4.win`;
   const description = `Try the ${game.title} demo from Bet4.win — a certified, provably-fair original you can verify yourself and brand as your own.`;
-  const image = `/og/${game.title.toLowerCase()}.jpg`;
+  const image = `/og/${slugFor(game)}.jpg`;
 
   return {
     title: { absolute: title },
