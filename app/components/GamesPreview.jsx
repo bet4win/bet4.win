@@ -17,8 +17,12 @@ export default function GamesPreview() {
       aria-labelledby="games-preview-heading"
       className="mx-auto max-w-[1280px] px-5 py-16 md:px-12"
     >
-      <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
-        <div>
+      {/* One flex container for all three blocks so the "see all" link can sit
+          beside the heading on desktop but after the cards on phones, without
+          rendering the link twice. DOM order stays heading -> link -> grid,
+          which matches the desktop reading order; only mobile reorders. */}
+      <div className="flex flex-col gap-8 md:flex-row md:flex-wrap md:items-end md:justify-between">
+        <Reveal className="md:order-1">
           <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-cyan">
             A new original every month
           </p>
@@ -28,17 +32,20 @@ export default function GamesPreview() {
           >
             The catalogue
           </h2>
-        </div>
+        </Reveal>
+
         <Link
           href="/games"
-          className="inline-flex items-center gap-1.5 font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] !text-cyan transition-colors hover:!text-ink focus-visible:outline-none focus-visible:!text-ink"
+          className="order-3 inline-flex items-center gap-1.5 self-start font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] !text-cyan transition-colors hover:!text-ink focus-visible:outline-none focus-visible:!text-ink md:order-2 md:self-auto"
         >
           See all {live.length} games
           <ArrowRight className="h-4 w-4" />
         </Link>
-      </Reveal>
 
-      <GameGrid items={PREVIEW} />
+        <div className="order-2 w-full md:order-3">
+          <GameGrid items={PREVIEW} />
+        </div>
+      </div>
     </section>
   );
 }
