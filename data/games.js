@@ -11,7 +11,11 @@ import wheel from "@/public/assets/img/icons/thumbnails3/wheel.jpg";
 import diamonds from "@/public/assets/img/icons/thumbnails3/diamonds.jpg";
 import keno from "@/public/assets/img/icons/thumbnails3/keno.jpg";
 import limbo from "@/public/assets/img/icons/thumbnails3/limbo.jpg";
-import dragon from "@/public/assets/img/icons/thumbnails3/dragon2.jpg";
+// `dragon.jpg`, not `dragon2.jpg`: both hold the same art, but site-assets.mjs
+// writes `dragon.jpg`, so importing the `2` variant meant regenerating dragon's
+// tile from the shipped lobby art silently had no effect. dragon2.jpg is now
+// unreferenced and can be deleted.
+import dragon from "@/public/assets/img/icons/thumbnails3/dragon.jpg";
 import chicken from "@/public/assets/img/icons/thumbnails3/chicken.jpg";
 import hilo from "@/public/assets/img/icons/thumbnails3/hilo.jpg";
 import coin from "@/public/assets/img/icons/thumbnails3/coin.jpg";
@@ -246,6 +250,7 @@ export const games = [
     bannerWide: wheelWide,
     rtp: "94–99%",
     volatility: "High",
+    maxMultiplier: 49.5, // lib/components winBands.ts WIN_BANDS.wheel
     image: wheel,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=8d74f1b250c74e0ca003ca551ec9bd90&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -294,7 +299,7 @@ export const games = [
     category: "Originals",
     title: "Chicken",
     image: chicken,
-    status: "08/2026",
+    status: "09/2026",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game={}&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
 ];
