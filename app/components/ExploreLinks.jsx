@@ -32,7 +32,7 @@ export default function ExploreLinks() {
   return (
     <section
       aria-labelledby="explore-heading"
-      className="mx-auto max-w-[1280px] px-5 py-16 md:px-12"
+      className="mx-auto max-w-[1280px] px-5 py-8 md:px-12"
     >
       <h2
         id="explore-heading"
