@@ -20,6 +20,25 @@ export const gameContent = {
       "Winnings are rounded down to the smallest currency unit (e.g., one cent).",
     ],
   },
+  coin: {
+    source: "coin/public/locales/en/game.json",
+    paragraphs: [
+      "Stake once, then call the sun or the moon. Every call that lands doubles what the round is worth; one that misses ends it at nothing.",
+      "Bank the streak whenever you like — but not before the first call lands, because until then there is nothing to bank. The coin is fair either way: the side you name changes the show, never the odds.",
+      "A round runs until you bank it, you miss, or it reaches the limit set for it. That limit depends on your stake: a larger stake reaches fewer calls, so the payout stays inside the table maximum.",
+      "Winnings are rounded down to the smallest currency unit (e.g., one cent).",
+    ],
+  },
+  hilo: {
+    source: "hilo/public/locales/en/game.json",
+    paragraphs: [
+      "HiLo deals you one card face up. Call whether the next card will be higher or lower — or burn the card and draw a fresh one without changing your multiplier.",
+      "Every correct call multiplies your streak by the odds that call beat, so the safer the call the less it pays. The cards are drawn with replacement: the card on the table stays in the deck, so the chances shown on each button are always out of a full 52.",
+      "A card of the same rank pays whichever side could still win — higher on Ace through Queen, lower on a King. On an Ace, lower can never win; on a King, higher can never win. Those calls stay available, but they cannot pay.",
+      "From your first correct call onwards you can collect at any time and bank the whole streak. One wrong call ends the round and the stake is lost.",
+      "Winnings are rounded down to the smallest currency unit (e.g., one cent).",
+    ],
+  },
   crash: {
     source: "crash/public/locales/en/game.json",
     paragraphs: [
