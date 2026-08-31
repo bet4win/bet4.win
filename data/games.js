@@ -14,6 +14,7 @@ import limbo from "@/public/assets/img/icons/thumbnails3/limbo.jpg";
 import dragon from "@/public/assets/img/icons/thumbnails3/dragon2.jpg";
 import chicken from "@/public/assets/img/icons/thumbnails3/chicken.jpg";
 import hilo from "@/public/assets/img/icons/thumbnails3/hilo.jpg";
+import coin from "@/public/assets/img/icons/thumbnails3/coin.jpg";
 import punch from "@/public/assets/img/icons/thumbnails3/punch.jpg";
 import roulette from "@/public/assets/img/icons/thumbnails3/roulette.jpg";
 import americanRoulette from "@/public/assets/img/icons/thumbnails3/american-roulette.jpg";
@@ -43,6 +44,10 @@ import rouletteBanner from "@/public/assets/img/banners/roulette.jpg";
 import rouletteWide from "@/public/assets/img/banners/roulette-wide.jpg";
 import americanRouletteBanner from "@/public/assets/img/banners/american-roulette.jpg";
 import americanRouletteWide from "@/public/assets/img/banners/american-roulette-wide.jpg";
+import coinBanner from "@/public/assets/img/banners/coin.jpg";
+import coinWide from "@/public/assets/img/banners/coin-wide.jpg";
+import hiloBanner from "@/public/assets/img/banners/hilo.jpg";
+import hiloWide from "@/public/assets/img/banners/hilo-wide.jpg";
 
 // Per-game card figures. All three are game-specific — there is no catalogue-wide
 // default, so a game that omits a field simply doesn't show it on its card.
@@ -159,6 +164,42 @@ export const games = [
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=35886cb3d441489a845c089d47264058&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
+    id: "19",
+    category: "Originals",
+    title: "Coin",
+    banner: coinBanner,
+    bannerWide: coinWide,
+    // The engine serves 92 / 94 / 95 / 96 / 97 / 98 and defaults to 96 for an
+    // unknown version, so the range is the six shipping tables, not a guess.
+    rtp: "92–98%",
+    volatility: "High",
+    // 0.96 x 2^20 — the ceiling rung, reachable only on a stake small enough
+    // that the exposure cap leaves all twenty calls available.
+    maxMultiplier: 1006632.96, // lib/components winBands.ts WIN_BANDS.coin
+    image: coin,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=86eb86d3a9cf4141bc9ef30e20ea514b&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
+    id: "5",
+    category: "Originals",
+    // The game's own name is "HiLo" (apps/hilo/game.spec.yaml). Lowercasing it
+    // still yields the `hilo` slug the assets and OG card are named for.
+    title: "HiLo",
+    banner: hiloBanner,
+    bannerWide: hiloWide,
+    // Shipping tables run 92–99; the engine falls back to 99 for an unknown
+    // version, which is what the client assumes when CONFIG carries no RTP.
+    rtp: "92–99%",
+    volatility: "High",
+    maxMultiplier: 10000, // lib/components winBands.ts WIN_BANDS.hilo
+    image: hilo,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=cd1a3052f0cb479aa7c167e4f377ec96&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
     id: "1",
     category: "Originals",
     title: "Mines",
@@ -254,14 +295,6 @@ export const games = [
     title: "Chicken",
     image: chicken,
     status: "08/2026",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game={}&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
-  },
-  {
-    id: "5",
-    category: "Originals",
-    title: "Hilo",
-    image: hilo,
-    status: "09/2026",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game={}&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
 ];
