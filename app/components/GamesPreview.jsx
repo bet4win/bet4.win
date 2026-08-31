@@ -6,11 +6,11 @@ import { ArrowRight } from "./Icons";
 import { games } from "@/data/games";
 
 const live = games.filter((g) => g.status === "active");
-const PREVIEW = live.slice(0, 4);
+const PREVIEW = live.slice(0, 8);
 
 // A taste of the catalogue on the home page — the full grid lives at /games, so
-// this shows four and gets out of the way. GameGrid still handles ?game= links
-// for any title, not just the four rendered here.
+// this shows eight and gets out of the way. GameGrid still handles ?game= links
+// for any title, not just the eight rendered here.
 export default function GamesPreview() {
   return (
     <section
