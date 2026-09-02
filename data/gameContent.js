@@ -4,6 +4,19 @@
 // describe a mechanic the game does not actually have. Runtime placeholders
 // (e.g. the {{maxWin}} sentence) are dropped — those values are per operator.
 export const gameContent = {
+  "video-poker": {
+    source: "video-poker/public/locales/en/game.json",
+    paragraphs: [
+      // "against the ladder on the left" in the locale — dropped, because the
+      // shipped table puts the paytable ABOVE the hand, not beside it (five
+      // cards across is a width problem; see video-poker/src/variables.scss).
+      // A spatial reference the game contradicts is exactly what this file's
+      // verbatim rule exists to keep off the site.
+      "Video Poker deals you five cards face up. Tap the ones you want to keep, then press Draw: every card you did not hold is replaced once, and the hand you end up with is paid against the ladder.",
+      "There is exactly one decision in a round, and it is the whole game. A pair of Jacks or better already pays, so holding it is a guaranteed return — but breaking it up is the only way to reach a flush, a full house, or the royal flush at the top of the ladder.",
+      "The payout table depends on the version your operator has configured. The ladder you can see is always the one your hand will be paid against.",
+    ],
+  },
   roulette: {
     source: "roulette/public/locales/en/game.json",
     paragraphs: [
