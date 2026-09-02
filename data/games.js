@@ -22,6 +22,7 @@ import coin from "@/public/assets/img/icons/thumbnails3/coin.jpg";
 import punch from "@/public/assets/img/icons/thumbnails3/punch.jpg";
 import roulette from "@/public/assets/img/icons/thumbnails3/roulette.jpg";
 import americanRoulette from "@/public/assets/img/icons/thumbnails3/american-roulette.jpg";
+import videoPoker from "@/public/assets/img/icons/thumbnails3/video-poker.jpg";
 // Wide key art per game: `<slug>.jpg` (680x440) for the homepage spotlight,
 // `<slug>-wide.jpg` (1400x430) for the banner on /games/<slug>.
 import crashBanner from "@/public/assets/img/banners/crash.jpg";
@@ -52,6 +53,8 @@ import coinBanner from "@/public/assets/img/banners/coin.jpg";
 import coinWide from "@/public/assets/img/banners/coin-wide.jpg";
 import hiloBanner from "@/public/assets/img/banners/hilo.jpg";
 import hiloWide from "@/public/assets/img/banners/hilo-wide.jpg";
+import videoPokerBanner from "@/public/assets/img/banners/video-poker.jpg";
+import videoPokerWide from "@/public/assets/img/banners/video-poker-wide.jpg";
 
 // Per-game card figures. All three are game-specific — there is no catalogue-wide
 // default, so a game that omits a field simply doesn't show it on its card.
@@ -129,6 +132,26 @@ export const games = [
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=14fdde34d95011f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
     aspectRatio: "4/3",
+  },
+  {
+    id: "20",
+    category: "Originals",
+    title: "Video Poker",
+    // Two words, so the title can't produce the URL segment on its own.
+    slug: "video-poker",
+    banner: videoPokerBanner,
+    bannerWide: videoPokerWide,
+    rtp: "94–99%",
+    volatility: "High",
+    // The royal flush, and the only rung that pays it: `maxWin` in
+    // video-poker/game.spec.yaml, identical across all seven paytables. The
+    // client never bakes the figure — it comes from payTableConfig at runtime —
+    // so the spec is the right thing to quote here.
+    maxMultiplier: 800,
+    image: videoPoker,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=4518a8a7b97b475f83f16e473a78e3ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
     id: "17",
