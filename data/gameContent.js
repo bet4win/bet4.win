@@ -4,6 +4,16 @@
 // describe a mechanic the game does not actually have. Runtime placeholders
 // (e.g. the {{maxWin}} sentence) are dropped — those values are per operator.
 export const gameContent = {
+  blackjack: {
+    source: "blackjack/public/locales/en/game.json",
+    paragraphs: [
+      "Beat the dealer's hand without going over 21. Face cards count 10 and an ace counts 1 or 11, whichever is better for you.",
+      "You and the dealer each get two cards; one of the dealer's is face down. Then it is your move: Hit for another card, Stand to keep what you have, Double to take exactly one more card for twice the stake, Split a pair into two separate hands, or Surrender a fresh hand to get half the stake back. Go over 21 and the hand is lost immediately.",
+      "When you stand, the dealer turns over the hole card and draws to 16, standing on all 17s. The higher total wins.",
+      "A two-card 21 pays 3 to 2. Any other win pays even money, and a tie returns your stake. Split hands can double; split aces get one card each. If the dealer shows an ace you are offered insurance for half your stake, which pays 2 to 1 if the dealer has a two-card 21.",
+      "Two optional side bets can be placed before the deal. Perfect Pairs pays on your first two cards: 26x for a matching pair of the same suit, 11x for the same colour, 6x for any pair. 21+3 pays on your two cards plus the dealer's upcard: 101x for a suited three of a kind, 41x for a straight flush, 31x for three of a kind, 11x for a straight, 6x for a flush.",
+    ],
+  },
   "video-poker": {
     source: "video-poker/public/locales/en/game.json",
     paragraphs: [

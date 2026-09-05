@@ -23,6 +23,7 @@ import punch from "@/public/assets/img/icons/thumbnails3/punch.jpg";
 import roulette from "@/public/assets/img/icons/thumbnails3/roulette.jpg";
 import americanRoulette from "@/public/assets/img/icons/thumbnails3/american-roulette.jpg";
 import videoPoker from "@/public/assets/img/icons/thumbnails3/video-poker.jpg";
+import blackjack from "@/public/assets/img/icons/thumbnails3/blackjack.jpg";
 // Wide key art per game: `<slug>.jpg` (680x440) for the homepage spotlight,
 // `<slug>-wide.jpg` (1400x430) for the banner on /games/<slug>.
 import crashBanner from "@/public/assets/img/banners/crash.jpg";
@@ -55,6 +56,8 @@ import hiloBanner from "@/public/assets/img/banners/hilo.jpg";
 import hiloWide from "@/public/assets/img/banners/hilo-wide.jpg";
 import videoPokerBanner from "@/public/assets/img/banners/video-poker.jpg";
 import videoPokerWide from "@/public/assets/img/banners/video-poker-wide.jpg";
+import blackjackBanner from "@/public/assets/img/banners/blackjack.jpg";
+import blackjackWide from "@/public/assets/img/banners/blackjack-wide.jpg";
 
 // Per-game card figures. All three are game-specific — there is no catalogue-wide
 // default, so a game that omits a field simply doesn't show it on its card.
@@ -152,6 +155,29 @@ export const games = [
     status: "active",
     isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=4518a8a7b97b475f83f16e473a78e3ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
+    id: "21",
+    category: "Originals",
+    title: "Blackjack",
+    banner: blackjackBanner,
+    bannerWide: blackjackWide,
+    // The certified engine version IS the figure: `rules.ts` keys its rules
+    // package off `CONFIG.engineVersionRTP`, and the only version the client
+    // recognises is "99". Quoting anything else would be inventing one.
+    rtp: "99%",
+    // The base game is near coin-flip — even money on most wins, 3:2 on a
+    // natural — but the two optional side bets reach 101x, so the range is real
+    // and depends on how the player bets. Same shape as roulette.
+    volatility: "Low\u2013High",
+    // 21+3's suited three-of-a-kind, the top rung of either side paytable and
+    // the same 101 the win-tier bands in lib/components are built around. The
+    // main game alone tops out at 2.5x.
+    maxMultiplier: 101,
+    image: blackjack,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=97c9ed6766cd46e7a8bb1c711069d655&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
     id: "17",
