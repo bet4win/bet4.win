@@ -14,6 +14,21 @@ export const gameContent = {
       "Two optional side bets can be placed before the deal. Perfect Pairs pays on your first two cards: 26x for a matching pair of the same suit, 11x for the same colour, 6x for any pair. 21+3 pays on your two cards plus the dealer's upcard: 101x for a suited three of a kind, 41x for a straight flush, 31x for three of a kind, 11x for a straight, 6x for a flush.",
     ],
   },
+  baccarat: {
+    source: "baccarat/public/locales/en/game.json",
+    paragraphs: [
+      "Back Player, Banker or Tie — or any combination of the three — and two hands are dealt. The hand closest to nine wins. You are betting on which hand that will be; neither of them is yours.",
+      "Cards are worth their face value, an ace counts one, and tens, jacks, queens and kings count nothing. Only the last digit of a total counts, so a hand cannot go bust: nine plus five is fourteen, which is four.",
+      "Two cards go to each hand. An eight or a nine on those two cards is a natural and ends the round immediately — no third card is drawn for either hand.",
+      "If there is no natural, Player draws a third card on a total of nought to five and stands on six or seven. Banker then draws on nought to two; on three unless Player's third card was an eight; on four if it was a two to a seven; on five if it was a four to a seven; and on six if it was a six or a seven. Banker stands on seven. No hand ever takes more than three cards.",
+      "Player pays even money. Banker pays 0.95 to 1, after a five per cent commission on the win. Tie pays 8 to 1. When the round is a tie, Player and Banker stakes are returned rather than lost.",
+      // The locale's closing paragraph is kept whole rather than dropped as an
+      // RTP restatement. Those three figures are not one game's RTP quoted
+      // twice — they are the only strategy baccarat has, and the card above can
+      // show the range but cannot say which spot earns which end of it.
+      "Banker is the best bet on the table and Tie is the worst: the return to player is 98.94% on Banker, 98.77% on Player and 85.88% on Tie. Winnings are rounded down to the smallest unit of your currency.",
+    ],
+  },
   "video-poker": {
     source: "video-poker/public/locales/en/game.json",
     paragraphs: [

@@ -24,6 +24,7 @@ import roulette from "@/public/assets/img/icons/thumbnails3/roulette.jpg";
 import americanRoulette from "@/public/assets/img/icons/thumbnails3/american-roulette.jpg";
 import videoPoker from "@/public/assets/img/icons/thumbnails3/video-poker.jpg";
 import blackjack from "@/public/assets/img/icons/thumbnails3/blackjack.jpg";
+import baccarat from "@/public/assets/img/icons/thumbnails3/baccarat.jpg";
 // Wide key art per game: `<slug>.jpg` (680x440) for the homepage spotlight,
 // `<slug>-wide.jpg` (1400x430) for the banner on /games/<slug>.
 import crashBanner from "@/public/assets/img/banners/crash.jpg";
@@ -58,6 +59,8 @@ import videoPokerBanner from "@/public/assets/img/banners/video-poker.jpg";
 import videoPokerWide from "@/public/assets/img/banners/video-poker-wide.jpg";
 import blackjackBanner from "@/public/assets/img/banners/blackjack.jpg";
 import blackjackWide from "@/public/assets/img/banners/blackjack-wide.jpg";
+import baccaratBanner from "@/public/assets/img/banners/baccarat.jpg";
+import baccaratWide from "@/public/assets/img/banners/baccarat-wide.jpg";
 
 // Per-game card figures. All three are game-specific — there is no catalogue-wide
 // default, so a game that omits a field simply doesn't show it on its card.
@@ -178,6 +181,32 @@ export const games = [
     status: "active",
     isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=97c9ed6766cd46e7a8bb1c711069d655&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
+    id: "22",
+    category: "Originals",
+    title: "Baccarat",
+    banner: baccaratBanner,
+    bannerWide: baccaratWide,
+    // A RANGE, and unusually for this catalogue the range is the game's whole
+    // strategy rather than a configuration artefact: the return depends only on
+    // which of the three spots the player backs. 98.94% on Banker, 98.77% on
+    // Player, 85.88% on Tie — the figures are in `game/payouts.ts` and quoted in
+    // full in the rules copy. Banker's is the headline because it is the best
+    // bet available on the table.
+    rtp: "85.88–98.94%",
+    // Player and Banker are near coin-flip and pay about even money; Tie is an
+    // 8:1 shot that comes in under one round in ten. So the volatility is
+    // genuinely whatever the player chooses, the same shape as roulette's and
+    // blackjack's.
+    volatility: "Low–High",
+    // Tie pays 8 to 1, so a round returns 9x the staked amount on that spot.
+    // The base game has no higher rung — there are no side bets in V1.
+    maxMultiplier: 9,
+    image: baccarat,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=dde705cf2dfe4d26bf0b9306d6c7515d&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
     id: "17",
