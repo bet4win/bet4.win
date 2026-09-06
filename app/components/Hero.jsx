@@ -17,8 +17,8 @@ export default function Hero() {
         {/* No manual line breaks — at this weight the phrase has to be allowed
             to rewrap, or "provably / fair" splits across lines at some widths. */}
         <h1 className="b4w-display max-w-[13ch] !text-[clamp(2.1rem,1.1rem+2.9vw,3.5rem)] !text-ink [text-wrap:balance]">
-          Provably fair originals,{" "}
-          <span className="text-brand">built for operators.</span>
+          Exclusive originals{" "}
+          <span className="text-brand">and crash games</span>
         </h1>
 
         <p className="max-w-xl font-SpaceGrotesk text-[1.05rem] leading-[1.6] text-muted">
