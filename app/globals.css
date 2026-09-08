@@ -286,19 +286,6 @@ body.age-gate-locked {
   font-size: 0.85em;
   color: var(--color-cyan);
 }
-/* Flags a clause that still needs the client's own details before publishing. */
-.b4w-prose .b4w-todo {
-  display: block;
-  border-left: 2px solid var(--color-brand);
-  background: var(--color-panel-low);
-  padding: 0.85rem 1rem;
-  margin-bottom: 1rem;
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 0.8rem;
-  line-height: 1.6;
-  color: var(--color-faint);
-}
-
 /* --- Motion system ---------------------------------------------------------
  * Entrance animations are gated behind `html.js` (set by an inline script in the
  * root layout). Without scripting the hidden state is never applied, so content

@@ -18,13 +18,6 @@ export default function TermsPage() {
       updated={UPDATED}
       intro="These terms govern your use of the bet4.win website and the play-money demos on it. By using the site you accept them."
     >
-      <p className="b4w-todo">
-        Before publishing: confirm the governing law and jurisdiction, and the
-        registered legal entity named in clause 1. Have a qualified adviser
-        review this text — it is drafted from what the site actually does, not as
-        legal advice.
-      </p>
-
       <h2>1. About this site</h2>
       <p>
         Bet4.win supplies a Remote Gaming Server and a catalogue of
@@ -33,10 +26,6 @@ export default function TermsPage() {
         is not a casino, it offers no real-money play, and it accepts no
         deposits, wagers or withdrawals.
       </p>
-      <p className="b4w-todo">
-        TO CONFIRM — registered company name, number and address.
-      </p>
-
       <h2>2. Age requirement</h2>
       <p>
         This site presents real-money casino game content and is intended for
@@ -150,12 +139,7 @@ export default function TermsPage() {
         version then in force.
       </p>
 
-      <h2>13. Governing law</h2>
-      <p className="b4w-todo">
-        TO CONFIRM — governing law and the courts having exclusive jurisdiction.
-      </p>
-
-      <h2>14. Contact</h2>
+      <h2>13. Contact</h2>
       <p>
         Questions about these terms:{" "}
         <a href="mailto:info@bet4.win">info@bet4.win</a>.

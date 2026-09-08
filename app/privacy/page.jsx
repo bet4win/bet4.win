@@ -18,14 +18,6 @@ export default function PrivacyPage() {
       updated={UPDATED}
       intro="This policy covers the bet4.win website only. It explains what this site stores on your device, the one analytics service it uses, and how to exercise your rights over that data."
     >
-      <p className="b4w-todo">
-        Before publishing: replace the placeholders marked TO CONFIRM below with
-        the registered legal entity, its address and company number, and the
-        contact point for data-protection requests. Have a qualified adviser
-        review this text — it is drafted from what the site technically does, not
-        as legal advice.
-      </p>
-
       <h2>Who we are</h2>
       <p>
         This website is operated by Bet4.win (&ldquo;we&rdquo;,
@@ -34,11 +26,6 @@ export default function PrivacyPage() {
         business-to-business marketing site: it does not offer real-money play
         and does not accept deposits.
       </p>
-      <p className="b4w-todo">
-        TO CONFIRM — registered company name, registration number, registered
-        address, and the data controller&rsquo;s contact details.
-      </p>
-
       <h2>What we collect</h2>
       <p>
         We do not operate accounts on this website, and there is no registration
