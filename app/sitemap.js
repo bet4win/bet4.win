@@ -3,7 +3,9 @@ import { slugFor } from "@/app/lib/slug";
 import { games } from "@/data/games";
 
 // Served at /sitemap.xml. Every url must byte-match the canonical declared on
-// the corresponding page (apex, https, no trailing slash).
+// the corresponding page (www host, https, no trailing slash). Never list the
+// apex host here — it redirects, and redirecting URLs in a sitemap are crawl
+// errors rather than index candidates.
 export default function sitemap() {
   const lastModified = new Date();
   return [

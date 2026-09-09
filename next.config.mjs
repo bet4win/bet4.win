@@ -48,12 +48,15 @@ const nextConfig = {
   },
   async redirects() {
     // Enforce the www canonical: 308 the apex host to www, preserving the path.
-    // Only matches the exact apex Host header, so it can't loop on www requests.
-    // (Belt-and-suspenders — your DNS/CDN may already do this.)
+    // `value` is compiled into `^…$`, so the dots are escaped to keep this an
+    // exact host match and it can't loop on www requests.
+    // Belt-and-suspenders: Vercel already redirects the apex at the edge (its
+    // 308 carries no x-matched-path header), so this rule is the fallback if
+    // that domain config is ever removed.
     return [
       {
         source: "/:path*",
-        has: [{ type: "host", value: "bet4.win" }],
+        has: [{ type: "host", value: "bet4\\.win" }],
         destination: "https://www.bet4.win/:path*",
         permanent: true,
       },
