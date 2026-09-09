@@ -1,101 +1,76 @@
 import React from "react";
+import Image from "next/image";
+// Static imports → content-hashed, immutably-cacheable asset URLs.
+import serverIcon from "@/public/assets/img/icons/gaming/server.png";
+import fairIcon from "@/public/assets/img/icons/gaming/fair.png";
+import originalsIcon from "@/public/assets/img/icons/gaming/originals.png";
+import retentionIcon from "@/public/assets/img/icons/gaming/retention.png";
+
+const items = [
+  {
+    img: serverIcon,
+    title: "Remote Gaming Server (RGS)",
+    body: "One battle-tested RGS to launch, manage and report on every game — built for massive concurrency, integrated once and white-labelled as your own.",
+  },
+  {
+    img: fairIcon,
+    title: "Provably Fair RNG",
+    body: "Certified random number generation. Every result is independently verifiable — trust by math, not by promise.",
+  },
+  {
+    img: originalsIcon,
+    title: "Next-gen Originals",
+    body: "A curated suite of fast-paced originals — crash, mines, plinko and more — with social, multiplayer and crypto-native mechanics on our provably-fair engine.",
+  },
+  {
+    img: retentionIcon,
+    title: "Promos & Retention",
+    body: "Tournaments, free bets, jackpots and leaderboards via API — the levers that lift player lifetime value.",
+  },
+];
 
 export default function Services() {
   return (
-    <section className="wrapper !bg-[#ffffff]">
-      <div className="container xl:pt-8 lg:pt-8 md:pt-8">
-        <div className="flex flex-wrap mx-[-15px] !text-center">
-          <div className="md:w-10/12 xl:w-8/12 lg:w-8/12 w-full flex-[0_0_auto] !px-[15px] max-w-full xl:!ml-[16.66666667%] lg:!ml-[16.66666667%] md:!ml-[8.33333333%]">
-            {/* <h2 className="!text-[0.8rem] !tracking-[0.02rem] uppercase !text-[#aab0bc] !mb-3 !leading-[1.35]">
-              What We Do?
-            </h2> */}
-            <h3 className="!text-[calc(1.315rem_+_0.78vw)] font-bold xl:!text-[1.3rem] !leading-[1.25] !mb-10 xl:!px-10">
-              WE SET YOU APART IN A HIGHLY COMPETITIVE LANDSCAPE
-            </h3>
-          </div>
-          {/* /column */}
-        </div>
-        {/* /.row */}
-        <div className="!relative">
-          <div
-            className="shape !rounded-[50%] !bg-[#edf2fc] rellax !w-[6rem] !h-[6rem] !absolute z-[1]"
-            data-rellax-speed={1}
-            style={{ bottom: "-0.5rem", right: "-2.2rem", zIndex: 0 }}
-          />
-          <div
-            className="shape bg-dot primary rellax !w-[6rem] !h-[7rem] absolute opacity-50 bg-[radial-gradient(#fab758_2px,transparent_2.5px)]"
-            data-rellax-speed={1}
-            style={{ top: "-0.5rem", left: "-2.5rem", zIndex: 0 }}
-          />
-          <div className="flex flex-wrap mx-[-15px] xl:mx-[-12.5px] lg:mx-[-12.5px] md:mx-[-12.5px] !mt-[-25px] !text-center">
-            <div className="md:w-6/12 lg:w-6/12 xl:w-3/12 w-full flex-[0_0_auto] !px-[15px] max-w-full xl:!px-[12.5px] lg:!px-[12.5px] md:!px-[12.5px] !mt-[25px]">
-              <div className="card !shadow-[0_0.25rem_1.75rem_rgba(30,34,40,0.07)]">
-                <div className="card-body flex-[1_1_auto] p-[40px]">
-                  <img src="/assets/img/icons/gaming/server.png" alt="dice" className="!w-[3.8rem] !h-[3.8rem] !mb-3 m-[0_auto]" />
-                  <h4 className="!text-[1rem]">Remote Gaming Server</h4>
-                  <p className="!mb-2">
-                    Our battle tested RGS platform offers a robust and scalable foundation for seamless game integration and management.
-                  </p>
-                </div>
-                {/*/.card-body */}
-              </div>
-              {/*/.card */}
-            </div>
-            {/*/column */}
-            <div className="md:w-6/12 lg:w-6/12 xl:w-3/12 w-full flex-[0_0_auto] !px-[15px] max-w-full xl:!px-[12.5px] lg:!px-[12.5px] md:!px-[12.5px] !mt-[25px]">
-              <div className="card !shadow-[0_0.25rem_1.75rem_rgba(30,34,40,0.07)]">
-                <div className="card-body flex-[1_1_auto] p-[40px]">
-                  <img src="/assets/img/icons/gaming/dice.png" alt="dice" className="!w-[3.8rem] !h-[3.8rem] !mb-3 m-[0_auto]" />
-                   <h4 className="!text-[1rem]">Provably Fair RNG</h4>
-                  <p className="!mb-2">
-                    Certified provably fair Random Number Generator adds transparency and trust to your iGaming portofolio.
-                  </p>
-                </div>
-                {/*/.card-body */}
-              </div>
-              {/*/.card */}
-            </div>
-            {/*/column */}
-            <div className="md:w-6/12 lg:w-6/12 xl:w-3/12 w-full flex-[0_0_auto] !px-[15px] max-w-full xl:!px-[12.5px] lg:!px-[12.5px] md:!px-[12.5px] !mt-[25px]">
-              <div className="card !shadow-[0_0.25rem_1.75rem_rgba(30,34,40,0.07)]">
-                <div className="card-body flex-[1_1_auto] p-[40px]">
-                  <img src="/assets/img/icons/gaming/rocket.png" alt="dice" className="!w-[3.8rem] !h-[3.8rem] !mb-3 m-[0_auto]" />
-                  <h4 className="!text-[1rem]">Next-gen Games</h4>
-                  <p className="!mb-2">
-                    Our games address the needs of the next generation players with social, multiplayer and crypto features.
-                  </p>
-                </div>
-                {/*/.card-body */}
-              </div>
-              {/*/.card */}
-            </div>
-            {/*/column */}
-            <div className="md:w-6/12 lg:w-6/12 xl:w-3/12 w-full flex-[0_0_auto] !px-[15px] max-w-full xl:!px-[12.5px] lg:!px-[12.5px] md:!px-[12.5px] !mt-[25px]">
-              <div className="card !shadow-[0_0.25rem_1.75rem_rgba(30,34,40,0.07)]">
-                <div className="card-body flex-[1_1_auto] p-[40px]">
-                 <img src="/assets/img/icons/gaming/marketing.png" alt="dice" className="!w-[3.8rem] !h-[3.8rem] !mb-3 m-[0_auto]" /><h4 className="!text-[1rem]">Promos and Retention</h4>
-                  <p className="!mb-2">
-                    Our advanced promotional and social capabilitites designed to boost player retention and lifetime value.
-                    <br /><br />
-                  </p>
-                  {/* <a
-                    href="#"
-                    className="more hover !text-[#3f78e0] hover:!text-[#3f78e0]"
-                  >
-                    Learn More
-                  </a> */}
-                </div>
-                {/*/.card-body */}
-              </div>
-              {/*/.card */}
-            </div>
-            {/*/column */}
-          </div>
-          {/*/.row */}
-        </div>
-        {/* /.relative */}
+    <section
+      id="platform"
+      aria-labelledby="platform-heading"
+      className="b4w-contain-x mx-auto max-w-[1280px] px-5 py-20 md:px-12"
+    >
+      <div className="mb-10">
+        <h2
+          id="platform-heading"
+          className="b4w-display !text-[1.75rem] !text-ink"
+        >
+          Engineered for scale
+        </h2>
+        <p className="mt-1 font-SpaceGrotesk text-muted">
+          The complete infrastructure for modern iGaming operators.
+        </p>
       </div>
-      {/* /.container */}
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {items.map(({ img, title, body }) => (
+          <div
+            key={title}
+            className="group relative overflow-hidden rounded-xl border border-line bg-panel p-6 transition-colors hover:border-line/0 hover:ring-1 hover:ring-brand/40"
+          >
+            <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-brand-strong/10 opacity-60 blur-[40px] transition-opacity duration-300 group-hover:opacity-100" />
+            <Image
+              src={img}
+              alt=""
+              width={256}
+              height={256}
+              className="mb-5 w-full object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+            <h3 className="mb-2 font-SpaceGrotesk !text-[1.15rem] !font-semibold !text-ink">
+              {title}
+            </h3>
+            <p className="font-SpaceGrotesk text-[0.9rem] leading-[1.55] text-muted">
+              {body}
+            </p>
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

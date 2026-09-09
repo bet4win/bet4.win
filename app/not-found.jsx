@@ -1,57 +1,48 @@
-import Footer5 from "@/components/footers/Footer5";
-import Header32 from "@/components/headers/Header32";
-import Image from "next/image";
 import Link from "next/link";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
+import { ArrowRight } from "@/app/components/Icons";
 import React from "react";
 
 export const metadata = {
-  title:
-    "Page Not Found || Sandbox - Modern & Multipurpose React Next.js Template with Tailwind CSS",
+  title: "Page not found",
   description:
-    "Sandbox - Modern & Multipurpose React Next.js Template with Tailwind CSS",
+    "This page doesn't exist. Explore Bet4.win's provably-fair RGS and originals catalogue for iGaming operators.",
+  robots: { index: false, follow: true },
 };
+
 export default function NotFoundPage() {
   return (
-    <>
-      <div className="grow shrink-0">
-
-        <section className="wrapper !bg-[#ffffff]">
-          <div className="container pt-14 xl:pt-[4.5rem] lg:pt-[4.5rem] md:pt-[4.5rem] pb-[4.5rem] xl:pb-24 lg:pb-24 md:pb-24">
-            <div className="flex flex-wrap mx-[-15px]">
-              <div className="lg:w-9/12 xl:w-8/12 w-full flex-[0_0_auto] !px-[15px] max-w-full !mx-auto">
-                <figure className="!mb-10">
-                  {/* <Image
-                    className="max-w-full h-auto"
-                    srcSet="/assets/img/illustrations/404@2x.png 2x"
-                    alt="image"
-                    width={800}
-                    height={316}
-                    src="/assets/img/illustrations/404.png"
-                  /> */}
-                </figure>
-              </div>
-              {/* /column */}
-              <div className="lg:w-8/12 xl:w-7/12 xxl:w-6/12 w-full flex-[0_0_auto] !px-[15px] max-w-full !mx-auto !text-center">
-                <h1 className="!mb-3">Oops! Page Not Found.</h1>
-                <p className="lead !leading-[1.65] text-[0.9rem] font-medium !mb-7 md:!px-14 lg:!px-5 xl:!px-7">
-                  The page you are looking for is not available or has been
-                  moved. Try a different page or go to homepage with the button
-                  below.
-                </p>
-                <Link
-                  href={`/`}
-                  className="btn btn-primary !text-white !bg-[#3f78e0] border-[#3f78e0] hover:text-white hover:bg-[#3f78e0] hover:!border-[#3f78e0] active:text-white active:bg-[#3f78e0] active:border-[#3f78e0] disabled:text-white disabled:bg-[#3f78e0] disabled:border-[#3f78e0] !rounded-[50rem] hover:translate-y-[-0.15rem] hover:shadow-[0_0.25rem_0.75rem_rgba(30,34,40,0.15)]"
-                >
-                  Go to Homepage
-                </Link>
-              </div>
-              {/* /column */}
-            </div>
-            {/* /.row */}
-          </div>
-          {/* /.container */}
-        </section>
-      </div>
-    </>
+    <div className="flex min-h-screen flex-col bg-bg font-SpaceGrotesk text-ink antialiased">
+      <Header />
+      <main className="relative flex flex-grow flex-col items-center justify-center overflow-hidden px-5 py-32 text-center md:px-12">
+        {/* Signature glow, matching the homepage sections */}
+        <div
+          className="pointer-events-none absolute inset-0 -z-10 opacity-60 blur-[120px]"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 38%, rgba(34,211,238,0.10), transparent 55%), radial-gradient(circle at 62% 62%, rgba(129,140,248,0.11), transparent 55%)",
+          }}
+        />
+        <p className="mb-4 font-SpaceGrotesk text-[13px] uppercase tracking-[0.08em] text-cyan">
+          Error 404
+        </p>
+        <h1 className="mb-3 max-w-xl b4w-display !text-[clamp(2rem,1.4rem+2vw,2.9rem)] !text-ink">
+          This page rolled snake eyes.
+        </h1>
+        <p className="mb-8 max-w-md font-SpaceGrotesk text-[1.05rem] leading-[1.6] text-muted">
+          The page you&rsquo;re looking for has moved or never existed. Let&rsquo;s
+          get you back to the catalogue.
+        </p>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 rounded-md b4w-sheen bg-brand-strong px-7 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_0_26px_-4px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+        >
+          Back to homepage
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </main>
+      <Footer />
+    </div>
   );
 }
