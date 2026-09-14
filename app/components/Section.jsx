@@ -24,8 +24,8 @@ export default function Section({
   surface = "base",
   rule = false,
   depth = false,
-  // Drifting gradient mesh + animated grain. Reserved for the sections that can
-  // carry it — every section wearing texture is the same as none of them doing.
+  // Drifting gradient mesh. Reserved for the sections that can carry it — every
+  // section wearing texture is the same as none of them doing.
   texture = false,
   className = "",
   innerClassName = "",
@@ -41,8 +41,8 @@ export default function Section({
 
   // The grid wash is wider than the section, so the x-axis is clipped to stop it
   // scrolling the page sideways on phones. The ambient texture layers overflow
-  // on BOTH axes (grain at inset:-50%, mesh animating to scale 1.09), so those
-  // sections clip both — otherwise the layers drift into their neighbours. Clip
+  // on BOTH axes (the mesh animates out to scale 1.09), so those sections clip
+  // both — otherwise it drifts into its neighbours. Clip
   // rather than hidden: see the note on .b4w-contain-x in globals.css for why
   // making these scroll containers breaks anchor scrolling.
   const clip = texture ? " b4w-contain" : depth ? " b4w-contain-x" : "";
@@ -55,15 +55,10 @@ export default function Section({
       }${clip}${className ? ` ${className}` : ""}`}
       {...rest}
     >
-      {texture && (
-        <>
-          <span aria-hidden="true" className="b4w-mesh" />
-          <span aria-hidden="true" className="b4w-grain" />
-        </>
-      )}
+      {texture && <span aria-hidden="true" className="b4w-mesh" />}
       {/* Decoration first, content last, and NOTHING here sets a z-index.
           Every layer is position:absolute/relative with z-index:auto, so they
-          paint in tree order — mesh, grain, grid wash, then content. That is
+          paint in tree order — mesh, grid wash, then content. That is
           deliberate: an earlier version put `z-10` on the content container,
           which made it a stacking context, and the fullscreen game modal nested
           inside <GamesPreview> had its z-9999 resolved *within* that context.
