@@ -50,9 +50,9 @@ const nextConfig = {
     // Enforce the www canonical: 308 the apex host to www, preserving the path.
     // `value` is compiled into `^…$`, so the dots are escaped to keep this an
     // exact host match and it can't loop on www requests.
-    // Belt-and-suspenders: Vercel already redirects the apex at the edge (its
-    // 308 carries no x-matched-path header), so this rule is the fallback if
-    // that domain config is ever removed.
+    // This rule is what actually serves the production apex 308 — it compiles
+    // into .next/routes-manifest.json, which Vercel applies at its proxy layer
+    // (hence the single-region x-vercel-id and no x-matched-path on the 308).
     return [
       {
         source: "/:path*",
