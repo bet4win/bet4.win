@@ -21,7 +21,6 @@ export default function GamesPreview() {
       id="games"
       surface="raised"
       rule
-      ghost="Catalogue"
       aria-labelledby="games-preview-heading"
       innerClassName="py-16 md:py-20"
     >

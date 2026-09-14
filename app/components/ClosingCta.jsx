@@ -7,10 +7,9 @@ export default function ClosingCta() {
   return (
     <Section
       id="contact"
-      surface="raised"
+      surface="base"
       rule
       texture
-      ghost="Integrate"
       innerClassName="py-28 text-center"
     >
       <div className="mx-auto flex max-w-2xl flex-col items-center">

@@ -29,6 +29,11 @@
   --color-black: #000000;
   /* Dark studio redesign palette (homepage).
    *
+   * TWO section surfaces, strictly alternating: --color-bg and --color-panel.
+   * --color-panel-high is a CARD fill, never a section — three section colours
+   * read as three unrelated decisions rather than one rhythm. Cards therefore
+   * always sit a step above whichever surface they are on.
+   *
    * The floor is near-black, not navy. The three section surfaces used to sit
    * within 1.202:1 of each other end to end, which is why the page read flat no
    * matter how the sections were arranged; they now span 1.523:1, and a single
@@ -210,6 +215,15 @@ body.home-dark {
    stop working. `clip` on one axis keeps the vertical bleed intact. */
 .b4w-contain-x {
   overflow-x: clip;
+}
+/* Both axes, for sections carrying the ambient layers. .b4w-grain sits at
+   inset:-50% and .b4w-mesh animates out to scale(1.09); with only the x-axis
+   clipped, both bled vertically into the neighbouring section and drifted there
+   on a 34s cycle — which is exactly the "background moving up and down" under
+   the Explore block. Clip, not hidden: hidden would make these scroll
+   containers. */
+.b4w-contain {
+  overflow: clip;
 }
 /* Set server-side by the root layout while the 18+ gate is up, so the page
    behind it can't be scrolled even before hydration. AgeGate removes it. */
@@ -464,31 +478,7 @@ html.js .b4w-magnitude[data-grown] {
 /* Outlined display-face watermark behind a section heading. Decorative only —
    aria-hidden at every call site — and clipped by the section's own overflow so
    it can be oversized without widening the page. */
-.b4w-ghost {
-  position: absolute;
-  /* Anchored to the section and pushed to the RIGHT, bleeding off the edge.
-     Centred, it sat directly behind the left-aligned headings and eyebrows and
-     read as clutter rather than as a backdrop. Off to one side it does the job
-     a watermark is supposed to do: fill dead space, not compete for it. */
-  top: 0.4rem;
-  right: -0.06em;
-  left: auto;
-  pointer-events: none;
-  white-space: nowrap;
-  font-family: var(--font-Display);
-  font-size: clamp(4.5rem, 15vw, 13rem);
-  line-height: 0.8;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
-  /* Outline-led, with only a whisper of fill. The previous pass over-corrected
-     for being invisible and ended up crowding the copy. */
-  color: color-mix(in srgb, var(--color-ink) 3%, transparent);
-  -webkit-text-stroke: 1.25px color-mix(in srgb, var(--color-ink) 13%, transparent);
-  opacity: 1;
-  /* Drifts against the page as the section passes. --sy comes from
-     app/lib/parallax.js and is 0 when parallax is off or unsupported. */
-  translate: 0 calc(var(--sy, 0) * 28px);
-}
+
 
 /* --- Aliveness ------------------------------------------------------------
  * Three ambient layers, all of them slow. The rule the whole system follows:
@@ -554,7 +544,7 @@ html.js .b4w-magnitude[data-grown] {
 /* While the pointer is driving the centre card, drop its transition — otherwise
    every frame fights a 500ms ease and the card lags behind the cursor. The
    transition is there for the advance and the return to rest. */
-.b4w-tilt-stage:hover .b4w-cover[data-centre="true"] {
+.b4w-tilt-stage:hover .b4w-cover[data-role="centre"] {
   transition: opacity 0.5s ease;
 }
 
@@ -583,7 +573,7 @@ html.js .b4w-magnitude[data-grown] {
    just the centre one makes it the thing in your hands and the other two
    scenery behind it. --tilt-* are published on the stage by useTilt and inherit
    down, so this rule is the only thing that decides who listens. */
-.b4w-cover[data-centre="true"] {
+.b4w-cover[data-role="centre"] {
   transform: translateX(-50%) scale(calc(var(--s, 1) * var(--hs, 1)))
     rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
   /* Mild overshoot on the way in — the card lands rather than glides. */
@@ -591,22 +581,22 @@ html.js .b4w-magnitude[data-grown] {
     transform 0.5s cubic-bezier(0.34, 1.32, 0.64, 1),
     opacity 0.5s ease;
 }
-.b4w-cover[data-centre="true"]:hover,
-.b4w-cover[data-centre="true"]:focus-within {
+.b4w-cover[data-role="centre"]:hover,
+.b4w-cover[data-role="centre"]:focus-within {
   --hs: 1.055;
 }
 
-/* Art drifts against its own frame as the card turns, and sits slightly
-   oversized so the drift never exposes an edge. */
+/* Same overscan reasoning as .b4w-card-art above: the scale is a base value so
+   the parallax can never drag the art off its frame, hover only adds to it. */
 .b4w-cover-art {
+  scale: 1.08;
   transition: scale 0.5s ease-out;
 }
-.b4w-cover[data-centre="true"] .b4w-cover-art {
-  translate: calc(var(--tilt-nx, 0) * -7px) calc(var(--tilt-ny, 0) * -7px);
-  scale: 1.06;
+.b4w-cover[data-role="centre"] .b4w-cover-art {
+  translate: calc(var(--tilt-nx, 0) * -6px) calc(var(--tilt-ny, 0) * -6px);
 }
-.b4w-cover[data-centre="true"]:hover .b4w-cover-art {
-  scale: 1.12;
+.b4w-cover[data-role="centre"]:hover .b4w-cover-art {
+  scale: 1.14;
 }
 
 @media (min-width: 576px) {
@@ -614,10 +604,23 @@ html.js .b4w-magnitude[data-grown] {
     width: 68%;
   }
 }
-/* The neighbours are scenery. Without this a stray click on a half-turned card
-   behind the centre one fires whatever is under it. */
-.b4w-cover[aria-hidden="true"] {
+/* The offscreen ring is scenery — invisible, unfocusable, unclickable. The
+   ±1 neighbours ARE clickable: clicking one is how you move the deck now. */
+.b4w-cover[data-role="ghost"] {
   pointer-events: none;
+}
+.b4w-cover[data-role="side"] {
+  cursor: pointer;
+}
+.b4w-cover[data-role="side"]:hover,
+.b4w-cover[data-role="side"]:focus-visible {
+  --op: 0.72;
+  --hs: 1.04;
+}
+.b4w-cover[data-role="side"]:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 6px;
+  border-radius: 0.75rem;
 }
 
 
@@ -628,10 +631,34 @@ html.js .b4w-magnitude[data-grown] {
   transform: perspective(900px) rotateX(var(--tilt-x, 0deg))
     rotateY(var(--tilt-y, 0deg)) translateY(var(--lift, 0));
 }
+/* While the pointer is actually driving a card, drop the transform transition.
+   useTilt rewrites --tilt-* every frame, so with a 0.35s ease still attached
+   every frame was fighting the last one and the tilt arrived a third of a second
+   late — present in the DOM, invisible to the eye. The transition stays on for
+   the return to rest and for the hover lift; the deck's centre card already had
+   this exemption and the catalogue cards did not. */
+.b4w-card:hover {
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
 /* Art shifts against its frame as the card turns — the parallax is what makes
-   the tilt read as depth rather than as a rotating picture. */
+   the tilt read as depth rather than as a rotating picture.
+   The base scale is overscan and is NOT optional: `translate` tracks the pointer
+   instantly, so without art that is already larger than its frame the shift
+   drags the image off its own edge and shows the card through the gap. It also
+   must never be transitioned up from 1. The previous version leaned on
+   Tailwind's group-hover:scale-[1.06], which eased in over 500ms while the
+   translate was immediate — so every card leaked a transparent edge for the
+   first half second of every hover. 5px on the narrowest card (~230px) is 2.2%
+   a side; 1.08 covers 4%. */
 .b4w-card-art {
-  translate: calc(var(--tilt-nx, 0) * -6px) calc(var(--tilt-ny, 0) * -6px);
+  scale: 1.08;
+  translate: calc(var(--tilt-nx, 0) * -5px) calc(var(--tilt-ny, 0) * -5px);
+  transition: scale 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.b4w-card--live:hover .b4w-card-art {
+  scale: 1.14;
 }
 
 
@@ -693,24 +720,25 @@ html.js .b4w-magnitude[data-grown] {
   /* Cards still move between positions — that is the carousel working, not
      decoration — but they arrive instantly instead of gliding. */
   .b4w-cover,
-  .b4w-cover[data-centre="true"],
+  .b4w-cover[data-role="centre"],
   .b4w-cover-art {
     transition: none;
   }
-  .b4w-cover[data-centre="true"] {
+  .b4w-cover[data-role="centre"] {
     transform: translateX(-50%) scale(var(--s, 1));
   }
-  .b4w-cover[data-centre="true"] .b4w-cover-art,
-  .b4w-cover[data-centre="true"]:hover .b4w-cover-art {
+  .b4w-cover-art,
+  .b4w-cover[data-role="centre"] .b4w-cover-art,
+  .b4w-cover[data-role="centre"]:hover .b4w-cover-art {
     translate: none;
-    scale: 1;
+    /* Overscan stays — it is what keeps the art inside its frame, not motion. */
+    scale: 1.08;
   }
   .b4w-card-art {
     translate: none;
   }
   /* --sy is never set when reduced motion is on (parallax.js returns early), so
-     these resolve to 0 anyway — pinned here so it stays true if that changes. */
-  .b4w-ghost,
+     this resolves to 0 anyway — pinned here so it stays true if that changes. */
   .b4w-grid::before {
     translate: none;
   }

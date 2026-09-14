@@ -58,14 +58,16 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
 
   useEffect(() => onceInView(ref.current, () => setRevealed(true)), []);
 
-  // Smaller throw than the hero wall: a card is a thing you are about to click,
-  // and a surface that moves too far under the cursor is harder to hit.
-  useTilt(tiltRef, { max: 4.5, damp: 0.14 });
+  // Slightly less throw than the hero deck — a card is a thing you are about to
+  // click, and a surface that moves too far under the cursor is harder to hit —
+  // but not so little that it reads as nothing. damp is higher than the deck's
+  // because these are small surfaces and should feel taut rather than floaty.
+  useTilt(tiltRef, { max: 6.5, damp: 0.18 });
 
   const tile = (
     <article
       ref={tiltRef}
-      className={`b4w-card b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-panel text-left ${
+      className={`b4w-card b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-panel-high text-left ${
         live ? "b4w-card--live" : ""
       }`}
     >
@@ -75,12 +77,17 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
           alt={game.title}
           fill
           sizes="(min-width:992px) 300px, (min-width:768px) 31vw, 46vw"
-          className={`b4w-card-art object-cover !rounded-b-[0] transition-transform duration-500 ease-out ${
-            live ? "group-hover:scale-[1.06]" : "grayscale"
+          // The hover zoom lives in CSS now (.b4w-card--live:hover .b4w-card-art)
+          // rather than as a Tailwind transform utility: it has to compose with
+          // the pointer parallax on the same element, and a `transform` scale
+          // easing up from 1 left a transparent gap at the card edge for the
+          // first half second of every hover.
+          className={`b4w-card-art object-cover !rounded-b-[0] ${
+            live ? "" : "grayscale"
           }`}
         />
         {/* Grounds the art into the card body so the seam doesn't read as a cut */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel-high to-transparent" />
         {game.isNew && (
           // Opposite corner to the status pill so the two read as separate
           // facts rather than a stack. Not aria-hidden — unlike the Live pill,

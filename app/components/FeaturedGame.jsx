@@ -40,7 +40,7 @@ export default function FeaturedGame({ slug }) {
       aria-labelledby="featured-heading"
       innerClassName="pb-10 pt-14 md:pt-16"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-line bg-panel">
+      <div className="relative overflow-hidden rounded-2xl border border-line bg-panel-high">
         {/* Ambient wash picked from the key art so the panel doesn't read as a
             grey box bolted under the hero. */}
         <div
@@ -94,7 +94,7 @@ export default function FeaturedGame({ slug }) {
             Its own padding rather than the body's, and a full-bleed rule across
             the panel — <footer> inside a <section> is scoped, so it does not
             register as a second contentinfo landmark alongside the site footer. */}
-        <footer className="flex flex-col gap-5 bg-panel-low/70 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8 lg:px-10">
+        <footer className="flex flex-col gap-5 bg-bg/40 px-5 py-4 md:flex-row md:items-center md:justify-between md:px-8 lg:px-10">
           {/* Label beside the value rather than stacked beneath it — halves the
               strip's height, which was the single biggest saving in the footer. */}
           <dl className="flex flex-wrap items-baseline gap-x-8 gap-y-2">

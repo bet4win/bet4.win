@@ -11,15 +11,13 @@ import { registerParallax } from "@/app/lib/parallax";
 // rendered as one unbroken #0b1120 field. Splitting the two roles is what lets
 // the surface change from section to section.
 
-// Three steps, chosen because they are the ones you can actually see. Measured
-// against --color-bg: panel-low is 1.007:1 (invisible — it is a card fill, not a
-// surface), panel is 1.105:1 and panel-high is 1.202:1. The first pass of this
-// used panel-low for the middle step and the page looked exactly as flat as
-// before, because it was.
+// Two surfaces, strictly alternating down the page. There used to be three, and
+// three reads as three separate decisions rather than one rhythm — a page has a
+// floor and a raised band, not a gradient of moods. panel-high is now purely a
+// card fill, so a card always sits one step above whatever it is resting on.
 const SURFACE_CLASS = {
   base: "bg-bg",
   raised: "bg-panel",
-  high: "bg-panel-high",
 };
 
 export default function Section({
@@ -29,7 +27,6 @@ export default function Section({
   // Drifting gradient mesh + animated grain. Reserved for the sections that can
   // carry it — every section wearing texture is the same as none of them doing.
   texture = false,
-  ghost,
   className = "",
   innerClassName = "",
   children,
@@ -42,12 +39,13 @@ export default function Section({
   // content instead of moving with it. No-ops under reduced motion.
   useEffect(() => registerParallax(ref.current), []);
 
-  // The grid wash, the mesh and the oversized watermark are all deliberately
-  // wider than the section; clipping the x-axis keeps them from scrolling the
-  // page sideways on phones. Clip rather than hidden, and on one axis only —
-  // see the note on .b4w-contain-x in globals.css for why <html> must stay
-  // scrollable.
-  const clip = depth || ghost || texture ? " b4w-contain-x" : "";
+  // The grid wash is wider than the section, so the x-axis is clipped to stop it
+  // scrolling the page sideways on phones. The ambient texture layers overflow
+  // on BOTH axes (grain at inset:-50%, mesh animating to scale 1.09), so those
+  // sections clip both — otherwise the layers drift into their neighbours. Clip
+  // rather than hidden: see the note on .b4w-contain-x in globals.css for why
+  // making these scroll containers breaks anchor scrolling.
+  const clip = texture ? " b4w-contain" : depth ? " b4w-contain-x" : "";
 
   return (
     <section
@@ -65,18 +63,13 @@ export default function Section({
       )}
       {/* Decoration first, content last, and NOTHING here sets a z-index.
           Every layer is position:absolute/relative with z-index:auto, so they
-          paint in tree order — grid wash, then ghost, then content. That is
+          paint in tree order — mesh, grain, grid wash, then content. That is
           deliberate: an earlier version put `z-10` on the content container,
           which made it a stacking context, and the fullscreen game modal nested
           inside <GamesPreview> had its z-9999 resolved *within* that context.
           The sticky z-50 header then painted over a modal that was supposed to
           cover the screen. Same class of trap as the transform note in
           Reveal.jsx. */}
-      {ghost && (
-        <span aria-hidden="true" className="b4w-ghost">
-          {ghost}
-        </span>
-      )}
       <div
         className={`relative mx-auto max-w-[1280px] px-5 md:px-12${
           innerClassName ? ` ${innerClassName}` : ""

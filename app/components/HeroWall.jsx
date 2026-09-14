@@ -131,17 +131,24 @@ export default function HeroWall() {
         </div>
 
         {deck.map(({ offset, game }) => {
-          const isCentre = offset === 0;
-          const { s, op, z } = STYLE[Math.abs(offset)];
+          const distance = Math.abs(offset);
+          // centre — the one you can play. side — click it to bring it forward.
+          // ghost — the invisible outer ring that exists only so cards have
+          // somewhere to fade in from and out to.
+          const role = distance === 0 ? "centre" : distance === 1 ? "side" : "ghost";
+          const { s, op, z } = STYLE[distance];
           return (
             <div
               key={game.id}
-              aria-hidden={!isCentre}
-              data-centre={isCentre ? "true" : "false"}
+              // Only the ghost ring is hidden from assistive tech. The side
+              // cards are real controls now, and aria-hidden on something
+              // focusable is a trap rather than a tidy-up.
+              aria-hidden={role === "ghost" ? true : undefined}
+              data-role={role}
               className="b4w-cover"
               style={{ "--o": offset, "--s": s, "--op": op, "--z": z }}
             >
-              {isCentre ? (
+              {role === "centre" && (
                 <a
                   href="#games"
                   onClick={(e) => play(e, game)}
@@ -149,57 +156,34 @@ export default function HeroWall() {
                 >
                   <CardBody game={game} interactive />
                 </a>
-              ) : (
-                <CardBody game={game} />
               )}
+              {role === "side" && (
+                // The neighbours are the controls. Clicking the one on the left
+                // steps back, the one on the right steps forward — which is what
+                // the layout already implies, so the arrows and the NN/17
+                // counter were spelling out something the deck said better.
+                <button
+                  type="button"
+                  onClick={() => go(index + offset)}
+                  aria-label={`Show ${game.title}`}
+                  className="block w-full text-left focus-visible:outline-none"
+                >
+                  <CardBody game={game} />
+                </button>
+              )}
+              {role === "ghost" && <CardBody game={game} />}
             </div>
           );
         })}
       </div>
 
-      <div className="mt-5 flex items-center justify-center gap-4">
-        {[
-          { dir: -1, d: "M15 18l-6-6 6-6", label: "Previous game" },
-          { dir: 1, d: "M9 6l6 6-6 6", label: "Next game" },
-        ].map(({ dir, d, label }, i) => (
-          <React.Fragment key={dir}>
-            {i === 1 && (
-              <p
-                className="min-w-[4.5rem] text-center font-JetBrainsMono text-[11px] tabular-nums text-faint"
-                aria-live="polite"
-              >
-                {String(index + 1).padStart(2, "0")} / {String(LIVE.length).padStart(2, "0")}
-              </p>
-            )}
-            <button
-              type="button"
-              onClick={() => go(index + dir)}
-              aria-label={label}
-              className="flex h-9 w-9 items-center justify-center rounded-md border border-line text-muted transition-colors hover:border-brand/60 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                className="h-4 w-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d={d} />
-              </svg>
-            </button>
-          </React.Fragment>
-        ))}
-      </div>
     </div>
   );
 }
 
 function CardBody({ game, interactive = false }) {
   return (
-    <div className="b4w-bezel overflow-hidden rounded-xl border border-line bg-panel">
+    <div className="b4w-bezel overflow-hidden rounded-xl border border-line bg-panel-high">
       <div className="relative aspect-square overflow-hidden">
         <Image
           src={game.image}
@@ -208,7 +192,7 @@ function CardBody({ game, interactive = false }) {
           sizes="(min-width:1024px) 320px, 62vw"
           className="b4w-cover-art object-cover"
         />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel-high to-transparent" />
 
         {game.isNew && (
           <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">
