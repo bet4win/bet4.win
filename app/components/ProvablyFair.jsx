@@ -1,4 +1,5 @@
 import React from "react";
+import Section from "./Section";
 import FairnessVerifier from "./FairnessVerifier";
 
 const steps = [
@@ -24,7 +25,7 @@ const steps = [
 
 export default function ProvablyFair() {
   return (
-    <section id="provably-fair" className="relative overflow-hidden py-20">
+    <Section id="provably-fair" surface="raised" rule innerClassName="py-20">
       {/* Signature glow — the one place colour leaves the game tiles */}
       <div
         className="pointer-events-none absolute inset-0 -z-10 opacity-60 blur-[110px]"
@@ -66,6 +67,6 @@ export default function ProvablyFair() {
         {/* Live verifier — calls the same RGS fairness API the games use */}
         <FairnessVerifier />
       </div>
-    </section>
+    </Section>
   );
 }

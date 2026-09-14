@@ -1,4 +1,5 @@
 import React from "react";
+import Section from "./Section";
 import Image from "next/image";
 // Static imports → content-hashed, immutably-cacheable asset URLs.
 import serverIcon from "@/public/assets/img/icons/gaming/server.png";
@@ -31,10 +32,12 @@ const items = [
 
 export default function Services() {
   return (
-    <section
+    <Section
       id="platform"
+      surface="base"
+      rule
       aria-labelledby="platform-heading"
-      className="b4w-contain-x mx-auto max-w-[1280px] px-5 py-20 md:px-12"
+      innerClassName="py-20"
     >
       <div className="mb-10">
         <h2
@@ -71,6 +74,6 @@ export default function Services() {
           </div>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }

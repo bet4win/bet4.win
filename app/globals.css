@@ -533,7 +533,12 @@ html.js .b4w-magnitude[data-grown] {
    Splitting them means children can use translateZ against a single shared
    vanishing point instead of each establishing their own. */
 .b4w-tilt-stage {
-  perspective: 1100px;
+  /* 700, not 1100. Perspective distance is relative to element size, and at
+     1100px a 6deg rotation on a ~310px card projected to about a 1.5% width
+     difference across the whole card — the transform was measurably applied and
+     perceptually absent, which is why the tilt looked like it only moved the
+     art. Closer camera, visibly deeper turn. */
+  perspective: 700px;
 }
 /* The deck itself no longer turns — only the centre card does. It still has to
    carry preserve-3d, because `perspective` lives on the stage and only reaches
@@ -586,17 +591,22 @@ html.js .b4w-magnitude[data-grown] {
   --hs: 1.055;
 }
 
-/* Same overscan reasoning as .b4w-card-art above: the scale is a base value so
-   the parallax can never drag the art off its frame, hover only adds to it. */
+/* Inner parallax: the art sits at a shallower depth than its frame, so it
+   drifts as the card turns. This is what gives the card thickness.
+   Magnitude matters more than it looks. The card is ALREADY displacing the art
+   via its own 3D rotation, so a large translate on top compounds with it and
+   the image reads as sliding loose inside the frame rather than sitting inside
+   it — 9px did exactly that. 4px against a ~10deg turn reads as depth.
+   scale is overscan, and it is a base value, never eased up from 1: `translate`
+   tracks the pointer instantly, so art that is not already larger than its frame
+   will show the card through the gap on the very first frame of movement. */
 .b4w-cover-art {
-  scale: 1.08;
-  transition: scale 0.5s ease-out;
-}
-.b4w-cover[data-role="centre"] .b4w-cover-art {
-  translate: calc(var(--tilt-nx, 0) * -6px) calc(var(--tilt-ny, 0) * -6px);
+  scale: 1.07;
+  translate: calc(var(--tilt-nx, 0) * -4px) calc(var(--tilt-ny, 0) * -4px);
+  transition: scale 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .b4w-cover[data-role="centre"]:hover .b4w-cover-art {
-  scale: 1.14;
+  scale: 1.13;
 }
 
 @media (min-width: 576px) {
@@ -604,6 +614,30 @@ html.js .b4w-magnitude[data-grown] {
     width: 68%;
   }
 }
+
+/* Specular highlight that tracks the pointer across a tilted surface. This is
+   what actually sells the tilt — a dark card rotating a few degrees reads as
+   almost nothing on its own, but light sliding over it reads as an object you
+   are holding. Sits above the art, never takes a click. */
+.b4w-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    42% 42% at calc(50% + var(--tilt-nx, 0) * 45%)
+      calc(50% + var(--tilt-ny, 0) * 45%),
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.05) 45%,
+    transparent 72%
+  );
+}
+.b4w-card:hover .b4w-glare,
+.b4w-cover[data-role="centre"]:hover .b4w-glare {
+  opacity: 1;
+}
+
 /* The offscreen ring is scenery — invisible, unfocusable, unclickable. The
    ±1 neighbours ARE clickable: clicking one is how you move the deck now. */
 .b4w-cover[data-role="ghost"] {
@@ -628,7 +662,7 @@ html.js .b4w-magnitude[data-grown] {
    transform rather than being its own rule — two rules both setting `transform`
    means the last one wins and the tilt silently dies on hover. */
 .b4w-card {
-  transform: perspective(900px) rotateX(var(--tilt-x, 0deg))
+  transform: perspective(620px) rotateX(var(--tilt-x, 0deg))
     rotateY(var(--tilt-y, 0deg)) translateY(var(--lift, 0));
 }
 /* While the pointer is actually driving a card, drop the transform transition.
@@ -642,23 +676,15 @@ html.js .b4w-magnitude[data-grown] {
     border-color 0.35s ease,
     box-shadow 0.35s ease;
 }
-/* Art shifts against its frame as the card turns — the parallax is what makes
-   the tilt read as depth rather than as a rotating picture.
-   The base scale is overscan and is NOT optional: `translate` tracks the pointer
-   instantly, so without art that is already larger than its frame the shift
-   drags the image off its own edge and shows the card through the gap. It also
-   must never be transitioned up from 1. The previous version leaned on
-   Tailwind's group-hover:scale-[1.06], which eased in over 500ms while the
-   translate was immediate — so every card leaked a transparent edge for the
-   first half second of every hover. 5px on the narrowest card (~230px) is 2.2%
-   a side; 1.08 covers 4%. */
+/* Same inner parallax as .b4w-cover-art — see the note there for why the
+   translate stays small and why the scale is a base value. */
 .b4w-card-art {
-  scale: 1.08;
-  translate: calc(var(--tilt-nx, 0) * -5px) calc(var(--tilt-ny, 0) * -5px);
+  scale: 1.07;
+  translate: calc(var(--tilt-nx, 0) * -4px) calc(var(--tilt-ny, 0) * -4px);
   transition: scale 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .b4w-card--live:hover .b4w-card-art {
-  scale: 1.14;
+  scale: 1.13;
 }
 
 
@@ -727,15 +753,16 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-cover[data-role="centre"] {
     transform: translateX(-50%) scale(var(--s, 1));
   }
-  .b4w-cover-art,
-  .b4w-cover[data-role="centre"] .b4w-cover-art,
-  .b4w-cover[data-role="centre"]:hover .b4w-cover-art {
-    translate: none;
-    /* Overscan stays — it is what keeps the art inside its frame, not motion. */
-    scale: 1.08;
+  .b4w-glare {
+    display: none;
   }
-  .b4w-card-art {
+  .b4w-cover-art,
+  .b4w-cover[data-role="centre"]:hover .b4w-cover-art,
+  .b4w-card-art,
+  .b4w-card--live:hover .b4w-card-art {
     translate: none;
+    /* Overscan stays — it keeps the art inside its frame, it is not motion. */
+    scale: 1.07;
   }
   /* --sy is never set when reduced motion is on (parallax.js returns early), so
      this resolves to 0 anyway — pinned here so it stays true if that changes. */

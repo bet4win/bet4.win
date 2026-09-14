@@ -21,7 +21,7 @@ const links = [
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-line/40 bg-panel-low">
+    <footer className="border-t border-line/40 bg-panel">
       <div className="mx-auto flex max-w-[1280px] flex-col items-center justify-between gap-6 px-5 py-12 md:flex-row md:px-12">
         {links.length > 0 && (
           <nav
@@ -60,7 +60,7 @@ export default function Footer() {
                 cta_type: "outbound",
               })
             }
-            className="opacity-80 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-panel-low"
+            className="opacity-80 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-panel-high"
           >
             <img
               src={gambleAware.src}

@@ -1,4 +1,5 @@
 import React from "react";
+import Section from "./Section";
 import { Check } from "./Icons";
 
 const bullets = [
@@ -10,13 +11,10 @@ const bullets = [
 
 export default function Integration() {
   return (
-    <section
-      id="integration"
-      className="mx-auto max-w-[1280px] border-t border-line px-5 py-20 md:px-12"
-    >
+    <Section id="integration" surface="raised" rule innerClassName="py-20">
       <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
         {/* Real launch endpoint — mirrors the pattern in data/games.js */}
-        <div className="order-2 overflow-x-auto rounded-xl border border-line bg-panel-low p-6 lg:order-1">
+        <div className="order-2 overflow-x-auto rounded-xl border border-line bg-panel-high p-6 lg:order-1">
           <div className="whitespace-pre font-JetBrainsMono text-[13px] leading-[1.7] !text-muted">
             <span className="!text-cyan">GET</span> /api/launch{"\n"}
             {"  "}?<span className="!text-cyan">game</span>=
@@ -69,6 +67,6 @@ export default function Integration() {
           </ul>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

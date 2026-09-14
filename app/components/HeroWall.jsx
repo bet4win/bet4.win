@@ -32,7 +32,7 @@ export default function HeroWall() {
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
 
-  useTilt(stageRef, { max: 6, damp: 0.09 });
+  useTilt(stageRef, { max: 11, damp: 0.12 });
 
   useEffect(() => setReduced(prefersReducedMotion()), []);
 
@@ -193,6 +193,7 @@ function CardBody({ game, interactive = false }) {
           className="b4w-cover-art object-cover"
         />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel-high to-transparent" />
+        <span aria-hidden="true" className="b4w-glare" />
 
         {game.isNew && (
           <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">

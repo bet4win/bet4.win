@@ -62,7 +62,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
   // click, and a surface that moves too far under the cursor is harder to hit —
   // but not so little that it reads as nothing. damp is higher than the deck's
   // because these are small surfaces and should feel taut rather than floaty.
-  useTilt(tiltRef, { max: 6.5, damp: 0.18 });
+  useTilt(tiltRef, { max: 9, damp: 0.18 });
 
   const tile = (
     <article
@@ -88,6 +88,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
         />
         {/* Grounds the art into the card body so the seam doesn't read as a cut */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel-high to-transparent" />
+        <span aria-hidden="true" className="b4w-glare" />
         {game.isNew && (
           // Opposite corner to the status pill so the two read as separate
           // facts rather than a stack. Not aria-hidden — unlike the Live pill,

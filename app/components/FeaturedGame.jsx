@@ -115,7 +115,7 @@ export default function FeaturedGame({ slug }) {
           <a
             href="#games"
             onClick={play}
-            className="b4w-sheen inline-flex shrink-0 items-center justify-center gap-2.5 rounded-md bg-brand-strong px-6 py-3 font-SpaceGrotesk text-[14px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-low"
+            className="b4w-sheen inline-flex shrink-0 items-center justify-center gap-2.5 rounded-md bg-brand-strong px-6 py-3 font-SpaceGrotesk text-[14px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-high"
           >
             <Play className="h-4 w-4" />
             Play demo

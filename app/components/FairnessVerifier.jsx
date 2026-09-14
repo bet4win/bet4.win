@@ -81,7 +81,7 @@ export default function FairnessVerifier() {
   return (
     <form
       onSubmit={onVerify}
-      className="relative overflow-hidden rounded-xl border border-line bg-panel-low p-5 shadow-2xl"
+      className="relative overflow-hidden rounded-xl border border-line bg-panel-high p-5 shadow-2xl"
     >
       <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-cyan to-violet" />
       <div className="mb-4 flex items-center justify-between border-b border-line pb-3 font-JetBrainsMono text-[12px] text-muted">

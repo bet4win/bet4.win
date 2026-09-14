@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Check } from "./Icons";
+import Section from "./Section";
 
 const brands = [
   {
@@ -51,7 +52,7 @@ export default function Theming() {
   const [brand, setBrand] = useState(brands[0]);
 
   return (
-    <section id="branding" className="relative overflow-hidden py-20">
+    <Section id="branding" surface="raised" rule innerClassName="py-20">
 
       <div
         className="pointer-events-none absolute inset-0 -z-10 opacity-50 blur-[130px]"
@@ -213,6 +214,6 @@ export default function Theming() {
         </div>
 
       </div>
-    </section>
+    </Section>
   );
 }

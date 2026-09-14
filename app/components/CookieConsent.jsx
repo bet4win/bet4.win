@@ -49,7 +49,7 @@ gtag('config', '${GA_ID}');`}
     <div
       role="region"
       aria-label="Cookie notice"
-      className="fixed inset-x-0 bottom-0 z-[9998] border-t border-line bg-panel-low/95 backdrop-blur-md"
+      className="fixed inset-x-0 bottom-0 z-[9998] border-t border-line bg-panel/95 backdrop-blur-md"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="mx-auto flex max-w-[1280px] flex-col items-start gap-4 px-5 py-5 md:flex-row md:items-center md:justify-between md:px-12">
@@ -67,7 +67,7 @@ gtag('config', '${GA_ID}');`}
         <button
           type="button"
           onClick={accept}
-          className="w-full shrink-0 rounded-md bg-brand-strong px-8 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_16px_-8px_rgba(37,99,235,0.4)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-low md:w-auto"
+          className="w-full shrink-0 rounded-md bg-brand-strong px-8 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_16px_-8px_rgba(37,99,235,0.4)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-high md:w-auto"
         >
           OK
         </button>

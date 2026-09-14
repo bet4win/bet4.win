@@ -85,7 +85,7 @@ export default function GameDetail({ game, content }) {
 
           {/* Spec panel — the figures an operator actually screens on. */}
           <aside className="w-full lg:w-[340px] lg:shrink-0">
-            <div className="machined-surface rounded-xl border border-line bg-panel-low p-6">
+            <div className="machined-surface rounded-xl border border-line bg-panel-high p-6">
               <dl className="flex flex-col gap-5">
                 {stats.map((s) => (
                   <div
@@ -109,7 +109,7 @@ export default function GameDetail({ game, content }) {
               <button
                 type="button"
                 onClick={launch}
-                className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-md b4w-sheen bg-brand-strong px-6 py-4 font-SpaceGrotesk text-[15px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-low"
+                className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-md b4w-sheen bg-brand-strong px-6 py-4 font-SpaceGrotesk text-[15px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-high"
               >
                 <Play className="h-4 w-4" />
                 Play demo
