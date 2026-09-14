@@ -184,7 +184,11 @@ export default function HeroWall() {
 function CardBody({ game, interactive = false }) {
   return (
     <div className="b4w-bezel relative overflow-hidden rounded-xl border border-line bg-panel-high">
-      <div className="relative aspect-square overflow-hidden">
+      {/* Portrait, not square — a playing card is taller than it is wide, and
+          the deck reads as a hand of them rather than a row of thumbnails. The
+          art is square and object-cover, so this crops the sides; every piece of
+          key art centres its subject, so that lands safely. */}
+      <div className="relative aspect-[3/4] overflow-hidden">
         <Image
           src={game.image}
           alt={interactive ? `${game.title} key art` : ""}
@@ -200,7 +204,7 @@ function CardBody({ game, interactive = false }) {
 
         {interactive && (
           <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
-            <span className="flex items-center gap-2 rounded-md bg-brand-strong px-4 py-2.5 font-SpaceGrotesk text-[12px] font-semibold uppercase tracking-[0.05em] !text-white shadow-lg">
+            <span className="flex items-center gap-2 rounded-full border border-white/25 bg-bg/55 px-5 py-2.5 font-SpaceGrotesk text-[12px] font-semibold uppercase tracking-[0.05em] !text-white shadow-lg backdrop-blur-lg">
               <Play className="h-3.5 w-3.5" />
               Play demo
             </span>
@@ -212,19 +216,25 @@ function CardBody({ game, interactive = false }) {
           on the site where backdrop-blur earns its keep — there is real artwork
           behind it to refract. The scrim under the blur is what keeps the type
           legible over the brighter pieces of art. */}
-      <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 border-t border-white/10 bg-gradient-to-t from-panel-high/95 to-panel-high/70 px-4 py-3 backdrop-blur-md">
+      <div className="absolute inset-x-0 bottom-0 border-t border-white/10 bg-gradient-to-t from-panel-high/95 to-panel-high/70 px-4 py-3 backdrop-blur-md">
+        {/* Always visible: what the game is called and what kind it is. */}
         <div className="flex items-baseline justify-between gap-2">
-          <p className="b4w-display !mb-0 truncate text-[0.85rem] !text-ink">
+          <p className="b4w-display !mb-0 line-clamp-2 text-[0.8rem] !leading-[1.15] !text-ink">
             {game.title}
           </p>
           {game.category && (
-            <span className="shrink-0 rounded border border-line bg-bg/60 px-1.5 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted">
+            <span className="shrink-0 rounded-full border border-line bg-bg/60 px-2 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted">
               {game.category}
             </span>
           )}
         </div>
 
-        <dl className="!mb-0 flex items-baseline justify-between gap-3 border-t border-line/60 pt-2">
+        {/* The figures stay folded away until you show interest in this card.
+            Collapsed by grid-template-rows 0fr -> 1fr, which is the one way to
+            transition to an auto height without measuring it in JS. */}
+        <div className="b4w-cover-detail">
+          <div>
+        <dl className="!mb-0 mt-2 flex items-baseline justify-between gap-3 border-t border-line/60 pt-2">
           {game.rtp && (
             <div className="flex items-baseline gap-1.5">
               <dt className="font-SpaceGrotesk text-[9px] uppercase tracking-[0.08em] text-faint">
@@ -246,6 +256,8 @@ function CardBody({ game, interactive = false }) {
             </div>
           )}
         </dl>
+          </div>
+        </div>
         </div>
       </div>
     </div>

@@ -611,12 +611,17 @@ html.js .b4w-magnitude[data-grown] {
    tracks the pointer instantly, so art that is not already larger than its frame
    will show the card through the gap on the very first frame of movement. */
 .b4w-cover-art {
-  scale: 1.07;
+  /* Only as much overscan as the parallax actually needs. The shift is 4px; on
+     the narrowest art box (~284px) that is 1.4% a side, so 1.04 covers it with
+     room to spare. It was 1.07, and on the hero's portrait cards that stacked on
+     top of the 1.33x upscale object-cover already applies to fit square art into
+     a 3:4 box — the art read as badly over-zoomed. */
+  scale: 1.04;
   translate: calc(var(--tilt-nx, 0) * -4px) calc(var(--tilt-ny, 0) * -4px);
   transition: scale 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .b4w-cover[data-role="centre"]:hover .b4w-cover-art {
-  scale: 1.13;
+  scale: 1.07;
 }
 
 @media (min-width: 576px) {
@@ -625,6 +630,29 @@ html.js .b4w-magnitude[data-grown] {
   }
 }
 
+
+/* Card details fold away until the card is engaged. grid-template-rows 0fr->1fr
+   is the only way to transition to an auto height without measuring it in JS;
+   the inner wrapper needs overflow:hidden and min-height:0 or the row collapses
+   to the content's height rather than to nothing. Keyed off the card, not the
+   panel, so keyboard focus opens it as well as hover. */
+.b4w-cover-detail {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.3s ease;
+}
+.b4w-cover-detail > * {
+  overflow: hidden;
+  min-height: 0;
+}
+.b4w-cover[data-role="centre"]:hover .b4w-cover-detail,
+.b4w-cover[data-role="centre"]:focus-within .b4w-cover-detail {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
 
 /* The offscreen ring is scenery — invisible, unfocusable, unclickable. The
    ±1 neighbours ARE clickable: clicking one is how you move the deck now. */
@@ -667,12 +695,17 @@ html.js .b4w-magnitude[data-grown] {
 /* Same inner parallax as .b4w-cover-art — see the note there for why the
    translate stays small and why the scale is a base value. */
 .b4w-card-art {
-  scale: 1.07;
+  /* Only as much overscan as the parallax actually needs. The shift is 4px; on
+     the narrowest art box (~284px) that is 1.4% a side, so 1.04 covers it with
+     room to spare. It was 1.07, and on the hero's portrait cards that stacked on
+     top of the 1.33x upscale object-cover already applies to fit square art into
+     a 3:4 box — the art read as badly over-zoomed. */
+  scale: 1.04;
   translate: calc(var(--tilt-nx, 0) * -4px) calc(var(--tilt-ny, 0) * -4px);
   transition: scale 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .b4w-card--live:hover .b4w-card-art {
-  scale: 1.13;
+  scale: 1.07;
 }
 
 
@@ -738,7 +771,8 @@ html.js .b4w-magnitude[data-grown] {
      decoration — but they arrive instantly instead of gliding. */
   .b4w-cover,
   .b4w-cover[data-role="centre"],
-  .b4w-cover-art {
+  .b4w-cover-art,
+  .b4w-cover-detail {
     transition: none;
   }
   .b4w-cover[data-role="centre"] {
@@ -750,7 +784,7 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-card--live:hover .b4w-card-art {
     translate: none;
     /* Overscan stays — it keeps the art inside its frame, it is not motion. */
-    scale: 1.07;
+    scale: 1.04;
   }
   /* --sy is never set when reduced motion is on (parallax.js returns early), so
      this resolves to 0 anyway — pinned here so it stays true if that changes. */
