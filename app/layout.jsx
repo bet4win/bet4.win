@@ -70,7 +70,7 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#0b1120",
+  themeColor: "#06080f",
   colorScheme: "dark",
   // Extend the page under the iOS safe areas so a fullscreen game modal can
   // cover the whole screen (incl. the home-indicator strip) instead of leaving

@@ -67,7 +67,7 @@ gtag('config', '${GA_ID}');`}
         <button
           type="button"
           onClick={accept}
-          className="w-full shrink-0 rounded-md bg-brand-strong px-8 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_0_22px_rgba(37,99,235,0.32)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-low md:w-auto"
+          className="w-full shrink-0 rounded-md bg-brand-strong px-8 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_16px_-8px_rgba(37,99,235,0.4)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-low md:w-auto"
         >
           OK
         </button>

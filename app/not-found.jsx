@@ -36,7 +36,7 @@ export default function NotFoundPage() {
         </p>
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-md b4w-sheen bg-brand-strong px-7 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_0_26px_-4px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          className="inline-flex items-center gap-2 rounded-md b4w-sheen bg-brand-strong px-7 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
         >
           Back to homepage
           <ArrowRight className="h-4 w-4" />

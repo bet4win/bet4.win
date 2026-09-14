@@ -70,7 +70,7 @@ export default function Header() {
             // A direct action rather than "/#contact": from an interior page
             // that anchor would navigate you off the page you're reading.
             href="mailto:info@bet4.win?subject=Demo%20request"
-            className="hidden items-center gap-1.5 rounded-md b4w-sheen bg-brand-strong px-4 py-2 font-SpaceGrotesk text-[12px] font-semibold !uppercase tracking-[0.04em] !text-white shadow-[0_0_26px_-4px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:inline-flex"
+            className="hidden items-center gap-1.5 rounded-md b4w-sheen bg-brand-strong px-4 py-2 font-SpaceGrotesk text-[12px] font-semibold !uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:inline-flex"
           >
             Book a demo
             <ArrowRight className="h-4 w-4" />

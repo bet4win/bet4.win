@@ -122,7 +122,7 @@ export default function AgeGate() {
               <button
                 type="button"
                 onClick={confirm}
-                className="flex-1 rounded-md b4w-sheen bg-brand-strong px-5 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_0_26px_-4px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-low"
+                className="flex-1 rounded-md b4w-sheen bg-brand-strong px-5 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-low"
               >
                 Yes, I am 18+
               </button>

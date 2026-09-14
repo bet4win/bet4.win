@@ -8,7 +8,7 @@ export default function ClosingCta() {
     <Section
       id="contact"
       surface="raised"
-      seamFrom="base"
+      rule
       ghost="Integrate"
       innerClassName="py-28 text-center"
     >
@@ -23,7 +23,7 @@ export default function ClosingCta() {
           <a
             href="mailto:info@bet4.win?subject=Demo%20request"
             onClick={() => trackEvent("cta_click", { label: "book_demo", cta_type: "email" })}
-            className="rounded-md b4w-sheen bg-brand-strong px-7 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_0_26px_-4px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            className="rounded-md b4w-sheen bg-brand-strong px-7 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             Book a demo
           </a>

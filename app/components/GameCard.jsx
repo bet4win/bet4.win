@@ -78,19 +78,24 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
           // Opposite corner to the status pill so the two read as separate
           // facts rather than a stack. Not aria-hidden — unlike the Live pill,
           // this is information the card states nowhere else.
-          <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-cyan/40 bg-brand-strong/15 px-2 py-1 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.08em] text-cyan backdrop-blur">
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">
             New
           </span>
         )}
         <span
           className={`absolute right-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-md border px-2 py-1 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em] backdrop-blur ${
-            live ? "border-line bg-bg/70 text-cyan" : "border-line bg-bg/70 text-muted"
+            live
+              ? "border-live/45 bg-bg/70 font-semibold text-live"
+              : "border-line bg-bg/70 text-muted"
           }`}
           aria-hidden="true"
         >
           {live ? (
             <>
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-strong b4w-pulse" />
+              {/* Emerald, not brand blue: "this is running" is a status, and it
+                  should not read as the same signal as the cyan figures below
+                  it. The two badges were previously cyan on cyan. */}
+              <span className="h-1.5 w-1.5 rounded-full bg-live b4w-pulse" />
               Live
             </>
           ) : (

@@ -36,7 +36,7 @@ export default function Hero() {
         <div className="mt-1 flex flex-wrap items-center gap-3">
           {/* <a
             href="#integration"
-            className="inline-flex items-center gap-2 rounded-md bg-brand-strong px-5 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_0_22px_rgba(37,99,235,0.32)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            className="inline-flex items-center gap-2 rounded-md bg-brand-strong px-5 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_16px_-8px_rgba(37,99,235,0.4)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             Explore the API
             <Terminal className="h-4 w-4" />
@@ -44,7 +44,7 @@ export default function Hero() {
           <a
             href="#games"
             onClick={() => trackEvent("cta_click", { label: "hero_view_games", cta_type: "anchor" })}
-            className="b4w-sheen inline-flex items-center gap-2 rounded-md bg-brand-strong px-7 py-4 font-SpaceGrotesk text-[14px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.55)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            className="b4w-sheen inline-flex items-center gap-2 rounded-md bg-brand-strong px-7 py-4 font-SpaceGrotesk text-[14px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_20px_-8px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             View games
             <ArrowRight className="h-4 w-4" />

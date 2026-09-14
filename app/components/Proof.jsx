@@ -36,7 +36,7 @@ export default function Proof() {
   return (
     <Section
       surface="high"
-      seamFrom="raised"
+      rule
       depth
       ghost="Proof"
       aria-labelledby="proof-heading"
@@ -48,7 +48,7 @@ export default function Proof() {
         </p>
         <h2
           id="proof-heading"
-          className="mt-2 b4w-display !text-[1.75rem] !text-ink"
+          className="mt-2 b4w-display !text-[clamp(2.1rem,1.3rem+2.4vw,3.1rem)] !text-ink"
         >
           Checkable, not claimable
         </h2>

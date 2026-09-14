@@ -20,18 +20,9 @@ const SURFACE_CLASS = {
   high: "bg-panel-high",
 };
 
-// The raw token behind each surface. A section cuts its own top edge in the
-// colour of the section ABOVE it, so callers pass that neighbour's key as
-// `seamFrom` and this is what the seam is filled with.
-const SURFACE_VALUE = {
-  base: "var(--color-bg)",
-  raised: "var(--color-panel)",
-  high: "var(--color-panel-high)",
-};
-
 export default function Section({
   surface = "base",
-  seamFrom,
+  rule = false,
   depth = false,
   ghost,
   className = "",
@@ -47,27 +38,20 @@ export default function Section({
 
   return (
     <section
-      className={`relative ${SURFACE_CLASS[surface]}${
+      className={`relative ${SURFACE_CLASS[surface]}${rule ? " b4w-rule" : ""}${
         depth ? " b4w-grid" : ""
       }${clip}${className ? ` ${className}` : ""}`}
       {...rest}
     >
       {/* Decoration first, content last, and NOTHING here sets a z-index.
           Every layer is position:absolute/relative with z-index:auto, so they
-          paint in tree order — grid wash, then seam, then ghost, then content.
-          That is deliberate: an earlier version put `z-10` on the content
-          container, which made it a stacking context, and the fullscreen game
-          modal nested inside <GamesPreview> had its z-9999 resolved *within*
-          that context. The sticky z-50 header then painted over a modal that
-          was supposed to cover the screen. Same class of trap as the transform
-          note in Reveal.jsx. */}
-      {seamFrom && (
-        <span
-          aria-hidden="true"
-          className="b4w-seam"
-          style={{ "--b4w-seam-from": SURFACE_VALUE[seamFrom] }}
-        />
-      )}
+          paint in tree order — grid wash, then ghost, then content. That is
+          deliberate: an earlier version put `z-10` on the content container,
+          which made it a stacking context, and the fullscreen game modal nested
+          inside <GamesPreview> had its z-9999 resolved *within* that context.
+          The sticky z-50 header then painted over a modal that was supposed to
+          cover the screen. Same class of trap as the transform note in
+          Reveal.jsx. */}
       {ghost && (
         <span aria-hidden="true" className="b4w-ghost">
           {ghost}

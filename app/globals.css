@@ -27,12 +27,22 @@
   --color-*: initial;
   --color-white: #ffffff;
   --color-black: #000000;
-  /* Dark studio redesign palette (homepage) */
-  --color-bg: #0b1120;
-  --color-panel: #111c30;
-  --color-panel-low: #0a1222;
-  --color-panel-high: #18233a;
-  --color-line: #243049;
+  /* Dark studio redesign palette (homepage).
+   *
+   * The floor is near-black, not navy. The three section surfaces used to sit
+   * within 1.202:1 of each other end to end, which is why the page read flat no
+   * matter how the sections were arranged; they now span 1.523:1, and a single
+   * adjacent step (1.190 / 1.279) beats what the whole range used to do.
+   * Deepening the floor also buys accent separation for free:
+   * brand 5.12 -> 5.44, cyan 10.42 -> 11.07, white 18.83 -> 20.01. */
+  --color-bg: #06080f;
+  --color-panel: #121d33;
+  --color-panel-low: #0a0f1c;
+  --color-panel-high: #22304d;
+  /* Brightened from #243049, which measured 1.00:1 against the new panel-high —
+   * i.e. the hairline rules that now divide the sections would have been
+   * invisible on exactly the surface that needed them most. */
+  --color-line: #33456b;
   --color-ink: #f1f5f9;
   --color-muted: #94a3b8;
   --color-faint: #7a899e;
@@ -41,6 +51,12 @@
   --color-brand-ink: #001833;
   --color-cyan: #22d3ee;
   --color-violet: #818cf8;
+  /* Status, not decoration. Kept out of the brand/cyan/violet roles below
+   * because "this game is running" and "this game is new" are facts about the
+   * catalogue, not emphasis. Both badges used to be cyan on cyan, so the two
+   * read as the same thing. Emerald 8.74:1 and amber 10.07:1 on the card. */
+  --color-live: #34d399;
+  --color-new: #fbbf24;
   /*
    * The existing brand palette, with roles rather than free-for-all use — the
    * discipline is what was missing before, not the hues:
@@ -147,7 +163,7 @@
    constrains it via height:100% + flex, so the white shows through below the
    fold. Paint the canvas dark for the home route only — other pages stay light. */
 body.home-dark {
-  background-color: #0b1120;
+  background-color: #06080f;
   font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
 }
 /* Contains the decorative glows, which are deliberately larger than their
@@ -367,24 +383,12 @@ html.js .b4w-magnitude[data-grown] {
  * existing --color-panel-* tokens, applied through ordinary Tailwind utilities.
  */
 
-/* The seam between two surfaces: a shallow chevron of the OUTGOING colour laid
-   over the incoming section's top edge, so the boundary is a V rather than a
-   rule. The colour is passed per-instance because one shape has to serve every
-   pair of surfaces. drop-shadow traces the clip-path outline where a box-shadow
-   would trace the unclipped rectangle — that is what makes the cut read as a
-   lit edge rather than a hole. */
-.b4w-seam {
-  position: absolute;
-  inset-inline: 0;
-  top: 0;
-  height: clamp(26px, 3.5vw, 54px);
-  background-color: var(--b4w-seam-from, var(--color-bg));
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  filter: drop-shadow(
-      0 1px 0 color-mix(in srgb, var(--color-brand) 34%, transparent)
-    )
-    drop-shadow(0 0 14px color-mix(in srgb, var(--color-brand) 14%, transparent));
-  pointer-events: none;
+/* Section boundary: a flat step and one full-bleed hairline. No shape.
+   An earlier pass cut a shallow chevron out of each boundary; it read as
+   decoration applied to the page rather than structure belonging to it. The
+   surface step does the work now, which is why the step had to get bigger. */
+.b4w-rule {
+  border-top: 1px solid var(--color-line);
 }
 
 /* Background depth: a fine grid, radially masked so it reads as atmosphere at
@@ -437,9 +441,13 @@ html.js .b4w-magnitude[data-grown] {
   line-height: 0.8;
   letter-spacing: -0.04em;
   text-transform: uppercase;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--color-line);
-  opacity: 0.45;
+  /* Filled AND stroked. Outline alone at 1px/45% opacity was technically
+     present and practically invisible — at this size a hairline reads as noise
+     rather than a letterform. The fill gives the word mass, the heavier stroke
+     keeps the outlined character that made it worth having. */
+  color: color-mix(in srgb, var(--color-ink) 7%, transparent);
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--color-ink) 22%, transparent);
+  opacity: 1;
 }
 
 /* Events strip crossfade. Opacity only, no transform, so the slide stays

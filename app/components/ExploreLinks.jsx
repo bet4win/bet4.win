@@ -33,6 +33,7 @@ export default function ExploreLinks() {
   return (
     <Section
       surface="base"
+      rule
       aria-labelledby="explore-heading"
       innerClassName="py-16 md:py-20"
     >

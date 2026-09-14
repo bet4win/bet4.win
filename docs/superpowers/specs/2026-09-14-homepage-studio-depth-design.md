@@ -249,6 +249,38 @@ trade-show announcement nobody can act on is not worth the pixels.
 `FeaturedGame.jsx` had no target anywhere on the site and silently scrolled
 nowhere. The id now lives on the catalogue `Section`.
 
+**7. Second design pass — arcs out, contrast up.** On review the arced seams
+read as decoration applied to the page rather than structure belonging to it,
+the watermarks were too faint to see, and the surface steps were still too
+timid. Revised:
+
+- **Seams removed.** `.b4w-seam` is gone; `.b4w-rule` is a flat 1px top border,
+  and every section after the hero carries one. `Section`'s `seamFrom` prop is
+  replaced by a boolean `rule`.
+- **Floor deepened to near-black.** `bg #0b1120 → #06080f`,
+  `panel #111c30 → #121d33`, `panel-high #18233a → #22304d`. Adjacent steps go
+  1.105 → 1.190 and 1.087 → 1.279; the full range goes 1.202 → **1.523**, so one
+  step now exceeds what the entire range used to do. Accents gain for free:
+  brand 5.12 → 5.44, cyan 10.42 → 11.07, white 18.83 → 20.01.
+- **`--color-line` brightened** `#243049 → #33456b`. The old value measured
+  **1.00:1** against the new `panel-high` — the dividing rules would have been
+  invisible on the one surface that most needed them.
+- **Watermarks made visible.** Were `transparent` fill with a 1px stroke at 45%
+  opacity. Now filled at 7% ink with a 1.5px stroke at 22% — mass plus edge,
+  instead of a hairline that read as noise at display size.
+- **Badges split.** `LIVE` and `NEW` were both cyan-on-cyan and read as one
+  fact. New `--color-live #34d399` (8.74:1 on the card) and `--color-new
+  #fbbf24` (10.07:1). Deliberately outside the brand/cyan/violet roles: these
+  are statements about the catalogue, not emphasis.
+- **Bolder.** Section headings go from a fixed `1.75rem` to
+  `clamp(2.1rem, 1.3rem+2.4vw, 3.1rem)`. Primary-CTA shadows go from a neon halo
+  (`0 0 30px`) to a grounded drop (`0 2px 20px -8px`) — the bloom read arcade
+  where the brief asked for mature.
+
+**8. G2E removed.** `data/events.js` carries SBC Summit only. The single-event
+path needs no code change — the carousel controls are already behind
+`count > 1`.
+
 **6. Section 6 (per-game accent colours) was not built.** Deliberately left out
 rather than guessed. Doing it honestly needs either a per-game colour decided by
 someone who has seen all 17 pieces of key art, or a build-time dominant-colour

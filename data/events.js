@@ -17,15 +17,6 @@ export const events = [
     location: "Feira Internacional de Lisboa, Lisbon",
     url: "https://sbcevents.com/sbc-summit/?promo=sbcmrktng-kbM3Cea6",
   },
-  {
-    id: "g2e-2026",
-    name: "G2E",
-    dates: "28 Sep – 1 Oct 2026",
-    start: "2026-09-28",
-    end: "2026-10-01",
-    location: "The Venetian Expo, Las Vegas",
-    url: "https://www.globalgamingexpo.com/",
-  },
 ];
 
 // Parsed as UTC midnight, then advanced to the end of that day, so an event is
