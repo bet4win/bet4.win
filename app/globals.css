@@ -533,18 +533,20 @@ html.js .b4w-magnitude[data-grown] {
    Splitting them means children can use translateZ against a single shared
    vanishing point instead of each establishing their own. */
 .b4w-tilt-stage {
-  /* 700, not 1100. Perspective distance is relative to element size, and at
-     1100px a 6deg rotation on a ~310px card projected to about a 1.5% width
-     difference across the whole card — the transform was measurably applied and
-     perceptually absent, which is why the tilt looked like it only moved the
-     art. Closer camera, visibly deeper turn. */
-  perspective: 700px;
+  /* No `perspective` property here. It used to live on this element, which
+     forced .b4w-deck to carry transform-style: preserve-3d so the perspective
+     could reach the cards — and preserve-3d makes the browser depth-sort the
+     cards as real planes in 3D, ignoring z-index. The rotated centre card and
+     its rotated neighbour then physically intersected, so the neighbour painted
+     over part of the centre card's face. Each card carries its own
+     perspective() in its transform instead; see .b4w-cover. */
+  position: relative;
 }
-/* The deck itself no longer turns — only the centre card does. It still has to
-   carry preserve-3d, because `perspective` lives on the stage and only reaches
-   direct children; without this the cards' rotateY would flatten. */
+/* Flat, deliberately. The cards must composite by z-index like ordinary
+   stacked elements; under preserve-3d they were sorted by actual 3D depth and
+   the side card cut through the centre one. */
 .b4w-deck {
-  transform-style: preserve-3d;
+  transform-style: flat;
 }
 /* While the pointer is driving the centre card, drop its transition — otherwise
    every frame fights a 500ms ease and the card lags behind the cursor. The
@@ -563,11 +565,10 @@ html.js .b4w-magnitude[data-grown] {
   /* Wider on phones so titles like "Video Poker" fit the caption instead of
      truncating; the neighbours still peek, just by less. */
   width: 78%;
-  transform: translateX(calc(-50% + (var(--o, 0) * 52%)))
+  transform: perspective(700px) translateX(calc(-50% + (var(--o, 0) * 52%)))
     scale(calc(var(--s, 1) * var(--hs, 1))) rotateY(calc(var(--o, 0) * -17deg));
   opacity: var(--op, 1);
   z-index: var(--z, 0);
-  transform-style: preserve-3d;
   transition:
     transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
     opacity 0.55s ease;
@@ -579,8 +580,9 @@ html.js .b4w-magnitude[data-grown] {
    scenery behind it. --tilt-* are published on the stage by useTilt and inherit
    down, so this rule is the only thing that decides who listens. */
 .b4w-cover[data-role="centre"] {
-  transform: translateX(-50%) scale(calc(var(--s, 1) * var(--hs, 1)))
-    rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transform: perspective(700px) translateX(-50%)
+    scale(calc(var(--s, 1) * var(--hs, 1))) rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg));
   /* Mild overshoot on the way in — the card lands rather than glides. */
   transition:
     transform 0.5s cubic-bezier(0.34, 1.32, 0.64, 1),
@@ -742,6 +744,9 @@ html.js .b4w-magnitude[data-grown] {
   }
   .b4w-deck {
     transform: none;
+  }
+  .b4w-cover[data-role="centre"] {
+    transform: perspective(700px) translateX(-50%) scale(var(--s, 1));
   }
   /* Cards still move between positions — that is the carousel working, not
      decoration — but they arrive instantly instead of gliding. */
