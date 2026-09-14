@@ -16,40 +16,6 @@ import { prefersReducedMotion } from "./motion";
 // Sets:
 //   --tilt-x / --tilt-y   rotation in deg
 //   --tilt-nx / --tilt-ny normalised -1..1, for parallaxing children
-// Pointer position in the element's OWN box, as percentages, undamped.
-//
-// Deliberately separate from useTilt. The tilt is damped so the card settles
-// instead of twitching, and it is measured against whatever element drives the
-// rotation — for the hero that is the whole carousel stage, not one card. A
-// highlight driven off those numbers lags the cursor and is anchored to the
-// wrong box, which is exactly how the glare ended up not sitting under the
-// pointer. Light does not ease, and it belongs to the surface it is falling on,
-// so this tracks raw and local.
-export function useGlare(ref) {
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || prefersReducedMotion()) return;
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-
-    const onMove = (e) => {
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--gx", `${((e.clientX - r.left) / r.width) * 100}%`);
-      el.style.setProperty("--gy", `${((e.clientY - r.top) / r.height) * 100}%`);
-    };
-    const onLeave = () => {
-      el.style.removeProperty("--gx");
-      el.style.removeProperty("--gy");
-    };
-
-    el.addEventListener("pointermove", onMove);
-    el.addEventListener("pointerleave", onLeave);
-    return () => {
-      el.removeEventListener("pointermove", onMove);
-      el.removeEventListener("pointerleave", onLeave);
-    };
-  }, [ref]);
-}
-
 export function useTilt(ref, { max = 6, damp = 0.1 } = {}) {
   useEffect(() => {
     const el = ref.current;

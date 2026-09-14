@@ -625,39 +625,6 @@ html.js .b4w-magnitude[data-grown] {
   }
 }
 
-/* Specular highlight that tracks the pointer across a tilted surface. This is
-   what actually sells the tilt — a dark card rotating a few degrees reads as
-   almost nothing on its own, but light sliding over it reads as an object you
-   are holding. Sits above the art, never takes a click. */
-.b4w-glare {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  /* screen, not overlay. Overlay preserves the backdrop's blacks, and this art
-     is very nearly black — blended that way the highlight measured as present
-     and looked like nothing at all. screen only ever lightens, so it reads on
-     dark key art and cannot crush it, which is also how a real specular
-     behaves. Blending is confined to the card: .b4w-cover / .b4w-card both
-     carry a transform, so each is its own stacking context and the light cannot
-     spill onto a neighbouring card. */
-  mix-blend-mode: screen;
-  /* --gx/--gy come from useGlare: raw pointer position in this card's own box.
-     They used to be derived from the damped --tilt-* values measured on the
-     carousel stage, so the highlight both lagged the cursor and was anchored to
-     the wrong element. */
-  background: radial-gradient(
-    42% 42% at var(--gx, 50%) var(--gy, 50%),
-    rgba(255, 255, 255, 0.18),
-    rgba(255, 255, 255, 0.05) 45%,
-    transparent 72%
-  );
-}
-.b4w-card:hover .b4w-glare,
-.b4w-cover[data-role="centre"]:hover .b4w-glare {
-  opacity: 1;
-}
 
 /* The offscreen ring is scenery — invisible, unfocusable, unclickable. The
    ±1 neighbours ARE clickable: clicking one is how you move the deck now. */
@@ -776,9 +743,6 @@ html.js .b4w-magnitude[data-grown] {
   }
   .b4w-cover[data-role="centre"] {
     transform: translateX(-50%) scale(var(--s, 1));
-  }
-  .b4w-glare {
-    display: none;
   }
   .b4w-cover-art,
   .b4w-cover[data-role="centre"]:hover .b4w-cover-art,

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock, Play } from "./Icons";
 import { onceInView, prefersReducedMotion } from "@/app/lib/motion";
-import { useTilt, useGlare } from "@/app/lib/tilt";
+import { useTilt } from "@/app/lib/tilt";
 import { slugFor } from "@/app/lib/slug";
 
 const isLive = (game) => game.status === "active";
@@ -63,8 +63,6 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
   // but not so little that it reads as nothing. damp is higher than the deck's
   // because these are small surfaces and should feel taut rather than floaty.
   useTilt(tiltRef, { max: 9, damp: 0.18 });
-  // Same element, but raw and undamped — see useGlare.
-  useGlare(tiltRef);
 
   const tile = (
     <article
@@ -193,10 +191,6 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
         )}
       </div>
 
-      {/* Direct child of the card, not of the art well: useGlare publishes
-          --gx/--gy as percentages of THIS element's box, so the highlight has to
-          span the same box or the light lands somewhere the pointer isn't. */}
-      <span aria-hidden="true" className="b4w-glare" />
     </article>
   );
 
