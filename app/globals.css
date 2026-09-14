@@ -110,6 +110,41 @@
   }
 }
 
+/* Grain shifts in discrete steps rather than sliding — film grain jitters, it
+   does not pan. Six steps is enough to stop the eye locking onto the pattern. */
+@keyframes b4w-grain {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-3%, 2%);
+  }
+  40% {
+    transform: translate(2%, -3%);
+  }
+  60% {
+    transform: translate(-2%, -2%);
+  }
+  80% {
+    transform: translate(3%, 1%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes b4w-mesh {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate3d(-3%, 2%, 0) scale(1.09);
+    opacity: 1;
+  }
+}
+
 /* ---------------------------------------------------------------------------
  * CASCADE LAYERS. `@import "tailwindcss"` establishes:
  *     @layer theme, base, components, utilities;
@@ -356,7 +391,10 @@ html.js .b4w-magnitude[data-grown] {
 }
 .b4w-card--live:hover,
 :focus-visible > .b4w-card--live {
-  transform: translateY(-7px);
+  /* A custom property, not `transform` — .b4w-card already owns transform for
+     the pointer tilt, and a second rule setting it would silently replace the
+     tilt the moment you hovered. */
+  --lift: -7px;
   border-color: color-mix(in srgb, #22d3ee 55%, transparent);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
@@ -428,27 +466,174 @@ html.js .b4w-magnitude[data-grown] {
    it can be oversized without widening the page. */
 .b4w-ghost {
   position: absolute;
-  /* Anchored to the section, not the content container, and sitting in the
-     section's own top padding. No z-index — it is a sibling that precedes the
-     content container in tree order, which is all it needs to paint behind it. */
-  top: 0.75rem;
-  left: 50%;
-  transform: translateX(-50%);
+  /* Anchored to the section and pushed to the RIGHT, bleeding off the edge.
+     Centred, it sat directly behind the left-aligned headings and eyebrows and
+     read as clutter rather than as a backdrop. Off to one side it does the job
+     a watermark is supposed to do: fill dead space, not compete for it. */
+  top: 0.4rem;
+  right: -0.06em;
+  left: auto;
   pointer-events: none;
   white-space: nowrap;
   font-family: var(--font-Display);
-  font-size: clamp(4rem, 13vw, 11rem);
+  font-size: clamp(4.5rem, 15vw, 13rem);
   line-height: 0.8;
   letter-spacing: -0.04em;
   text-transform: uppercase;
-  /* Filled AND stroked. Outline alone at 1px/45% opacity was technically
-     present and practically invisible — at this size a hairline reads as noise
-     rather than a letterform. The fill gives the word mass, the heavier stroke
-     keeps the outlined character that made it worth having. */
-  color: color-mix(in srgb, var(--color-ink) 7%, transparent);
-  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--color-ink) 22%, transparent);
+  /* Outline-led, with only a whisper of fill. The previous pass over-corrected
+     for being invisible and ended up crowding the copy. */
+  color: color-mix(in srgb, var(--color-ink) 3%, transparent);
+  -webkit-text-stroke: 1.25px color-mix(in srgb, var(--color-ink) 13%, transparent);
   opacity: 1;
+  /* Drifts against the page as the section passes. --sy comes from
+     app/lib/parallax.js and is 0 when parallax is off or unsupported. */
+  translate: 0 calc(var(--sy, 0) * 28px);
 }
+
+/* --- Aliveness ------------------------------------------------------------
+ * Three ambient layers, all of them slow. The rule the whole system follows:
+ * at most one thing per viewport should be asking for attention at a time.
+ */
+
+/* Both of these are real child elements, not pseudo-elements: .b4w-grid already
+   owns ::before on the section, and a second layer claiming it would silently
+   replace the grid. Children also keep the tree-order painting rule the rest of
+   <Section> relies on. */
+
+/* Animated film grain. An inline SVG turbulence rather than a raster tile —
+   no network request, and it scales without repeating visibly. */
+.b4w-grain {
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  animation: b4w-grain 7s steps(6) infinite;
+}
+
+/* Drifting gradient mesh. Two washes moving on different periods so the canvas
+   never resolves into a pattern you can predict. */
+.b4w-mesh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      44rem 28rem at 18% 12%,
+      color-mix(in srgb, var(--color-brand) 13%, transparent),
+      transparent 62%
+    ),
+    radial-gradient(
+      38rem 26rem at 84% 78%,
+      color-mix(in srgb, var(--color-violet) 11%, transparent),
+      transparent 60%
+    );
+  animation: b4w-mesh 34s ease-in-out infinite;
+}
+
+/* The grid layer drifts with scroll rather than sitting still, which is what
+   stops it reading as a texture printed onto the page. */
+.b4w-grid::before {
+  translate: 0 calc(var(--sy, 0) * -18px);
+}
+
+/* --- Pointer-reactive surfaces -------------------------------------------- */
+
+/* The stage holds the perspective; the slab inside it is what actually turns.
+   Splitting them means children can use translateZ against a single shared
+   vanishing point instead of each establishing their own. */
+.b4w-tilt-stage {
+  perspective: 1100px;
+}
+/* The deck itself no longer turns — only the centre card does. It still has to
+   carry preserve-3d, because `perspective` lives on the stage and only reaches
+   direct children; without this the cards' rotateY would flatten. */
+.b4w-deck {
+  transform-style: preserve-3d;
+}
+/* While the pointer is driving the centre card, drop its transition — otherwise
+   every frame fights a 500ms ease and the card lags behind the cursor. The
+   transition is there for the advance and the return to rest. */
+.b4w-tilt-stage:hover .b4w-cover[data-centre="true"] {
+  transition: opacity 0.5s ease;
+}
+
+/* A card in the deck. --o is its offset from centre; the rest is handed down
+   from JS rather than computed here, because scale needs abs() and that is
+   still too new to rely on. */
+.b4w-cover {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  /* Wider on phones so titles like "Video Poker" fit the caption instead of
+     truncating; the neighbours still peek, just by less. */
+  width: 78%;
+  transform: translateX(calc(-50% + (var(--o, 0) * 52%)))
+    scale(calc(var(--s, 1) * var(--hs, 1))) rotateY(calc(var(--o, 0) * -17deg));
+  opacity: var(--op, 1);
+  z-index: var(--z, 0);
+  transform-style: preserve-3d;
+  transition:
+    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 0.55s ease;
+}
+
+/* Only the card you are actually looking at answers the pointer. Tilting the
+   whole deck made three cards rock in unison like one slab on a hinge; tilting
+   just the centre one makes it the thing in your hands and the other two
+   scenery behind it. --tilt-* are published on the stage by useTilt and inherit
+   down, so this rule is the only thing that decides who listens. */
+.b4w-cover[data-centre="true"] {
+  transform: translateX(-50%) scale(calc(var(--s, 1) * var(--hs, 1)))
+    rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  /* Mild overshoot on the way in — the card lands rather than glides. */
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.32, 0.64, 1),
+    opacity 0.5s ease;
+}
+.b4w-cover[data-centre="true"]:hover,
+.b4w-cover[data-centre="true"]:focus-within {
+  --hs: 1.055;
+}
+
+/* Art drifts against its own frame as the card turns, and sits slightly
+   oversized so the drift never exposes an edge. */
+.b4w-cover-art {
+  transition: scale 0.5s ease-out;
+}
+.b4w-cover[data-centre="true"] .b4w-cover-art {
+  translate: calc(var(--tilt-nx, 0) * -7px) calc(var(--tilt-ny, 0) * -7px);
+  scale: 1.06;
+}
+.b4w-cover[data-centre="true"]:hover .b4w-cover-art {
+  scale: 1.12;
+}
+
+@media (min-width: 576px) {
+  .b4w-cover {
+    width: 68%;
+  }
+}
+/* The neighbours are scenery. Without this a stray click on a half-turned card
+   behind the centre one fires whatever is under it. */
+.b4w-cover[aria-hidden="true"] {
+  pointer-events: none;
+}
+
+
+/* Cards tilt on the same variables. The hover lift is folded into this
+   transform rather than being its own rule — two rules both setting `transform`
+   means the last one wins and the tilt silently dies on hover. */
+.b4w-card {
+  transform: perspective(900px) rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg)) translateY(var(--lift, 0));
+}
+/* Art shifts against its frame as the card turns — the parallax is what makes
+   the tilt read as depth rather than as a rotating picture. */
+.b4w-card-art {
+  translate: calc(var(--tilt-nx, 0) * -6px) calc(var(--tilt-ny, 0) * -6px);
+}
+
 
 /* Events strip crossfade. Opacity only, no transform, so the slide stays
    readable under prefers-reduced-motion — there only the auto-advance timer is
@@ -483,13 +668,51 @@ html.js .b4w-magnitude[data-grown] {
   }
   .b4w-card {
     transition: none;
+    transform: none;
   }
   .b4w-card--live:hover,
   :focus-visible > .b4w-card--live {
-    transform: none;
+    --lift: 0px;
   }
   .b4w-event-slide {
     transition: none;
+  }
+  /* The ambient layers stop entirely rather than slowing down: grain and a
+     drifting mesh are exactly the kind of persistent background movement this
+     setting exists to switch off. The surfaces stay, the motion goes. */
+  .b4w-grain,
+  .b4w-mesh {
+    animation: none;
+  }
+  .b4w-grain {
+    opacity: 0.1;
+  }
+  .b4w-deck {
+    transform: none;
+  }
+  /* Cards still move between positions — that is the carousel working, not
+     decoration — but they arrive instantly instead of gliding. */
+  .b4w-cover,
+  .b4w-cover[data-centre="true"],
+  .b4w-cover-art {
+    transition: none;
+  }
+  .b4w-cover[data-centre="true"] {
+    transform: translateX(-50%) scale(var(--s, 1));
+  }
+  .b4w-cover[data-centre="true"] .b4w-cover-art,
+  .b4w-cover[data-centre="true"]:hover .b4w-cover-art {
+    translate: none;
+    scale: 1;
+  }
+  .b4w-card-art {
+    translate: none;
+  }
+  /* --sy is never set when reduced motion is on (parallax.js returns early), so
+     these resolve to 0 anyway — pinned here so it stays true if that changes. */
+  .b4w-ghost,
+  .b4w-grid::before {
+    translate: none;
   }
 }
 }

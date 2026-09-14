@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock, Play } from "./Icons";
 import { onceInView, prefersReducedMotion } from "@/app/lib/motion";
+import { useTilt } from "@/app/lib/tilt";
 import { slugFor } from "@/app/lib/slug";
 
 const isLive = (game) => game.status === "active";
@@ -51,13 +52,19 @@ function useCountUp(target, active) {
 export default function GameCard({ game, ceiling, index, onLaunch }) {
   const live = isLive(game);
   const ref = useRef(null);
+  const tiltRef = useRef(null);
   const [revealed, setRevealed] = useState(false);
   const counted = useCountUp(game.maxMultiplier, revealed);
 
   useEffect(() => onceInView(ref.current, () => setRevealed(true)), []);
 
+  // Smaller throw than the hero wall: a card is a thing you are about to click,
+  // and a surface that moves too far under the cursor is harder to hit.
+  useTilt(tiltRef, { max: 4.5, damp: 0.14 });
+
   const tile = (
     <article
+      ref={tiltRef}
       className={`b4w-card b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-panel text-left ${
         live ? "b4w-card--live" : ""
       }`}
@@ -68,7 +75,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
           alt={game.title}
           fill
           sizes="(min-width:992px) 300px, (min-width:768px) 31vw, 46vw"
-          className={`object-cover !rounded-b-[0] transition-transform duration-500 ease-out ${
+          className={`b4w-card-art object-cover !rounded-b-[0] transition-transform duration-500 ease-out ${
             live ? "group-hover:scale-[1.06]" : "grayscale"
           }`}
         />
@@ -109,7 +116,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
 
       <div className="machined-surface flex flex-1 flex-col gap-3 p-4 md:p-5">
         <div className="flex items-center justify-between gap-2">
-          <h3 className="b4w-display !mb-0 text-[1.15rem] !text-ink">
+          <h3 className="b4w-display !mb-0 truncate text-[1.15rem] !text-ink">
             {game.title}
           </h3>
           {live && (
@@ -119,6 +126,14 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
             />
           )}
         </div>
+
+        {/* Mechanic family. Every game used to read "Originals", which told an
+            operator nothing; these say what the player is actually asked to do. */}
+        {game.category && (
+          <span className="-mt-1 w-fit rounded border border-line bg-bg/60 px-1.5 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted">
+            {game.category}
+          </span>
+        )}
 
         {game.maxMultiplier ? (
           <div>

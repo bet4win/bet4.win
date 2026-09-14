@@ -1,6 +1,5 @@
 import React from "react";
 import Section from "./Section";
-import Partners from "./Partners";
 import Reveal from "./Reveal";
 import { claims, pendingClaims } from "@/data/proof";
 import { games } from "@/data/games";
@@ -84,10 +83,6 @@ export default function Proof() {
           ))}
         </dl>
       </Reveal>
-
-      <div className="mt-14">
-        <Partners />
-      </div>
     </Section>
   );
 }

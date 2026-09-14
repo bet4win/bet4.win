@@ -1,14 +1,9 @@
 "use client";
 import React from "react";
-import Image from "next/image";
-import { games } from "@/data/games";
 import Section from "./Section";
+import HeroWall from "./HeroWall";
 import { ArrowRight, Terminal, Shield } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
-
-// The hero visual is a wall of the real game thumbnails — the art carries the
-// colour; the chrome stays quiet. Pick the first six live originals.
-const wall = games.filter((g) => g.status === "active").slice(0, 6);
 
 export default function Hero() {
   return (
@@ -17,6 +12,7 @@ export default function Hero() {
     <Section
       surface="base"
       depth
+      texture
       innerClassName="flex flex-col items-center gap-12 pb-12 pt-12 md:pt-20 lg:flex-row lg:gap-16"
     >
       {/* Copy */}
@@ -66,42 +62,9 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Game wall — decorative collage; the real game tiles live in #games */}
-      <div className="relative w-full flex-1" aria-hidden="true">
-        <div
-          className="b4w-drift pointer-events-none absolute -inset-10 -z-10 rounded-full opacity-70 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle at 30% 30%, rgba(37,99,235,0.22), transparent 55%), radial-gradient(circle at 70% 70%, rgba(129,140,248,0.16), transparent 55%)",
-          }}
-        />
-        <div className="grid grid-cols-3 gap-3 [transform:rotate(-4deg)]">
-          {wall.map((game, i) => (
-            <div
-              key={game.id}
-              className={`overflow-hidden rounded-xl border border-line shadow-2xl ${
-                i % 2 === 0 ? "translate-y-3" : ""
-              }`}
-            >
-              <Image
-                src={game.image}
-                alt=""
-                width={256}
-                height={256}
-                // Default (lazy) on purpose. This wall is decorative and
-                // aria-hidden; both `priority` and `loading="eager"` make
-                // next/image emit preload links for srcset candidates the
-                // browser then discards, which Chrome warns about. It sits at
-                // the top of the viewport, so the lazy observer fires at once.
-                sizes="(min-width:1024px) 200px, 30vw"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
-        {/* Fade the wall into the canvas on the left edge */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-bg via-transparent to-transparent lg:block [transform:rotate(-4deg)]" />
-      </div>
+      {/* Decorative collage, now pointer-reactive, with the live-rounds tile
+          sitting in it. The real, launchable game tiles live in #games. */}
+      <HeroWall />
     </Section>
   );
 }

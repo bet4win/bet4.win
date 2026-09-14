@@ -86,7 +86,7 @@ import baccaratWide from "@/public/assets/img/banners/baccarat-wide.jpg";
 export const games = [
   {
     id: "16",
-    category: "Originals",
+    category: "Crash",
     title: "Punch",
     banner: punchBanner,
     bannerWide: punchWide,
@@ -114,7 +114,7 @@ export const games = [
   },
   {
     id: "15",
-    category: "Originals",
+    category: "Crash",
     title: "Crash",
     banner: crashBanner,
     bannerWide: crashWide,
@@ -127,7 +127,7 @@ export const games = [
   },
   {
     id: "9",
-    category: "Originals",
+    category: "Minefield",
     title: "Dragon",
     banner: dragonBanner,
     bannerWide: dragonWide,
@@ -141,7 +141,7 @@ export const games = [
   },
   {
     id: "20",
-    category: "Originals",
+    category: "Cards",
     title: "Video Poker",
     // Two words, so the title can't produce the URL segment on its own.
     slug: "video-poker",
@@ -161,7 +161,7 @@ export const games = [
   },
   {
     id: "21",
-    category: "Originals",
+    category: "Cards",
     title: "Blackjack",
     banner: blackjackBanner,
     bannerWide: blackjackWide,
@@ -184,7 +184,7 @@ export const games = [
   },
   {
     id: "22",
-    category: "Originals",
+    category: "Cards",
     title: "Baccarat",
     banner: baccaratBanner,
     bannerWide: baccaratWide,
@@ -210,7 +210,7 @@ export const games = [
   },
   {
     id: "17",
-    category: "Originals",
+    category: "Roulette",
     title: "Roulette",
     banner: rouletteBanner,
     bannerWide: rouletteWide,
@@ -229,7 +229,7 @@ export const games = [
   },
   {
     id: "18",
-    category: "Originals",
+    category: "Roulette",
     title: "American Roulette",
     // Two words, so the title can't produce the URL segment on its own.
     slug: "american-roulette",
@@ -247,7 +247,7 @@ export const games = [
   },
   {
     id: "19",
-    category: "Originals",
+    category: "Streak",
     title: "Coin",
     banner: coinBanner,
     bannerWide: coinWide,
@@ -265,7 +265,7 @@ export const games = [
   },
   {
     id: "5",
-    category: "Originals",
+    category: "Streak",
     // The game's own name is "HiLo" (apps/hilo/game.spec.yaml). Lowercasing it
     // still yields the `hilo` slug the assets and OG card are named for.
     title: "HiLo",
@@ -283,7 +283,7 @@ export const games = [
   },
   {
     id: "1",
-    category: "Originals",
+    category: "Minefield",
     title: "Mines",
     banner: minesBanner,
     bannerWide: minesWide,
@@ -296,7 +296,7 @@ export const games = [
   },
   {
     id: "2",
-    category: "Originals",
+    category: "Instant",
     title: "Plinko",
     banner: plinkoBanner,
     bannerWide: plinkoWide,
@@ -309,7 +309,7 @@ export const games = [
   },
   {
     id: "4",
-    category: "Originals",
+    category: "Instant",
     title: "Dice",
     banner: diceBanner,
     bannerWide: diceWide,
@@ -322,7 +322,7 @@ export const games = [
   },
   {
     id: "6",
-    category: "Originals",
+    category: "Instant",
     title: "Wheel",
     banner: wheelBanner,
     bannerWide: wheelWide,
@@ -335,7 +335,7 @@ export const games = [
   },
   {
     id: "7",
-    category: "Originals",
+    category: "Instant",
     title: "Diamonds",
     banner: diamondsBanner,
     bannerWide: diamondsWide,
@@ -348,7 +348,7 @@ export const games = [
   },
   {
     id: "8",
-    category: "Originals",
+    category: "Instant",
     title: "Keno",
     banner: kenoBanner,
     bannerWide: kenoWide,
@@ -361,7 +361,7 @@ export const games = [
   },
   {
     id: "10",
-    category: "Originals",
+    category: "Crash",
     title: "Limbo",
     banner: limboBanner,
     bannerWide: limboWide,
@@ -374,7 +374,7 @@ export const games = [
   },
   {
     id: "3",
-    category: "Originals",
+    category: "Minefield",
     title: "Chicken",
     image: chicken,
     status: "09/2026",

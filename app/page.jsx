@@ -134,9 +134,7 @@ export default function HomePage() {
       <TrustBar />
       <FeaturedGame slug="punch" />
       <GamesPreview />
-      {/* The diligence material an operator screens on. Partners lives inside
-          this now — the component existed and was imported here but never
-          rendered, so the logos had been switched off entirely. */}
+      {/* The diligence material an operator screens on. */}
       <Proof />
       <Reveal>
         <ExploreLinks />

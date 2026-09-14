@@ -9,6 +9,7 @@ export default function ClosingCta() {
       id="contact"
       surface="raised"
       rule
+      texture
       ghost="Integrate"
       innerClassName="py-28 text-center"
     >

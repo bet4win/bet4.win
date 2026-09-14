@@ -107,24 +107,27 @@ export default function GameGrid({ items, scrollTargetId = "games" }) {
     return () => clearTimeout(timer);
   }, []);
 
+  const cards = items.map((game, i) => (
+    <GameCard
+      key={game.id}
+      game={game}
+      index={i}
+      ceiling={CEILING}
+      onLaunch={(g) => {
+        trackEvent("game_launch", { game_id: g.id, game_title: g.title });
+        openGame(g);
+      }}
+    />
+  ));
+
   return (
     <div ref={sectionRef} id={scrollTargetId}>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-        {items.map((game, i) => (
-          <GameCard
-            key={game.id}
-            game={game}
-            index={i}
-            ceiling={CEILING}
-            onLaunch={(g) => {
-              trackEvent("game_launch", { game_id: g.id, game_title: g.title });
-              openGame(g);
-            }}
-          />
-        ))}
+        {cards}
       </div>
 
       <GameModal game={active} onClose={closeGame} />
     </div>
   );
 }
+

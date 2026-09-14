@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+import React, { useEffect, useRef } from "react";
+import { registerParallax } from "@/app/lib/parallax";
 
 // Full-bleed surface outside, max-width container inside.
 //
@@ -24,25 +26,43 @@ export default function Section({
   surface = "base",
   rule = false,
   depth = false,
+  // Drifting gradient mesh + animated grain. Reserved for the sections that can
+  // carry it — every section wearing texture is the same as none of them doing.
+  texture = false,
   ghost,
   className = "",
   innerClassName = "",
   children,
   ...rest
 }) {
-  // Both the grid wash and the oversized ghost watermark are deliberately wider
-  // than the section; clipping the x-axis keeps them from scrolling the page
-  // sideways on phones. Clip rather than hidden on one axis only — see the note
-  // on .b4w-contain-x in globals.css for why <html> must stay scrollable.
-  const clip = depth || ghost ? " b4w-contain-x" : "";
+  const ref = useRef(null);
+
+  // Publishes --sy while the section is on screen; the grid wash and the
+  // watermark translate against it so the backdrop drifts relative to the
+  // content instead of moving with it. No-ops under reduced motion.
+  useEffect(() => registerParallax(ref.current), []);
+
+  // The grid wash, the mesh and the oversized watermark are all deliberately
+  // wider than the section; clipping the x-axis keeps them from scrolling the
+  // page sideways on phones. Clip rather than hidden, and on one axis only —
+  // see the note on .b4w-contain-x in globals.css for why <html> must stay
+  // scrollable.
+  const clip = depth || ghost || texture ? " b4w-contain-x" : "";
 
   return (
     <section
+      ref={ref}
       className={`relative ${SURFACE_CLASS[surface]}${rule ? " b4w-rule" : ""}${
         depth ? " b4w-grid" : ""
       }${clip}${className ? ` ${className}` : ""}`}
       {...rest}
     >
+      {texture && (
+        <>
+          <span aria-hidden="true" className="b4w-mesh" />
+          <span aria-hidden="true" className="b4w-grain" />
+        </>
+      )}
       {/* Decoration first, content last, and NOTHING here sets a z-index.
           Every layer is position:absolute/relative with z-index:auto, so they
           paint in tree order — grid wash, then ghost, then content. That is
