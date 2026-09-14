@@ -73,36 +73,33 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
         live ? "b4w-card--live" : ""
       }`}
     >
-      {/* Recess. The tile has its own surface and the key art is set into it,
-          rather than the art bleeding to the card's edge — so the artwork and
-          the tile read as two separate things, the way a screen sits in a
-          cabinet. The recess is bg (near-black) against the card's panel-high,
-          which is the widest step the two-surface palette allows. */}
-      <div className="relative aspect-square overflow-hidden bg-bg p-2 md:p-2.5">
-        <div className="relative h-full w-full overflow-hidden rounded-lg border border-line/50">
-          <Image
-            src={game.image}
-            alt={game.title}
-            fill
-            sizes="(min-width:992px) 300px, (min-width:768px) 31vw, 46vw"
-            // The hover zoom lives in CSS now (.b4w-card--live:hover
-            // .b4w-card-art) rather than as a Tailwind transform utility: it has
-            // to compose with the pointer parallax on the same element, and a
-            // `transform` scale easing up from 1 left a transparent gap at the
-            // art's edge for the first half second of every hover.
-            className={`b4w-card-art object-cover ${live ? "" : "grayscale"}`}
-          />
-        </div>
+      <div className="relative aspect-square overflow-hidden">
+        <Image
+          src={game.image}
+          alt={game.title}
+          fill
+          sizes="(min-width:992px) 300px, (min-width:768px) 31vw, 46vw"
+          // The hover zoom lives in CSS (.b4w-card--live:hover .b4w-card-art)
+          // rather than as a Tailwind transform utility: it has to compose with
+          // the pointer parallax on the same element, and a `transform` scale
+          // easing up from 1 left a transparent gap at the art's edge for the
+          // first half second of every hover.
+          className={`b4w-card-art object-cover !rounded-b-[0] ${
+            live ? "" : "grayscale"
+          }`}
+        />
+        {/* Grounds the art into the card body so the seam doesn't read as a cut */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel-high to-transparent" />
         {game.isNew && (
           // Opposite corner to the status pill so the two read as separate
           // facts rather than a stack. Not aria-hidden — unlike the Live pill,
           // this is information the card states nowhere else.
-          <span className="absolute left-4 top-4 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">
             New
           </span>
         )}
         <span
-          className={`absolute right-4 top-4 inline-flex items-center gap-1.5 rounded-md border px-2 py-1 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em] backdrop-blur ${
+          className={`absolute right-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-md border px-2 py-1 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em] backdrop-blur ${
             live
               ? "border-live/45 bg-bg/70 font-semibold text-live"
               : "border-line bg-bg/70 text-muted"

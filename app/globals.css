@@ -635,6 +635,14 @@ html.js .b4w-magnitude[data-grown] {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.35s ease;
+  /* screen, not overlay. Overlay preserves the backdrop's blacks, and this art
+     is very nearly black — blended that way the highlight measured as present
+     and looked like nothing at all. screen only ever lightens, so it reads on
+     dark key art and cannot crush it, which is also how a real specular
+     behaves. Blending is confined to the card: .b4w-cover / .b4w-card both
+     carry a transform, so each is its own stacking context and the light cannot
+     spill onto a neighbouring card. */
+  mix-blend-mode: screen;
   /* --gx/--gy come from useGlare: raw pointer position in this card's own box.
      They used to be derived from the damped --tilt-* values measured on the
      carousel stage, so the highlight both lagged the cursor and was anchored to
