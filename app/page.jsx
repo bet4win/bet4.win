@@ -3,7 +3,7 @@ import Hero from "@/app/components/Hero";
 import FeaturedGame from "@/app/components/FeaturedGame";
 import TrustBar from "@/app/components/TrustBar";
 import Ticker from "@/app/components/Ticker";
-import Partners from "@/app/components/Partners";
+import Proof from "@/app/components/Proof";
 import GamesPreview from "@/app/components/GamesPreview";
 import ExploreLinks from "@/app/components/ExploreLinks";
 import ClosingCta from "@/app/components/ClosingCta";
@@ -134,6 +134,10 @@ export default function HomePage() {
       <TrustBar />
       <FeaturedGame slug="punch" />
       <GamesPreview />
+      {/* The diligence material an operator screens on. Partners lives inside
+          this now — the component existed and was imported here but never
+          rendered, so the logos had been switched off entirely. */}
+      <Proof />
       <Reveal>
         <ExploreLinks />
       </Reveal>

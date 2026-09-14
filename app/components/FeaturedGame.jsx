@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { games } from "@/data/games";
+import Section from "./Section";
 import { Play } from "./Icons";
 import { launchGame } from "@/app/lib/gameLauncher";
 import { trackEvent } from "@/app/lib/analytics";
@@ -33,11 +34,13 @@ export default function FeaturedGame({ slug }) {
   };
 
   return (
-    <section
+    <Section
+      surface="base"
+      seamFrom="raised"
       aria-labelledby="featured-heading"
-      className="mx-auto max-w-[1280px] px-5 pb-8 pt-4 md:px-12"
+      innerClassName="pb-10 pt-14 md:pt-16"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-line bg-panel-low">
+      <div className="relative overflow-hidden rounded-2xl border border-line bg-panel">
         {/* Ambient wash picked from the key art so the panel doesn't read as a
             grey box bolted under the hero. */}
         <div
@@ -119,6 +122,6 @@ export default function FeaturedGame({ slug }) {
           </a>
         </footer>
       </div>
-    </section>
+    </Section>
   );
 }

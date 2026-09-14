@@ -33,7 +33,11 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-line/40 bg-bg/80 backdrop-blur-md">
+    // sticky, not fixed: the events strip sits above this in normal flow, so a
+    // fixed header would overlap it until the page scrolled. Sticky lets the
+    // strip scroll away and the nav take over the top edge, with no offset
+    // arithmetic and no layout shift when the strip is dismissed.
+    <header className="sticky top-0 z-50 w-full border-b border-line/40 bg-bg/80 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-4 md:px-12">
         <Link href="/" className="flex items-center" aria-label="Bet4.win home">
           <img

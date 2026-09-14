@@ -10,7 +10,10 @@ const stats = [
 
 export default function TrustBar() {
   return (
-    <section className="border-y border-line/40 bg-panel-low/40 backdrop-blur-sm">
+    // Solid rather than translucent: this strip and the ticker above it are one
+    // continuous `raised` band now, and a /40 fill let the section boundary show
+    // through as a seam that was never meant to be there.
+    <section className="border-b border-line/40 bg-panel">
       <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-6 px-5 py-4 font-SpaceGrotesk text-[13px] text-muted md:px-12">
         {stats.map(({ icon: Icon, label, tone }) => (
           <div key={label} className="flex items-center gap-2">

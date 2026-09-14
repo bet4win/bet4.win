@@ -1,11 +1,17 @@
 "use client";
 import React from "react";
+import Section from "./Section";
 import { trackEvent } from "@/app/lib/analytics";
 
 export default function ClosingCta() {
   return (
-    <section id="contact" className="relative px-5 py-28 text-center md:px-12">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-transparent to-panel-low" />
+    <Section
+      id="contact"
+      surface="raised"
+      seamFrom="base"
+      ghost="Integrate"
+      innerClassName="py-28 text-center"
+    >
       <div className="mx-auto flex max-w-2xl flex-col items-center">
         <h2 className="mb-3 b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] !text-ink">
           Ready to integrate?
@@ -30,6 +36,6 @@ export default function ClosingCta() {
           </a>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

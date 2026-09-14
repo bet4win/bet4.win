@@ -3,8 +3,11 @@ import { Space_Grotesk, JetBrains_Mono, Archivo_Black } from "next/font/google";
 import { cookies } from "next/headers";
 import AgeGate from "@/app/components/AgeGate";
 import CookieConsent from "@/app/components/CookieConsent";
+import EventsBar from "@/app/components/EventsBar";
 import { AGE_COOKIE, AGE_COOKIE_VALUE } from "@/app/lib/ageGate";
 import { CONSENT_COOKIE, CONSENT_COOKIE_VALUE } from "@/app/lib/consent";
+import { EVENTS_COOKIE, eventsSignature } from "@/app/lib/eventsBar";
+import { upcomingEvents } from "@/data/events";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/app/lib/site";
 
 // Self-hosted at build time (no render-blocking Google Fonts <link>, no FOUT).
@@ -84,6 +87,14 @@ export default async function RootLayout({ children }) {
   const showAgeGate = store.get(AGE_COOKIE)?.value !== AGE_COOKIE_VALUE;
   const hasConsent = store.get(CONSENT_COOKIE)?.value === CONSENT_COOKIE_VALUE;
 
+  // Shows that have already finished are dropped here, so the strip empties
+  // itself rather than advertising last month's expo. The dismissal cookie
+  // stores the event-id set, so publishing a new show re-shows a hidden strip.
+  const shows = upcomingEvents();
+  const eventsDismissed =
+    shows.length > 0 &&
+    store.get(EVENTS_COOKIE)?.value === eventsSignature(shows);
+
   return (
     <html
       lang="en"
@@ -108,6 +119,7 @@ export default async function RootLayout({ children }) {
           AgeGate clears it once the visitor confirms. */}
       <body className={`home-dark${showAgeGate ? " age-gate-locked" : ""}`}>
         {showAgeGate && <AgeGate />}
+        <EventsBar events={shows} initialDismissed={eventsDismissed} />
         {children}
 
         {/* Owns the cookie notice AND the GA4 tags: analytics is not injected

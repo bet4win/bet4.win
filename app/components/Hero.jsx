@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { games } from "@/data/games";
+import Section from "./Section";
 import { ArrowRight, Terminal, Shield } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
 
@@ -11,7 +12,13 @@ const wall = games.filter((g) => g.status === "active").slice(0, 6);
 
 export default function Hero() {
   return (
-    <section className="b4w-contain-x relative mx-auto flex max-w-[1280px] flex-col items-center gap-12 px-5 pb-12 pt-28 md:px-12 md:pt-36 lg:flex-row lg:gap-16">
+    // Top padding is much smaller than it looks: the header is sticky now, so
+    // it occupies flow above this instead of floating over it.
+    <Section
+      surface="base"
+      depth
+      innerClassName="flex flex-col items-center gap-12 pb-12 pt-12 md:pt-20 lg:flex-row lg:gap-16"
+    >
       {/* Copy */}
       <div className="relative z-10 flex flex-1 flex-col gap-6">
         {/* No manual line breaks — at this weight the phrase has to be allowed
@@ -95,6 +102,6 @@ export default function Hero() {
         {/* Fade the wall into the canvas on the left edge */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-bg via-transparent to-transparent lg:block [transform:rotate(-4deg)]" />
       </div>
-    </section>
+    </Section>
   );
 }

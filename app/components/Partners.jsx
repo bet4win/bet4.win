@@ -15,39 +15,30 @@ const PARTNERS = [
   { name: "Revolver Gaming", src: revolverGaming, height: 42 },
 ];
 
-// Centred label above the logos, inside a hairline-ruled band. Only two logos,
-// so it stays a single deliberate line rather than a grid — a wide multi-column
-// wall with two entries reads as unfinished. The label sits a step brighter than
-// it first did, which is the difference between quiet and overlooked.
+// A block rather than its own <section>: this is composed into <Proof>, which
+// owns the surface and the heading. Nesting a second section here would have put
+// a landmark inside a landmark for one row of logos.
 export default function Partners() {
   return (
-    <section
-      aria-labelledby="partners-heading"
-      className="mx-auto max-w-[1280px] px-5 py-12 md:px-12"
-    >
-      <div className="flex flex-col items-center gap-7 border-y border-line/60 py-10">
-        <h2
-          id="partners-heading"
-          className="!mb-0 text-center font-SpaceGrotesk !text-[14px] !font-semibold uppercase !tracking-[0.16em] !text-muted"
-        >
-          Partners
-        </h2>
-        <ul className="flex flex-wrap items-center justify-center gap-x-16 gap-y-8">
-          {PARTNERS.map((p) => (
-            <li key={p.name}>
-              <img
-                src={p.src.src}
-                alt={p.name}
-                width={p.src.width}
-                height={p.src.height}
-                loading="lazy"
-                className="w-auto opacity-70 transition-opacity duration-300 hover:opacity-100"
-                style={{ height: `${p.height}px` }}
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <div className="flex flex-col items-center gap-7 border-t border-line/60 pt-10">
+      <h3 className="!mb-0 text-center font-SpaceGrotesk !text-[12px] !font-semibold uppercase !tracking-[0.16em] !text-faint">
+        Partners
+      </h3>
+      <ul className="flex flex-wrap items-center justify-center gap-x-16 gap-y-8">
+        {PARTNERS.map((p) => (
+          <li key={p.name}>
+            <img
+              src={p.src.src}
+              alt={p.name}
+              width={p.src.width}
+              height={p.src.height}
+              loading="lazy"
+              className="w-auto opacity-70 transition-opacity duration-300 hover:opacity-100"
+              style={{ height: `${p.height}px` }}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import GameGrid from "./GameGrid";
 import Reveal from "./Reveal";
+import Section from "./Section";
 import { ArrowRight } from "./Icons";
 import { games } from "@/data/games";
 
@@ -13,9 +14,15 @@ const PREVIEW = live.slice(0, 8);
 // for any title, not just the eight rendered here.
 export default function GamesPreview() {
   return (
-    <section
+    // id="games" is the target for the "View games" / "Play demo" anchors in the
+    // hero and the spotlight. Nothing on the site carried that id before, so
+    // both fallbacks silently scrolled nowhere.
+    <Section
+      id="games"
+      surface="raised"
+      ghost="Catalogue"
       aria-labelledby="games-preview-heading"
-      className="mx-auto max-w-[1280px] px-5 py-8 md:px-12"
+      innerClassName="py-16 md:py-20"
     >
       {/* One flex container for all three blocks so the "see all" link can sit
           beside the heading on desktop but after the cards on phones, without
@@ -54,6 +61,6 @@ export default function GamesPreview() {
         </div>
 
       </div>
-    </section>
+    </Section>
   );
 }

@@ -358,6 +358,97 @@ html.js .b4w-magnitude[data-grown] {
 .b4w-pulse {
   animation: b4w-pulse 2.4s ease-in-out infinite;
 }
+
+/* --- Section surfaces ------------------------------------------------------
+ * The homepage used to render as one unbroken #0b1120 field, because every
+ * <section> was also its own max-width container — there was no full-bleed
+ * element left to paint. <Section> splits those two jobs apart; the classes
+ * below are what it paints with. The surface colours themselves are the
+ * existing --color-panel-* tokens, applied through ordinary Tailwind utilities.
+ */
+
+/* The seam between two surfaces: a shallow chevron of the OUTGOING colour laid
+   over the incoming section's top edge, so the boundary is a V rather than a
+   rule. The colour is passed per-instance because one shape has to serve every
+   pair of surfaces. drop-shadow traces the clip-path outline where a box-shadow
+   would trace the unclipped rectangle — that is what makes the cut read as a
+   lit edge rather than a hole. */
+.b4w-seam {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: clamp(26px, 3.5vw, 54px);
+  background-color: var(--b4w-seam-from, var(--color-bg));
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  filter: drop-shadow(
+      0 1px 0 color-mix(in srgb, var(--color-brand) 34%, transparent)
+    )
+    drop-shadow(0 0 14px color-mix(in srgb, var(--color-brand) 14%, transparent));
+  pointer-events: none;
+}
+
+/* Background depth: a fine grid, radially masked so it reads as atmosphere at
+   the top of a section and has faded out before it reaches the content. */
+.b4w-grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* No z-index on purpose — see the note in Section.jsx. This paints first
+     simply by being first in tree order. */
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-line) 60%, transparent) 0 1px,
+      transparent 1px 72px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--color-line) 60%, transparent) 0 1px,
+      transparent 1px 72px
+    );
+  -webkit-mask-image: radial-gradient(
+    ellipse 78% 62% at 50% 0%,
+    #000 0%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    ellipse 78% 62% at 50% 0%,
+    #000 0%,
+    transparent 72%
+  );
+  opacity: 0.55;
+}
+
+/* Outlined display-face watermark behind a section heading. Decorative only —
+   aria-hidden at every call site — and clipped by the section's own overflow so
+   it can be oversized without widening the page. */
+.b4w-ghost {
+  position: absolute;
+  /* Anchored to the section, not the content container, and sitting in the
+     section's own top padding. No z-index — it is a sibling that precedes the
+     content container in tree order, which is all it needs to paint behind it. */
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: var(--font-Display);
+  font-size: clamp(4rem, 13vw, 11rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-line);
+  opacity: 0.45;
+}
+
+/* Events strip crossfade. Opacity only, no transform, so the slide stays
+   readable under prefers-reduced-motion — there only the auto-advance timer is
+   switched off, and the manual controls keep working. */
+.b4w-event-slide {
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
 /* One switch for the whole motion system. Everything lands in its final state
    instantly — reveals stay visible, bars stay at full width, nothing animates. */
 @media (prefers-reduced-motion: reduce) {
@@ -388,6 +479,9 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-card--live:hover,
   :focus-visible > .b4w-card--live {
     transform: none;
+  }
+  .b4w-event-slide {
+    transition: none;
   }
 }
 }

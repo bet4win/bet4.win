@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Section from "./Section";
 import { ArrowRight, Server, ShieldCheck, Grid } from "./Icons";
 
 // The home page's job is to route people, so the three interior pages get an
@@ -30,9 +31,10 @@ const LINKS = [
 
 export default function ExploreLinks() {
   return (
-    <section
+    <Section
+      surface="base"
       aria-labelledby="explore-heading"
-      className="mx-auto max-w-[1280px] px-5 py-8 md:px-12"
+      innerClassName="py-16 md:py-20"
     >
       <h2
         id="explore-heading"
@@ -45,7 +47,7 @@ export default function ExploreLinks() {
           <Link
             key={href}
             href={href}
-            className="machined-surface group flex flex-col rounded-xl border border-line bg-panel-low p-6 transition-colors hover:border-cyan/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            className="machined-surface group flex flex-col rounded-xl border border-line bg-panel p-6 transition-colors hover:border-cyan/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             <span
               className="mb-5 flex h-10 w-10 items-center justify-center rounded-md border border-line bg-panel text-cyan"
@@ -71,6 +73,6 @@ export default function ExploreLinks() {
           </Link>
         ))}
       </div>
-    </section>
+    </Section>
   );
 }

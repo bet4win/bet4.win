@@ -5,7 +5,9 @@ import React from "react";
 // page ends up with one h1 and a real heading hierarchy under it.
 export default function PageHeader({ eyebrow, title, intro, children }) {
   return (
-    <section className="mx-auto max-w-[1280px] px-5 pb-4 pt-32 md:px-12 md:pt-40">
+    // Reduced from pt-32/md:pt-40 when the header went from fixed to sticky —
+    // that padding existed only to clear a header that no longer overlaps.
+    <section className="mx-auto max-w-[1280px] px-5 pb-4 pt-16 md:px-12 md:pt-24">
       {eyebrow && (
         <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.1em] text-cyan">
           {eyebrow}

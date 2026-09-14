@@ -18,7 +18,7 @@ export default function Ticker() {
 
   return (
     <div
-      className="b4w-marquee relative overflow-hidden border-y border-line bg-panel-low/70 py-3.5"
+      className="b4w-marquee relative overflow-hidden border-y border-line bg-panel py-3.5"
       role="marquee"
       aria-label="Maximum multiplier for each original"
     >
@@ -34,10 +34,12 @@ export default function Ticker() {
         ))}
       </div>
 
-      {/* Fades the strip into the canvas at both ends so it reads as continuous
-          rather than starting and stopping at the viewport edge. */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-bg to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-bg to-transparent" />
+      {/* Fades the strip into its own band at both ends so it reads as
+          continuous rather than starting and stopping at the viewport edge.
+          from-panel, not from-bg: the strip sits on the raised band now, and
+          fading to the page colour left a dark bloom at each end. */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-panel to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-panel to-transparent" />
 
       {/* The animated copy is aria-hidden; this states the same facts once for
           assistive tech without the duplicated, looping list. */}
