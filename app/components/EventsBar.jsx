@@ -71,7 +71,7 @@ export default function EventsBar({ events, initialDismissed = false }) {
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
-      className="relative z-40 border-b border-line/60 bg-panel-high"
+      className="relative z-40 border-b border-line/60 bg-panel-high/75 backdrop-blur-md"
     >
       <div className="mx-auto flex max-w-[1280px] items-center gap-2 px-5 py-2 md:gap-5 md:px-12">
         <span className="hidden shrink-0 rounded-full border border-cyan/35 bg-cyan/10 px-2.5 py-1 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.1em] text-cyan sm:inline-block">

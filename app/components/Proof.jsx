@@ -64,7 +64,7 @@ export default function Proof() {
             // pattern the featured-game footer uses.
             <div
               key={f.label}
-              className="flex flex-col gap-1.5 bg-panel-high p-5 md:p-6"
+              className="flex flex-col gap-1.5 bg-panel-high/70 p-5 backdrop-blur-md md:p-6"
             >
               <dd
                 className={`!mb-0 order-1 leading-none !text-cyan ${

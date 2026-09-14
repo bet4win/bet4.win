@@ -48,7 +48,7 @@ export default function ExploreLinks() {
           <Link
             key={href}
             href={href}
-            className="machined-surface group flex flex-col rounded-xl border border-line bg-panel-high p-6 transition-colors hover:border-cyan/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            className="machined-surface group flex flex-col rounded-xl border border-line bg-panel-high/70 p-6 backdrop-blur-md transition-colors hover:border-cyan/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           >
             <span
               className="mb-5 flex h-10 w-10 items-center justify-center rounded-md border border-line bg-panel-high text-cyan"

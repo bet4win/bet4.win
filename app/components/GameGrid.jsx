@@ -163,8 +163,7 @@ export default function GameGrid({
 //
 // Options are derived from whatever is actually in `items`, in catalogue order,
 // so a category can never appear with nothing behind it and adding a game to a
-// new family needs no change here. Counts are shown because "Roulette (2)" sets
-// an expectation that "Roulette" does not.
+// new family needs no change here.
 function CategoryFilter({ items, value, onChange }) {
   const counts = new Map();
   for (const g of items) {
@@ -173,7 +172,7 @@ function CategoryFilter({ items, value, onChange }) {
   }
   if (counts.size < 2) return null;
 
-  const options = [[ALL, items.length], ...counts];
+  const options = [ALL, ...counts.keys()];
 
   return (
     // A group of toggles rather than a radiogroup: these are buttons that change
@@ -184,7 +183,7 @@ function CategoryFilter({ items, value, onChange }) {
       aria-label="Filter the catalogue by category"
       className="mb-6 flex flex-wrap gap-2"
     >
-      {options.map(([label, count]) => {
+      {options.map((label) => {
         const on = label === value;
         return (
           <button
@@ -195,20 +194,13 @@ function CategoryFilter({ items, value, onChange }) {
             // min-h on touch only: these are the primary control for the
             // catalogue and at the desktop padding they measured 36px tall,
             // under the 44px target guidance.
-            className={`inline-flex min-h-[44px] items-center gap-1.5 rounded-md border px-3 py-1.5 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.07em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:min-h-0 ${
+            className={`inline-flex min-h-[44px] items-center rounded-full border px-4 py-1.5 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.07em] backdrop-blur-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:min-h-0 ${
               on
-                ? "border-brand bg-brand-strong !text-white"
-                : "border-line bg-panel-high/50 !text-muted hover:border-brand/50 hover:!text-ink"
+                ? "border-brand bg-brand-strong/90 !text-white"
+                : "border-line bg-panel-high/40 !text-muted hover:border-brand/50 hover:bg-panel-high/70 hover:!text-ink"
             }`}
           >
             {label}
-            <span
-              className={`font-JetBrainsMono text-[10px] tabular-nums ${
-                on ? "text-white/70" : "text-faint"
-              }`}
-            >
-              {count}
-            </span>
           </button>
         );
       })}

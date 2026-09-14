@@ -192,8 +192,6 @@ function CardBody({ game, interactive = false }) {
           sizes="(min-width:1024px) 320px, 62vw"
           className="b4w-cover-art object-cover"
         />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel-high to-transparent" />
-
         {game.isNew && (
           <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">
             New
@@ -208,12 +206,13 @@ function CardBody({ game, interactive = false }) {
             </span>
           </span>
         )}
-      </div>
 
-      {/* Title gets its own line. Sharing it with the figures meant the longer
-          names truncated to make room for a number, which is backwards — the
-          name is the thing being advertised. */}
-      <div className="flex flex-col gap-2 px-4 py-3">
+      {/* Caption floats over the foot of the key art on frosted glass rather
+          than sitting in a solid block beneath it. This is one of the few places
+          on the site where backdrop-blur earns its keep — there is real artwork
+          behind it to refract. The scrim under the blur is what keeps the type
+          legible over the brighter pieces of art. */}
+      <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 border-t border-white/10 bg-gradient-to-t from-panel-high/95 to-panel-high/70 px-4 py-3 backdrop-blur-md">
         <div className="flex items-baseline justify-between gap-2">
           <p className="b4w-display !mb-0 truncate text-[0.85rem] !text-ink">
             {game.title}
@@ -247,8 +246,8 @@ function CardBody({ game, interactive = false }) {
             </div>
           )}
         </dl>
+        </div>
       </div>
-
     </div>
   );
 }
