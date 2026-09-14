@@ -397,6 +397,14 @@ html.js .b4w-magnitude[data-grown] {
 }
 
 /* Card hover: lift, warm the border, and lay a cyan edge-glow under it. */
+/* A card is a control, not a paragraph. Dragging across one while aiming at it
+   should not leave a blue selection over the title and the figures. */
+.b4w-card,
+.b4w-cover {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .b4w-card {
   transition:
     transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
@@ -627,9 +635,12 @@ html.js .b4w-magnitude[data-grown] {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.35s ease;
+  /* --gx/--gy come from useGlare: raw pointer position in this card's own box.
+     They used to be derived from the damped --tilt-* values measured on the
+     carousel stage, so the highlight both lagged the cursor and was anchored to
+     the wrong element. */
   background: radial-gradient(
-    42% 42% at calc(50% + var(--tilt-nx, 0) * 45%)
-      calc(50% + var(--tilt-ny, 0) * 45%),
+    42% 42% at var(--gx, 50%) var(--gy, 50%),
     rgba(255, 255, 255, 0.18),
     rgba(255, 255, 255, 0.05) 45%,
     transparent 72%

@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { games } from "@/data/games";
-import { useTilt } from "@/app/lib/tilt";
+import { useTilt, useGlare } from "@/app/lib/tilt";
 import { prefersReducedMotion } from "@/app/lib/motion";
 import { launchGame } from "@/app/lib/gameLauncher";
 import { trackEvent } from "@/app/lib/analytics";
@@ -182,8 +182,17 @@ export default function HeroWall() {
 }
 
 function CardBody({ game, interactive = false }) {
+  // Every card tracks the pointer against its own box; only the centre one ever
+  // shows the result, via :hover in CSS. Cheaper than threading a ref down to
+  // whichever card happens to be centre, and correct as the carousel advances.
+  const ref = useRef(null);
+  useGlare(ref);
+
   return (
-    <div className="b4w-bezel overflow-hidden rounded-xl border border-line bg-panel-high">
+    <div
+      ref={ref}
+      className="b4w-bezel overflow-hidden rounded-xl border border-line bg-panel-high"
+    >
       <div className="relative aspect-square overflow-hidden">
         <Image
           src={game.image}
