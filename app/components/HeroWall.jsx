@@ -154,7 +154,7 @@ export default function HeroWall() {
                   onClick={(e) => play(e, game)}
                   className="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
                 >
-                  <CardBody game={game} interactive />
+                  <CardBody game={game} interactive priority={index === 0} />
                 </a>
               )}
               {role === "side" && (
@@ -181,7 +181,7 @@ export default function HeroWall() {
   );
 }
 
-function CardBody({ game, interactive = false }) {
+function CardBody({ game, interactive = false, priority = false }) {
   return (
     <div className="b4w-bezel relative overflow-hidden rounded-xl border border-line bg-panel-high">
       {/* Portrait, not square — a playing card is taller than it is wide, and
@@ -194,6 +194,12 @@ function CardBody({ game, interactive = false }) {
           alt={interactive ? `${game.title} key art` : ""}
           fill
           sizes="(min-width:1024px) 320px, 62vw"
+          // The deck is real content now, not the decorative wall this replaced,
+          // so its centre card is the page's LCP element. Only the card that is
+          // centre on first paint gets priority — preloading is a first-paint
+          // concern, and flagging all five would preload four images nobody has
+          // asked to see.
+          priority={priority}
           className="b4w-cover-art object-cover"
         />
         {game.isNew && (
@@ -204,7 +210,7 @@ function CardBody({ game, interactive = false }) {
 
         {interactive && (
           <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
-            <span className="flex items-center gap-2 rounded-full border border-white/25 bg-bg/55 px-5 py-2.5 font-SpaceGrotesk text-[12px] font-semibold uppercase tracking-[0.05em] !text-white shadow-lg backdrop-blur-lg">
+            <span className="b4w-card-float flex items-center gap-2 rounded-full border border-white/25 bg-bg/55 px-5 py-2.5 font-SpaceGrotesk text-[12px] font-semibold uppercase tracking-[0.05em] !text-white shadow-lg backdrop-blur-lg">
               <Play className="h-3.5 w-3.5" />
               Play demo
             </span>

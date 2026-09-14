@@ -636,6 +636,15 @@ html.js .b4w-magnitude[data-grown] {
    the inner wrapper needs overflow:hidden and min-height:0 or the row collapses
    to the content's height rather than to nothing. Keyed off the card, not the
    panel, so keyboard focus opens it as well as hover. */
+/* Foreground elements move AGAINST the artwork as the card turns.
+   The art sits behind the card's face and shifts one way (-4px); anything meant
+   to read as floating above the face has to shift the other way, and further.
+   Same pointer input, opposite sign, bigger throw — that contrast is the entire
+   depth cue. Without it a button pinned over a tilting card reads as painted on. */
+.b4w-card-float {
+  translate: calc(var(--tilt-nx, 0) * 9px) calc(var(--tilt-ny, 0) * 9px);
+}
+
 .b4w-cover-detail {
   display: grid;
   grid-template-rows: 0fr;
@@ -777,6 +786,9 @@ html.js .b4w-magnitude[data-grown] {
   }
   .b4w-cover[data-role="centre"] {
     transform: translateX(-50%) scale(var(--s, 1));
+  }
+  .b4w-card-float {
+    translate: none;
   }
   .b4w-cover-art,
   .b4w-cover[data-role="centre"]:hover .b4w-cover-art,

@@ -66,7 +66,6 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
 
   const tile = (
     <article
-      ref={tiltRef}
       className={`b4w-card b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-panel-high text-left ${
         live ? "b4w-card--live" : ""
       }`}
@@ -202,34 +201,47 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
       // than all twelve cards landing at once.
       style={{ transitionDelay: `${(index % 4) * 70}ms` }}
     >
-      {live ? (
-        // The card is a real link so the game pages are crawlable and openable
-        // in a new tab; the demo button sits alongside it rather than inside,
-        // since a <button> nested in an <a> is invalid and un-clickable.
-        <div className="group relative h-full">
-          <Link
-            href={`/games/${slugFor(game)}`}
-            className="block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-            aria-label={`${game.title} — game details`}
-          >
-            {tile}
-          </Link>
-          <button
-            type="button"
-            onClick={() => onLaunch(game)}
-            aria-label={`Play ${game.title} demo`}
-            // Tucked under the status pill on the right. The top-left corner is
-            // the NEW badge's, and on touch this button never hides, so sharing
-            // that corner would bury the badge on exactly the devices where it
-            // can't be revealed by hovering. `top-12` clears the pill's height.
-            className="absolute right-2.5 top-12 z-10 flex h-9 w-9 items-center justify-center rounded-md border border-cyan/50 bg-brand-strong text-black opacity-0 shadow-[0_0_20px_-4px_rgba(37,99,235,0.7)] transition-all duration-300 hover:bg-brand focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand group-hover:opacity-100 max-md:opacity-100"
-          >
-            <Play className="h-4 w-4" />
-          </button>
-        </div>
-      ) : (
-        tile
-      )}
+      {/* The tilt is published from HERE, not from the <article>. The demo
+          button has to be a sibling of the link (a <button> inside an <a> is
+          invalid), so it sits outside the article and would inherit none of the
+          --tilt-* properties. Hanging them on the common ancestor lets the card
+          and the button read the same pointer. */}
+      <div ref={tiltRef} className="group relative h-full">
+        {live ? (
+          <>
+            {/* The card is a real link so the game pages stay crawlable and
+                openable in a new tab. */}
+            <Link
+              href={`/games/${slugFor(game)}`}
+              className="block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+              aria-label={`${game.title} — game details`}
+            >
+              {tile}
+            </Link>
+
+            {/* Centred over the art, matching the hero deck. The wrapper is a
+                square pinned to the top so "centre" means the middle of the
+                artwork rather than the middle of the whole card, caption
+                included. It takes no pointer events so the link underneath stays
+                clickable everywhere the button is not. */}
+            <span className="pointer-events-none absolute inset-x-0 top-0 flex aspect-square items-center justify-center">
+              <button
+                type="button"
+                onClick={() => onLaunch(game)}
+                aria-label={`Play ${game.title} demo`}
+                // Still forced visible on touch: without hover there is no other
+                // way to reach the demo from the grid.
+                className="b4w-card-float pointer-events-auto flex items-center gap-2 rounded-full border border-white/25 bg-bg/55 px-4 py-2 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.05em] !text-white opacity-0 shadow-lg backdrop-blur-lg transition-opacity duration-300 hover:bg-bg/75 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand group-hover:opacity-100 max-md:opacity-100"
+              >
+                <Play className="h-3.5 w-3.5" />
+                Play demo
+              </button>
+            </span>
+          </>
+        ) : (
+          tile
+        )}
+      </div>
     </div>
   );
 }
