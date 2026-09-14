@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# bet4.win
 
-## Getting Started
+Marketing site for the Bet4.win remote gaming server — the game catalogue, the
+provably-fair explainer, and the operator-facing pages.
 
-First, run the development server:
+Next.js App Router, Tailwind v4, no CMS. Everything renders from `data/`.
+
+## Running it
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Use the dev server while iterating. `next build` overwrites `.next`, which makes
+a subsequent `next dev` recompile from cold and can surface phantom errors.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Layout
 
-## Learn More
+```
+app/              the site — routes, components, and client-side libs
+  components/     every UI component (nothing lives outside this tree)
+  lib/            cookies, analytics, fairness maths, pointer/motion helpers
+  globals.css     the whole stylesheet: Tailwind v4 @theme tokens + b4w-* helpers
+data/             the content — games, game copy, trade shows, proof figures
+public/assets/    game art (banners, thumbnails), logo, compliance marks
+public/og/        generated per-game share cards
+scripts/          build-time tooling
+```
 
-To learn more about Next.js, take a look at the following resources:
+`data/games.js` is the catalogue. Adding a game means an entry there plus its art
+in `public/assets/img/banners/` and `public/assets/img/icons/thumbnails3/`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Share art
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run gen:og
+```
 
-## Deploy on Vercel
+Regenerates `public/og/<slug>.jpg` and the default card at
+`app/opengraph-image.png`. The script clears `public/og` first and writes only
+the games listed in its own `GAMES` array — keep that array in sync with the
+`status: "active"` entries in `data/games.js` or active games lose their card.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel. The apex-to-www 308 is a redirect rule in `next.config.mjs`, applied at
+Vercel's proxy layer. Canonical host is `https://www.bet4.win`.
