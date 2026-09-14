@@ -12,17 +12,15 @@
   }
 }
 @theme {
-  --font-IBMPlexSerif: "IBM Plex Serif", "serif";
   --font-SpaceGrotesk: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  /* Both of these are inherited defaults rather than things components ask for
+     by name: --font-Manrope is what <body> falls back to (it resolves to the
+     generic sans-serif — no Manrope face is loaded), and --font-Monospace is
+     the <code> default. Every deliberate choice on the page is SpaceGrotesk,
+     JetBrainsMono or Display. */
   --font-Manrope: "Manrope", "sans-serif";
-  --font-Unicons: "Unicons";
   --font-Monospace: "SFMono-Regular,Menlo,Monaco,Consolas", "Liberation Mono",
     "Courier New", "monospace";
-  --font-Custom: "Custom";
-  --font-DMSerif: "DM Serif Display";
-  --font-SansSerif: "sans-serif";
-  --font-THICCCBOI: "THICCCBOI", "sans-serif";
-  --font-Urbanist: "Urbanist", "sans-serif";
   /* Default Color */
   --color-*: initial;
   --color-white: #ffffff;
@@ -74,17 +72,11 @@
   --font-Display: var(--font-archivo-black), "Archivo Black", "Helvetica Neue", sans-serif;
   /* responsive Breakpoint */
   --breakpoint-*: initial;
-  --breakpoint-xxl: 1400px;
   --breakpoint-xl: 1200px;
   --breakpoint-lg: 992px;
   --breakpoint-md: 768px;
   --breakpoint-sm: 576px;
 }
-@utility container {
-  margin-inline: auto;
-  padding-inline: 2rem;
-}
-
 /* Keyframes stay unlayered — they define animations, never compete. */
 @keyframes b4w-marquee {
   from {
@@ -777,9 +769,6 @@ html.js .b4w-magnitude[data-grown] {
 ::before {
   @apply box-border;
 }
-hr.dark {
-  @apply text-[rgba(164,174,198,0.25)];
-}
 ::selection {
   @apply text-white bg-[rgba(63,120,224,.7)];
 }
@@ -789,126 +778,20 @@ a {
 a:focus {
   outline: 0;
 }
-a[href^="tel"] {
-  @apply text-inherit;
-  text-decoration: inherit;
-}
-a.hover {
-  @apply relative before:absolute before:w-full before:h-px before:pointer-events-none before:left-0 before:top-full before:content-[""] before:origin-[100%_50%] before:transition-transform before:duration-[0.3s] before:ease-[cubic-bezier(.7,0,0.2,1)] hover:before:origin-[0_50%] hover:before:ease-[cubic-bezier(.4,1,0.8,1)];
-}
-a.hover::before {
-  @apply bg-[currentColor];
-}
-a.hover::before {
-  transform: scale3d(0, 1, 1);
-}
-a.hover:hover:before {
-  transform: scale3d(1, 1, 1);
-}
-.link-inverse {
-  @apply text-[#cacaca];
-}
-.link-inverse,
-.text-inverse,
-.text-inverse a:not(.btn) {
-  @apply text-white;
-}
-.bg-dark.link-inverse,
-.bg-dark.text-inverse,
-.bg-dark.text-inverse .post-meta,
-.bg-dark.text-inverse a:not(.btn):not([class*="link-"]),
-.bg-navy.link-inverse,
-.bg-navy.text-inverse,
-.bg-navy.text-inverse .post-meta,
-.bg-navy.text-inverse a:not(.btn):not([class*="link-"]),
-[class*="offcanvas-"].text-inverse a:not(.btn):not([class*="link-"]) {
-  @apply text-[#cacaca];
-}
-.badge.bg-light {
-  @apply !bg-[rgba(164,174,198,.2)];
-}
-.position-absolute {
-  @apply !absolute;
-}
-.more {
-  @apply font-bold tracking-[-0.01rem] inline-block after:leading-none after:content-["\e94c"] after:text-[0.9rem] after:font-normal after:mr-[-0.25rem] after:inline-block after:pl-[0.05rem];
-}
-.more:after {
-  @apply font-Unicons align-[-3px];
-}
-hr.double {
-  @apply border-t-0 border-double border-[rgba(164,174,198,0.2)] bg-inherit;
-}
-_:default:not(:root:root),
-hr.double {
-  @apply border-b-[3px];
-}
-.divider-icon {
-  @apply relative m-[4.5rem_0] border-0 before:left-0 after:right-0 after:absolute after:content-[""] after:w-[calc(50%_-_1.5rem)] after:border-t-[rgba(164,174,198,0.2)] after:border-t after:border-solid after:top-2/4 before:absolute before:content-[""] before:w-[calc(50%_-_1.5rem)] before:border-t-[rgba(164,174,198,0.2)] before:border-t before:border-solid before:top-2/4;
-}
-.divider-icon i {
-  @apply absolute -translate-x-2/4 -translate-y-2/4 text-[1.2rem] text-[rgba(164,174,198,0.2)] left-2/4 top-2/4;
-}
-
-.divider:after {
-  @apply content-[""] w-full h-[5px] block mt-[-5px] bg-[currentColor];
-}
-.divider.divider-alt:after {
-  @apply mb-[-5px] mt-0;
-}
-[class*="divider-v-"] {
-  @apply relative w-auto h-full overflow-hidden;
-}
-[class*="divider-v-"] > svg {
-  @apply h-full w-auto absolute scale-[1.2];
-}
-[class*="divider-v-"]:after {
-  @apply hidden;
-}
-[class*="divider-v-"].divider-v-start > svg {
-  @apply left-0 top-0;
-}
-[class*="divider-v-"].divider-v-end > svg {
-  @apply right-0 top-0;
-}
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
 h1,
 h2,
-h3,
-h4,
-h5,
-h6 {
+h3 {
   @apply font-bold text-[#343f52] tracking-[-0.01rem] mt-0 mb-2;
   word-spacing: 0.1rem;
 }
-.h1,
 h1 {
   @apply leading-[1.3];
 }
-.h2,
 h2 {
   @apply leading-[1.35];
 }
-.h3,
 h3 {
   @apply leading-[1.4];
-}
-.h4,
-h4 {
-  @apply leading-[1.45];
-}
-.h5,
-h5 {
-  @apply leading-normal;
-}
-.h6,
-h6 {
-  @apply leading-[1.55];
 }
 body,
 html {
@@ -926,60 +809,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
   word-spacing: 0.05rem;
 }
-hr {
-  @apply text-[rgba(164,174,198,0.2)] border-t-[1px] opacity-100 mx-0 my-[4.5rem] border-0 border-solid;
-}
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
 h1,
 h2,
-h3,
-h4,
-h5,
-h6 {
+h3 {
   @apply font-bold leading-[1.2] text-[#343f52] tracking-[-0.01rem] mt-0 mb-2 [word-spacing:0.1rem];
 }
-.h1,
 h1 {
   @apply xl:text-[1.45rem] text-[calc(1.27rem_+_0.24vw)];
 }
-.h2,
 h2 {
   @apply xl:text-[1.3rem] text-[calc(1.255rem_+_0.06vw)];
 }
-.h3,
 h3 {
   @apply text-[1.1rem];
-}
-.h4,
-h4 {
-  @apply text-[0.95rem];
-}
-.h5,
-h5 {
-  @apply text-[0.9rem];
-}
-.h6,
-h6 {
-  @apply text-[0.85rem];
 }
 p {
   @apply mt-0 mb-4;
 }
-/* ol,ul {
-        @apply pl-8
-    } */
-ol,
 ul {
   @apply mt-0 mb-4;
 }
-ol ol,
-ol ul,
-ul ol,
 ul ul {
   @apply mb-0;
 }
@@ -989,50 +838,17 @@ dt {
 dd {
   @apply ml-0 mb-2;
 }
-.small,
-small {
-  @apply text-[0.6rem];
-}
-.mark,
-mark {
-  @apply bg-[#fef1de] pt-[0.05rem] pb-[0.2rem] px-[0.4rem];
-}
 a {
   @apply text-[rgba(63,120,224,1)] no-underline;
 }
 a:hover {
   color: #3f78e0;
 }
-a:not([href]):not([class]),
-a:not([href]):not([class]):hover {
-  @apply text-inherit no-underline;
-}
-code,
-kbd,
-pre,
-samp {
+code {
   @apply text-[1em] font-Monospace;
-}
-pre {
-  @apply block overflow-auto text-[0.65rem] text-[#273444] mt-0 mb-4;
-}
-pre code {
-  @apply text-[inherit] text-inherit break-normal;
 }
 code {
   @apply text-[0.65rem] text-[#60697b] [word-wrap:break-word];
-}
-a > code {
-  @apply text-inherit;
-}
-kbd {
-  @apply text-[0.65rem] text-[#60697b] bg-[#60697b] px-1.5 py-[0.1875rem] rounded-[0.2rem];
-}
-kbd kbd {
-  @apply text-[1em] p-0;
-}
-figure {
-  @apply mt-0 mb-4 mx-0;
 }
 img,
 svg {
@@ -1040,25 +856,6 @@ svg {
 }
 img {
   @apply max-w-[inherit];
-}
-table {
-  @apply border-collapse;
-  caption-side: bottom;
-}
-caption {
-  @apply text-[#aab0bc] text-left py-[0.9rem];
-}
-th {
-  @apply [text-align:inherit];
-  text-align: -webkit-match-parent;
-}
-tbody,
-td,
-tfoot,
-th,
-thead,
-tr {
-  @apply border-inherit border-solid border-0;
 }
 label {
   @apply inline-block;
@@ -1071,9 +868,7 @@ button:focus:not(:focus-visible) {
 }
 button,
 input,
-optgroup,
-select,
-textarea {
+select {
   @apply text-[inherit] leading-[inherit] m-0;
   font-family: inherit;
 }
@@ -1081,28 +876,15 @@ button,
 select {
   @apply normal-case;
 }
-[role="button"] {
-  @apply cursor-pointer;
-}
 select {
   @apply [word-wrap:normal];
 }
-select:disabled {
-  @apply opacity-100;
-}
-[list]:not([type="date"]):not([type="datetime-local"]):not([type="month"]):not(
-    [type="week"]
-  ):not([type="time"])::-webkit-calendar-picker-indicator {
-  @apply hidden;
-}
 [type="button"],
-[type="reset"],
 [type="submit"],
 button {
   -webkit-appearance: button;
 }
 [type="button"]:not(:disabled),
-[type="reset"]:not(:disabled),
 [type="submit"]:not(:disabled),
 button:not(:disabled) {
   @apply cursor-pointer;
@@ -1110,104 +892,25 @@ button:not(:disabled) {
 ::-moz-focus-inner {
   @apply p-0 border-none;
 }
-textarea {
-  @apply resize-y focus-visible:!outline-0;
-}
 input {
   @apply focus-visible:!outline-0;
 }
-fieldset {
-  @apply min-w-0 m-0 p-0 border-0;
-}
-legend {
-  @apply float-left w-full text-[calc(1.275rem_+_0.3vw)] leading-[inherit] mb-2 p-0 xl:text-[24px];
-}
-legend + * {
-  @apply clear-left;
-}
-::-webkit-datetime-edit-day-field,
-::-webkit-datetime-edit-fields-wrapper,
-::-webkit-datetime-edit-hour-field,
-::-webkit-datetime-edit-minute,
-::-webkit-datetime-edit-month-field,
-::-webkit-datetime-edit-text,
-::-webkit-datetime-edit-year-field {
-  @apply p-0;
-}
+/* The fairness verifier's nonce field is <input type="number">. */
 ::-webkit-inner-spin-button {
   @apply h-auto;
 }
-[type="search"] {
-  @apply -outline-offset-2;
-  -webkit-appearance: textfield;
-}
-::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-::-webkit-color-swatch-wrapper {
-  @apply p-0;
-}
-::file-selector-button {
-  font: inherit;
-  -webkit-appearance: button;
-}
-output {
-  @apply inline-block;
-}
+/* The game modal's <iframe>. */
 iframe {
   @apply border-0;
-}
-summary {
-  @apply list-item cursor-pointer;
-}
-progress {
-  @apply align-baseline;
 }
 [hidden] {
   @apply hidden;
 }
-.blockquote {
-  @apply text-[0.85rem] mb-4;
-}
-.blockquote > :last-child {
-  @apply mb-0;
-}
-.figure {
-  @apply inline-block;
-}
-.table {
-  @apply text-[#60697b] bg-transparent w-full align-top border-[#edeff3] mb-4;
-}
-.table > :not(caption) > * > * {
-  @apply text-[#60697b] bg-transparent p-[0.9rem] border-b;
-}
-.table > tbody {
-  vertical-align: inherit;
-}
-.table > thead {
-  @apply align-bottom;
-}
-.table-bordered > :not(caption) > * {
-  border-width: 1px 0;
-}
-.table-bordered > :not(caption) > * > * {
-  border-width: 0 1px;
-}
-.table-borderless > :not(caption) > * > * {
-  @apply border-b-0;
-}
-.table-borderless > :not(:first-child) {
-  @apply border-t-0;
-}
-.table-striped > tbody > tr:nth-of-type(odd) > * {
-  @apply text-[#60697b] bg-[rgba(164,174,198,0.07)];
-}
 
-/* Preserved from the original template stylesheet: strips the native
-   <select>/<textarea> chrome so the FairnessVerifier dropdown matches the
-   dark-studio inputs (it uses Tailwind classes, not .form-select). */
-select,
-textarea {
+/* Preserved from the original template stylesheet: strips the native <select>
+   chrome so the FairnessVerifier dropdown matches the dark-studio inputs (it
+   uses Tailwind classes, not .form-select). */
+select {
   -webkit-appearance: none !important;
 }
 
