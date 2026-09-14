@@ -191,21 +191,23 @@ function CardBody({ game, interactive = false }) {
   return (
     <div
       ref={ref}
-      className="b4w-bezel overflow-hidden rounded-xl border border-line bg-panel-high"
+      className="b4w-bezel relative overflow-hidden rounded-xl border border-line bg-panel-high"
     >
-      <div className="relative aspect-square overflow-hidden">
-        <Image
-          src={game.image}
-          alt={interactive ? `${game.title} key art` : ""}
-          fill
-          sizes="(min-width:1024px) 320px, 62vw"
-          className="b4w-cover-art object-cover"
-        />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel-high to-transparent" />
-        <span aria-hidden="true" className="b4w-glare" />
+      {/* Recess — see the matching note in GameCard. The tile's surface and the
+          key art are two separate things. */}
+      <div className="relative aspect-square overflow-hidden bg-bg p-2.5">
+        <div className="relative h-full w-full overflow-hidden rounded-lg border border-line/50">
+          <Image
+            src={game.image}
+            alt={interactive ? `${game.title} key art` : ""}
+            fill
+            sizes="(min-width:1024px) 320px, 62vw"
+            className="b4w-cover-art object-cover"
+          />
+        </div>
 
         {game.isNew && (
-          <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">
+          <span className="absolute left-4 top-4 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">
             New
           </span>
         )}
@@ -258,6 +260,11 @@ function CardBody({ game, interactive = false }) {
           )}
         </dl>
       </div>
+
+      {/* Spans the bezel because that is the box useGlare measures --gx/--gy
+          against; anchored to the smaller art well the light would land off
+          the pointer. */}
+      <span aria-hidden="true" className="b4w-glare" />
     </div>
   );
 }
