@@ -7,7 +7,6 @@ import { ArrowRight } from "./Icons";
 import { games } from "@/data/games";
 
 const live = games.filter((g) => g.status === "active");
-const PREVIEW = live.slice(0, 8);
 
 // A taste of the catalogue on the home page — the full grid lives at /games, so
 // this shows eight and gets out of the way. GameGrid still handles ?game= links
@@ -50,7 +49,7 @@ export default function GamesPreview() {
         </Link> */}
 
         <div className="order-2 w-full md:order-3">
-          <GameGrid items={PREVIEW} />
+          <GameGrid items={live} limit={8} filterable />
           <Link
             href="/games"
             className="b4w-sheen mx-auto mt-8 flex w-fit items-center gap-2 rounded-md bg-brand-strong px-7 py-4 font-SpaceGrotesk text-[14px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_20px_-8px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"

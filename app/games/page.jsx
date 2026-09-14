@@ -38,7 +38,7 @@ export default function GamesPage() {
             All originals
           </h2>
         </Reveal>
-        <GameGrid items={games} />
+        <GameGrid items={games} filterable />
       </section>
 
       <ClosingCta />
