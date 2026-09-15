@@ -258,25 +258,6 @@ export const games = [
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9abd83cf9b4542909b127c814eba03cb&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
-    id: "18",
-    category: "Roulette",
-    title: "American Roulette",
-    // Two words, so the title can't produce the URL segment on its own.
-    slug: "american-roulette",
-    banner: americanRouletteBanner,
-    bannerWide: americanRouletteWide,
-    backdrop: americanRouletteBackdrop,
-    // 36/38 = 94.74%. The double zero is the whole difference between the two
-    // tables, and it costs the player 2.56 points of RTP.
-    rtp: "94.74%",
-    volatility: "Low–High",
-    maxMultiplier: 36, // american-roulette/game.spec.yaml maxWin
-    image: americanRoulette,
-    status: "active",
-    isNew: true,
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=35886cb3d441489a845c089d47264058&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
-  },
-  {
     id: "19",
     category: "Streak",
     title: "Coin",
@@ -341,6 +322,25 @@ export const games = [
     image: plinko,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=78106d6ed4d247fbb7ac517ad8aa40d5&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
+    id: "18",
+    category: "Roulette",
+    title: "American Roulette",
+    // Two words, so the title can't produce the URL segment on its own.
+    slug: "american-roulette",
+    banner: americanRouletteBanner,
+    bannerWide: americanRouletteWide,
+    backdrop: americanRouletteBackdrop,
+    // 36/38 = 94.74%. The double zero is the whole difference between the two
+    // tables, and it costs the player 2.56 points of RTP.
+    rtp: "94.74%",
+    volatility: "Low–High",
+    maxMultiplier: 36, // american-roulette/game.spec.yaml maxWin
+    image: americanRoulette,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=35886cb3d441489a845c089d47264058&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
     id: "4",
@@ -411,13 +411,5 @@ export const games = [
     image: limbo,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=17709360010649fa8f081e5c9920c42c&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
-  },
-  {
-    id: "3",
-    category: "Minefield",
-    title: "Chicken",
-    image: chicken,
-    status: "09/2026",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game={}&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
 ];
