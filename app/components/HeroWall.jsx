@@ -28,6 +28,8 @@ const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
 // three copies of a carousel is how carousels get a bad name.
 export default function HeroWall() {
   const stageRef = useRef(null);
+  const deckRef = useRef(null);
+  const swipedRef = useRef(false);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -67,6 +69,106 @@ export default function HeroWall() {
     );
     return () => clearInterval(id);
   }, [reduced, paused, index]);
+
+  // Swipe. The deck is a hand of cards, so on a phone the obvious thing to do
+  // to it is push one aside — and until this, the only way to move it was to hit
+  // a neighbour, which is a small target sitting right next to the big one you
+  // are trying not to hit.
+  //
+  // The cards travel with the finger rather than waiting for the gesture to end
+  // and then jumping. `touch-action: pan-y pinch-zoom` on the deck is what makes
+  // that safe: the browser keeps scrolling and zooming for itself and hands us
+  // the horizontal axis only, so there is no preventDefault anywhere here and no
+  // way for this to trap the page.
+  //
+  // Touch and pen only. On a fine pointer the deck already answers to hover, its
+  // neighbours are easy targets, and a click-drag would be fighting useTilt over
+  // the same pointermove.
+  useEffect(() => {
+    const el = deckRef.current;
+    if (!el || LIVE.length < 2) return;
+
+    let g = null; // the gesture in flight
+    const offset = (px) => el.style.setProperty("--drag", `${Math.round(px)}px`);
+
+    const release = (dir) => {
+      if (!g) return;
+      const swiped = g.axis === "x";
+      g = null;
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onCancel);
+      if (!swiped) return;
+      // The click the browser fires after the finger lifts is still coming, and
+      // it lands on whatever card the swipe started on. Mark it for swallowing
+      // (see onClick) or every swipe also launches a game.
+      swipedRef.current = true;
+      el.removeAttribute("data-dragging");
+      offset(0);
+      setPaused(false);
+      if (dir) setIndex((i) => (i + dir + LIVE.length) % LIVE.length);
+    };
+
+    const onMove = (e) => {
+      if (!g || e.pointerId !== g.id) return;
+      const dx = e.clientX - g.x;
+      const dy = e.clientY - g.y;
+
+      // Which axis this is gets decided once, at the first movement big enough
+      // to have a direction, and is never revisited — a gesture that began as a
+      // scroll must not become a swipe halfway down the page.
+      if (!g.axis) {
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+        if (Math.abs(dy) >= Math.abs(dx)) return release(0);
+        g.axis = "x";
+        el.setAttribute("data-dragging", "");
+        setPaused(true);
+      }
+
+      g.dx = dx;
+      offset(dx);
+    };
+
+    const onUp = (e) => {
+      if (!g || e.pointerId !== g.id) return;
+      // Distance OR speed: a deliberate drag past a fifth of the deck, or a
+      // flick that never travelled far because it was over so quickly.
+      const far = Math.abs(g.dx) > el.offsetWidth * 0.18;
+      const fast = Math.abs(g.dx) > 24 && e.timeStamp - g.t < 300;
+      release(far || fast ? (g.dx < 0 ? 1 : -1) : 0);
+    };
+
+    // Not `release` itself: the event would arrive as `dir` and a PointerEvent
+    // is truthy.
+    const onCancel = () => release(0);
+
+    const onDown = (e) => {
+      swipedRef.current = false;
+      if (g || e.pointerType === "mouse") return;
+      g = { id: e.pointerId, x: e.clientX, y: e.clientY, dx: 0, t: e.timeStamp, axis: null };
+      // On window, not the deck: a finger routinely leaves a 460px-wide card
+      // mid-swipe, and listeners on the element stop hearing it the moment it
+      // does — including the pointerup that would end the gesture.
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+      window.addEventListener("pointercancel", onCancel);
+    };
+
+    const onClick = (e) => {
+      if (!swipedRef.current) return;
+      swipedRef.current = false;
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    el.addEventListener("pointerdown", onDown);
+    el.addEventListener("click", onClick, true);
+    return () => {
+      el.removeEventListener("pointerdown", onDown);
+      el.removeEventListener("click", onClick, true);
+      release(0);
+    };
+  }, []);
 
   const go = (next) => setIndex(((next % LIVE.length) + LIVE.length) % LIVE.length);
 
@@ -126,7 +228,7 @@ export default function HeroWall() {
         }}
       />
 
-      <div className="b4w-deck relative mx-auto max-w-[460px]">
+      <div ref={deckRef} className="b4w-deck relative mx-auto max-w-[460px]">
         {/* Invisible sizer in normal flow: the deck's height comes from a real
             card, so it adapts to the caption instead of needing a magic aspect
             ratio that breaks the first time a title wraps. */}

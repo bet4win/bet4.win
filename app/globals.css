@@ -1266,6 +1266,17 @@ html.js .b4w-magnitude[data-grown] {
 .b4w-deck {
   perspective: 900px;
   transform-style: preserve-3d;
+  /* The swipe contract, and the reason HeroWall never calls preventDefault: the
+     browser keeps the vertical axis and the pinch, and hands us the horizontal
+     one. A page that cannot be scrolled or zoomed with a finger on the hero
+     would be a bad trade for a carousel gesture. */
+  touch-action: pan-y pinch-zoom;
+}
+/* Cards follow the finger 1:1 while a swipe is in flight, so no easing — the
+   deck is being held, not played. The transition comes back on release, which
+   is what carries the cards the rest of the way to their new slots. */
+.b4w-deck[data-dragging] .b4w-cover {
+  transition: none;
 }
 /* The pointer tilt lives on .b4w-cover-tilt, one element inside the card, and
  * NOT on .b4w-cover itself.
@@ -1316,7 +1327,14 @@ html.js .b4w-magnitude[data-grown] {
   /* Wider on phones so titles like "Video Poker" fit the caption instead of
      truncating; the neighbours still peek, just by less. */
   width: 78%;
-  transform: translateX(calc(-50% + (var(--o, 0) * 63.5%)))
+  /* --drag is the live swipe offset, published on .b4w-deck by HeroWall. It
+     comes FIRST so it is a shift in the deck's own space rather than along the
+     axis this card has already been rotated onto — and because it is applied
+     before translateZ, the perspective foreshortens it, so the cards further
+     back travel slightly less than the one under the finger. That parallax is
+     free and it is most of why the gesture reads as moving a deck. */
+  transform: translateX(var(--drag, 0px))
+    translateX(calc(-50% + (var(--o, 0) * 63.5%)))
     translateZ(calc(var(--d, 0) * -200px)) scale(var(--hs, 1))
     rotateY(calc(var(--o, 0) * -17deg));
   /* So the tilt on the child composes in the deck's 3D space rather than being
@@ -1334,7 +1352,8 @@ html.js .b4w-magnitude[data-grown] {
    scenery behind it. --tilt-* are published on the stage by useTilt and inherit
    down, so this rule is the only thing that decides who listens. */
 .b4w-cover[data-role="centre"] {
-  transform: translateX(-50%) translateZ(0) scale(var(--hs, 1));
+  transform: translateX(var(--drag, 0px)) translateX(-50%) translateZ(0)
+    scale(var(--hs, 1));
   /* Mild overshoot on the way in — the card lands rather than glides. */
   transition:
     transform 0.5s cubic-bezier(0.34, 1.32, 0.64, 1),
@@ -1581,8 +1600,12 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-cover-detail {
     transition: none;
   }
+  /* --drag stays. A card following a finger 1:1 is direct manipulation, not
+     animation — taking it away here would make the swipe feel broken to exactly
+     the people who asked for less motion, not calmer. */
   .b4w-cover[data-role="centre"] {
-    transform: translateX(-50%) translateZ(0) scale(var(--hs, 1));
+    transform: translateX(var(--drag, 0px)) translateX(-50%) translateZ(0)
+      scale(var(--hs, 1));
   }
   .b4w-card-float,
   .b4w-spot-back,
