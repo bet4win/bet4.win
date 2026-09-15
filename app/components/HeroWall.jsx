@@ -121,7 +121,7 @@ export default function HeroWall() {
           // only non-blue light in the hero and it is what makes the key art
           // read as lit rather than pasted on.
           background:
-            "radial-gradient(circle at 30% 28%, rgba(51,88,230,0.30), transparent 55%), radial-gradient(circle at 74% 72%, rgba(58,227,152,0.14), transparent 52%)",
+            "radial-gradient(circle at 30% 28%, rgba(33,105,222,0.30), transparent 55%), radial-gradient(circle at 74% 72%, rgba(58,227,152,0.14), transparent 52%)",
         }}
       />
 

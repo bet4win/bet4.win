@@ -66,7 +66,11 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
 
   const tile = (
     <article
-      className={`b4w-card b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-panel-high text-left ${
+      // `border` without `border-line`: the resting colour is set by .b4w-card
+      // in globals.css so that .b4w-card--live:hover can override it. A
+      // border-line utility here would win on layer order alone — utilities beat
+      // components whatever the specificity — and the hover warm never landed.
+      className={`b4w-card b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-panel-high text-left ${
         live ? "b4w-card--live" : ""
       }`}
     >

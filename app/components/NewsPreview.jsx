@@ -24,7 +24,7 @@ export default function NewsPreview() {
 
   return (
     <Section
-      surface="raised"
+      surface="base"
       rule
       aria-labelledby="news-heading"
       innerClassName="py-16 md:py-20"

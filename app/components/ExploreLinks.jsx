@@ -48,9 +48,9 @@ export default function ExploreLinks() {
 
   return (
     <Section
-      // Base — see the note in Proof.jsx. The alternation shifted by one band
-      // when the roadmap section was added above it.
-      surface="base"
+      // Raised — see the note in GamesPreview.jsx. The alternation inverted
+      // when the catalogue moved to the floor.
+      surface="raised"
       rule
       aria-labelledby="explore-heading"
       innerClassName="py-16 md:py-20"
@@ -90,7 +90,11 @@ function Door({
   return (
     <Link
       href={href}
-      className={`b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-panel-high transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-accent/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel${
+      // The lift, the shadow and the timing live on .b4w-door in globals.css.
+      // The border warm has to stay a utility: `border-line` below is one too,
+      // and the utilities layer outranks the components layer whatever the
+      // specificity, so a components-layer border-color would never land.
+      className={`b4w-door b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-panel-high hover:border-accent/45 focus-visible:border-accent/45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel${
         className ? ` ${className}` : ""
       }`}
     >
@@ -134,7 +138,10 @@ function Door({
             different numbers of lines. */}
         <span className="mt-auto inline-flex items-center gap-1.5 pt-5 font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-ink">
           Read more
-          <ArrowRight className="h-4 w-4 text-accent transition-transform duration-300 group-hover:translate-x-1" />
+          {/* transition-[translate], not transition-transform: Tailwind v4's
+              translate-x-1 sets the `translate` property, which a transform
+              transition does not cover. The arrow was jumping, not sliding. */}
+          <ArrowRight className="h-4 w-4 text-accent transition-[translate] duration-300 group-hover:translate-x-1" />
         </span>
       </div>
     </Link>
@@ -146,7 +153,7 @@ function Door({
 // One endpoint, wired out to the live catalogue. The count under the stack is
 // the real number of live titles, so the picture can't drift from the data.
 function PlatformArt() {
-  const rows = [0, 1, 2, 3, 4];
+  const rows = [0, 1, 2, 3, 4,];
   return (
     <div className="absolute inset-0 flex items-center justify-center px-5">
       <svg
@@ -170,7 +177,12 @@ function PlatformArt() {
                 stroke="var(--color-accent)"
                 strokeWidth="1.75"
                 strokeLinecap="round"
-                style={{ animationDelay: `${i * 0.34}s` }}
+                // Negative, so the five wires open already staggered instead of
+                // sitting still until a positive delay elapses. What the eye
+                // reads is the 12-unit dash period (1.125s at this speed), not
+                // the 4.5s cycle — 0.9s steps land the rows 1/5 of a dash apart,
+                // so no two wires ever show their packets in line.
+                style={{ animationDelay: `-${i * 0.9}s` }}
               />
             </g>
           );
@@ -215,12 +227,12 @@ function PlatformArt() {
         <text
           className="font-JetBrainsMono"
           x="259"
-          y="132"
+          y="138"
           textAnchor="middle"
           fontSize="10"
           fill="var(--color-faint)"
         >
-          {LIVE_COUNT} originals
+          {LIVE_COUNT} games
         </text>
       </svg>
     </div>

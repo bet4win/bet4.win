@@ -10,7 +10,7 @@ export default function ClosingCta() {
   return (
     <Section
       id="contact"
-      surface="base"
+      surface="raised"
       rule
       texture
       motes={8}

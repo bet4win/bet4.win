@@ -36,9 +36,16 @@
    * of blue: it has nowhere to go, so every card on it reads as the same grey
    * box a shade lighter. Real chroma in the floor gives the raised panels
    * somewhere to travel, and the value steps still match the slate ones at
-   * every hop — bg/panel 1.184 (slate was 1.190), panel/card 1.298 (1.279),
-   * floor to card 1.537 (1.523). Colour is doing the separating now as well as
-   * value, which is why the same arithmetic reads as a much bigger change.
+   * every hop — bg/panel 1.184, panel/card 1.252, floor to card 1.483. Colour
+   * is doing the separating now as well as value, which is why the same
+   * arithmetic reads as a much bigger change.
+   *
+   * WHERE THE CARD STEP IS SPENT. panel/card is the smaller of the two numbers
+   * on purpose: the catalogue grid sits on the FLOOR, not on the panel, so the
+   * step a game card actually gets is 1.483. On the panel it was 1.30 and the
+   * tiles read as a lighter grid drawn on a light band rather than as objects
+   * resting on a surface. Moving that section is what bought the contrast; see
+   * the note in GamesPreview.jsx.
    *
    * Navy specifically, and NOT the indigo-violet an earlier pass used: violet
    * with a warm accent is Revolver's palette, and a competitor's colours are
@@ -52,17 +59,40 @@
   --color-bg: #060a16;
   --color-panel: #0f1c3f;
   --color-panel-low: #03050d;
-  --color-panel-high: #1b2f63;
-  --color-line: #2f4a93;
+  /* Was #1b2f63, which measured 57% saturation and read as blue-grey — a slate
+     slab with a tint rather than a navy card. Same lightness (25%), ten more
+     points of chroma, so it loses the grey without losing the step it needs
+     against the floor. It is NOT darker: deepening it to ~#101f52 does read
+     quieter, but it drops the card/floor step to 1.26 — below where it was
+     before the catalogue moved, which would have undone the swap. */
+  --color-panel-high: #152a6b;
+  --color-line: #2b5090;
   --color-ink: #f1f4fc;
-  --color-muted: #a6b5da;
-  --color-faint: #8f9fc8;
+  /* The text ramp is NEARLY neutral, and that is the point. It used to be
+   * #a6b5da / #8f9fc8 — 41% and 34% saturation at 223°, which is periwinkle. On
+   * a page where body copy is the largest area of coloured pixels there is,
+   * that tinted every paragraph lilac and the whole site read lavender rather
+   * than royal blue. At 20% and 18% the copy still reads cool rather than grey,
+   * and the blue below is once again the only blue on the page. Luminance is
+   * unchanged to within 1%, so every contrast ratio the old pair passed, this
+   * one passes: muted is 9.8:1 on the floor and 8.2:1 on the panel. */
+  --color-muted: #acb7c8;
+  --color-faint: #99a5b8;
   /* brand — the logo's own blue (#4270ff), split into a text weight and a fill
    * weight. The fill is darker than the mark because white on the mark's blue
-   * measures 4.21:1, under the 4.5 a 12px button label needs; #3358e6 is 5.71. */
-  --color-brand: #7e9bff;
-  --color-brand-strong: #3358e6;
-  --color-brand-deep: #2743b8;
+   * measures 4.21:1, under the 4.5 a 12px button label needs.
+   *
+   * HUE 217, not 226. Every blue here used to sit at 226-228°, which is the
+   * violet side of blue, and at the lightness the text weight needs (#7e9bff was
+   * 75%) that is periwinkle, not royal. Pulling the family to ~217 is what makes
+   * it read as blue rather than as pale violet; the text weight also comes down
+   * from 75% to 68% lightness, which is as dark as it can go and still clear
+   * 4.5:1 for the 13px mono in the integration sample (it measures 4.8:1 on a
+   * card). The fill weight is the one that is properly royal — 74% saturation at
+   * 50% lightness — and it carries white at 5.1:1. */
+  --color-brand: #5c9bff;
+  --color-brand-strong: #2169de;
+  --color-brand-deep: #1a52b4;
   /* accent — the one signal colour. It replaces the cyan this palette used to
    * run on: cyan is the default "technology" hue on a dark page, and it sat on
    * the eyebrows, the figures, the fairness layer and the nav at once, all at
@@ -239,10 +269,16 @@
   }
 }
 
-/* Packets moving along the connector lines in the Platform door's diagram. */
+/* Packets moving along the connector lines in the Platform door's diagram.
+   The travel MUST be a whole number of dash periods, or the loop is not a loop:
+   the pattern is `3 9`, so it repeats every 12 units, and the old -40 left the
+   last iteration 4 units short of lining up with the first. Every 3.8s the
+   packets jumped backwards. -48 is four periods, so the end state is pixel-for-
+   pixel the start state and the dashes just keep going. Change one of these two
+   numbers and you change the other. */
 @keyframes b4w-flow {
   to {
-    stroke-dashoffset: -40;
+    stroke-dashoffset: -48;
   }
 }
 
@@ -268,15 +304,24 @@
 }
 
 /* One character of a hash settling. Used on the Provably-fair door, where the
-   point being made is that a committed value resolves to exactly one result. */
+   point being made is that a committed value resolves to exactly one result.
+   The row has to come back DOWN inside the cycle. It used to end the loop at
+   opacity 1 and start it at 0.25, so every 4.5s the line blinked off in a single
+   frame — which reads as a dropped render, not as a value resolving. It now
+   holds dim, resolves, holds, and dims again, ending where it started. The rise
+   is quicker than the fall on purpose: settling is decisive, forgetting isn't. */
 @keyframes b4w-settle {
   0%,
-  70% {
+  6% {
     opacity: 0.25;
   }
-  85%,
-  100% {
+  24%,
+  64% {
     opacity: 1;
+  }
+  86%,
+  100% {
+    opacity: 0.25;
   }
 }
 
@@ -462,17 +507,17 @@ body.age-gate-locked {
   color: #ffffff;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    0 8px 26px -12px rgba(51, 88, 230, 0.9);
+    0 8px 26px -12px rgba(33, 105, 222, 0.9);
 }
 .b4w-btn--primary:hover {
   background-image: linear-gradient(
     180deg,
-    #4a6dfa 0%,
+    #2e77e8 0%,
     var(--color-brand-strong) 100%
   );
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    0 12px 32px -12px rgba(51, 88, 230, 1);
+    0 12px 32px -12px rgba(33, 105, 222, 1);
 }
 
 /* Accent: mint, dark type. Reserved for the fairness terminal's own action —
@@ -699,6 +744,11 @@ html.js .b4w-magnitude[data-grown] {
 }
 
 .b4w-card {
+  /* The resting border colour belongs here, not to a `border-line` utility at
+     the call site. Utilities outrank components whatever the specificity, so
+     while the card carried one the hover rule below could never warm the border
+     — the lift and the glow arrived and the edge stayed cold. */
+  border-color: var(--color-line);
   transition:
     transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
     border-color 0.35s ease,
@@ -780,8 +830,85 @@ html.js .b4w-magnitude[data-grown] {
   animation: b4w-rule-sweep 11s linear infinite;
 }
 
-/* Background depth: a fine grid, radially masked so it reads as atmosphere at
-   the top of a section and has faded out before it reaches the content. */
+/* --- Background depth ------------------------------------------------------
+ * A lattice behind the top of a section, radially faded so it reads as
+ * atmosphere and is gone before it reaches the content.
+ *
+ * Three of them, all from the same family — hatched line, at three scales and
+ * two angles. A square grid, the thing every other product hero is wearing to
+ * the point where it now signals "generated" rather than "engineered", is not
+ * one of the three.
+ *
+ * The lattice is the MASK and the fade is the PAINT, rather than the other way
+ * round. That keeps it to a single mask layer, and it keeps the line colour on
+ * --color-line: an SVG in a data URI can't read a custom property, so a baked-in
+ * stroke colour would quietly stop tracking the theme.
+ *
+ * Each variant sets three things: the mask image, its size, and a weight. The
+ * weight is not decoration — the tight weave lays down roughly 13× the line
+ * length per unit area that the open cross does, so without compensation the
+ * three sections would read as three volumes rather than three materials.
+ */
+/* WEAVE — the default, and so the hero and the interior-page openers that stand
+ * in for it. It lives on the base class rather than in a modifier so that a
+ * section wearing .b4w-grid alone still gets a lattice: with --b4w-lattice
+ * unset, mask-image resolves to none and the fade paints as a solid wash.
+ *
+ * A crosshatch pulled tight enough that it stops reading as drawn lines and
+ * starts reading as a woven surface — closer to engraved security printing than
+ * to a diagram, which suits a page whose whole argument is "this is certified".
+ *
+ * An SVG tile rather than a pair of repeating-linear-gradients, which is what
+ * the two coarser variants below use. At this pitch gradients moiré badly: the
+ * browser evaluates the gradient per pixel across the whole box, so the phase of
+ * a 1px band drifts and the field breaks into wavy light and dark stripes. A
+ * tile is rasterised once and stamped, so every repeat is identical.
+ *
+ * The tile is an 8×8 X drawn corner to corner, which tiles into a continuous
+ * ±45° crosshatch of perpendicular pitch 8/sqrt(2) = 5.66px. Both line families
+ * stay unbroken across tile edges because a diagonal leaving one corner is the
+ * diagonal entering the next tile's opposite corner. The paths overshoot to -1
+ * and 9 so the corners themselves are covered rather than being two half-strokes
+ * meeting; the tile clips the excess. */
+.b4w-grid {
+  --b4w-lattice-weight: 0.2;
+  /* Held in a custom property only so the prefixed and unprefixed mask-image
+     declarations below don't have to carry the same URL twice. */
+  --b4w-lattice: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='none' stroke='%23fff'%3E%3Cpath d='M-1 -1L9 9'/%3E%3Cpath d='M-1 9L9 -1'/%3E%3C/g%3E%3C/svg%3E");
+  --b4w-lattice-size: 8px 8px;
+}
+
+/* HATCH — the roadmap.
+ *
+ * Same -45° drafting hatch the roadmap's own card plates wear (.b4w-plate), at
+ * architectural scale instead of 10px. The section is titled "In production";
+ * hatch is what you draw on something that isn't built yet, and the cards inside
+ * it are literally placeholders for art that does not exist. The section and its
+ * contents end up made of the same material. */
+.b4w-grid--hatch {
+  --b4w-lattice: repeating-linear-gradient(-45deg, #000 0 1px, transparent 1px 16px);
+  /* Back to auto — a gradient carries its own geometry and sizes to the box,
+     and the weave's 8×8 tile would squash it. */
+  --b4w-lattice-size: auto;
+  --b4w-lattice-weight: 0.24;
+}
+
+/* CROSS — the diligence section.
+ *
+ * The same crosshatch as the default, opened out by a factor of four so it reads
+ * as drafted diamonds rather than as cloth: ruled ledger, work checked by hand.
+ * It sits behind "Checkable, not claimable", a section of figures somebody is
+ * meant to audit rather than admire. Coarse enough that gradients are safe here
+ * — see the note on moiré above, which only bites at the tight pitch. */
+.b4w-grid--cross {
+  --b4w-lattice: repeating-linear-gradient(45deg, #000 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(-45deg, #000 0 1px, transparent 1px 22px);
+  /* Two mask layers, and the default mask-composite of `add` is what makes them
+     a crosshatch rather than an intersection of two single hatches. */
+  --b4w-lattice-size: auto;
+  --b4w-lattice-weight: 0.16;
+}
+
 .b4w-grid::before {
   content: "";
   position: absolute;
@@ -789,27 +916,16 @@ html.js .b4w-magnitude[data-grown] {
   /* No z-index on purpose — see the note in Section.jsx. This paints first
      simply by being first in tree order. */
   pointer-events: none;
-  background-image: repeating-linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--color-line) 60%, transparent) 0 1px,
-      transparent 1px 72px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      color-mix(in srgb, var(--color-line) 60%, transparent) 0 1px,
-      transparent 1px 72px
-    );
-  -webkit-mask-image: radial-gradient(
+  background-image: radial-gradient(
     ellipse 78% 62% at 50% 0%,
-    #000 0%,
+    color-mix(in srgb, var(--color-line) 60%, transparent) 0%,
     transparent 72%
   );
-  mask-image: radial-gradient(
-    ellipse 78% 62% at 50% 0%,
-    #000 0%,
-    transparent 72%
-  );
-  opacity: 0.55;
+  -webkit-mask-image: var(--b4w-lattice);
+  mask-image: var(--b4w-lattice);
+  -webkit-mask-size: var(--b4w-lattice-size);
+  mask-size: var(--b4w-lattice-size);
+  opacity: var(--b4w-lattice-weight);
 }
 
 /* Outlined display-face watermark behind a section heading. Decorative only —
@@ -902,6 +1018,40 @@ html.js .b4w-magnitude[data-grown] {
  * from CSS and SVG so they cost nothing to ship and can move.
  */
 
+/* The card's hover, written out here rather than as utilities on the <Link>.
+ *
+ * It used to be `transition-[border-color,transform]` + `hover:-translate-y-1`,
+ * which looks correct and does nothing: Tailwind v4 compiles -translate-y-1 to
+ * the `translate` PROPERTY, not to a `transform` function, and `transform` and
+ * `translate` are two different animatable properties. The card was transitioning
+ * a property nothing set, so it teleported 4px and back. Same trap as the two
+ * rules both claiming `transform` on .b4w-card — see the note there.
+ *
+ * Shape and timing deliberately match .b4w-card--live:hover. Three cards that
+ * each invent their own lift is three hover languages on one page.
+ *
+ * border-color is NOT set here on purpose. The <Link> carries Tailwind's
+ * `border-line`, which lives in the utilities layer and therefore outranks
+ * anything this components-layer rule says about it however specific — so the
+ * warm-on-hover stays a utility at the call site where it actually wins. */
+.b4w-door {
+  translate: 0 var(--door-lift, 0px);
+  transition:
+    translate 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+/* The keyboard gets the lift too. A focus ring says "you are here"; the lift is
+   what says "this is a thing that opens", and only the pointer was being told. */
+.b4w-door:hover,
+.b4w-door:focus-visible {
+  --door-lift: -7px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 24px 48px -20px rgba(0, 0, 0, 0.92),
+    0 0 34px -10px rgba(58, 227, 152, 0.24);
+}
+
 /* Packets travelling from the single endpoint out to the catalogue. The dash
    pattern IS the packet; the line underneath is drawn separately and stays
    still, so the path reads as a wire with traffic on it. */
@@ -909,8 +1059,11 @@ html.js .b4w-magnitude[data-grown] {
   stroke-dasharray: 3 9;
   /* Slow. Three diagrams animate in this block at once, and the packets are the
      only one of the three that actually travels — at 2.6s they pulled the eye
-     off the copy beside them. */
-  animation: b4w-flow 3.8s linear infinite;
+     off the copy beside them.
+     4.5s rather than the old 3.8s because the travel went from 40 units to 48
+     to close the loop (see @keyframes b4w-flow); the pair holds the packets at
+     the same ~10.6 units/sec they were already moving at. */
+  animation: b4w-flow 4.5s linear infinite;
   opacity: 0.85;
 }
 
@@ -1249,6 +1402,16 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-card--live:hover,
   :focus-visible > .b4w-card--live {
     --lift: 0px;
+  }
+  /* The door keeps its border warm and its glow — those are state, not motion.
+     Only the travel goes. */
+  .b4w-door {
+    transition: none;
+    translate: none;
+  }
+  .b4w-door:hover,
+  .b4w-door:focus-visible {
+    --door-lift: 0px;
   }
   .b4w-event-slide {
     transition: none;

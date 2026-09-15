@@ -56,7 +56,7 @@ export function bookingUrl(medium, campaign) {
 // their banner makes our own consent management responsible for their cookies,
 // and this site's consent layer covers our analytics, not theirs.
 export const BOOKING_EMBED_COLOURS = {
-  primary_color: "3358e6",
+  primary_color: "2169de",
 };
 
 // The URL handed to Calendly's inline widget. UTMs go through the widget's own

@@ -50,7 +50,10 @@ export default function FeaturedGame({ slug }) {
 
   return (
     <Section
-      surface="base"
+      // Raised. The spotlight card is a near-black well (bg-panel-low), so it
+      // reads deeper cut into the panel than it did sitting on the floor — and
+      // the catalogue below now takes the floor, where its cards need the step.
+      surface="raised"
       rule
       aria-labelledby="featured-heading"
       innerClassName="pb-14 pt-14 md:pt-16"

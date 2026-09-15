@@ -18,7 +18,12 @@ export default function GamesPreview() {
     // both fallbacks silently scrolled nowhere.
     <Section
       id="games"
-      surface="raised"
+      // Base, and this is the section the whole alternation below is arranged
+      // around: a card is bg-panel-high, and on bg-panel it sat at a 1.30 value
+      // step — a tile you had to look for. On the floor it is 1.54, and the
+      // grid reads as objects on a surface rather than as a lighter grid on a
+      // light band. Everything from the spotlight down flips to suit it.
+      surface="base"
       rule
       aria-labelledby="games-preview-heading"
       innerClassName="py-16 md:py-20"

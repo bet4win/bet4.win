@@ -21,6 +21,16 @@ const SURFACE_CLASS = {
   raised: "bg-panel",
 };
 
+// Which lattice sits behind the top of the section. Not a style knob — see the
+// block above .b4w-grid in globals.css for what each one is claiming about the
+// section it's behind. `depth` accepts `true` as shorthand for the tight weave,
+// which is the default an interior page opens on.
+const LATTICE_CLASS = {
+  weave: "b4w-grid",
+  hatch: "b4w-grid b4w-grid--hatch",
+  cross: "b4w-grid b4w-grid--cross",
+};
+
 export default function Section({
   surface = "base",
   rule = false,
@@ -51,12 +61,15 @@ export default function Section({
   // rather than hidden: see the note on .b4w-contain-x in globals.css for why
   // making these scroll containers breaks anchor scrolling.
   const clip = texture ? " b4w-contain" : depth ? " b4w-contain-x" : "";
+  // Looked up rather than interpolated, so a typo drops the layer entirely
+  // instead of emitting a .b4w-grid--nonsense that inherits the weave.
+  const lattice = depth ? LATTICE_CLASS[depth === true ? "weave" : depth] : "";
 
   return (
     <section
       ref={ref}
       className={`relative ${SURFACE_CLASS[surface]}${rule ? " b4w-rule" : ""}${
-        depth ? " b4w-grid" : ""
+        lattice ? ` ${lattice}` : ""
       }${clip}${className ? ` ${className}` : ""}`}
       {...rest}
     >

@@ -19,7 +19,7 @@ const ceiling = live.reduce((max, g) => Math.max(max, g.maxMultiplier || 0), 0);
 // original updates the page. See data/proof.js for why the other four slots both
 // competitors fill are deliberately empty here.
 const derived = [
-  { value: String(live.length), label: "Originals live", mono: true },
+  { value: String(live.length), label: "Games live", mono: true },
   ...(ceiling
     ? [{ value: `${fmt.format(ceiling)}×`, label: "Peak multiplier", mono: true }]
     : []),
@@ -34,12 +34,14 @@ const figures = [
 export default function Proof() {
   return (
     <Section
-      // Raised. The homepage surfaces strictly alternate, and the roadmap now
-      // sits between the catalogue and this one — so everything from here down
-      // flips to keep bands from doubling up. See the order in app/page.jsx.
-      surface="raised"
+      // Base. The homepage surfaces strictly alternate; the catalogue moved to
+      // the floor so its cards get a real step, which inverted every band below
+      // it. See the note in GamesPreview.jsx and the order in app/page.jsx.
+      surface="base"
       rule
-      depth
+      // Cross-hatch: ruled ledger, work checked by hand. These are figures
+      // somebody has to audit, not admire.
+      depth="cross"
       aria-labelledby="proof-heading"
       innerClassName="py-16 md:py-20"
     >

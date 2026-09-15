@@ -31,7 +31,7 @@ export default function NewsCard({ post, headingLevel: H = "h3" }) {
             alt=""
             fill
             sizes="(min-width:992px) 560px, (min-width:768px) 46vw, 92vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="object-cover transition-[scale] duration-500 group-hover:scale-[1.03]"
           />
         </div>
 
@@ -66,7 +66,7 @@ export default function NewsCard({ post, headingLevel: H = "h3" }) {
           <div className="mt-auto flex items-center justify-between gap-3 border-t border-line/70 pt-4">
             <span className="inline-flex items-center gap-2 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.08em] text-accent">
               Read
-              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight className="h-3.5 w-3.5 transition-[translate] duration-300 group-hover:translate-x-1" />
             </span>
             <span className="font-SpaceGrotesk text-[11px] uppercase tracking-[0.06em] text-faint">
               {readingMinutes(post)} min read

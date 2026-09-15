@@ -55,7 +55,7 @@ export default function Services() {
         {items.map(({ img, title, body }) => (
           <div
             key={title}
-            className="b4w-bezel group relative overflow-hidden rounded-2xl border border-line bg-panel-high p-6 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-accent/45"
+            className="b4w-bezel group relative overflow-hidden rounded-2xl border border-line bg-panel-high p-6 transition-[border-color,translate] duration-300 hover:-translate-y-1 hover:border-accent/45"
           >
             <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-accent/10 opacity-50 blur-[40px] transition-opacity duration-300 group-hover:opacity-100" />
             <Image
@@ -63,7 +63,7 @@ export default function Services() {
               alt=""
               width={256}
               height={256}
-              className="mb-5 w-full object-contain transition-transform duration-300 group-hover:scale-105"
+              className="mb-5 w-full object-contain transition-[scale] duration-300 group-hover:scale-105"
             />
             <h3 className="mb-2 font-SpaceGrotesk !text-[1.15rem] !font-semibold !text-ink">
               {title}

@@ -23,9 +23,12 @@ export default function Roadmap({ releases }) {
   return (
     <Section
       id="roadmap"
-      surface="base"
+      surface="raised"
       rule
-      depth
+      // The same -45° drafting hatch the plates on this section's own cards
+      // wear, at section scale. "In production" looks like something in
+      // production.
+      depth="hatch"
       aria-labelledby="roadmap-heading"
       innerClassName="py-16 md:py-20"
     >
