@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
 import Section from "./Section";
+import { ArrowRight } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
+import { bookingUrl } from "@/app/lib/site";
+import { openBooking } from "@/app/lib/booking";
 
 export default function ClosingCta() {
   return (
@@ -10,6 +13,7 @@ export default function ClosingCta() {
       surface="base"
       rule
       texture
+      motes={8}
       innerClassName="py-28 text-center"
     >
       <div className="mx-auto flex max-w-2xl flex-col items-center">
@@ -20,17 +24,30 @@ export default function ClosingCta() {
           Add a verifiably-fair originals suite to your brand.
         </p>
         <div className="flex flex-col items-center gap-3 sm:flex-row">
+          {/* The pair is deliberate: pick a slot, or just write to us. Somebody
+              who wants to ask a question before committing to half an hour of
+              someone's calendar still has a door. */}
           <a
-            href="mailto:info@bet4.win?subject=Demo%20request"
-            onClick={() => trackEvent("cta_click", { label: "book_demo", cta_type: "email" })}
-            className="rounded-md b4w-sheen bg-brand-strong px-7 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            href={bookingUrl("closing_cta")}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => {
+              trackEvent("cta_click", { label: "book_demo", cta_type: "booking" });
+              if (openBooking("closing_cta")) e.preventDefault();
+            }}
+            className="b4w-btn b4w-btn--primary b4w-btn--lg"
           >
             Book a demo
+            <ArrowRight className="h-4 w-4" />
           </a>
           <a
             href="mailto:info@bet4.win"
             onClick={() => trackEvent("cta_click", { label: "email_direct", cta_type: "email" })}
-            className="px-4 py-3 font-SpaceGrotesk text-[13px] !text-muted transition-colors hover:!text-ink focus-visible:outline-none focus-visible:!text-ink"
+            // The address is set in mono and NOT uppercased — it is a literal
+            // string someone may want to read character by character, which is
+            // the one thing the button family's tracking-out label style is
+            // worst at.
+            className="b4w-btn b4w-btn--quiet !font-JetBrainsMono !text-[13px] !normal-case !tracking-normal"
           >
             info@bet4.win
           </a>

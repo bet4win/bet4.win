@@ -66,7 +66,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
 
   const tile = (
     <article
-      className={`b4w-card b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-xl border border-line bg-panel-high text-left ${
+      className={`b4w-card b4w-bezel group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-panel-high text-left ${
         live ? "b4w-card--live" : ""
       }`}
     >
@@ -88,27 +88,27 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
         {/* Grounds the art into the card body so the seam doesn't read as a cut */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-panel-high to-transparent" />
         {game.isNew && (
-          // Opposite corner to the status pill so the two read as separate
-          // facts rather than a stack. Not aria-hidden — unlike the Live pill,
-          // this is information the card states nowhere else.
-          <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">
+          // Opposite corner to the status pill, and SOLID where that one is
+          // outlined. The two badges have to differ by more than hue — a reader
+          // scanning a grid of twelve cards reads shape before colour. Not
+          // aria-hidden: unlike the Live pill, this is information the card
+          // states nowhere else.
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-full bg-accent px-2.5 py-1 font-SpaceGrotesk text-[10px] font-bold uppercase tracking-[0.1em] text-accent-ink shadow-[0_4px_14px_-4px_rgba(58,227,152,0.75)]">
             New
           </span>
         )}
         <span
-          className={`absolute right-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-md border px-2 py-1 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em] backdrop-blur ${
-            live
-              ? "border-live/45 bg-bg/70 font-semibold text-live"
-              : "border-line bg-bg/70 text-muted"
-          }`}
+          className="absolute right-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full border border-line bg-bg/70 px-2.5 py-1 font-SpaceGrotesk text-[10px] uppercase tracking-[0.08em] text-muted backdrop-blur"
           aria-hidden="true"
         >
           {live ? (
             <>
-              {/* Emerald, not brand blue: "this is running" is a status, and it
-                  should not read as the same signal as the cyan figures below
-                  it. The two badges were previously cyan on cyan. */}
-              <span className="h-1.5 w-1.5 rounded-full bg-live b4w-pulse" />
+              {/* Neutral type, accent dot. Every card in the catalogue is live,
+                  so a coloured LIVE badge is wallpaper — it would appear on all
+                  twelve tiles and compete with the NEW chip opposite it, which
+                  is the one that actually distinguishes anything. The pulse
+                  carries "running"; the word is just the label. */}
+              <span className="h-1.5 w-1.5 rounded-full bg-accent b4w-pulse" />
               Live
             </>
           ) : (
@@ -127,7 +127,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
           </h3>
           {live && (
             <ArrowRight
-              className="h-4 w-4 shrink-0 -translate-x-1 text-cyan opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+              className="h-4 w-4 shrink-0 -translate-x-1 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
               aria-hidden="true"
             />
           )}
@@ -136,7 +136,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
         {/* Mechanic family. Every game used to read "Originals", which told an
             operator nothing; these say what the player is actually asked to do. */}
         {game.category && (
-          <span className="-mt-1 w-fit rounded border border-line bg-bg/60 px-1.5 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted">
+          <span className="-mt-1 w-fit rounded-full border border-line bg-bg/60 px-1.5 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted">
             {game.category}
           </span>
         )}
@@ -147,9 +147,9 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
               Max multiplier
             </p>
             {/* Gold: this is money. The chrome stays cool, the numbers don't. */}
-            <p className="!mb-0 mt-1 font-JetBrainsMono text-[clamp(1.15rem,0.85rem+1.1vw,1.65rem)] font-semibold !leading-none !tracking-[-0.02em] !text-cyan tabular-nums">
+            <p className="!mb-0 mt-1 font-JetBrainsMono text-[clamp(1.15rem,0.85rem+1.1vw,1.65rem)] font-semibold !leading-none !tracking-[-0.02em] !text-accent tabular-nums">
               {fmt.format(counted)}
-              <span className="ml-0.5 text-cyan">×</span>
+              <span className="ml-0.5 text-accent">×</span>
             </p>
             <div
               className="mt-2.5 h-[4px] w-full overflow-hidden rounded-full bg-line/70"
@@ -213,7 +213,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
                 openable in a new tab. */}
             <Link
               href={`/games/${slugFor(game)}`}
-              className="block h-full rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+              className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
               aria-label={`${game.title} — game details`}
             >
               {tile}
@@ -231,7 +231,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
                 aria-label={`Play ${game.title} demo`}
                 // Still forced visible on touch: without hover there is no other
                 // way to reach the demo from the grid.
-                className="b4w-card-float pointer-events-auto flex items-center gap-2 rounded-full border border-white/25 bg-bg/55 px-4 py-2 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.05em] !text-white opacity-0 shadow-lg backdrop-blur-lg transition-opacity duration-300 hover:bg-bg/75 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand group-hover:opacity-100 max-md:opacity-100"
+                className="b4w-btn b4w-btn--glass b4w-card-float pointer-events-auto opacity-0 transition-opacity duration-300 focus-visible:opacity-100 group-hover:opacity-100 max-md:opacity-100"
               >
                 <Play className="h-3.5 w-3.5" />
                 Play demo

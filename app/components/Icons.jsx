@@ -1,109 +1,83 @@
-// Minimal inline-SVG icon set for the dark studio homepage.
-// Stroke-based, inherits `currentColor`, no external icon font.
+// The site's icon set: Remix Icon, wrapped once here.
+//
+// This file used to hold fourteen hand-drawn SVG paths. They were serviceable
+// but inconsistent — different optical weights, different corner radii, and a
+// shield that had to be drawn twice because one of the two call sites wanted a
+// tick in it. Remix Icon is a real system: 24px grid, one stroke weight, and a
+// `Line`/`Fill` pair for every glyph, so a badge and an outline can be the same
+// icon at two weights instead of two drawings that nearly match.
+//
+// Everything still goes through named exports rather than importing `Ri*` at
+// call sites. That keeps the *choice* of glyph in one file: swapping the icon
+// for "fairness" is an edit here, not a sweep across nine components. It also
+// means the tree-shaking story stays honest — only the icons named below are
+// pulled out of the package.
 import React from "react";
+import {
+  RiArrowLeftLine,
+  RiArrowLeftSLine,
+  RiArrowRightLine,
+  RiArrowRightSLine,
+  RiArrowRightUpLine,
+  RiCalendarEventLine,
+  RiCheckLine,
+  RiCloseLine,
+  RiFlashlightLine,
+  RiLinkedinFill,
+  RiMailLine,
+  RiMenuLine,
+  RiPaletteLine,
+  RiPlayFill,
+  RiPulseLine,
+  RiRefreshLine,
+  RiServerLine,
+  RiShieldCheckLine,
+  RiSparklingFill,
+  RiTimeLine,
+} from "@remixicon/react";
 
-const base = {
-  fill: "none",
-  stroke: "currentColor",
-  strokeWidth: 1.6,
-  strokeLinecap: "round",
-  strokeLinejoin: "round",
-  viewBox: "0 0 24 24",
-  "aria-hidden": true,
-};
+// Every icon on this site sits beside a label, so the default is decorative.
+// A call site that needs the icon announced passes `aria-hidden={false}` and a
+// `title`/`aria-label` of its own; nothing does yet.
+//
+// Sizing stays in CSS (`className="h-4 w-4"`). Remix renders width/height
+// attributes at its default 24, and a CSS width beats a presentation attribute,
+// so the utilities at the call sites keep working exactly as they did.
+function decorative(Glyph, name) {
+  const Icon = (props) => <Glyph aria-hidden="true" focusable="false" {...props} />;
+  Icon.displayName = name;
+  return Icon;
+}
 
-export const ArrowRight = (p) => (
-  <svg {...base} {...p}>
-    <path d="M5 12h14M13 6l6 6-6 6" />
-  </svg>
-);
+// --- Navigation and controls ------------------------------------------------
+export const ArrowRight = decorative(RiArrowRightLine, "ArrowRight");
+export const ArrowLeft = decorative(RiArrowLeftLine, "ArrowLeft");
+export const ArrowUpRight = decorative(RiArrowRightUpLine, "ArrowUpRight");
+export const ChevronLeft = decorative(RiArrowLeftSLine, "ChevronLeft");
+export const ChevronRight = decorative(RiArrowRightSLine, "ChevronRight");
+export const Close = decorative(RiCloseLine, "Close");
+export const Menu = decorative(RiMenuLine, "Menu");
+export const Refresh = decorative(RiRefreshLine, "Refresh");
+export const Play = decorative(RiPlayFill, "Play");
 
-export const Shield = (p) => (
-  <svg {...base} {...p}>
-    <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
-  </svg>
-);
+// --- Meaning ----------------------------------------------------------------
+// There is no plain `Shield`. Fairness is the only thing a shield stands for on
+// this site, and a shield without a tick in it reads as "protected from" rather
+// than "verified" — so the only shield available is the one with the check.
+export const ShieldCheck = decorative(RiShieldCheckLine, "ShieldCheck");
+export const Check = decorative(RiCheckLine, "Check");
+export const Bolt = decorative(RiFlashlightLine, "Bolt");
+export const Server = decorative(RiServerLine, "Server");
+export const Palette = decorative(RiPaletteLine, "Palette");
+export const Clock = decorative(RiTimeLine, "Clock");
+export const Calendar = decorative(RiCalendarEventLine, "Calendar");
+export const Pulse = decorative(RiPulseLine, "Pulse");
+export const Sparkle = decorative(RiSparklingFill, "Sparkle");
 
-export const ShieldCheck = (p) => (
-  <svg {...base} {...p}>
-    <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
-    <path d="M9 12l2 2 4-4" />
-  </svg>
-);
-
-export const Check = (p) => (
-  <svg {...base} {...p}>
-    <path d="M5 12l4 4 10-10" />
-  </svg>
-);
-
-export const Bolt = (p) => (
-  <svg {...base} {...p}>
-    <path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z" />
-  </svg>
-);
-
-export const Server = (p) => (
-  <svg {...base} {...p}>
-    <rect x="4" y="4" width="16" height="7" rx="1.5" />
-    <rect x="4" y="13" width="16" height="7" rx="1.5" />
-    <path d="M8 7.5h.01M8 16.5h.01" />
-  </svg>
-);
-
-export const Lock = (p) => (
-  <svg {...base} {...p}>
-    <rect x="5" y="11" width="14" height="9" rx="2" />
-    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-  </svg>
-);
-
-export const Grid = (p) => (
-  <svg {...base} {...p}>
-    <rect x="4" y="4" width="7" height="7" rx="1.5" />
-    <rect x="13" y="4" width="7" height="7" rx="1.5" />
-    <rect x="4" y="13" width="7" height="7" rx="1.5" />
-    <rect x="13" y="13" width="7" height="7" rx="1.5" />
-  </svg>
-);
-
-export const TrendingUp = (p) => (
-  <svg {...base} {...p}>
-    <path d="M4 16l5-5 4 4 7-7" />
-    <path d="M15 8h5v5" />
-  </svg>
-);
-
-export const Terminal = (p) => (
-  <svg {...base} {...p}>
-    <rect x="3" y="5" width="18" height="14" rx="2" />
-    <path d="M7 10l3 2-3 2M13 14h4" />
-  </svg>
-);
-
-export const Braces = (p) => (
-  <svg {...base} {...p}>
-    <path d="M8 4c-2 0-2 2-2 4s0 3-2 4c2 1 2 2 2 4s0 4 2 4" />
-    <path d="M16 4c2 0 2 2 2 4s0 3 2 4c-2 1-2 2-2 4s0 4-2 4" />
-  </svg>
-);
-
-export const Clock = (p) => (
-  <svg {...base} {...p}>
-    <circle cx="12" cy="12" r="8" />
-    <path d="M12 8v4l3 2" />
-  </svg>
-);
-
-export const Refresh = (p) => (
-  <svg {...base} {...p}>
-    <path d="M20 11a8 8 0 1 0-.6 4" />
-    <path d="M20 4v7h-7" />
-  </svg>
-);
-
-export const Play = (p) => (
-  <svg {...base} fill="currentColor" stroke="none" viewBox="0 0 24 24" aria-hidden {...p}>
-    <path d="M8 5.5v13l11-6.5-11-6.5z" />
-  </svg>
-);
+// --- Contact ----------------------------------------------------------------
+// The `Fill` weight for LinkedIn and the `Line` weight for mail, deliberately:
+// LinkedIn's mark is a solid glyph everywhere it is published and a hairline
+// outline of it reads as a different logo, while a filled envelope beside it
+// would be the heaviest thing in the footer.
+export const Linkedin = decorative(RiLinkedinFill, "Linkedin");
+export const Mail = decorative(RiMailLine, "Mail");

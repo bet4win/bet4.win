@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
+import Motes from "./Motes";
 import { registerParallax } from "@/app/lib/parallax";
 
 // Full-bleed surface outside, max-width container inside.
@@ -27,6 +28,10 @@ export default function Section({
   // Drifting gradient mesh. Reserved for the sections that can carry it — every
   // section wearing texture is the same as none of them doing.
   texture = false,
+  // Rising embers. Strictly a sub-set of `texture`: the motes are the loudest
+  // ambient layer, so they only appear where the aurora already is, and only on
+  // the two sections that open and close the page.
+  motes = 0,
   className = "",
   innerClassName = "",
   children,
@@ -55,7 +60,17 @@ export default function Section({
       }${clip}${className ? ` ${className}` : ""}`}
       {...rest}
     >
-      {texture && <span aria-hidden="true" className="b4w-mesh" />}
+      {texture && (
+        <>
+          {/* Two washes, not one: the cool pair drifts one way on a 34s cycle,
+              the warm pair the other way on 47s. Co-prime-ish periods are the
+              whole trick — with a single layer the eye learns the loop inside a
+              minute and the atmosphere turns into a tic. */}
+          <span aria-hidden="true" className="b4w-mesh" />
+          <span aria-hidden="true" className="b4w-mesh b4w-mesh--warm" />
+        </>
+      )}
+      {motes > 0 && <Motes count={motes} />}
       {/* Decoration first, content last, and NOTHING here sets a z-index.
           Every layer is position:absolute/relative with z-index:auto, so they
           paint in tree order — mesh, grid wash, then content. That is

@@ -1,8 +1,17 @@
 "use client";
 import React, { useState } from "react";
-import { Check } from "./Icons";
+import { Check, Palette } from "./Icons";
 import Section from "./Section";
 
+// Three fictional operator brands, chosen to be as far apart as three casino
+// palettes realistically get — warm gold, crimson, aqua. None of them is ours,
+// which is the point: this panel exists to show that the catalogue wears
+// somebody else's colours, so it must not look like it is wearing ours.
+//
+// The middle slot used to be a violet. It was dropped for the same reason the
+// site's own surfaces were: violet beside the gold above it read as a
+// competitor's pair, on our own homepage, in the one component whose whole job
+// is showing off brands.
 const brands = [
   {
     id: "amber",
@@ -16,15 +25,15 @@ const brands = [
     cellBorder: "rgba(232,160,69,0.18)",
   },
   {
-    id: "violet",
-    label: "Club Violet",
-    initials: "CV",
-    accent: "#7C3AED",
-    glow: "rgba(124,58,237,0.20)",
+    id: "crimson",
+    label: "Rouge Club",
+    initials: "RC",
+    accent: "#E0394B",
+    glow: "rgba(224,57,75,0.20)",
     btnText: "#ffffff",
-    surface: "#160f2a",
-    cellBg: "#221640",
-    cellBorder: "rgba(124,58,237,0.18)",
+    surface: "#1d0f13",
+    cellBg: "#2c171c",
+    cellBorder: "rgba(224,57,75,0.18)",
   },
   {
     id: "cyan",
@@ -52,21 +61,13 @@ export default function Theming() {
   const [brand, setBrand] = useState(brands[0]);
 
   return (
-    <Section id="branding" surface="raised" rule innerClassName="py-20">
-
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 opacity-50 blur-[130px]"
-        style={{
-          background:
-            "radial-gradient(circle at 68% 38%, rgba(129,140,248,0.13), transparent 55%), radial-gradient(circle at 28% 72%, rgba(37,99,235,0.10), transparent 50%)",
-        }}
-      />
-
-      <div className="mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-14 px-5 md:px-12 lg:grid-cols-2">
+    <Section id="branding" surface="raised" rule texture innerClassName="py-20">
+      <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
 
         {/* Copy */}
         <div>
-          <span className="mb-5 inline-block rounded border border-violet/30 bg-violet/10 px-2.5 py-1 font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-violet">
+          <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.1em] text-accent">
+            <Palette className="h-3.5 w-3.5" />
             Bespoke branding
           </span>
           <h2 className="mb-4 max-w-md b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] !text-ink">
@@ -84,7 +85,9 @@ export default function Theming() {
                 key={f}
                 className="flex items-start gap-3 font-SpaceGrotesk text-[0.9rem] text-muted"
               >
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-cyan" />
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-accent">
+                  <Check className="h-3.5 w-3.5" />
+                </span>
                 {f}
               </li>
             ))}
@@ -187,19 +190,24 @@ export default function Theming() {
             {brands.map((b) => (
               <button
                 key={b.id}
+                type="button"
                 onClick={() => setBrand(b)}
-                className="rounded-lg px-4 py-2 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                aria-pressed={b.id === brand.id}
+                // The one place on the site where a control's colour is NOT
+                // ours: each pill wears the brand it switches to, which is the
+                // whole point being demonstrated.
+                className="b4w-btn b4w-btn--sm"
                 style={
                   b.id === brand.id
                     ? {
-                        backgroundColor: `${b.accent}1a`,
-                        border: `1px solid ${b.accent}70`,
+                        backgroundColor: `${b.accent}1f`,
+                        borderColor: `${b.accent}80`,
                         color: b.accent,
                       }
                     : {
                         backgroundColor: "transparent",
-                        border: "1px solid #243049",
-                        color: "#64748b",
+                        borderColor: "var(--color-line)",
+                        color: "var(--color-faint)",
                       }
                 }
               >

@@ -8,13 +8,13 @@ import {
   formatOutcome,
   labelFor,
 } from "@/app/lib/fairness";
-import { Refresh } from "./Icons";
+import { Check, Refresh, ShieldCheck } from "./Icons";
 
 const DEFAULT_SERVER_SEED =
   "f9e2d1c3b4a5968778695a4b3c2d1e0f1122334455667788990011223344556677";
 
 const inputCls =
-  "w-full !rounded-md border border-line bg-bg px-3 py-2 font-JetBrainsMono text-[13px] text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60";
+  "w-full !rounded-xl border border-line bg-bg px-3.5 py-2.5 font-JetBrainsMono text-[13px] text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60";
 const labelCls =
   "mb-1 block font-JetBrainsMono text-[11px] uppercase tracking-[0.05em] text-muted";
 
@@ -81,9 +81,9 @@ export default function FairnessVerifier() {
   return (
     <form
       onSubmit={onVerify}
-      className="relative overflow-hidden rounded-xl border border-line bg-panel-high p-5 shadow-2xl"
+      className="relative overflow-hidden rounded-2xl border border-line bg-panel-high p-5 shadow-2xl"
     >
-      <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-cyan to-violet" />
+      <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-brand-strong via-accent to-brand-strong" />
       <div className="mb-4 flex items-center justify-between border-b border-line pb-3 font-JetBrainsMono text-[12px] text-muted">
         <span>Verification terminal</span>
         <span className="text-faint">live · SHA-256</span>
@@ -119,7 +119,7 @@ export default function FairnessVerifier() {
               onChange={(e) => setServerSeed(e.target.value)} spellCheck={false} />
             <button type="button" onClick={() => setServerSeed(randomHex())}
               aria-label="Randomize server seed" title="Randomize server seed"
-              className="flex aspect-square w-[48px] h-[48px] shrink-0 items-center justify-center !rounded-md border border-line text-muted transition-colors hover:bg-panel hover:text-cyan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan/60">
+              className="b4w-btn b4w-btn--ghost b4w-btn--icon">
               <Refresh className="h-5 w-5" />
             </button>
           </div>
@@ -153,9 +153,14 @@ export default function FairnessVerifier() {
         ))}
       </div>
 
+      {/* The one accent-filled button on the site. This is the action the whole page
+          exists for, and the accent is the colour that marks a fact you can
+          check — so the terminal's own control wears it rather than the blue
+          every "contact us" button already uses. */}
       <button type="submit" disabled={loading}
-        className="!mt-4 w-full !rounded-md b4w-sheen bg-cyan px-4 py-2.5 font-JetBrainsMono text-[12px] font-semibold uppercase tracking-[0.04em] !text-black transition-colors hover:bg-cyan/85 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
+        className="b4w-btn b4w-btn--accent b4w-btn--lg mt-5 flex w-full">
         {loading ? "Verifying…" : "Verify fairness"}
+        {!loading && <ShieldCheck className="h-4 w-4" />}
       </button>
 
       {/* Output */}
@@ -165,8 +170,8 @@ export default function FairnessVerifier() {
             <p className="text-[#ffb4ab]">⚠ {error}</p>
           ) : (
             <>
-              <p className="mb-3 flex items-center gap-2 text-cyan">
-                <span>✓</span>
+              <p className="mb-3 flex items-center gap-2 text-accent">
+                <Check className="h-4 w-4 shrink-0" />
                 {result.result || "Fairness verified"}
               </p>
               <div className="flex flex-col gap-2">

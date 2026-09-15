@@ -58,7 +58,7 @@ gtag('config', '${GA_ID}');`}
           continuing you consent to our use of cookies as described in our{" "}
           <Link
             href="/privacy"
-            className="!text-cyan underline underline-offset-2 transition-colors hover:!text-ink focus-visible:!text-ink"
+            className="!text-accent underline underline-offset-2 transition-colors hover:!text-ink focus-visible:!text-ink"
           >
             Privacy &amp; Cookie Policy
           </Link>
@@ -67,7 +67,7 @@ gtag('config', '${GA_ID}');`}
         <button
           type="button"
           onClick={accept}
-          className="w-full shrink-0 rounded-md bg-brand-strong px-8 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_16px_-8px_rgba(37,99,235,0.4)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-high md:w-auto"
+          className="b4w-btn b4w-btn--primary b4w-btn--lg w-full md:w-auto"
         >
           OK
         </button>

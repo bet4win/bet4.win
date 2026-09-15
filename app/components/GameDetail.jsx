@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import GameModal from "./GameModal";
-import { ArrowRight, Play, ShieldCheck } from "./Icons";
+import Section from "./Section";
+import { ArrowLeft, Play } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
 
 const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
@@ -26,7 +27,7 @@ export default function GameDetail({ game, content }) {
     game.maxMultiplier && {
       label: "Max multiplier",
       value: `${fmt.format(game.maxMultiplier)}×`,
-      money: true, // gold is reserved for figures that are money
+      money: true, // the accent is reserved for figures that are money
     },
     game.rtp && { label: "RTP", value: game.rtp },
     game.volatility && { label: "Volatility", value: game.volatility },
@@ -34,13 +35,23 @@ export default function GameDetail({ game, content }) {
 
   return (
     <>
-      <section className="mx-auto max-w-[1280px] px-5 pb-16 pt-28 md:px-12 md:pt-36">
+      {/* pt-28/md:pt-36 here was clearance for a header that has been sticky
+          rather than fixed for a while — it left a screen of empty floor above
+          the breadcrumb. Matched to <PageHeader>, which is what every other
+          route opens with, and given the same lit canvas. */}
+      <Section
+        surface="base"
+        depth
+        texture
+        motes={7}
+        innerClassName="pb-16 pt-14 md:pt-20"
+      >
         <nav aria-label="Breadcrumb" className="mb-6">
           <Link
             href="/games"
-            className="inline-flex items-center gap-1.5 font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] !text-muted transition-colors hover:!text-ink focus-visible:outline-none focus-visible:!text-ink"
+            className="b4w-btn b4w-btn--quiet !pl-0"
           >
-            <ArrowRight className="h-4 w-4 rotate-180" />
+            <ArrowLeft className="h-4 w-4" />
             The catalogue
           </Link>
         </nav>
@@ -57,7 +68,7 @@ export default function GameDetail({ game, content }) {
 
         <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:gap-16">
           <div className="flex-1">
-            <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-cyan">
+            <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-accent">
               {game.category} · Live
             </p>
             <h1 className="b4w-display mt-2 !text-[clamp(2.4rem,1.5rem+2.8vw,3.5rem)] !text-ink">
@@ -85,7 +96,7 @@ export default function GameDetail({ game, content }) {
 
           {/* Spec panel — the figures an operator actually screens on. */}
           <aside className="w-full lg:w-[340px] lg:shrink-0">
-            <div className="machined-surface rounded-xl border border-line bg-panel-high p-6">
+            <div className="machined-surface rounded-2xl border border-line bg-panel-high p-6">
               <dl className="flex flex-col gap-5">
                 {stats.map((s) => (
                   <div
@@ -97,7 +108,7 @@ export default function GameDetail({ game, content }) {
                     </dt>
                     <dd
                       className={`!mb-0 font-JetBrainsMono text-[1.5rem] font-semibold !leading-none !tracking-[-0.02em] tabular-nums ${
-                        s.money ? "!text-cyan" : "!text-ink"
+                        s.money ? "!text-accent" : "!text-ink"
                       }`}
                     >
                       {s.value}
@@ -109,7 +120,7 @@ export default function GameDetail({ game, content }) {
               <button
                 type="button"
                 onClick={launch}
-                className="mt-7 inline-flex w-full items-center justify-center gap-2.5 rounded-md b4w-sheen bg-brand-strong px-6 py-4 font-SpaceGrotesk text-[15px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-high"
+                className="b4w-btn b4w-btn--primary b4w-btn--lg mt-7 flex w-full"
               >
                 <Play className="h-4 w-4" />
                 Play demo
@@ -126,7 +137,7 @@ export default function GameDetail({ game, content }) {
             </div>
           </aside>
         </div>
-      </section>
+      </Section>
 
       <GameModal game={open ? game : null} onClose={() => setOpen(false)} />
     </>

@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { rememberAgeConfirmed } from "@/app/lib/ageGate";
 import { trackEvent } from "@/app/lib/analytics";
-import { ShieldCheck } from "./Icons";
+import { ArrowUpRight, ShieldCheck } from "./Icons";
 
 // Rendered by the root layout only when the confirmation cookie is absent, so
 // it arrives in the initial HTML — no flash of the site before the gate paints,
@@ -77,7 +77,7 @@ export default function AgeGate() {
     >
       <div
         ref={panelRef}
-        className="machined-surface w-full max-w-md rounded-xl border border-line bg-panel-high p-7 text-center shadow-2xl md:p-9"
+        className="machined-surface w-full max-w-md rounded-2xl border border-line bg-panel-high p-7 text-center shadow-2xl md:p-9"
       >
         {status === "denied" ? (
           <>
@@ -95,18 +95,19 @@ export default function AgeGate() {
               href="https://www.gambleaware.org"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] !text-cyan transition-colors hover:!text-ink focus-visible:outline-none focus-visible:!text-ink"
+              className="b4w-btn b4w-btn--ghost mt-6"
             >
               Get support at GambleAware.org
+              <ArrowUpRight className="h-4 w-4" />
             </a>
           </>
         ) : (
           <>
             <span
-              className="mx-auto mb-5 flex h-11 w-11 items-center justify-center rounded-md border border-line bg-panel text-cyan"
+              className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-accent"
               aria-hidden="true"
             >
-              <ShieldCheck className="h-5 w-5" />
+              <ShieldCheck className="h-6 w-6" />
             </span>
             <h2
               id="age-gate-heading"
@@ -122,14 +123,14 @@ export default function AgeGate() {
               <button
                 type="button"
                 onClick={confirm}
-                className="flex-1 rounded-md b4w-sheen bg-brand-strong px-5 py-3 font-SpaceGrotesk text-[13px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel-high"
+                className="b4w-btn b4w-btn--primary b4w-btn--lg flex-1"
               >
                 Yes, I am 18+
               </button>
               <button
                 type="button"
                 onClick={reject}
-                className="flex-1 rounded-md border border-line px-5 py-3 font-SpaceGrotesk text-[13px] uppercase tracking-[0.04em] !text-ink transition-colors hover:bg-panel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-line focus-visible:ring-offset-2 focus-visible:ring-offset-panel-high"
+                className="b4w-btn b4w-btn--ghost b4w-btn--lg flex-1"
               >
                 No
               </button>

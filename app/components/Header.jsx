@@ -2,7 +2,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight } from "./Icons";
+import { ArrowRight, Close, Menu } from "./Icons";
+import { trackEvent } from "@/app/lib/analytics";
+import { bookingUrl } from "@/app/lib/site";
+import { openBooking } from "@/app/lib/booking";
 import logo from "@/public/assets/img/b4w-logo.svg";
 
 // Real routes now, not same-page anchors — each label goes somewhere.
@@ -11,6 +14,7 @@ const NAV = [
   { label: "Games", href: "/games" },
   { label: "Provably Fair", href: "/provably-fair" },
   { label: "Branding", href: "/branding" },
+  { label: "News", href: "/news" },
 ];
 
 export default function Header() {
@@ -18,9 +22,11 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const panelRef = useRef(null);
 
-  // A game page is "under" Games, so the section stays lit while you're in it.
+  // A game page is "under" Games and a post is "under" News, so the section
+  // stays lit while you're inside it.
   const isActive = (href) =>
-    pathname === href || (href === "/games" && pathname.startsWith("/games/"));
+    pathname === href ||
+    ((href === "/games" || href === "/news") && pathname.startsWith(`${href}/`));
 
   // Route change closes the menu — without this it stays open over the new page.
   useEffect(() => setOpen(false), [pathname]);
@@ -50,31 +56,63 @@ export default function Header() {
           />
         </Link>
 
-        <nav aria-label="Main" className="hidden items-center gap-9 md:flex">
+        {/* lg, not md. The horizontal nav needs ~900px to sit beside the logo
+            and the CTA; at the 768px md breakpoint the row measured 901px wide
+            in a 785px viewport and was only invisible because the template's
+            `body { overflow-x: hidden }` clipped it. That was already true with
+            four items — News is the fifth — so the breakpoint moves rather than
+            the type shrinking. Tablets get the same menu phones do. */}
+        <nav aria-label="Main" className="hidden items-center gap-9 lg:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
-              className={`font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] transition-colors hover:!text-ink focus-visible:!text-ink focus-visible:outline-none ${
-                isActive(item.href) ? "!text-cyan" : "!text-muted"
+              className={`relative font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] transition-colors hover:!text-ink focus-visible:!text-ink focus-visible:outline-none ${
+                isActive(item.href) ? "!text-accent" : "!text-muted"
               }`}
             >
               {item.label}
+              {/* The current section is underscored as well as coloured — the
+                  colour alone is the only signal a screen reader can't use and
+                  a colour-blind reader may not catch. */}
+              {isActive(item.href) && (
+                <span
+                  aria-hidden="true"
+                  className="absolute -bottom-1.5 left-0 h-px w-full bg-accent"
+                />
+              )}
             </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link
+          <a
             // A direct action rather than "/#contact": from an interior page
             // that anchor would navigate you off the page you're reading.
-            href="mailto:info@bet4.win?subject=Demo%20request"
-            className="hidden items-center gap-1.5 rounded-md b4w-sheen bg-brand-strong px-4 py-2 font-SpaceGrotesk text-[12px] font-semibold !uppercase tracking-[0.04em] !text-white shadow-[0_2px_18px_-8px_rgba(37,99,235,0.45)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:inline-flex"
+            //
+            // The click is normally taken by the booking dialog, which keeps the
+            // reader on the site. This href is the fallback path — a real
+            // Calendly URL, opening in a new tab so that even then the page
+            // being read survives.
+            href={bookingUrl("header")}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => {
+              trackEvent("cta_click", {
+                label: "header_book_demo",
+                cta_type: "booking",
+              });
+              // The href stays the real Calendly URL; preventDefault only fires
+              // when the dialog actually took the click, so this degrades to the
+              // plain link if the module never ran.
+              if (openBooking("header")) e.preventDefault();
+            }}
+            className="b4w-btn b4w-btn--primary hidden sm:inline-flex"
           >
             Book a demo
             <ArrowRight className="h-4 w-4" />
-          </Link>
+          </a>
 
           <button
             type="button"
@@ -82,23 +120,9 @@ export default function Header() {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="flex h-10 w-10 items-center justify-center rounded-md border border-line text-ink transition-colors hover:bg-panel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand md:hidden"
+            className="b4w-btn b4w-btn--ghost b4w-btn--icon lg:hidden"
           >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              aria-hidden="true"
-            >
-              {open ? (
-                <path d="M6 6l12 12M18 6L6 18" />
-              ) : (
-                <path d="M4 7h16M4 12h16M4 17h16" />
-              )}
-            </svg>
+            {open ? <Close className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
@@ -109,7 +133,7 @@ export default function Header() {
         <div
           id="mobile-nav"
           ref={panelRef}
-          className="border-t border-line/40 bg-bg/95 backdrop-blur-md md:hidden"
+          className="border-t border-line/40 bg-bg/95 backdrop-blur-md lg:hidden"
         >
           <nav aria-label="Main" className="flex flex-col px-5 py-3">
             {NAV.map((item) => (
@@ -118,21 +142,28 @@ export default function Header() {
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 className={`border-b border-line/40 py-3.5 font-SpaceGrotesk text-[13px] uppercase tracking-[0.06em] transition-colors last:border-b-0 hover:!text-ink focus-visible:!text-ink focus-visible:outline-none ${
-                  isActive(item.href) ? "!text-cyan" : "!text-muted"
+                  isActive(item.href) ? "!text-accent" : "!text-muted"
                 }`}
               >
                 {item.label}
               </Link>
             ))}
-            <Link
-              // A direct action rather than "/#contact": from an interior page
-              // that anchor would navigate you off the page you are reading.
-              href="mailto:info@bet4.win?subject=Demo%20request"
-              className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-md b4w-sheen bg-brand-strong px-4 py-3 font-SpaceGrotesk text-[13px] font-semibold !uppercase tracking-[0.04em] !text-white transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            <a
+              href={bookingUrl("header_mobile")}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => {
+                trackEvent("cta_click", {
+                  label: "header_book_demo_mobile",
+                  cta_type: "booking",
+                });
+                if (openBooking("header_mobile")) e.preventDefault();
+              }}
+              className="b4w-btn b4w-btn--primary b4w-btn--lg mt-5 w-full"
             >
               Book a demo
               <ArrowRight className="h-4 w-4" />
-            </Link>
+            </a>
           </nav>
         </div>
       )}

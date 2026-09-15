@@ -194,10 +194,8 @@ function CategoryFilter({ items, value, onChange }) {
             // min-h on touch only: these are the primary control for the
             // catalogue and at the desktop padding they measured 36px tall,
             // under the 44px target guidance.
-            className={`inline-flex min-h-[44px] items-center rounded-full border px-4 py-1.5 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.07em] backdrop-blur-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:min-h-0 ${
-              on
-                ? "border-brand bg-brand-strong/90 !text-white"
-                : "border-line bg-panel-high/40 !text-muted hover:border-brand/50 hover:bg-panel-high/70 hover:!text-ink"
+            className={`b4w-btn min-h-[44px] sm:min-h-0 ${
+              on ? "b4w-btn--primary" : "b4w-btn--ghost"
             }`}
           >
             {label}

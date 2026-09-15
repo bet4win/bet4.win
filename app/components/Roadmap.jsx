@@ -1,0 +1,174 @@
+"use client";
+import React from "react";
+import Section from "./Section";
+import Reveal from "./Reveal";
+import { ArrowRight } from "./Icons";
+import { trackEvent } from "@/app/lib/analytics";
+
+// What's coming, on a rail.
+//
+// The catalogue section above this one answers "what can I take today". This one
+// answers the question an operator asks straight afterwards — "and then what" —
+// which is the whole basis of the "a new original every month" claim the site
+// leads with. A list of names would state the claim; a dated rail evidences it.
+//
+// `releases` is computed on the server and handed down (see app/page.jsx) rather
+// than being derived here. The "This month" label depends on today's date, and a
+// client component deriving that from its own clock would disagree with the
+// server's markup for anyone rendering across a month boundary — the same
+// hydration trap the events-strip countdown hit.
+export default function Roadmap({ releases }) {
+  if (!releases?.length) return null;
+
+  return (
+    <Section
+      id="roadmap"
+      surface="base"
+      rule
+      depth
+      aria-labelledby="roadmap-heading"
+      innerClassName="py-16 md:py-20"
+    >
+      <Reveal>
+        <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-accent">
+          In production
+        </p>
+        <h2
+          id="roadmap-heading"
+          className="mt-2 b4w-display !text-[clamp(2.1rem,1.3rem+2.4vw,3.1rem)] !text-ink"
+        >
+          What ships next
+        </h2>
+        <p className="mt-4 max-w-xl font-SpaceGrotesk text-[0.95rem] leading-[1.6] text-muted">
+          One original a month, named and dated. Each one arrives on the
+          integration you already have — nothing to re-certify, nothing to
+          rebuild.
+        </p>
+      </Reveal>
+
+      <Reveal>
+        <div className="relative mt-12">
+          {/* The rail. Lit at the near end, neutral through the middle, and gone
+              by the right-hand edge — the fade is the argument for the button
+              underneath it. Only drawn at lg, where the grid is a single row and
+              the nodes actually line up along one axis; below that the nodes
+              read perfectly well as ticks on their own. */}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-[5px] hidden h-px bg-[linear-gradient(90deg,var(--color-accent)_0%,var(--color-line)_46%,transparent_96%)] lg:block"
+          />
+
+          {/* auto-FILL, not auto-fit, and not a fixed `lg:grid-cols-4`.
+              The number of announced titles changes — it is four one quarter and
+              two the next — and the card should not change size with it. Fixed
+              columns left two cards squeezed into half a row; auto-fit would
+              have stretched them to 600px each and turned the title band into a
+              billboard. auto-fill keeps the track width constant and simply
+              leaves the surplus tracks empty, which is the truthful picture:
+              the rail runs on past the last announced title into open space,
+              and the button underneath is what continues it. */}
+          <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+            {releases.map((r) => (
+              // pt-9 leaves room above the card for the node AND the label
+              // stacked under it, rather than the two sharing one line.
+              <li key={r.id} className="relative pt-9">
+                {/* Node. Sits on the rail's own y, so the dot reads as a stop on
+                    the line rather than a bullet beside it. */}
+                <span
+                  aria-hidden="true"
+                  className={`absolute left-0 top-0 h-2.5 w-2.5 rounded-full border ${
+                    r.isNext
+                      ? "border-accent bg-accent"
+                      : "border-line bg-panel-high"
+                  }`}
+                />
+                {/* The month is the axis, so it is always the month — "This
+                    month" alone would have been the one node on the rail you
+                    could not place against the others. The nearest release is
+                    marked beside it instead.
+                    BELOW the rail, not beside it. Sitting the label at the same
+                    y put the rail through the top of its capitals: the line is
+                    at y=5 and 11px type on the template's 1.7 line-height starts
+                    its cap height at about y=5.5. `leading-none` is what makes
+                    that placement predictable — the label's box is now its type
+                    size rather than 1.7x it. Flush left, so it aligns with the
+                    card edge and the node above it. */}
+                <p
+                  className={`!mb-0 absolute left-0 top-[15px] whitespace-nowrap font-JetBrainsMono text-[11px] uppercase leading-none tracking-[0.08em] ${
+                    r.isNext ? "text-accent" : "text-faint"
+                  }`}
+                >
+                  {r.label}
+                  {r.isNext && (
+                    <span className="text-accent">
+                      {" · "}
+                      {r.isThisMonth ? "This month" : "Next"}
+                    </span>
+                  )}
+                </p>
+
+                <article
+                  className={`b4w-bezel flex h-full flex-col overflow-hidden rounded-2xl border bg-panel-high ${
+                    r.isNext ? "border-accent/45" : "border-line"
+                  }`}
+                >
+                  {/* The plate. These titles have no key art — not "we haven't
+                      picked any yet" but "it isn't drawn": the art team is
+                      working on games that ship after these. Rendering a
+                      placeholder game tile would promise a look nobody has
+                      approved, so the plate shows the one thing that IS settled,
+                      the name, set as artwork on a punched sheet. */}
+                  {/* Wider ratio on phones. The plate is an aspect box, so at
+                      one column it is as wide as the screen — at 2:1 that is
+                      170px of empty hatch above the name. 3:1 keeps it a title
+                      band until the grid splits into columns. */}
+                  <div className="b4w-plate relative flex aspect-[3/1] items-end border-b border-line/70 bg-bg p-4 sm:aspect-[2/1]">
+                    {/* `relative` on purpose: the plate's texture is an
+                        absolutely-positioned ::before, and a positioned
+                        pseudo-element paints over its in-flow siblings. */}
+                    <h3 className="relative !mb-0 b4w-display !text-[clamp(1.35rem,1rem+1vw,1.85rem)] !leading-[0.92] !text-ink [text-wrap:balance]">
+                      {r.title}
+                    </h3>
+                  </div>
+
+                  <div className="flex flex-1 flex-col gap-3 p-4">
+                    <span className="w-fit rounded-full border border-line bg-bg/60 px-1.5 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted">
+                      {r.category}
+                    </span>
+                    <p className="!mb-0 font-SpaceGrotesk text-[0.85rem] leading-[1.55] text-muted">
+                      {r.teaser}
+                    </p>
+                  </div>
+                </article>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </Reveal>
+
+      {/* Sits under the faded end of the rail on desktop: the line runs out, and
+          this is what continues it. */}
+      <Reveal>
+        <div className="mt-10 flex flex-col items-start gap-4 border-t border-line/50 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="!mb-0 max-w-md font-SpaceGrotesk text-[0.9rem] leading-[1.55] text-muted">
+            The public rail stops here. The full schedule — mechanics, dates and
+            the titles we haven&rsquo;t announced — goes out under NDA.
+          </p>
+          <a
+            href="mailto:info@bet4.win?subject=Full%20roadmap%20request"
+            onClick={() =>
+              trackEvent("cta_click", {
+                label: "request_roadmap",
+                cta_type: "email",
+              })
+            }
+            className="b4w-btn b4w-btn--ghost b4w-btn--lg"
+          >
+            Request full roadmap
+            <ArrowRight className="h-4 w-4" />
+          </a>
+        </div>
+      </Reveal>
+    </Section>
+  );
+}

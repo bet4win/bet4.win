@@ -29,7 +29,7 @@ export default function GamesPreview() {
           which matches the desktop reading order; only mobile reorders. */}
       <div className="flex flex-col gap-8 md:flex-row md:flex-wrap md:items-end md:justify-between">
         <Reveal className="md:order-1">
-          <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-cyan">
+          <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-accent">
             A new original every month
           </p>
           <h2
@@ -40,19 +40,11 @@ export default function GamesPreview() {
           </h2>
         </Reveal>
 
-        {/* <Link
-          href="/games"
-          className="order-3 inline-flex items-center gap-1.5 self-start font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] !text-cyan transition-colors hover:!text-ink focus-visible:outline-none focus-visible:!text-ink md:order-2 md:self-auto"
-        >
-          See all {live.length} games
-          <ArrowRight className="h-4 w-4" />
-        </Link> */}
-
         <div className="order-2 w-full md:order-3">
           <GameGrid items={live} limit={8} filterable />
           <Link
             href="/games"
-            className="b4w-sheen mx-auto mt-8 flex w-fit items-center gap-2 rounded-md bg-brand-strong px-7 py-4 font-SpaceGrotesk text-[14px] font-semibold uppercase tracking-[0.04em] !text-white shadow-[0_2px_20px_-8px_rgba(37,99,235,0.5)] transition-colors hover:bg-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            className="b4w-btn b4w-btn--primary b4w-btn--lg mx-auto mt-8 flex w-fit"
           >
             See all {live.length} games
             <ArrowRight className="h-4 w-4" />

@@ -5,12 +5,15 @@ import TrustBar from "@/app/components/TrustBar";
 import Ticker from "@/app/components/Ticker";
 import Proof from "@/app/components/Proof";
 import GamesPreview from "@/app/components/GamesPreview";
+import Roadmap from "@/app/components/Roadmap";
 import ExploreLinks from "@/app/components/ExploreLinks";
+import NewsPreview from "@/app/components/NewsPreview";
 import ClosingCta from "@/app/components/ClosingCta";
 import Reveal from "@/app/components/Reveal";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/app/lib/site";
 import { slugFor } from "@/app/lib/slug";
 import { games } from "@/data/games";
+import { upcomingReleases } from "@/data/roadmap";
 import React from "react";
 
 // Per-game share cards: when "/" is opened/shared with ?game=<slug> (set by the
@@ -134,10 +137,21 @@ export default function HomePage() {
       <TrustBar />
       <FeaturedGame slug="punch" />
       <GamesPreview />
+      {/* "…and then what." The catalogue above answers what an operator can take
+          today; this is the evidence behind the monthly-release claim the hero
+          opens with. Computed here rather than inside the component — the "this
+          month" label depends on the date, and deriving that on the client would
+          disagree with this markup across a month boundary. */}
+      <Roadmap releases={upcomingReleases()} />
       {/* The diligence material an operator screens on. */}
       <Proof />
       <Reveal>
         <ExploreLinks />
+      </Reveal>
+      {/* Last piece of evidence before the ask: other people have already done
+          this integration. */}
+      <Reveal>
+        <NewsPreview />
       </Reveal>
       <Reveal>
         <ClosingCta />

@@ -26,14 +26,36 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // Cache static assets from /public for 30 days (bounded — paths aren't
-        // content-hashed). The image optimizer inherits this for /_next/image.
+        // Static assets from /public: 30 days, bounded, because these paths are
+        // not content-hashed. The image optimizer inherits this for
+        // /_next/image.
         source: "/assets/:path*",
         headers: [
           {
             key: "Cache-Control",
             value: "public, max-age=2592000, stale-while-revalidate=86400",
           },
+        ],
+      },
+      {
+        // News cards carry a hash of their own bytes in the filename
+        // (<slug>.<8 hex>.jpg — see scripts/generate-news-images.mjs), so a
+        // re-cut card is a different URL and this can never serve stale art.
+        // That is the whole reason the hash is there: a share image is cached by
+        // the browser, by the CDN and by every social scraper that has ever
+        // unfurled it, and under a stable name none of them look again.
+        //
+        // AFTER the bounded rule, not before it: where two entries match the
+        // same path Next keeps the LAST Cache-Control, so a "more specific
+        // first" ordering here silently loses to /assets/:path* above. Verified
+        // against a running server, not assumed.
+        //
+        // Matched on the hash rather than on the folder. logos/ sits in the same
+        // directory and is NOT hashed — those are the generator's inputs, and
+        // they stay on the bounded rule.
+        source: "/assets/img/news/:card([^/]+\\.[0-9a-f]{8}\\.jpg)",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
         ],
       },
       {

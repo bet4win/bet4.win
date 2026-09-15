@@ -115,10 +115,13 @@ export default function HeroWall() {
     >
       <div
         aria-hidden="true"
-        className="b4w-drift pointer-events-none absolute -inset-10 -z-10 rounded-full opacity-70 blur-3xl"
+        className="b4w-drift pointer-events-none absolute -inset-10 -z-10 rounded-full opacity-80 blur-3xl"
         style={{
+          // Blue behind the deck, one mint patch low and right. The accent is the
+          // only non-blue light in the hero and it is what makes the key art
+          // read as lit rather than pasted on.
           background:
-            "radial-gradient(circle at 30% 30%, rgba(37,99,235,0.24), transparent 55%), radial-gradient(circle at 70% 70%, rgba(129,140,248,0.17), transparent 55%)",
+            "radial-gradient(circle at 30% 28%, rgba(51,88,230,0.30), transparent 55%), radial-gradient(circle at 74% 72%, rgba(58,227,152,0.14), transparent 52%)",
         }}
       />
 
@@ -152,7 +155,7 @@ export default function HeroWall() {
                 <a
                   href="#games"
                   onClick={(e) => play(e, game)}
-                  className="group block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+                  className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
                 >
                   <CardBody game={game} interactive priority={index === 0} />
                 </a>
@@ -183,7 +186,7 @@ export default function HeroWall() {
 
 function CardBody({ game, interactive = false, priority = false }) {
   return (
-    <div className="b4w-bezel relative overflow-hidden rounded-xl border border-line bg-panel-high">
+    <div className="b4w-bezel relative overflow-hidden rounded-2xl border border-line bg-panel-high">
       {/* Portrait, not square — a playing card is taller than it is wide, and
           the deck reads as a hand of them rather than a row of thumbnails. The
           art is square and object-cover, so this crops the sides; every piece of
@@ -203,14 +206,14 @@ function CardBody({ game, interactive = false, priority = false }) {
           className="b4w-cover-art object-cover"
         />
         {game.isNew && (
-          <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-md border border-new/45 bg-new/10 px-2 py-1 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.08em] text-new backdrop-blur">
+          <span className="absolute left-2.5 top-2.5 inline-flex items-center rounded-full bg-accent px-2.5 py-1 font-SpaceGrotesk text-[10px] font-bold uppercase tracking-[0.1em] text-accent-ink shadow-[0_4px_14px_-4px_rgba(58,227,152,0.75)]">
             New
           </span>
         )}
 
         {interactive && (
           <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
-            <span className="b4w-card-float flex items-center gap-2 rounded-full border border-white/25 bg-bg/55 px-5 py-2.5 font-SpaceGrotesk text-[12px] font-semibold uppercase tracking-[0.05em] !text-white shadow-lg backdrop-blur-lg">
+            <span className="b4w-btn b4w-btn--glass b4w-card-float">
               <Play className="h-3.5 w-3.5" />
               Play demo
             </span>
@@ -256,7 +259,7 @@ function CardBody({ game, interactive = false, priority = false }) {
               <dt className="font-SpaceGrotesk text-[9px] uppercase tracking-[0.08em] text-faint">
                 Max win
               </dt>
-              <dd className="!mb-0 font-JetBrainsMono text-[12px] font-semibold !text-cyan tabular-nums">
+              <dd className="!mb-0 font-JetBrainsMono text-[12px] font-semibold !text-accent tabular-nums">
                 {fmt.format(game.maxMultiplier)}×
               </dd>
             </div>

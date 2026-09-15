@@ -24,12 +24,19 @@ export default function Ticker() {
     >
       <div className="b4w-marquee-track" aria-hidden="true">
         {run.map((e, i) => (
-          <span key={i} className="flex shrink-0 items-center gap-3 px-6">
+          // A hairline between entries, not a dot. The dot that used to sit
+          // here was brand blue on a strip where blue means "press this", and
+          // it marked nothing — the reader still had to work out where one
+          // game's figure ended and the next game's name began. A divider does
+          // that job and says nothing else.
+          <span
+            key={i}
+            className="flex shrink-0 items-baseline gap-3 border-l border-line/50 px-7"
+          >
             <span className="b4w-display text-[15px] text-ink">{e.title}</span>
-            <span className="font-JetBrainsMono text-[15px] font-semibold text-cyan tabular-nums">
+            <span className="font-JetBrainsMono text-[15px] font-semibold text-accent tabular-nums">
               {e.max}
             </span>
-            <span className="ml-3 h-1 w-1 rounded-full bg-brand-strong" />
           </span>
         ))}
       </div>

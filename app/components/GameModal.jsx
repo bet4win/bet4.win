@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import { Close } from "./Icons";
 
 // Launches a game. On wide AND tall viewports (desktops/tablets) it's a
 // centered window whose iframe keeps the game's aspect ratio; on phones (either
@@ -31,23 +32,21 @@ export default function GameModal({ game, onClose }) {
       onClick={onClose}
     >
       <div
-        className="game-modal-container absolute inset-0 flex flex-col overflow-hidden bg-panel-low shadow-2xl win:static win:inset-auto win:h-auto win:max-h-[90vh] win:rounded-xl win:border win:border-line"
+        className="game-modal-container absolute inset-0 flex flex-col overflow-hidden bg-panel-low shadow-2xl win:static win:inset-auto win:h-auto win:max-h-[90vh] win:rounded-2xl win:border win:border-line"
         style={{ '--game-ratio': ratio }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="game-modal-header flex min-h-11 shrink-0 items-center justify-between border-b border-line bg-bg/80">
-          <span className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-cyan">
+          <span className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-accent">
             {game.title} · demo
           </span>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close game"
-            className="flex h-7 w-7 items-center justify-center rounded text-muted transition-colors hover:bg-panel hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            className="b4w-btn b4w-btn--ghost b4w-btn--icon b4w-btn--sm"
           >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
-              <path d="M6 6l12 12M18 6L6 18" />
-            </svg>
+            <Close className="h-4 w-4" />
           </button>
         </div>
 

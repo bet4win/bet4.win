@@ -25,48 +25,79 @@
   --color-*: initial;
   --color-white: #ffffff;
   --color-black: #000000;
-  /* Dark studio redesign palette (homepage).
+  /* Dark studio palette.
    *
    * TWO section surfaces, strictly alternating: --color-bg and --color-panel.
    * --color-panel-high is a CARD fill, never a section — three section colours
    * read as three unrelated decisions rather than one rhythm. Cards therefore
    * always sit a step above whichever surface they are on.
    *
-   * The floor is near-black, not navy. The three section surfaces used to sit
-   * within 1.202:1 of each other end to end, which is why the page read flat no
-   * matter how the sections were arranged; they now span 1.523:1, and a single
-   * adjacent step (1.190 / 1.279) beats what the whole range used to do.
-   * Deepening the floor also buys accent separation for free:
-   * brand 5.12 -> 5.44, cyan 10.42 -> 11.07, white 18.83 -> 20.01. */
-  --color-bg: #06080f;
-  --color-panel: #121d33;
-  --color-panel-low: #0a0f1c;
-  --color-panel-high: #22304d;
-  /* Brightened from #243049, which measured 1.00:1 against the new panel-high —
-   * i.e. the hairline rules that now divide the sections would have been
-   * invisible on exactly the surface that needed them most. */
-  --color-line: #33456b;
-  --color-ink: #f1f5f9;
-  --color-muted: #94a3b8;
-  --color-faint: #7a899e;
-  --color-brand: #3b82f6;
-  --color-brand-strong: #2563eb;
-  --color-brand-ink: #001833;
-  --color-cyan: #22d3ee;
-  --color-violet: #818cf8;
-  /* Status, not decoration. Kept out of the brand/cyan/violet roles below
-   * because "this game is running" and "this game is new" are facts about the
-   * catalogue, not emphasis. Both badges used to be cyan on cyan, so the two
-   * read as the same thing. Emerald 8.74:1 and amber 10.07:1 on the card. */
-  --color-live: #34d399;
-  --color-new: #fbbf24;
+   * The surfaces are royal navy, not slate. Slate is a neutral wearing a hint
+   * of blue: it has nowhere to go, so every card on it reads as the same grey
+   * box a shade lighter. Real chroma in the floor gives the raised panels
+   * somewhere to travel, and the value steps still match the slate ones at
+   * every hop — bg/panel 1.184 (slate was 1.190), panel/card 1.298 (1.279),
+   * floor to card 1.537 (1.523). Colour is doing the separating now as well as
+   * value, which is why the same arithmetic reads as a much bigger change.
+   *
+   * Navy specifically, and NOT the indigo-violet an earlier pass used: violet
+   * with a warm accent is Revolver's palette, and a competitor's colours are
+   * the one thing a brand cannot borrow. It also happens to be the right
+   * answer — the logo is royal blue, so the floor is now the same hue family
+   * as the mark rather than a neighbouring one.
+   *
+   * Navy also gives the accent below somewhere to sit: the mint needs a deep,
+   * blue, chromatic field behind it to read as a signal lamp rather than as
+   * highlighter, and slate does not supply one. */
+  --color-bg: #060a16;
+  --color-panel: #0f1c3f;
+  --color-panel-low: #03050d;
+  --color-panel-high: #1b2f63;
+  --color-line: #2f4a93;
+  --color-ink: #f1f4fc;
+  --color-muted: #a6b5da;
+  --color-faint: #8f9fc8;
+  /* brand — the logo's own blue (#4270ff), split into a text weight and a fill
+   * weight. The fill is darker than the mark because white on the mark's blue
+   * measures 4.21:1, under the 4.5 a 12px button label needs; #3358e6 is 5.71. */
+  --color-brand: #7e9bff;
+  --color-brand-strong: #3358e6;
+  --color-brand-deep: #2743b8;
+  /* accent — the one signal colour. It replaces the cyan this palette used to
+   * run on: cyan is the default "technology" hue on a dark page, and it sat on
+   * the eyebrows, the figures, the fairness layer and the nav at once, all at
+   * the same pitch. A page where everything is highlighted is a page where
+   * nothing is.
+   *
+   * Mint. At ~148deg it is unambiguously green rather than the blue-green that
+   * would just be cyan wearing a hat, and green is the correct meaning for what
+   * it actually marks here: the multiplier figures are money, and a round you
+   * can verify either checks out or it doesn't.
+   *
+   * ONE weight, unlike the brand blue above. Mint sits high in the luminance
+   * range, so the same value carries 11px type on a navy card (7.73:1) AND
+   * takes dark text when it is a filled chip (10.00:1). An earlier pass on a
+   * mid-luminance accent needed a separate fill weight for exactly the reason
+   * this one doesn't. */
+  --color-accent: #3ae398;
+  /* Bottom of a filled gradient, and its hover. Still takes the dark ink. */
+  --color-accent-deep: #14c489;
+  /* Text ON a filled accent — near-black with a green cast, so a mint chip
+   * reads as one object rather than as dark type dropped onto a colour. */
+  --color-accent-ink: #05231a;
   /*
-   * The existing brand palette, with roles rather than free-for-all use — the
-   * discipline is what was missing before, not the hues:
-   *   brand  — primary actions, links, emphasis.
-   *   cyan   — live status and the provably-fair layer (seeds, verification).
-   *   violet — the bespoke-branding section only.
-   * Anything else is a neutral. No fourth accent.
+   * Roles, no free-for-all:
+   *   brand  — primary actions, links, focus rings, and the aurora behind the
+   *            sections (two weights of the same blue, at two depths).
+   *   accent — the figures, the eyebrows, the fairness layer, the current nav
+   *            item, the NEW badge, and the live dot.
+   * Two colours and a set of neutrals. That is the whole palette.
+   *
+   * There is deliberately no third status hue. "Live" used to own an emerald of
+   * its own, but every card in the catalogue is live — a badge that appears on
+   * everything is wallpaper, not information. It is a neutral pill now with a
+   * single pulsing accent dot, and NEW (the actual exception) is the one badge
+   * that gets filled colour.
    */
   --font-JetBrainsMono: var(--font-jetbrains-mono), "JetBrains Mono", "SFMono-Regular", "Menlo", monospace;
   --font-Display: var(--font-archivo-black), "Archivo Black", "Helvetica Neue", sans-serif;
@@ -108,14 +139,143 @@
 }
 
 
+/* Never scale(1) — see the note on b4w-mesh-alt below for why an inset:0 layer
+   at scale(1) is a trap. This one has no translate at that frame so it does not
+   produce the obvious dark band, but an exact fit still rounds to a ~1px
+   hairline of bare floor along an edge on fractional device pixel ratios. The
+   base is 1.08 so there is always overhang to round into. */
 @keyframes b4w-mesh {
   0%,
   100% {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1.08);
     opacity: 0.9;
   }
   50% {
-    transform: translate3d(-3%, 2%, 0) scale(1.09);
+    transform: translate3d(-3%, 2%, 0) scale(1.16);
+    opacity: 1;
+  }
+}
+
+/* A second wash running the opposite way on a different period, so the two
+   never line up and the canvas can't resolve into a pattern you predict. */
+/* A NOTE ON THE SCALES, because getting them wrong is invisible in code and
+   obvious on the page: this layer is `inset: 0`, so at scale(1) it fits its
+   section exactly and ANY translate drags an edge inside the box, revealing the
+   unlit floor as a dark band. This keyframe used to reach scale(1) at 50% while
+   translated 4% right and 3% up, which is precisely how the closing section grew
+   a black border down its left side and along its bottom every 47 seconds.
+   The rule: the scale must always overhang by more than the translate on that
+   axis. 4% and 3% of travel need >4% of overhang per side, so the smallest
+   scale here is 1.10 (5% a side) and never 1. b4w-mesh above is safe for the
+   opposite reason — it sits at scale(1) only when its translate is 0, and only
+   ever grows from there. */
+@keyframes b4w-mesh-alt {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.16);
+    opacity: 0.75;
+  }
+  50% {
+    transform: translate3d(4%, -3%, 0) scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* A mote lifting through a section and fading out near the top. Each one is
+   given its own duration and delay at the call site, so the field never
+   pulses in unison. */
+@keyframes b4w-rise {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: var(--mote-peak, 0.55);
+  }
+  78% {
+    opacity: var(--mote-peak, 0.55);
+  }
+  100% {
+    transform: translate3d(var(--mote-drift, 12px), -120px, 0);
+    opacity: 0;
+  }
+}
+
+/* A highlight travelling along a section's hairline — the one thing that makes
+   a 1px rule read as lit rather than printed. */
+@keyframes b4w-rule-sweep {
+  /* Both ends stay INSIDE the section. The glint is 38% wide and translated by
+     a percentage of its own width, so 0% -> 163% runs its left edge from 0 to
+     61.9% and its right edge to 99.9%. Starting off-canvas at -60% would have
+     hung 23% of the page width past the left edge of every ruled section —
+     invisible only because the template's body rule happens to hide overflow-x,
+     which is not a thing to rely on. */
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(163%);
+  }
+}
+
+/* Slow breathing glow, for the halo under the spotlight card. */
+@keyframes b4w-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+/* Conic sweep behind the spotlight frame — a slot reel turning, one rotation a
+   minute. Slow enough to be atmosphere, present enough to say "running". */
+@keyframes b4w-sweep {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* Packets moving along the connector lines in the Platform door's diagram. */
+@keyframes b4w-flow {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+/* The Branding door's mockup re-skinning itself. The three stops are the same
+   three demo brands the /branding page's switcher offers, so the teaser and the
+   thing it teases are showing the same palettes. */
+@keyframes b4w-rebrand {
+  0%,
+  24% {
+    background-color: #e8a045;
+  }
+  33%,
+  57% {
+    background-color: #e0394b;
+  }
+  66%,
+  90% {
+    background-color: #22d3ee;
+  }
+  100% {
+    background-color: #e8a045;
+  }
+}
+
+/* One character of a hash settling. Used on the Provably-fair door, where the
+   point being made is that a committed value resolves to exactly one result. */
+@keyframes b4w-settle {
+  0%,
+  70% {
+    opacity: 0.25;
+  }
+  85%,
+  100% {
     opacity: 1;
   }
 }
@@ -173,7 +333,7 @@
    constrains it via height:100% + flex, so the white shows through below the
    fold. Paint the canvas dark for the home route only — other pages stay light. */
 body.home-dark {
-  background-color: #06080f;
+  background-color: #060a16;
   font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
 }
 /* Contains the decorative glows, which are deliberately larger than their
@@ -226,31 +386,195 @@ body.age-gate-locked {
     0 14px 34px -20px rgba(0, 0, 0, 0.95);
 }
 
-/* Light sweeps across a control on hover, and it presses in on click. */
-.b4w-sheen {
+/* --- Controls --------------------------------------------------------------
+ * One shape for every control on the site: a full pill, deliberately
+ * low-profile. Every button used to carry its own twenty-class string, which is
+ * why the header's CTA, the hero's and the spotlight's had three different
+ * heights and two different radii. The shape is declared once here; call sites
+ * pick a variant and a size and nothing else.
+ *
+ * `border: 1px solid transparent` on the base, not just on the outlined
+ * variants — a filled pill and an outlined one have to measure the same height,
+ * or a row containing both sits crooked.
+ *
+ * These live in @layer components, which beats @layer base, so the inherited
+ * template's `a { color: … }` no longer needs `!text-white` to be overridden at
+ * every call site.
+ */
+.b4w-btn {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
   overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  /* Low profile: ~35px at the default size, ~42px large. The point of the pill
+     is that it reads as a slim capsule, so the vertical padding is the first
+     thing to keep honest — anything over ~0.85rem and it stops being a pill and
+     starts being a lozenge. */
+  padding: 0.7rem 1.35rem;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.12s ease;
 }
-.b4w-sheen::after {
+.b4w-btn:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+.b4w-btn:active {
+  transform: translateY(1px);
+}
+
+/* Sizes. The default is the small one: most controls on this page are
+   secondary, and a page of large buttons has no primary action. */
+.b4w-btn--sm {
+  padding: 0.4rem 0.9rem;
+  font-size: 11px;
+  gap: 0.375rem;
+}
+.b4w-btn--lg {
+  padding: 0.8rem 1.75rem;
+  font-size: 13px;
+  letter-spacing: 0.05em;
+}
+
+/* Primary: the logo's blue, lit from the top edge and sitting on its own
+   coloured shadow so it reads as the one thing to press. */
+.b4w-btn--primary {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-brand-strong) 0%,
+    var(--color-brand-deep) 100%
+  );
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 8px 26px -12px rgba(51, 88, 230, 0.9);
+}
+.b4w-btn--primary:hover {
+  background-image: linear-gradient(
+    180deg,
+    #4a6dfa 0%,
+    var(--color-brand-strong) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 12px 32px -12px rgba(51, 88, 230, 1);
+}
+
+/* Accent: mint, dark type. Reserved for the fairness terminal's own action —
+   the one control on the site that isn't "talk to us" or "play this". */
+.b4w-btn--accent {
+  background-image: linear-gradient(
+    180deg,
+    var(--color-accent) 0%,
+    var(--color-accent-deep) 100%
+  );
+  color: var(--color-accent-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 8px 26px -12px rgba(58, 227, 152, 0.7);
+}
+.b4w-btn--accent:hover {
+  background-image: linear-gradient(
+    180deg,
+    #63eeb0 0%,
+    var(--color-accent) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 12px 32px -12px rgba(58, 227, 152, 0.9);
+}
+
+/* Ghost: a hairline pill on the page's own surface. */
+.b4w-btn--ghost {
+  border-color: var(--color-line);
+  background-color: color-mix(in srgb, var(--color-panel-high) 45%, transparent);
+  color: var(--color-ink);
+}
+.b4w-btn--ghost:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  background-color: color-mix(in srgb, var(--color-panel-high) 85%, transparent);
+  color: var(--color-ink);
+}
+
+/* Quiet: type and an icon, no box. The tertiary action in a row of two. */
+.b4w-btn--quiet {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  color: var(--color-muted);
+}
+.b4w-btn--quiet:hover {
+  color: var(--color-ink);
+}
+
+/* Glass: frosted, for controls that sit on top of artwork. */
+.b4w-btn--glass {
+  border-color: rgba(255, 255, 255, 0.22);
+  background-color: rgba(6, 10, 22, 0.55);
+  color: #ffffff;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.9);
+}
+.b4w-btn--glass:hover {
+  border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
+  background-color: rgba(6, 10, 22, 0.78);
+}
+
+/* Filled variants get the light sweep; outlined ones don't — a sheen needs a
+   surface to travel across. */
+.b4w-btn--primary::after,
+.b4w-btn--accent::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
     105deg,
-    transparent 32%,
-    rgba(255, 255, 255, 0.3) 48%,
-    transparent 64%
+    transparent 34%,
+    rgba(255, 255, 255, 0.32) 50%,
+    transparent 66%
   );
   transform: translateX(-130%);
   transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.b4w-sheen:hover::after,
-.b4w-sheen:focus-visible::after {
+.b4w-btn--primary:hover::after,
+.b4w-btn--primary:focus-visible::after,
+.b4w-btn--accent:hover::after,
+.b4w-btn--accent:focus-visible::after {
   transform: translateX(130%);
 }
-.b4w-sheen:active {
-  transform: translateY(1px);
+
+.b4w-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Icon-only control: square-ish pill, same family. */
+.b4w-btn--icon {
+  padding: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  gap: 0;
+}
+.b4w-btn--icon.b4w-btn--sm {
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 /* Ticker: an infinite strip of the catalogue's real max multipliers. The track
@@ -309,7 +633,7 @@ body.age-gate-locked {
 }
 .b4w-prose a:hover,
 .b4w-prose a:focus-visible {
-  color: var(--color-cyan);
+  color: var(--color-accent);
 }
 .b4w-prose strong {
   color: var(--color-ink);
@@ -318,7 +642,7 @@ body.age-gate-locked {
 .b4w-prose code {
   font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.85em;
-  color: var(--color-cyan);
+  color: var(--color-accent);
 }
 /* --- Motion system ---------------------------------------------------------
  * Entrance animations are gated behind `html.js` (set by an inline script in the
@@ -342,13 +666,13 @@ html.js .b4w-reveal.is-revealed {
 /* Log-scaled ceiling meter on each game card; grows once the card reveals.
    Masked into discrete rungs rather than drawn as a smooth bar — every game in
    this catalogue is a ladder you climb until it busts, so the meter reads as
-   rungs on that ladder. Hot at the base, gold at the top: risk paying out. */
+   rungs on that ladder. Cool at the base, accent at the top: risk paying out. */
 .b4w-magnitude {
   width: var(--w);
   background-image: linear-gradient(
     90deg,
-    var(--color-brand) 0%,
-    var(--color-cyan) 100%
+    var(--color-brand-strong) 0%,
+    var(--color-accent) 100%
   );
   -webkit-mask-image: repeating-linear-gradient(
     90deg,
@@ -386,11 +710,11 @@ html.js .b4w-magnitude[data-grown] {
      the pointer tilt, and a second rule setting it would silently replace the
      tilt the moment you hovered. */
   --lift: -7px;
-  border-color: color-mix(in srgb, #22d3ee 55%, transparent);
+  border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
     0 22px 46px -18px rgba(0, 0, 0, 0.9),
-    0 0 30px -8px rgba(34, 211, 238, 0.38);
+    0 0 34px -8px rgba(58, 227, 152, 0.28);
 }
 
 /* Ambient drift for the decorative radial washes, so the canvas is never
@@ -402,6 +726,18 @@ html.js .b4w-magnitude[data-grown] {
 
 .b4w-pulse {
   animation: b4w-pulse 2.4s ease-in-out infinite;
+}
+
+/* A halo that swells and settles. One per page — under the spotlight card. */
+.b4w-breathe {
+  animation: b4w-breathe 9s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+/* One rotation a minute. Used for the conic light behind the spotlight frame. */
+.b4w-sweep {
+  animation: b4w-sweep 60s linear infinite;
+  will-change: transform;
 }
 
 /* --- Section surfaces ------------------------------------------------------
@@ -418,6 +754,30 @@ html.js .b4w-magnitude[data-grown] {
    surface step does the work now, which is why the step had to get bigger. */
 .b4w-rule {
   border-top: 1px solid var(--color-line);
+}
+/* …and a slow highlight crossing it. One travelling glint per boundary is the
+   cheapest liveliness on the page: nothing moves, nothing reflows, and the
+   hairline stops reading as a printed line.
+   ::after, NOT ::before — .b4w-grid already claims ::before on this same
+   <section>, and a section is routinely both ruled and depth-washed. The
+   translate is a percentage of the glint's own 38% width, so its right edge
+   peaks at 98.8% and it can never widen the page. */
+.b4w-rule::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  height: 1px;
+  width: 38%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--color-accent) 70%, transparent),
+    transparent
+  );
+  opacity: 0.75;
+  animation: b4w-rule-sweep 11s linear infinite;
 }
 
 /* Background depth: a fine grid, radially masked so it reads as atmosphere at
@@ -473,18 +833,166 @@ html.js .b4w-magnitude[data-grown] {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  /* Two weights of the same royal blue at two depths, rather than two different
+     hues. A second hue up here is what turns atmosphere into a gradient mesh
+     you notice; the same blue near and far just reads as depth. */
   background:
     radial-gradient(
       44rem 28rem at 18% 12%,
-      color-mix(in srgb, var(--color-brand) 13%, transparent),
+      color-mix(in srgb, var(--color-brand) 17%, transparent),
       transparent 62%
     ),
     radial-gradient(
       38rem 26rem at 84% 78%,
-      color-mix(in srgb, var(--color-violet) 11%, transparent),
+      color-mix(in srgb, var(--color-brand-strong) 22%, transparent),
       transparent 60%
     );
   animation: b4w-mesh 34s ease-in-out infinite;
+}
+/* The accent half of the aurora, on its own period and its own direction. One
+   mint wash is what stops the atmosphere reading as unbroken blue — and it is
+   the only place the accent appears at this scale. Kept low (9%): at any more
+   it stops being light in the room and starts being a green gradient. */
+.b4w-mesh--warm {
+  background:
+    radial-gradient(
+      34rem 22rem at 72% 18%,
+      color-mix(in srgb, var(--color-accent) 9%, transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      40rem 24rem at 12% 88%,
+      color-mix(in srgb, var(--color-brand-deep) 26%, transparent),
+      transparent 60%
+    );
+  animation: b4w-mesh-alt 47s ease-in-out infinite;
+}
+
+/* --- Motes -----------------------------------------------------------------
+ * A sparse field of embers lifting through a section. This is the page's
+ * "juice": it is the only motion on the site that is purely atmospheric, so it
+ * is kept to a handful of 2px specks moving over 20+ seconds — dust in a
+ * spotlight, not a particle demo. Each mote's position, size, duration and
+ * delay come from inline custom properties at the call site.
+ */
+.b4w-motes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: clip;
+}
+.b4w-mote {
+  position: absolute;
+  bottom: -8px;
+  left: var(--mote-x, 50%);
+  width: var(--mote-size, 3px);
+  height: var(--mote-size, 3px);
+  border-radius: 9999px;
+  background: var(--mote-colour, var(--color-accent));
+  box-shadow: 0 0 10px 1px currentColor;
+  color: var(--mote-colour, var(--color-accent));
+  opacity: 0;
+  animation: b4w-rise var(--mote-dur, 22s) linear var(--mote-delay, 0s) infinite;
+  will-change: transform, opacity;
+}
+
+/* --- Explore doors ---------------------------------------------------------
+ * Each of the three interior pages gets a small diagram of what is actually
+ * behind the door, rather than a 20px icon in a rounded square. They are built
+ * from CSS and SVG so they cost nothing to ship and can move.
+ */
+
+/* Packets travelling from the single endpoint out to the catalogue. The dash
+   pattern IS the packet; the line underneath is drawn separately and stays
+   still, so the path reads as a wire with traffic on it. */
+.b4w-flow {
+  stroke-dasharray: 3 9;
+  /* Slow. Three diagrams animate in this block at once, and the packets are the
+     only one of the three that actually travels — at 2.6s they pulled the eye
+     off the copy beside them. */
+  animation: b4w-flow 3.8s linear infinite;
+  opacity: 0.85;
+}
+
+.b4w-rebrand {
+  animation: b4w-rebrand 9s ease-in-out infinite;
+}
+
+.b4w-settle {
+  animation: b4w-settle 4.5s ease-in-out infinite;
+}
+
+/* --- Roadmap plate ---------------------------------------------------------
+ * Card art for a game that does not have any yet.
+ *
+ * The four titles on the roadmap are in production, which means their key art is
+ * genuinely not drawn — not "we haven't chosen a picture" but "the picture does
+ * not exist". A dark rectangle where the tile art goes reads as a broken image;
+ * a borrowed or generated placeholder promises a look nobody has signed off. So
+ * the plate is an artefact in its own right: a punched sheet, dot grid over a
+ * shallow diagonal hatch, with the title set in the display face on top of it.
+ *
+ * The texture lives on ::before rather than on the element, because the element
+ * has children: a mask applied to the box would fade the title with it. On
+ * ::before the mask can clear the bottom of the plate, which is exactly where
+ * the name sits.
+ */
+.b4w-plate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--color-line) 26%, transparent) 0 1px,
+      transparent 1px 10px
+    ),
+    radial-gradient(
+      circle at 1px 1px,
+      color-mix(in srgb, var(--color-line) 75%, transparent) 1px,
+      transparent 0
+    );
+  background-size: auto, 14px 14px;
+  /* Gone well before the title starts. The name is bottom-aligned and can run to
+     two lines, which on the shortest plate (3:1 on a phone) is over half the
+     box — so the texture stops at 44% rather than fading to nothing at the
+     bottom edge. Relying on paint order alone was not enough: the hatch is a
+     1px diagonal at 26% opacity, and even sitting *behind* white display type it
+     read as lines drawn across the letterforms. */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 12%, transparent 44%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 12%, transparent 44%);
+}
+
+/* --- Spotlight -------------------------------------------------------------
+ * The featured-game card is the one deep object on the page. The pointer
+ * anywhere over it publishes --tilt-*, and three layers answer at three
+ * different depths: the blurred room furthest back and moving AGAINST the
+ * cursor, the key art in the middle and actually rotating, the glass panel
+ * nearest and moving WITH it. Opposite signs across the stack is the whole
+ * illusion — same magnitude in the same direction just slides the card around.
+ */
+.b4w-spot-back {
+  translate: calc(var(--tilt-nx, 0) * -20px) calc(var(--tilt-ny, 0) * -12px);
+}
+.b4w-spot-art {
+  transform: perspective(1100px) rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg));
+  transition: box-shadow 0.4s ease;
+}
+.b4w-spot-near {
+  translate: calc(var(--tilt-nx, 0) * 8px) calc(var(--tilt-ny, 0) * 5px);
+}
+
+/* Frosted panel over artwork. Distinct from .machined-surface, which is a lit
+   edge on an opaque fill — this one actually refracts what is behind it, so it
+   is only ever used where there IS something behind it. */
+.b4w-glass {
+  background-color: color-mix(in srgb, var(--color-bg) 55%, transparent);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 20px 50px -28px rgba(0, 0, 0, 0.95);
 }
 
 /* The grid layer drifts with scroll rather than sitting still, which is what
@@ -637,7 +1145,7 @@ html.js .b4w-magnitude[data-grown] {
 .b4w-cover[data-role="side"]:focus-visible {
   outline: 2px solid var(--color-brand);
   outline-offset: 6px;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
 }
 
 
@@ -688,13 +1196,40 @@ html.js .b4w-magnitude[data-grown] {
 @media (prefers-reduced-motion: reduce) {
   .b4w-pulse,
   .b4w-drift,
-  .b4w-marquee-track {
+  .b4w-marquee-track,
+  .b4w-rule::after,
+  .b4w-breathe,
+  .b4w-sweep,
+  .b4w-flow,
+  .b4w-rebrand,
+  .b4w-settle {
     animation: none;
   }
-  .b4w-sheen::after {
+  /* The three door diagrams all still READ with their motion off — a wire, a
+     skinned mockup, a resolved hash — so they only need their final frame
+     pinned rather than being hidden. */
+  .b4w-settle {
+    opacity: 1;
+  }
+  .b4w-rebrand {
+    background-color: #e8a045;
+  }
+  /* The halo's opacity lives in its keyframes, so switching the animation off
+     would leave it at the element's own 1 — brighter than it ever gets while
+     breathing. Pin it to the middle of its range. */
+  .b4w-breathe {
+    opacity: 0.7;
+  }
+  /* The motes are pure atmosphere with no static state worth keeping, so the
+     whole field goes rather than freezing mid-rise. */
+  .b4w-motes {
     display: none;
   }
-  .b4w-sheen:active {
+  .b4w-btn--primary::after,
+  .b4w-btn--accent::after {
+    display: none;
+  }
+  .b4w-btn:active {
     transform: none;
   }
   html.js .b4w-reveal,
@@ -721,7 +1256,8 @@ html.js .b4w-magnitude[data-grown] {
   /* The mesh stops entirely rather than slowing down: a drifting background is
      exactly the kind of persistent movement this setting exists to switch off.
      The surface stays, the motion goes. */
-  .b4w-mesh {
+  .b4w-mesh,
+  .b4w-mesh--warm {
     animation: none;
   }
   .b4w-deck {
@@ -741,8 +1277,13 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-cover[data-role="centre"] {
     transform: translateX(-50%) scale(var(--s, 1));
   }
-  .b4w-card-float {
+  .b4w-card-float,
+  .b4w-spot-back,
+  .b4w-spot-near {
     translate: none;
+  }
+  .b4w-spot-art {
+    transform: none;
   }
   .b4w-cover-art,
   .b4w-cover[data-role="centre"]:hover .b4w-cover-art,

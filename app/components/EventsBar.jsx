@@ -1,8 +1,17 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowRight } from "./Icons";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+  Close,
+} from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
 import { eventsSignature, rememberEventsDismissed } from "@/app/lib/eventsBar";
+import { bookingUrl } from "@/app/lib/site";
+import { openBooking } from "@/app/lib/booking";
 
 const ROTATE_MS = 6000;
 
@@ -71,11 +80,20 @@ export default function EventsBar({ events, initialDismissed = false }) {
       onMouseLeave={() => setPaused(false)}
       onFocus={() => setPaused(true)}
       onBlur={() => setPaused(false)}
-      className="relative z-40 border-b border-line/60 bg-panel-high/75 backdrop-blur-md"
+      // The strip is the site's only time-limited offer, and it used to read as
+      // a dismissible cookie notice: 8px of padding, a translucent fill and a
+      // 10px chip. It now sits on its own lit band with an accent hairline above
+      // it, which is the one decoration on the page allowed to say "look here".
+      className="relative z-40 border-b border-line/60 bg-[linear-gradient(90deg,var(--color-panel)_0%,var(--color-panel-high)_45%,var(--color-panel)_100%)]"
     >
-      <div className="mx-auto flex max-w-[1280px] items-center gap-2 px-5 py-2 md:gap-5 md:px-12">
-        <span className="hidden shrink-0 rounded-full border border-cyan/35 bg-cyan/10 px-2.5 py-1 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.1em] text-cyan sm:inline-block">
-          Upcoming
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-accent),transparent)] opacity-70"
+      />
+      <div className="mx-auto flex max-w-[1280px] items-center gap-2.5 px-5 py-2.5 md:gap-5 md:px-12">
+        <span className="hidden shrink-0 items-center gap-2 rounded-full bg-accent px-3 py-1.5 font-SpaceGrotesk text-[10px] font-bold uppercase tracking-[0.12em] text-accent-ink shadow-[0_4px_16px_-6px_rgba(58,227,152,0.75)] sm:inline-flex">
+          <Calendar className="h-3.5 w-3.5" />
+          Meet us at
         </span>
 
         {/* All slides share one grid cell, so the strip is as tall as the
@@ -98,15 +116,23 @@ export default function EventsBar({ events, initialDismissed = false }) {
                 showAll || i === index ? "opacity-100" : "opacity-0"
               }`}
             >
-              <span className="shrink-0 whitespace-nowrap font-SpaceGrotesk text-[13px] font-semibold leading-tight tracking-[-0.01em] text-ink">
+              <span className="shrink-0 whitespace-nowrap font-SpaceGrotesk text-[15px] font-bold leading-tight tracking-[-0.015em] text-ink">
                 {event.name}
               </span>
               {/* Mono numerals for dates, matching how every other figure on the
                   site is set — it is the one typographic signature we have that
                   neither competitor does. */}
-              <span className="shrink-0 whitespace-nowrap font-JetBrainsMono text-[12px] leading-tight text-cyan tabular-nums">
+              <span className="shrink-0 whitespace-nowrap font-JetBrainsMono text-[12px] leading-tight text-accent tabular-nums">
                 {event.dates}
               </span>
+              {/* How soon, in words. The dates alone made the reader do the
+                  arithmetic before they could tell whether this mattered
+                  today. */}
+              {event.countdown && (
+                <span className="shrink-0 whitespace-nowrap rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.08em] text-accent">
+                  {event.countdown}
+                </span>
+              )}
               <span className="hidden truncate font-SpaceGrotesk text-[12px] text-muted lg:inline">
                 · {event.location}
               </span>
@@ -126,20 +152,9 @@ export default function EventsBar({ events, initialDismissed = false }) {
               // either these or the CTA, and an announcement nobody can act on
               // is not worth the pixels — the dots are tappable and do the same
               // job.
-              className="hidden h-6 w-6 items-center justify-center rounded text-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:flex"
+              className="b4w-btn b4w-btn--quiet b4w-btn--icon b4w-btn--sm hidden sm:inline-flex"
             >
-              <svg
-                viewBox="0 0 24 24"
-                className="h-3.5 w-3.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
+              <ChevronLeft className="h-4 w-4" />
             </button>
 
             {/* Dots are the only control on a phone (the chevrons are hidden),
@@ -155,7 +170,7 @@ export default function EventsBar({ events, initialDismissed = false }) {
                   aria-label={`Show ${event.name}`}
                   aria-current={i === index ? "true" : undefined}
                   className={`h-1.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
-                    i === index ? "w-4 bg-brand" : "w-1.5 bg-line"
+                    i === index ? "w-4 bg-accent" : "w-1.5 bg-line"
                   }`}
                 />
               ))}
@@ -165,20 +180,9 @@ export default function EventsBar({ events, initialDismissed = false }) {
               type="button"
               onClick={() => go(index + 1)}
               aria-label="Next event"
-              className="hidden h-6 w-6 items-center justify-center rounded text-muted transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand sm:flex"
+              className="b4w-btn b4w-btn--quiet b4w-btn--icon b4w-btn--sm hidden sm:inline-flex"
             >
-              <svg
-                viewBox="0 0 24 24"
-                className="h-3.5 w-3.5"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M9 6l6 6-6 6" />
-              </svg>
+              <ChevronRight className="h-4 w-4" />
             </button>
           </div>
         )}
@@ -194,23 +198,28 @@ export default function EventsBar({ events, initialDismissed = false }) {
               event_id: active.id,
             })
           }
-          className="hidden shrink-0 font-SpaceGrotesk text-[11px] uppercase tracking-[0.06em] !text-muted transition-colors hover:!text-ink focus-visible:outline-none focus-visible:!text-ink xl:inline"
+          className="b4w-btn b4w-btn--quiet b4w-btn--sm hidden xl:inline-flex"
         >
-          Event site ↗
+          Event site
+          <ArrowUpRight className="h-3.5 w-3.5" />
         </a>
 
         <a
-          href={`mailto:info@bet4.win?subject=${encodeURIComponent(
-            `Meeting at ${active.name} (${active.dates})`,
-          )}`}
-          onClick={() =>
+          // The show's id rides along as utm_campaign, so a booking made from
+          // this strip arrives in Calendly tagged with which event prompted it —
+          // the job the mailto's "Meeting at <show>" subject line used to do.
+          href={bookingUrl("events_bar", active.id)}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => {
             trackEvent("cta_click", {
               label: "event_book_meeting",
-              cta_type: "email",
+              cta_type: "booking",
               event_id: active.id,
-            })
-          }
-          className="b4w-sheen inline-flex shrink-0 items-center gap-1.5 rounded-md border border-brand/50 px-3 py-1.5 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.04em] !text-ink transition-colors hover:border-brand hover:bg-brand/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+            });
+            if (openBooking(`events_bar:${active.id}`)) e.preventDefault();
+          }}
+          className="b4w-btn b4w-btn--primary b4w-btn--sm"
         >
           {/* Shortened rather than dropped on phones: the strip exists to get a
               meeting booked, so the action survives every breakpoint. */}
@@ -223,19 +232,9 @@ export default function EventsBar({ events, initialDismissed = false }) {
           type="button"
           onClick={dismiss}
           aria-label="Hide event announcements"
-          className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-faint transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="b4w-btn b4w-btn--quiet b4w-btn--icon b4w-btn--sm !text-faint"
         >
-          <svg
-            viewBox="0 0 24 24"
-            className="h-3.5 w-3.5"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            aria-hidden="true"
-          >
-            <path d="M6 6l12 12M18 6L6 18" />
-          </svg>
+          <Close className="h-4 w-4" />
         </button>
       </div>
 

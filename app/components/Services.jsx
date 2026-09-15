@@ -55,9 +55,9 @@ export default function Services() {
         {items.map(({ img, title, body }) => (
           <div
             key={title}
-            className="group relative overflow-hidden rounded-xl border border-line bg-panel p-6 transition-colors hover:border-line/0 hover:ring-1 hover:ring-brand/40"
+            className="b4w-bezel group relative overflow-hidden rounded-2xl border border-line bg-panel-high p-6 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-accent/45"
           >
-            <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-brand-strong/10 opacity-60 blur-[40px] transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-accent/10 opacity-50 blur-[40px] transition-opacity duration-300 group-hover:opacity-100" />
             <Image
               src={img}
               alt=""

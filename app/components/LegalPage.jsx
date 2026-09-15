@@ -8,7 +8,7 @@ export default function LegalPage({ title, updated, intro, children }) {
   return (
     <PageShell>
       <div className="mx-auto max-w-[820px] px-5 pb-24 pt-32 md:px-12 md:pt-40">
-        <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-cyan">
+        <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-accent">
           Legal
         </p>
         <h1 className="mt-3 b4w-display !text-[clamp(2rem,1.4rem+2vw,2.9rem)] !text-ink">

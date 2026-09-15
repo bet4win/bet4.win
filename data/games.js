@@ -61,6 +61,29 @@ import blackjackBanner from "@/public/assets/img/banners/blackjack.jpg";
 import blackjackWide from "@/public/assets/img/banners/blackjack-wide.jpg";
 import baccaratBanner from "@/public/assets/img/banners/baccarat.jpg";
 import baccaratWide from "@/public/assets/img/banners/baccarat-wide.jpg";
+// Each game ships a pre-blurred 16:9 scene from its own marketing pack
+// (marketing/<game>/backgrounds/<game>_bg-main-blur.png). It is the room the
+// game is actually played in, out of focus — which is what the homepage
+// spotlight uses as its backdrop, so the card is lit by the game it features
+// rather than by a gradient somebody picked. Already blurred at source, so
+// these compress to ~12KB each.
+import punchBackdrop from "@/public/assets/img/backdrops/punch.jpg";
+import crashBackdrop from "@/public/assets/img/backdrops/crash.jpg";
+import dragonBackdrop from "@/public/assets/img/backdrops/dragon.jpg";
+import videoPokerBackdrop from "@/public/assets/img/backdrops/video-poker.jpg";
+import blackjackBackdrop from "@/public/assets/img/backdrops/blackjack.jpg";
+import baccaratBackdrop from "@/public/assets/img/backdrops/baccarat.jpg";
+import rouletteBackdrop from "@/public/assets/img/backdrops/roulette.jpg";
+import americanRouletteBackdrop from "@/public/assets/img/backdrops/american-roulette.jpg";
+import coinBackdrop from "@/public/assets/img/backdrops/coin.jpg";
+import hiloBackdrop from "@/public/assets/img/backdrops/hilo.jpg";
+import minesBackdrop from "@/public/assets/img/backdrops/mines.jpg";
+import plinkoBackdrop from "@/public/assets/img/backdrops/plinko.jpg";
+import diceBackdrop from "@/public/assets/img/backdrops/dice.jpg";
+import wheelBackdrop from "@/public/assets/img/backdrops/wheel.jpg";
+import diamondsBackdrop from "@/public/assets/img/backdrops/diamonds.jpg";
+import kenoBackdrop from "@/public/assets/img/backdrops/keno.jpg";
+import limboBackdrop from "@/public/assets/img/backdrops/limbo.jpg";
 
 // Per-game card figures. All three are game-specific — there is no catalogue-wide
 // default, so a game that omits a field simply doesn't show it on its card.
@@ -90,6 +113,7 @@ export const games = [
     title: "Punch",
     banner: punchBanner,
     bannerWide: punchWide,
+    backdrop: punchBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 1000000, // punch-game/src/app/app.tsx
@@ -118,6 +142,7 @@ export const games = [
     title: "Crash",
     banner: crashBanner,
     bannerWide: crashWide,
+    backdrop: crashBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 1000000, // crash/src/app/app.tsx
@@ -131,6 +156,7 @@ export const games = [
     title: "Dragon",
     banner: dragonBanner,
     bannerWide: dragonWide,
+    backdrop: dragonBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 251658.24, // dragon-tower IDragonTowerPaytableConfig.ts default
@@ -147,6 +173,7 @@ export const games = [
     slug: "video-poker",
     banner: videoPokerBanner,
     bannerWide: videoPokerWide,
+    backdrop: videoPokerBackdrop,
     rtp: "94–99%",
     volatility: "High",
     // The royal flush, and the only rung that pays it: `maxWin` in
@@ -165,6 +192,7 @@ export const games = [
     title: "Blackjack",
     banner: blackjackBanner,
     bannerWide: blackjackWide,
+    backdrop: blackjackBackdrop,
     // The certified engine version IS the figure: `rules.ts` keys its rules
     // package off `CONFIG.engineVersionRTP`, and the only version the client
     // recognises is "99". Quoting anything else would be inventing one.
@@ -188,6 +216,7 @@ export const games = [
     title: "Baccarat",
     banner: baccaratBanner,
     bannerWide: baccaratWide,
+    backdrop: baccaratBackdrop,
     // A RANGE, and unusually for this catalogue the range is the game's whole
     // strategy rather than a configuration artefact: the return depends only on
     // which of the three spots the player backs. 98.94% on Banker, 98.77% on
@@ -214,6 +243,7 @@ export const games = [
     title: "Roulette",
     banner: rouletteBanner,
     bannerWide: rouletteWide,
+    backdrop: rouletteBackdrop,
     // Fixed by the wheel, not by configuration: a straight-up number pays 36x
     // against 37 pockets, so 36/37 = 97.3%. Every bet type on a single-zero
     // table returns the same figure.
@@ -235,6 +265,7 @@ export const games = [
     slug: "american-roulette",
     banner: americanRouletteBanner,
     bannerWide: americanRouletteWide,
+    backdrop: americanRouletteBackdrop,
     // 36/38 = 94.74%. The double zero is the whole difference between the two
     // tables, and it costs the player 2.56 points of RTP.
     rtp: "94.74%",
@@ -251,6 +282,7 @@ export const games = [
     title: "Coin",
     banner: coinBanner,
     bannerWide: coinWide,
+    backdrop: coinBackdrop,
     // The engine serves 92 / 94 / 95 / 96 / 97 / 98 and defaults to 96 for an
     // unknown version, so the range is the six shipping tables, not a guess.
     rtp: "92–98%",
@@ -271,6 +303,7 @@ export const games = [
     title: "HiLo",
     banner: hiloBanner,
     bannerWide: hiloWide,
+    backdrop: hiloBackdrop,
     // Shipping tables run 92–99; the engine falls back to 99 for an unknown
     // version, which is what the client assumes when CONFIG carries no RTP.
     rtp: "92–99%",
@@ -287,6 +320,7 @@ export const games = [
     title: "Mines",
     banner: minesBanner,
     bannerWide: minesWide,
+    backdrop: minesBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 5096294, // mines/src/app/app.tsx
@@ -300,6 +334,7 @@ export const games = [
     title: "Plinko",
     banner: plinkoBanner,
     bannerWide: plinkoWide,
+    backdrop: plinkoBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 1000, // plinko/src/app/app.tsx
@@ -313,6 +348,7 @@ export const games = [
     title: "Dice",
     banner: diceBanner,
     bannerWide: diceWide,
+    backdrop: diceBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 9600, // dice getMaxWin(96) = floor(10001*96/100)
@@ -326,6 +362,7 @@ export const games = [
     title: "Wheel",
     banner: wheelBanner,
     bannerWide: wheelWide,
+    backdrop: wheelBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 49.5, // lib/components winBands.ts WIN_BANDS.wheel
@@ -339,6 +376,7 @@ export const games = [
     title: "Diamonds",
     banner: diamondsBanner,
     bannerWide: diamondsWide,
+    backdrop: diamondsBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 50, // diamonds/src/app/app.tsx fallback (?? 50)
@@ -352,6 +390,7 @@ export const games = [
     title: "Keno",
     banner: kenoBanner,
     bannerWide: kenoWide,
+    backdrop: kenoBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 1000, // keno/src/app/app.tsx
@@ -365,6 +404,7 @@ export const games = [
     title: "Limbo",
     banner: limboBanner,
     bannerWide: limboWide,
+    backdrop: limboBackdrop,
     rtp: "94–99%",
     volatility: "High",
     maxMultiplier: 1000000, // limbo/src/app/app.tsx

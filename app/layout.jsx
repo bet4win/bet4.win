@@ -2,11 +2,16 @@ import "./globals.css";
 import { Space_Grotesk, JetBrains_Mono, Archivo_Black } from "next/font/google";
 import { cookies } from "next/headers";
 import AgeGate from "@/app/components/AgeGate";
+import BookingDialog from "@/app/components/BookingDialog";
 import CookieConsent from "@/app/components/CookieConsent";
 import EventsBar from "@/app/components/EventsBar";
 import { AGE_COOKIE, AGE_COOKIE_VALUE } from "@/app/lib/ageGate";
 import { CONSENT_COOKIE, CONSENT_COOKIE_VALUE } from "@/app/lib/consent";
-import { EVENTS_COOKIE, eventsSignature } from "@/app/lib/eventsBar";
+import {
+  EVENTS_COOKIE,
+  countdownLabel,
+  eventsSignature,
+} from "@/app/lib/eventsBar";
 import { upcomingEvents } from "@/data/events";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/app/lib/site";
 
@@ -70,7 +75,7 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#06080f",
+  themeColor: "#060a16",
   colorScheme: "dark",
   // Extend the page under the iOS safe areas so a fullscreen game modal can
   // cover the whole screen (incl. the home-indicator strip) instead of leaving
@@ -90,7 +95,12 @@ export default async function RootLayout({ children }) {
   // Shows that have already finished are dropped here, so the strip empties
   // itself rather than advertising last month's expo. The dismissal cookie
   // stores the event-id set, so publishing a new show re-shows a hidden strip.
-  const shows = upcomingEvents();
+  // The countdown is resolved here, on the server, and travels with the event —
+  // see countdownLabel() for why it isn't computed in the strip itself.
+  const shows = upcomingEvents().map((e) => ({
+    ...e,
+    countdown: countdownLabel(e),
+  }));
   const eventsDismissed =
     shows.length > 0 &&
     store.get(EVENTS_COOKIE)?.value === eventsSignature(shows);
@@ -121,6 +131,11 @@ export default async function RootLayout({ children }) {
         {showAgeGate && <AgeGate />}
         <EventsBar events={shows} initialDismissed={eventsDismissed} />
         {children}
+
+        {/* Mounted once for the whole site — every booking CTA opens this one
+            dialog through a DOM event rather than through props. Renders null
+            until opened, and fetches nothing from Calendly before then. */}
+        <BookingDialog />
 
         {/* Owns the cookie notice AND the GA4 tags: analytics is not injected
             until consent exists, so a first visit sets no tracking cookies. */}

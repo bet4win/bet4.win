@@ -96,7 +96,7 @@ export default async function GamePage({ params }) {
                 <Link
                   key={g.id}
                   href={`/games/${slugFor(g)}`}
-                  className="group overflow-hidden rounded-xl border border-line bg-panel transition-colors hover:border-cyan/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                  className="group overflow-hidden rounded-2xl border border-line bg-panel transition-colors hover:border-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                 >
                   <Image
                     src={g.banner}

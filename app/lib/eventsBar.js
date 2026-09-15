@@ -20,6 +20,24 @@ export function eventsSignature(list) {
     .join(".");
 }
 
+// "In 14 days" / "On now" for the strip, resolved on the SERVER and passed down
+// as a plain string.
+//
+// Computing it in the client component instead would be a hydration mismatch
+// waiting to happen — the server and the browser can sit either side of UTC
+// midnight — and a useEffect would leave the busiest label on the bar blank for
+// the first frame. A string that is one request old is the right trade: the
+// countdown is a nudge, not a clock.
+export function countdownLabel(event, now = Date.now()) {
+  const start = Date.parse(`${event.start}T00:00:00Z`);
+  const end = Date.parse(`${event.end}T23:59:59Z`);
+  if (now >= start && now <= end) return "On now";
+  const days = Math.ceil((start - now) / 86400000);
+  if (days <= 0) return null;
+  if (days === 1) return "Tomorrow";
+  return `In ${days} days`;
+}
+
 export function rememberEventsDismissed(signature) {
   // Secure is dropped on localhost — Safari and Firefox reject Secure cookies
   // over plain http, which would silently break this in `next dev`.

@@ -6,9 +6,12 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "gen:og": "node scripts/generate-og-cards.mjs"
+    "gen:og": "node scripts/generate-og-cards.mjs",
+    "gen:backdrops": "node scripts/import-backdrops.mjs",
+    "gen:news-art": "node scripts/generate-news-images.mjs"
   },
   "dependencies": {
+    "@remixicon/react": "^4.9.0",
     "@tailwindcss/postcss": "^4.0.3",
     "next": "^15.4.7",
     "postcss": "^8.5.2",
