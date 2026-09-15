@@ -32,8 +32,19 @@ function getObserver() {
       }
     },
     // Fire slightly before the element is fully on screen so the motion reads as
-    // "already settling" by the time it's centred, not as a delayed pop-in.
-    { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+    // "already settling" by the time it's centred, not as a delayed pop-in. The
+    // negative bottom margin is what does that; the threshold is deliberately 0.
+    //
+    // It used to be 0.08, which is a proportion OF THE ELEMENT and therefore
+    // grows without bound as the element does. Once an element is taller than
+    // root/0.08 the condition can never be met — 8% of it does not fit on the
+    // screen — and it stays at opacity 0 forever. The news index is one
+    // <Reveal> around the whole post list: at 10,380px on a 390px-wide phone it
+    // needed 830px of a 776px root, so /news rendered as an empty page on every
+    // handset while reading correctly on a desktop, where the grid is short
+    // enough. At 0 the rule is "any part of it has crossed the line", which is
+    // what the rootMargin was always expressing and does not depend on size.
+    { rootMargin: "0px 0px -8% 0px", threshold: 0 },
   );
   return observer;
 }

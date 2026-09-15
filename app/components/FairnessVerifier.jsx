@@ -181,7 +181,7 @@ export default function FairnessVerifier() {
                       <span className="text-[11px] uppercase tracking-[0.05em] text-faint">
                         {row.label}
                       </span>
-                      <span className="font-SpaceGrotesk text-[1.7rem] font-bold !text-ink">
+                      <span className="font-SpaceGrotesk text-[clamp(1.3rem,1.125rem+0.9vw,1.7rem)] font-bold !text-ink">
                         {row.value}
                       </span>
                     </div>

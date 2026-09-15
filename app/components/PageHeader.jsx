@@ -14,9 +14,18 @@ import Section from "./Section";
 // nobody controls. At the poster size the page titles want, a three-line
 // headline in the display face takes over the screen — so posts step the clamp
 // down a size rather than every page shrinking to accommodate them.
+// The floors are set by the longest unbreakable WORD any of these titles
+// contains, not by how the phrase looks. "One integration. The whole
+// catalogue." puts "integration." — twelve characters of a very wide display
+// face — on its own line, and at the old 2.4rem floor that measured 368px
+// inside the 340px a 390px phone has between its gutters, so the full stop and
+// half the "n" were cut off on /platform on every standard handset. 2.15rem is
+// the largest size that fits it there; below 360px nothing in this family fits
+// and the size is pinned outright.
 const TITLE_SIZE = {
-  default: "!text-[clamp(2.4rem,1.5rem+2.8vw,3.6rem)]",
-  sm: "!text-[clamp(1.9rem,1.35rem+1.9vw,2.7rem)]",
+  default:
+    "!text-[clamp(2.15rem,1.5rem+2.8vw,3.6rem)] max-[359px]:!text-[1.7rem]",
+  sm: "!text-[clamp(1.9rem,1.35rem+1.9vw,2.7rem)] max-[359px]:!text-[1.55rem]",
 };
 
 export default function PageHeader({
@@ -34,7 +43,7 @@ export default function PageHeader({
       motes={7}
       // Reduced from pt-32/md:pt-40 when the header went from fixed to sticky —
       // that padding existed only to clear a header that no longer overlaps.
-      innerClassName="pb-8 pt-16 md:pt-24"
+      innerClassName="pb-6 pt-10 md:pb-8 md:pt-24"
     >
       {eyebrow && (
         <p className="!mb-0 flex items-center gap-3 font-SpaceGrotesk text-[11px] uppercase tracking-[0.12em] text-accent">
@@ -48,7 +57,7 @@ export default function PageHeader({
         {title}
       </h1>
       {intro && (
-        <p className="mt-5 max-w-2xl font-SpaceGrotesk text-[1.05rem] leading-[1.65] text-muted">
+        <p className="mt-5 max-w-2xl b4w-copy--lead font-SpaceGrotesk text-muted">
           {intro}
         </p>
       )}

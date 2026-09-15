@@ -88,11 +88,12 @@ export default function HeroWall() {
     game: LIVE[(index + offset + LIVE.length * 2) % LIVE.length],
   }));
 
-  const STYLE = {
-    0: { s: 1, op: 1, z: 3 },
-    1: { s: 0.82, op: 0.45, z: 2 },
-    2: { s: 0.64, op: 0, z: 1 },
-  };
+  // Opacity per distance from centre. Size and paint order are no longer set
+  // here: the deck is a real 3D rendering context now, so a card's size is what
+  // the perspective does to it at its depth and its paint order is what the
+  // browser works out from that. Both are then continuous through a move, which
+  // an integer z-index can never be. See .b4w-deck in globals.css.
+  const OPACITY = { 0: 1, 1: 0.45, 2: 0 };
 
   const play = (e, game) => {
     trackEvent("game_launch", {
@@ -139,7 +140,6 @@ export default function HeroWall() {
           // ghost — the invisible outer ring that exists only so cards have
           // somewhere to fade in from and out to.
           const role = distance === 0 ? "centre" : distance === 1 ? "side" : "ghost";
-          const { s, op, z } = STYLE[distance];
           return (
             <div
               key={game.id}
@@ -149,32 +149,39 @@ export default function HeroWall() {
               aria-hidden={role === "ghost" ? true : undefined}
               data-role={role}
               className="b4w-cover"
-              style={{ "--o": offset, "--s": s, "--op": op, "--z": z }}
+              style={{ "--o": offset, "--d": distance, "--op": OPACITY[distance] }}
             >
-              {role === "centre" && (
-                <a
-                  href="#games"
-                  onClick={(e) => play(e, game)}
-                  className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
-                >
-                  <CardBody game={game} interactive priority={index === 0} />
-                </a>
-              )}
-              {role === "side" && (
-                // The neighbours are the controls. Clicking the one on the left
-                // steps back, the one on the right steps forward — which is what
-                // the layout already implies, so the arrows and the NN/17
-                // counter were spelling out something the deck said better.
-                <button
-                  type="button"
-                  onClick={() => go(index + offset)}
-                  aria-label={`Show ${game.title}`}
-                  className="block w-full text-left focus-visible:outline-none"
-                >
-                  <CardBody game={game} />
-                </button>
-              )}
-              {role === "ghost" && <CardBody game={game} />}
+              {/* The pointer tilt is applied HERE rather than to .b4w-cover, so
+                  that the card's slot placement and its tilt are two separate
+                  transforms on two separate elements. See the note on
+                  .b4w-cover-tilt in globals.css for what sharing one cost. */}
+              <div className="b4w-cover-tilt">
+                {role === "centre" && (
+                  <a
+                    href="#games"
+                    onClick={(e) => play(e, game)}
+                    className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-4 focus-visible:ring-offset-bg"
+                  >
+                    <CardBody game={game} interactive priority={index === 0} />
+                  </a>
+                )}
+                {role === "side" && (
+                  // The neighbours are the controls. Clicking the one on the
+                  // left steps back, the one on the right steps forward — which
+                  // is what the layout already implies, so the arrows and the
+                  // NN/17 counter were spelling out something the deck said
+                  // better.
+                  <button
+                    type="button"
+                    onClick={() => go(index + offset)}
+                    aria-label={`Show ${game.title}`}
+                    className="block w-full text-left focus-visible:outline-none"
+                  >
+                    <CardBody game={game} />
+                  </button>
+                )}
+                {role === "ghost" && <CardBody game={game} />}
+              </div>
             </div>
           );
         })}
@@ -212,7 +219,11 @@ function CardBody({ game, interactive = false, priority = false }) {
         )}
 
         {interactive && (
-          <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+          // Forced visible where there is no hover, the same way the catalogue
+          // cards do it. Without this the deck's centre card carried no visible
+          // affordance at all on a phone: it is the page's LCP element and it
+          // looked like a picture rather than the button it is.
+          <span className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 max-md:opacity-100">
             <span className="b4w-btn b4w-btn--glass b4w-card-float">
               <Play className="h-3.5 w-3.5" />
               Play demo
@@ -232,7 +243,11 @@ function CardBody({ game, interactive = false, priority = false }) {
             {game.title}
           </p>
           {game.category && (
-            <span className="shrink-0 rounded-full border border-line bg-bg/60 px-2 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted">
+            // Dropped under 360px. The chip is shrink-0 and the title is not, so
+            // on the narrowest phones it took the caption down to 54px and
+            // line-clamp cut single-word titles like "Diamonds" in half. Between
+            // the name of the game and the family it belongs to, the name wins.
+            <span className="hidden shrink-0 rounded-full border border-line bg-bg/60 px-2 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted min-[360px]:inline-block">
               {game.category}
             </span>
           )}

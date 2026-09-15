@@ -77,8 +77,13 @@ const COLUMNS = [
 // columns is exactly the situation where a keyboard user needs to see where they
 // are, and a colour change alone is invisible to anyone who can't distinguish
 // the two greys — including on a bad screen in a bright room.
+//
+// inline-block + vertical padding, because a 13px link in a flow layout is a
+// 17px-tall target: seventeen of them stacked on a phone is seventeen chances to
+// hit the wrong one. The padding is taken back out of the list's gap below, so
+// the target grows from 17px to 37px without the column getting any taller.
 const linkClass =
-  "font-SpaceGrotesk text-[13px] !text-muted transition-colors hover:!text-accent focus-visible:!text-accent focus-visible:outline-2 focus-visible:outline-brand focus-visible:outline-offset-4";
+  "inline-block py-1.5 font-SpaceGrotesk text-[13px] !text-muted transition-colors hover:!text-accent focus-visible:!text-accent focus-visible:outline-2 focus-visible:outline-brand focus-visible:outline-offset-4";
 
 function FooterLink({ link }) {
   const className = `${linkClass}${link.mono ? " !font-JetBrainsMono !text-[12px]" : ""}`;
@@ -125,7 +130,7 @@ export default function Footer() {
       />
 
       <div className="mx-auto max-w-[1280px] px-5 md:px-12">
-        <div className="grid grid-cols-2 gap-x-8 gap-y-11 py-14 md:grid-cols-4 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-8 py-10 md:gap-y-11 md:py-14 md:grid-cols-4 lg:grid-cols-6">
           {/* Brand column. Two of six at lg so the blurb gets a readable measure
               instead of being squeezed into a nav column's width. */}
           <div className="col-span-2 md:col-span-4 lg:col-span-2">
@@ -195,7 +200,10 @@ export default function Footer() {
               >
                 {col.heading}
               </h2>
-              <ul className="!mb-0 flex flex-col gap-2.5">
+              {/* gap-0, not gap-2.5: the spacing now lives inside the links as
+                  padding so it is part of the tap target rather than dead space
+                  between two small ones. Same rhythm on screen. */}
+              <ul className="!mb-0 flex flex-col">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <FooterLink link={link} />

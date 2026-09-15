@@ -28,7 +28,7 @@ export default function ProvablyFair() {
       surface="raised"
       rule
       texture
-      innerClassName="py-20"
+      innerClassName="py-12 md:py-20"
     >
       <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
         <div>
@@ -36,7 +36,7 @@ export default function ProvablyFair() {
             <ShieldCheck className="h-3.5 w-3.5" />
             Absolute transparency
           </span>
-          <h2 className="mb-8 max-w-md b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] !text-ink">
+          <h2 className="mb-8 max-w-md b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] max-[359px]:!text-[1.75rem] !text-ink">
             Verify every result yourself.
           </h2>
 
@@ -59,10 +59,10 @@ export default function ProvablyFair() {
                   )}
                 </span>
                 <div>
-                  <h3 className="font-SpaceGrotesk !text-[1.1rem] !font-semibold !text-ink">
+                  <h3 className="font-SpaceGrotesk !text-[clamp(1rem,0.956rem+0.225vw,1.1rem)] !font-semibold !text-ink">
                     {s.title}
                   </h3>
-                  <p className="mt-1 max-w-md font-SpaceGrotesk text-[0.9rem] leading-[1.55] text-muted">
+                  <p className="mt-1 max-w-md b4w-copy font-SpaceGrotesk text-muted">
                     {s.body}
                   </p>
                 </div>

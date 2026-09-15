@@ -52,8 +52,14 @@ gtag('config', '${GA_ID}');`}
       className="fixed inset-x-0 bottom-0 z-[9998] border-t border-line bg-panel/95 backdrop-blur-md"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <div className="mx-auto flex max-w-[1280px] flex-col items-start gap-4 px-5 py-5 md:flex-row md:items-center md:justify-between md:px-12">
-        <p className="!mb-0 max-w-3xl font-SpaceGrotesk text-[0.9rem] leading-[1.6] text-muted">
+      {/* This is the last thing between a first-time reader and the page, and on
+          a 390px phone it was taking 340px of an 844px viewport — the notice,
+          the header and the events strip together left about a third of the
+          screen for the site. The copy now sets at the shared body size (see
+          .b4w-copy) and the band is padded like a notice rather than a section,
+          which brings it to roughly 190px. */}
+      <div className="mx-auto flex max-w-[1280px] flex-col items-start gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between md:gap-4 md:px-12 md:py-5">
+        <p className="!mb-0 max-w-3xl b4w-copy font-SpaceGrotesk text-muted">
           We use cookies to measure how this site is used and improve it. By
           continuing you consent to our use of cookies as described in our{" "}
           <Link

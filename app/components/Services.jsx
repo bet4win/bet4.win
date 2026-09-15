@@ -37,16 +37,16 @@ export default function Services() {
       surface="base"
       rule
       aria-labelledby="platform-heading"
-      innerClassName="py-20"
+      innerClassName="py-12 md:py-20"
     >
-      <div className="mb-10">
+      <div className="mb-7 md:mb-10">
         <h2
           id="platform-heading"
-          className="b4w-display !text-[1.75rem] !text-ink"
+          className="b4w-display !text-[clamp(1.35rem,1.175rem+0.9vw,1.75rem)] !text-ink"
         >
           Engineered for scale
         </h2>
-        <p className="mt-1 font-SpaceGrotesk text-muted">
+        <p className="b4w-copy mt-1 font-SpaceGrotesk text-muted">
           The complete infrastructure for modern iGaming operators.
         </p>
       </div>
@@ -58,17 +58,23 @@ export default function Services() {
             className="b4w-bezel group relative overflow-hidden rounded-2xl border border-line bg-panel-high p-6 transition-[border-color,translate] duration-300 hover:-translate-y-1 hover:border-accent/45"
           >
             <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-accent/10 opacity-50 blur-[40px] transition-opacity duration-300 group-hover:opacity-100" />
+            {/* w-full is sized for the lg four-up, where the card is ~278px and
+                the render lands at ~218px. Below lg the grid drops to two
+                columns and then one, so the same rule grew the mark to 292px on
+                a phone — larger than it ever gets on a desktop, and the reason
+                each of these four cards ran to 570px. Capped until the grid is
+                actually narrow enough to want a full-width illustration. */}
             <Image
               src={img}
               alt=""
               width={256}
               height={256}
-              className="mb-5 w-full object-contain transition-[scale] duration-300 group-hover:scale-105"
+              className="mb-5 w-full max-w-[7.5rem] object-contain transition-[scale] duration-300 group-hover:scale-105 lg:max-w-none"
             />
-            <h3 className="mb-2 font-SpaceGrotesk !text-[1.15rem] !font-semibold !text-ink">
+            <h3 className="mb-2 font-SpaceGrotesk !text-[clamp(1.05rem,1.006rem+0.225vw,1.15rem)] !font-semibold !text-ink">
               {title}
             </h3>
-            <p className="font-SpaceGrotesk text-[0.9rem] leading-[1.55] text-muted">
+            <p className="b4w-copy font-SpaceGrotesk text-muted">
               {body}
             </p>
           </div>

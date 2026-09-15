@@ -43,7 +43,7 @@ export default function Proof() {
       // somebody has to audit, not admire.
       depth="cross"
       aria-labelledby="proof-heading"
-      innerClassName="py-16 md:py-20"
+      innerClassName="py-12 md:py-20"
     >
       <Reveal>
         <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-accent">
@@ -51,7 +51,7 @@ export default function Proof() {
         </p>
         <h2
           id="proof-heading"
-          className="mt-2 b4w-display !text-[clamp(2.1rem,1.3rem+2.4vw,3.1rem)] !text-ink"
+          className="mt-2 b4w-display !text-[clamp(2.1rem,1.3rem+2.4vw,3.1rem)] max-[359px]:!text-[1.8rem] !text-ink"
         >
           Checkable, not claimable
         </h2>
@@ -69,7 +69,7 @@ export default function Proof() {
             single-word last line. Widening the measure was the cheaper fix —
             cutting the sentence down to fit was making it terse and cryptic,
             which is the opposite of what this paragraph is for. */}
-        <p className="mt-4 max-w-2xl font-SpaceGrotesk text-[0.95rem] leading-[1.6] text-muted [text-wrap:pretty]">
+        <p className="mt-4 max-w-2xl b4w-copy font-SpaceGrotesk text-muted [text-wrap:pretty]">
           Ask your compliance team what they&rsquo;d want evidenced. Everything
           here survives that conversation — and anything we can&rsquo;t evidence
           yet isn&rsquo;t on the page.
@@ -77,20 +77,36 @@ export default function Proof() {
       </Reveal>
 
       <Reveal>
-        <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-4">
+        {/* Single column under 360px for the same reason the catalogue grid is:
+            two cells there leave the value 94px, and both "Certified" and
+            "5,096,294×" are unbreakable strings wider than that. */}
+        {/* Four across at lg, not md. At the md breakpoint four cells share
+            672px, which leaves each value 120px — narrower than either
+            "5,096,294×" or "Certified", so a tablet got the same clipped
+            figures a phone used to. Two-up holds until there is room for four. */}
+        <dl className="mt-6 grid grid-cols-1 md:mt-10 gap-px overflow-hidden rounded-2xl border border-line bg-line min-[360px]:grid-cols-2 lg:grid-cols-4">
           {figures.map((f) => (
             // order swaps them visually so the value reads first, while the DOM
             // keeps dt = term (label) and dd = description (value) — the same
             // pattern the featured-game footer uses.
             <div
               key={f.label}
-              className="flex flex-col gap-1.5 bg-panel-high/70 p-5 backdrop-blur-md md:p-6"
+              className="flex flex-col gap-1.5 bg-panel-high/70 p-4 backdrop-blur-md md:p-6"
             >
+              {/* Two clamps, not one, because the two kinds of figure here have
+                  very different widths at the same type size. At a flat 1.5rem
+                  in a two-up grid on a 390px screen the cell gives the value
+                  130px: "5,096,294×" is 10 mono glyphs and "CERTIFIED" is 9
+                  characters of a display face with no space in it to wrap at, so
+                  both ran past the edge and the <dl>'s own overflow-hidden cut
+                  them to "5,096,29" and "CERTIFIE" — a diligence section
+                  misreporting its own numbers. The display face needs the lower
+                  floor because it is the wider of the two per character. */}
               <dd
                 className={`!mb-0 order-1 leading-none !text-accent ${
                   f.mono
-                    ? "font-JetBrainsMono text-[1.5rem] font-semibold tabular-nums"
-                    : "b4w-display !text-[1.5rem]"
+                    ? "font-JetBrainsMono text-[clamp(1.05rem,0.78rem+1.01vw,1.5rem)] font-semibold tabular-nums"
+                    : "b4w-display !text-[clamp(0.9rem,0.674rem+1.16vw,1.5rem)]"
                 }`}
               >
                 {f.value}

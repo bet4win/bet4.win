@@ -83,11 +83,11 @@ export default function AgeGate() {
           <>
             <h2
               id="age-gate-heading"
-              className="font-SpaceGrotesk !text-[1.4rem] !font-bold !tracking-[-0.02em] !text-ink"
+              className="font-SpaceGrotesk !text-[clamp(1.15rem,1.04rem+0.562vw,1.4rem)] !font-bold !tracking-[-0.02em] !text-ink"
             >
               Access denied
             </h2>
-            <p className="mt-3 font-SpaceGrotesk text-[0.95rem] leading-[1.6] text-muted">
+            <p className="mt-3 b4w-copy font-SpaceGrotesk text-muted">
               You must be 18 or over to view this site. Reload the page if you
               answered by mistake.
             </p>
@@ -111,11 +111,11 @@ export default function AgeGate() {
             </span>
             <h2
               id="age-gate-heading"
-              className="font-SpaceGrotesk !text-[1.4rem] !font-bold !tracking-[-0.02em] !text-ink"
+              className="font-SpaceGrotesk !text-[clamp(1.15rem,1.04rem+0.562vw,1.4rem)] !font-bold !tracking-[-0.02em] !text-ink"
             >
               Are you over 18?
             </h2>
-            <p className="mt-3 font-SpaceGrotesk text-[0.95rem] leading-[1.6] text-muted">
+            <p className="mt-3 b4w-copy font-SpaceGrotesk text-muted">
               This site showcases real-money casino games. You must confirm you
               are 18 or over to continue.
             </p>

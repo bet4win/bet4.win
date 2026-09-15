@@ -14,13 +14,13 @@ export default function ClosingCta() {
       rule
       texture
       motes={8}
-      innerClassName="py-28 text-center"
+      innerClassName="py-16 text-center md:py-28"
     >
       <div className="mx-auto flex max-w-2xl flex-col items-center">
-        <h2 className="mb-3 b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] !text-ink">
+        <h2 className="mb-3 b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] max-[359px]:!text-[1.75rem] !text-ink">
           Ready to integrate?
         </h2>
-        <p className="mb-8 font-SpaceGrotesk text-[1.05rem] text-muted">
+        <p className="mb-8 b4w-copy--lead font-SpaceGrotesk text-muted">
           Add a verifiably-fair originals suite to your brand.
         </p>
         <div className="flex flex-col items-center gap-3 sm:flex-row">

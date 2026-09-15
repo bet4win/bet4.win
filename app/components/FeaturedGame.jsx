@@ -56,7 +56,7 @@ export default function FeaturedGame({ slug }) {
       surface="raised"
       rule
       aria-labelledby="featured-heading"
-      innerClassName="pb-14 pt-14 md:pt-16"
+      innerClassName="pb-12 pt-12 md:pb-14 md:pt-16"
     >
       <div
         ref={cardRef}
@@ -105,7 +105,7 @@ export default function FeaturedGame({ slug }) {
             auto tracks — which left the figures floating in the middle of the
             left column with a 130px hole above them. The fr track takes the
             slack, and items-start keeps the tiles pinned under the art. */}
-        <div className="relative grid gap-6 p-5 md:p-8 lg:grid-cols-[47%_1fr] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-12 lg:gap-y-4 lg:p-11">
+        <div className="relative grid gap-5 p-4 md:gap-6 md:p-8 lg:grid-cols-[47%_1fr] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-12 lg:gap-y-4 lg:p-11">
           {/* --- Key art ----------------------------------------------------- */}
           <div className="lg:col-start-1 lg:row-start-1">
             <div className="relative">
@@ -166,16 +166,30 @@ export default function FeaturedGame({ slug }) {
               >
                 {game.title}
               </h2>
-              <p className="mt-3 max-w-lg font-SpaceGrotesk !text-[1.15rem] !font-semibold !leading-[1.28] !tracking-[-0.015em] !text-ink [text-wrap:balance]">
+              {/* !mb-0 because the column spaces itself with `gap`. The
+                  template's base `p { margin-bottom: 1rem }` was adding 20px on
+                  top of that, which only became obvious once the paragraph
+                  below went away on mobile and this became the last thing before
+                  the buttons. */}
+              <p className="!mb-0 mt-3 max-w-lg font-SpaceGrotesk !text-[clamp(1rem,0.87rem+0.67vw,1.15rem)] !font-semibold !leading-[1.28] !tracking-[-0.015em] !text-ink [text-wrap:balance]">
                 {headline}
               </p>
             </div>
 
-            <p className="!mb-0 max-w-xl font-SpaceGrotesk text-[0.95rem] leading-[1.6] text-muted">
+            {/* Off below md. Stacked on a phone this paragraph runs seven lines
+                — about 235px of a card that already carries key art, a title, a
+                headline, two buttons and three figures. The headline above is
+                the pitch and the spec page is one tap away; the detail can wait
+                for a layout that has a second column to put it in. */}
+            <p className="!mb-0 hidden max-w-xl b4w-copy font-SpaceGrotesk text-muted md:block">
               {body}
             </p>
 
-            <div className="mt-1 flex flex-wrap items-center gap-3">
+            {/* Stacked and equal width below sm. Wrapped, the two pills sat at
+                two different widths on two lines with the second indented by the
+                first — a ragged pair where the whole point is that they are the
+                same offer twice, at two levels of commitment. */}
+            <div className="mt-1 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <a
                 href="#games"
                 onClick={play}
@@ -198,15 +212,22 @@ export default function FeaturedGame({ slug }) {
           {/* Three frosted tiles rather than a row of text in a footer strip.
               Glass earns its keep here specifically because the game's own room
               is showing through it. */}
-          <dl className="!mb-0 grid grid-cols-3 gap-2 lg:col-start-1 lg:row-start-2">
+          {/* Three across needs ~360px of screen: below that each tile is 42px
+              of content, which is narrower than "×1.06". */}
+          <dl className="!mb-0 grid grid-cols-1 gap-2 min-[360px]:grid-cols-3 lg:col-start-1 lg:row-start-2">
             {stats.map((s) => (
               // order swaps them visually so the value reads first, while the
               // DOM keeps dt = term (label) and dd = description (value).
               <div
                 key={s.label}
-                className="b4w-glass flex flex-col gap-1 rounded-xl border border-white/10 px-3.5 py-3"
+                className="b4w-glass flex flex-col gap-1 rounded-xl border border-white/10 px-2.5 py-2.5 sm:px-3.5 sm:py-3"
               >
-                <dd className="!mb-0 order-1 font-JetBrainsMono text-[1.3rem] font-semibold leading-none !text-accent tabular-nums">
+                {/* At a flat 1.3rem (26px) "×1.06" measured 86px inside an 82px
+                    tile — three tiles across a 390px screen leaves each one
+                    about 92px wide once the gaps and the card inset are taken
+                    out. The figure has to fit the tile, not the other way
+                    round. */}
+                <dd className="!mb-0 order-1 font-JetBrainsMono text-[clamp(0.95rem,0.71rem+1.2vw,1.3rem)] font-semibold leading-none !text-accent tabular-nums">
                   {s.value}
                 </dd>
                 <dt className="order-2 font-SpaceGrotesk text-[10px] uppercase leading-tight tracking-[0.07em] text-muted">

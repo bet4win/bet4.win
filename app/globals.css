@@ -418,6 +418,42 @@ body.age-gate-locked {
   text-transform: uppercase;
 }
 
+/* --- Body copy -------------------------------------------------------------
+ * TWO steps, both fluid, and nothing else.
+ *
+ * Body copy on this site used to be written per call site — 0.85, 0.9, 0.95,
+ * 0.98, 1rem and 1.05rem, six sizes doing one job. Against the 20px root that
+ * is 17px to 21px, which is a comfortable 55-70 characters across a desktop
+ * column and 19 to 31 characters on a 390px phone. Half a readable measure, and
+ * the single biggest reason this site was hard to read on a handset.
+ *
+ * The clamps are solved for two real widths rather than picked by eye: the
+ * minimum is the size that lands ~45 characters inside the standard px-5 gutter
+ * at 390px, and the maximum is the size the desktop layout was already designed
+ * around. Everything between interpolates.
+ *
+ * WHY NOT A SMALLER ROOT ON PHONES, which would have been one line: because
+ * roughly half the type on this page is declared in px (every eyebrow, chip,
+ * figure label and footer link) and half in rem. Shrinking the root moves one
+ * half and not the other, so the hierarchy that reads correctly at 1280px
+ * quietly inverts at 390px. Moving the rem half on purpose keeps the two in
+ * step.
+ *
+ * These live in @layer components, so a `text-[…]` utility left behind at a
+ * call site will silently outrank them. Removing that utility is part of
+ * applying the class, not an optional tidy-up. */
+.b4w-copy {
+  font-size: clamp(0.75rem, 0.663rem + 0.449vw, 0.95rem);
+  line-height: 1.65;
+}
+/* The paragraph directly under a section heading, and nowhere else. It is the
+   only body copy on the page that has to hold its own against the display face
+   above it. */
+.b4w-copy--lead {
+  font-size: clamp(0.775rem, 0.655rem + 0.618vw, 1.05rem);
+  line-height: 1.6;
+}
+
 /* Raised panel: a lit top edge and a deep shadow underneath, so cards sit like
    physical objects rather than flat rectangles with a hairline border. */
 .b4w-bezel {
@@ -621,6 +657,38 @@ body.age-gate-locked {
   width: 1.75rem;
   height: 1.75rem;
 }
+/* Phones converge the two sizes on 44px, from opposite directions.
+   The small one is the events strip's dismiss and its chevrons: at 1.75rem it
+   measured 35px, under the 44px touch target floor, on the one control a reader
+   presses to get 84px of their screen back. The regular one is the header's
+   menu button, and the header is sticky — at 2.5rem it was the tallest thing in
+   the bar and set its height, so those 5px were being paid on every screenful of
+   the page rather than once. 44px is the floor for one and the ceiling for the
+   other, so below md they meet there. */
+@media (max-width: 767px) {
+  .b4w-btn--icon,
+  .b4w-btn--icon.b4w-btn--sm {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+}
+
+/* --- Header ----------------------------------------------------------------
+ * Slides out of the way on the way down the page and comes straight back on the
+ * way up. Header.jsx owns when; this owns how.
+ *
+ * `translate`, not a `transform` function. The header is position:sticky and it
+ * is the ancestor of the mobile nav panel; a transform on it would make it the
+ * containing block for any fixed-position descendant, which is the same trap
+ * documented on .b4w-reveal and in Section.jsx. `translate` as its own property
+ * has no such effect and is the animatable pair the rest of this file uses.
+ */
+.b4w-header {
+  transition: translate 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.b4w-header[data-hidden] {
+  translate: 0 -100%;
+}
 
 /* Ticker: an infinite strip of the catalogue's real max multipliers. The track
    holds the list twice, so translating it exactly -50% loops seamlessly. */
@@ -638,7 +706,7 @@ body.age-gate-locked {
    be fought element by element on every paragraph. */
 .b4w-prose h2 {
   font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
-  font-size: 1.35rem;
+  font-size: clamp(1.05rem, 0.92rem + 0.67vw, 1.35rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-ink);
@@ -656,7 +724,10 @@ body.age-gate-locked {
 }
 .b4w-prose p,
 .b4w-prose li {
-  font-size: 0.98rem;
+  /* Same curve as .b4w-copy, one notch taller at both ends: a privacy policy is
+     read start to finish rather than scanned, and it is the one place on the
+     site with no artwork competing for the column. */
+  font-size: clamp(0.775rem, 0.678rem + 0.494vw, 0.98rem);
   line-height: 1.7;
   color: var(--color-muted);
 }
@@ -1169,22 +1240,75 @@ html.js .b4w-magnitude[data-grown] {
      perspective() in its transform instead; see .b4w-cover. */
   position: relative;
 }
-/* Flat, deliberately. The cards must composite by z-index like ordinary
-   stacked elements; under preserve-3d they were sorted by actual 3D depth and
-   the side card cut through the centre one. */
+/* A real 3D rendering context, and the shared vanishing point for the cards in
+ * it. This is what makes the deck read as cards rather than as pictures being
+ * swapped.
+ *
+ * It was flat, with the cards composited by an integer z-index handed down from
+ * JS. That cannot work for a carousel, because z-index does not animate: on the
+ * first frame of an advance the incoming card took the centre's z-index while
+ * it was still sitting in the right-hand slot, so a third of the centre card's
+ * artwork was replaced by its neighbour's in one frame and the travel
+ * underneath went unread. Under preserve-3d there is no z-index to jump —
+ * the browser sorts by actual depth every frame, so a card coming forward
+ * passes its neighbour continuously.
+ *
+ * An earlier pass tried preserve-3d and reverted it because the side card cut
+ * through the centre one. That is the same cause from the other end: the cards
+ * were separated only by rotation, so at ±17° on a ~313px card their planes
+ * swept ±46px of depth through each other at the same z. They are separated by
+ * 200px of translateZ per slot now — four times the rotation's own excursion —
+ * so they cannot intersect.
+ *
+ * The perspective lives HERE rather than on .b4w-tilt-stage: it has to be on
+ * the cards' direct parent so all five share one vanishing point, and the stage
+ * above is also the element useTilt writes to. */
 .b4w-deck {
-  transform-style: flat;
+  perspective: 900px;
+  transform-style: preserve-3d;
 }
-/* While the pointer is driving the centre card, drop its transition — otherwise
-   every frame fights a 500ms ease and the card lags behind the cursor. The
-   transition is there for the advance and the return to rest. */
-.b4w-tilt-stage:hover .b4w-cover[data-role="centre"] {
-  transition: opacity 0.5s ease;
+/* The pointer tilt lives on .b4w-cover-tilt, one element inside the card, and
+ * NOT on .b4w-cover itself.
+ *
+ * There used to be a rule here dropping the centre card's transform transition
+ * while the pointer was over the stage, because useTilt rewrites --tilt-* every
+ * frame and a 500ms ease on the same `transform` made the card lag the cursor
+ * by a third of a second. That was a correct fix for the tilt and a silent bug
+ * for the carousel: the pointer is by definition over the stage when you CLICK
+ * a neighbour to advance the deck, so on every click the incoming card had no
+ * transition and teleported into the centre while the outgoing one animated
+ * away — which is the content-swap the auto-advance no longer does.
+ *
+ * Two properties on two elements instead: the slot placement on .b4w-cover,
+ * always transitioned, and the tilt here, never transitioned. It does not need
+ * one — useTilt already eases toward the pointer in JS (see the damping there),
+ * so the smoothing happens before the value reaches CSS at all.
+ *
+ * Scoped to the centre card on purpose. --tilt-* is published on the stage and
+ * inherits to all five; letting every card read it made the whole deck rock in
+ * unison like one slab on a hinge. */
+.b4w-cover-tilt {
+  transform-style: preserve-3d;
+}
+.b4w-cover[data-role="centre"] .b4w-cover-tilt {
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
 }
 
-/* A card in the deck. --o is its offset from centre; the rest is handed down
-   from JS rather than computed here, because scale needs abs() and that is
-   still too new to rely on. */
+/* A card in the deck. --o is its signed offset from centre and --d is the
+ * absolute one; both are handed down from JS, because abs() is still too new to
+ * rely on.
+ *
+ * There is no `scale` here and no z-index. The size falloff is what the
+ * perspective on .b4w-deck does to a card pushed 200px further back, and the
+ * paint order is what the 3D rendering context works out from that depth — both
+ * of them continuous, which is the entire point. --hs is the only scale left,
+ * and it is the hover nudge.
+ *
+ * WHY THE STEP IS 63.5% AND NOT THE 52% IT READS AS ON SCREEN: translateX now
+ * happens in 3D and is then projected. A card 200px back is drawn at 900/1100 =
+ * 0.82 of its size, and its sideways offset is foreshortened by the same
+ * factor, so 63.5% of a card's width lands where a flat 52% used to. The
+ * composition is unchanged; only the arithmetic that produces it is. */
 .b4w-cover {
   position: absolute;
   left: 50%;
@@ -1192,10 +1316,13 @@ html.js .b4w-magnitude[data-grown] {
   /* Wider on phones so titles like "Video Poker" fit the caption instead of
      truncating; the neighbours still peek, just by less. */
   width: 78%;
-  transform: perspective(700px) translateX(calc(-50% + (var(--o, 0) * 52%)))
-    scale(calc(var(--s, 1) * var(--hs, 1))) rotateY(calc(var(--o, 0) * -17deg));
+  transform: translateX(calc(-50% + (var(--o, 0) * 63.5%)))
+    translateZ(calc(var(--d, 0) * -200px)) scale(var(--hs, 1))
+    rotateY(calc(var(--o, 0) * -17deg));
+  /* So the tilt on the child composes in the deck's 3D space rather than being
+     flattened into this card's plane. */
+  transform-style: preserve-3d;
   opacity: var(--op, 1);
-  z-index: var(--z, 0);
   transition:
     transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
     opacity 0.55s ease;
@@ -1207,9 +1334,7 @@ html.js .b4w-magnitude[data-grown] {
    scenery behind it. --tilt-* are published on the stage by useTilt and inherit
    down, so this rule is the only thing that decides who listens. */
 .b4w-cover[data-role="centre"] {
-  transform: perspective(700px) translateX(-50%)
-    scale(calc(var(--s, 1) * var(--hs, 1))) rotateX(var(--tilt-x, 0deg))
-    rotateY(var(--tilt-y, 0deg));
+  transform: translateX(-50%) translateZ(0) scale(var(--hs, 1));
   /* Mild overshoot on the way in — the card lands rather than glides. */
   transition:
     transform 0.5s cubic-bezier(0.34, 1.32, 0.64, 1),
@@ -1280,6 +1405,18 @@ html.js .b4w-magnitude[data-grown] {
 .b4w-cover[data-role="centre"]:focus-within .b4w-cover-detail {
   grid-template-rows: 1fr;
   opacity: 1;
+}
+/* A touch device has no hover, so on a phone the RTP and the max win were
+   folded away with nothing that could ever open them — the two figures the
+   hero deck exists to show. The fold is a desktop affordance for keeping the
+   resting card quiet; it is not permission to withhold the numbers. Keyed on
+   the pointer rather than on a width breakpoint, because what decides this is
+   whether hover exists, not how wide the screen is. */
+@media (hover: none) {
+  .b4w-cover-detail {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
 }
 
 /* The offscreen ring is scenery — invisible, unfocusable, unclickable. The
@@ -1416,6 +1553,14 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-event-slide {
     transition: none;
   }
+  /* The header stays put rather than hiding instantly — Header.jsx never sets
+     the attribute under this setting, and this is the belt to that braces. */
+  .b4w-header {
+    transition: none;
+  }
+  .b4w-header[data-hidden] {
+    translate: none;
+  }
   /* The mesh stops entirely rather than slowing down: a drifting background is
      exactly the kind of persistent movement this setting exists to switch off.
      The surface stays, the motion goes. */
@@ -1426,11 +1571,10 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-deck {
     transform: none;
   }
-  .b4w-cover[data-role="centre"] {
-    transform: perspective(700px) translateX(-50%) scale(var(--s, 1));
-  }
   /* Cards still move between positions — that is the carousel working, not
-     decoration — but they arrive instantly instead of gliding. */
+     decoration — but they arrive instantly instead of gliding. The deck's own
+     depth is layout rather than motion, so translateZ stays; only the pointer
+     tilt on the centre card goes. */
   .b4w-cover,
   .b4w-cover[data-role="centre"],
   .b4w-cover-art,
@@ -1438,7 +1582,7 @@ html.js .b4w-magnitude[data-grown] {
     transition: none;
   }
   .b4w-cover[data-role="centre"] {
-    transform: translateX(-50%) scale(var(--s, 1));
+    transform: translateX(-50%) translateZ(0) scale(var(--hs, 1));
   }
   .b4w-card-float,
   .b4w-spot-back,

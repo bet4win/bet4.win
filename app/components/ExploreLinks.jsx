@@ -53,9 +53,9 @@ export default function ExploreLinks() {
       surface="raised"
       rule
       aria-labelledby="explore-heading"
-      innerClassName="py-16 md:py-20"
+      innerClassName="py-12 md:py-20"
     >
-      <div className="mb-8 flex items-baseline gap-4">
+      <div className="mb-6 flex items-baseline gap-4 md:mb-8">
         <h2
           id="explore-heading"
           className="!mb-0 font-SpaceGrotesk !text-[12px] !font-normal uppercase !tracking-[0.1em] !text-faint"
@@ -115,21 +115,25 @@ function Door({
         <span className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-panel-high to-transparent" />
       </div>
 
-      <div className={`flex flex-col ${feature ? "p-7" : "flex-1 p-6"}`}>
+      {/* p-5 on phones. At p-7 the feature card spent 70px of a 340px screen on
+          its own inset, which left the pitch a 270px measure to wrap in. */}
+      <div className={`flex flex-col ${feature ? "p-5 md:p-7" : "flex-1 p-5 md:p-6"}`}>
         <p className="!mb-0 flex items-center gap-2 font-SpaceGrotesk text-[11px] uppercase tracking-[0.1em] text-accent">
           <Icon className="h-4 w-4" />
           {label}
         </p>
         <p
           className={`!mb-0 mt-3 font-SpaceGrotesk font-semibold !leading-[1.22] !tracking-[-0.015em] !text-ink ${
-            feature ? "text-[1.6rem]" : "text-[1.15rem]"
+            feature
+              ? "text-[clamp(1.25rem,0.96rem+1.35vw,1.6rem)]"
+              : "text-[clamp(1.05rem,0.96rem+0.45vw,1.15rem)]"
           }`}
         >
           {title}
         </p>
         <p
-          className={`!mb-0 mt-3 font-SpaceGrotesk leading-[1.6] text-muted ${
-            feature ? "max-w-md text-[0.98rem]" : "text-[0.9rem]"
+          className={`b4w-copy !mb-0 mt-3 font-SpaceGrotesk text-muted ${
+            feature ? "max-w-md" : ""
           }`}
         >
           {body}

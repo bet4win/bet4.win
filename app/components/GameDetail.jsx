@@ -44,7 +44,7 @@ export default function GameDetail({ game, content }) {
         depth
         texture
         motes={7}
-        innerClassName="pb-16 pt-14 md:pt-20"
+        innerClassName="pb-12 pt-10 md:pb-16 md:pt-20"
       >
         <nav aria-label="Breadcrumb" className="mb-6">
           <Link
@@ -84,7 +84,7 @@ export default function GameDetail({ game, content }) {
                   {content.paragraphs.map((p, i) => (
                     <p
                       key={i}
-                      className="!mb-0 max-w-2xl font-SpaceGrotesk text-[1rem] leading-[1.7] text-muted"
+                      className="!mb-0 max-w-2xl b4w-copy--lead font-SpaceGrotesk text-muted"
                     >
                       {p}
                     </p>
@@ -107,7 +107,7 @@ export default function GameDetail({ game, content }) {
                       {s.label}
                     </dt>
                     <dd
-                      className={`!mb-0 font-JetBrainsMono text-[1.5rem] font-semibold !leading-none !tracking-[-0.02em] tabular-nums ${
+                      className={`!mb-0 font-JetBrainsMono text-[clamp(1.15rem,0.996rem+0.787vw,1.5rem)] font-semibold !leading-none !tracking-[-0.02em] tabular-nums ${
                         s.money ? "!text-accent" : "!text-ink"
                       }`}
                     >

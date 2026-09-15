@@ -11,14 +11,14 @@ export default function LegalPage({ title, updated, intro, children }) {
         <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-accent">
           Legal
         </p>
-        <h1 className="mt-3 b4w-display !text-[clamp(2rem,1.4rem+2vw,2.9rem)] !text-ink">
+        <h1 className="mt-3 b4w-display !text-[clamp(2rem,1.4rem+2vw,2.9rem)] max-[359px]:!text-[1.75rem] !text-ink">
           {title}
         </h1>
         <p className="mt-4 font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-muted">
           Last updated {updated}
         </p>
         {intro && (
-          <p className="mt-6 font-SpaceGrotesk text-[1.05rem] leading-[1.65] text-muted">
+          <p className="mt-6 b4w-copy--lead font-SpaceGrotesk text-muted">
             {intro}
           </p>
         )}

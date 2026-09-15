@@ -61,8 +61,8 @@ export default function Theming() {
   const [brand, setBrand] = useState(brands[0]);
 
   return (
-    <Section id="branding" surface="raised" rule texture innerClassName="py-20">
-      <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
+    <Section id="branding" surface="raised" rule texture innerClassName="py-12 md:py-20">
+      <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
 
         {/* Copy */}
         <div>
@@ -70,10 +70,10 @@ export default function Theming() {
             <Palette className="h-3.5 w-3.5" />
             Bespoke branding
           </span>
-          <h2 className="mb-4 max-w-md b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] !text-ink">
+          <h2 className="mb-4 max-w-md b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] max-[359px]:!text-[1.75rem] !text-ink">
             Every pixel,<br />your brand.
           </h2>
-          <p className="mb-10 max-w-md font-SpaceGrotesk leading-[1.6] text-muted">
+          <p className="mb-10 max-w-md b4w-copy font-SpaceGrotesk text-muted">
             Hand your players a game that feels native to your platform.
             Colours, logos, typefaces, and background artwork all bend
             to your brand — across every title in the catalogue, at once.
@@ -83,7 +83,7 @@ export default function Theming() {
             {features.map((f) => (
               <li
                 key={f}
-                className="flex items-start gap-3 font-SpaceGrotesk text-[0.9rem] text-muted"
+                className="flex items-start gap-3 b4w-copy font-SpaceGrotesk text-muted"
               >
                 <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-accent">
                   <Check className="h-3.5 w-3.5" />
@@ -196,7 +196,7 @@ export default function Theming() {
                 // The one place on the site where a control's colour is NOT
                 // ours: each pill wears the brand it switches to, which is the
                 // whole point being demonstrated.
-                className="b4w-btn b4w-btn--sm"
+                className="b4w-btn b4w-btn--sm min-h-[44px] sm:min-h-0"
                 style={
                   b.id === brand.id
                     ? {

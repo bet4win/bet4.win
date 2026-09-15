@@ -4,9 +4,20 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, Close, Menu } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
+import { prefersReducedMotion } from "@/app/lib/motion";
 import { bookingUrl } from "@/app/lib/site";
 import { openBooking } from "@/app/lib/booking";
 import logo from "@/public/assets/img/b4w-logo.svg";
+
+// How far down the page the bar has to be before it is allowed to hide. It has
+// to clear the events strip plus its own height (~154px on a phone, ~150px on a
+// desktop) or the first flick of a scroll would slide the header up over a strip
+// that is still on screen.
+const HIDE_BELOW = 180;
+// Momentum scrolling and trackpads emit a lot of 1-2px events, and a bar that
+// flips direction on every one of them is worse than one that never moves.
+// Travel accumulates until it passes this, so a real direction change is needed.
+const DIRECTION_DELTA = 8;
 
 // Real routes now, not same-page anchors — each label goes somewhere.
 const NAV = [
@@ -20,6 +31,7 @@ const NAV = [
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const panelRef = useRef(null);
 
   // A game page is "under" Games and a post is "under" News, so the section
@@ -38,13 +50,66 @@ export default function Header() {
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // Hide going down, reappear going up — from anywhere on the page, not only
+  // from the top. Reading is a downward activity and the bar is 75px of a phone
+  // screen; wanting the nav is an upward one, and the gesture people already
+  // make for it is a scroll up. Waiting until the top of the document to give it
+  // back makes every visitor scroll past everything they were reading.
+  //
+  // Under reduced motion the bar simply stays put. A 75px slab appearing and
+  // disappearing on every direction change is precisely the kind of unrequested
+  // movement that setting exists to switch off, and the same rule the ambient
+  // mesh follows applies here: the surface stays, the motion goes.
+  useEffect(() => {
+    if (open) {
+      setHidden(false);
+      return;
+    }
+    if (prefersReducedMotion()) return;
+
+    let last = window.scrollY;
+    let queued = false;
+
+    const update = () => {
+      queued = false;
+      const y = window.scrollY;
+      const travelled = y - last;
+      // `last` is deliberately NOT updated below the threshold: the distance
+      // accumulates, so a slow drag still registers once it adds up.
+      if (Math.abs(travelled) < DIRECTION_DELTA) return;
+      last = y;
+      setHidden(y > HIDE_BELOW && travelled > 0);
+    };
+
+    const onScroll = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [open]);
+
   return (
     // sticky, not fixed: the events strip sits above this in normal flow, so a
     // fixed header would overlap it until the page scrolled. Sticky lets the
     // strip scroll away and the nav take over the top edge, with no offset
     // arithmetic and no layout shift when the strip is dismissed.
-    <header className="sticky top-0 z-50 w-full border-b border-line/40 bg-bg/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-4 md:px-12">
+    <header
+      data-hidden={hidden ? "" : undefined}
+      // A hidden bar is still in the tab order, so tabbing into it off-screen
+      // would be a trap. focus bubbles, so anything inside it — the logo, a nav
+      // link, the menu button — brings the whole bar back.
+      onFocus={() => setHidden(false)}
+      className="b4w-header sticky top-0 z-50 w-full border-b border-line/40 bg-bg/80 backdrop-blur-md"
+    >
+      {/* py-3 on phones. The bar is sticky, so its height is subtracted from
+          every screenful of every page rather than paid once — and at py-4 around
+          a 2.5rem menu button it measured 91px of an 844px viewport. With the
+          button at 44px (see .b4w-btn--icon in globals.css) this comes to 70px,
+          still comfortably clear of the logo. */}
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-3 md:px-12 md:py-4">
         <Link href="/" className="flex items-center" aria-label="Bet4.win home">
           <img
             src={logo.src}

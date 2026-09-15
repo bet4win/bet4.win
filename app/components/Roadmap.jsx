@@ -30,7 +30,7 @@ export default function Roadmap({ releases }) {
       // production.
       depth="hatch"
       aria-labelledby="roadmap-heading"
-      innerClassName="py-16 md:py-20"
+      innerClassName="py-12 md:py-20"
     >
       <Reveal>
         <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-accent">
@@ -38,11 +38,11 @@ export default function Roadmap({ releases }) {
         </p>
         <h2
           id="roadmap-heading"
-          className="mt-2 b4w-display !text-[clamp(2.1rem,1.3rem+2.4vw,3.1rem)] !text-ink"
+          className="mt-2 b4w-display !text-[clamp(2.1rem,1.3rem+2.4vw,3.1rem)] max-[359px]:!text-[1.8rem] !text-ink"
         >
           What ships next
         </h2>
-        <p className="mt-4 max-w-xl font-SpaceGrotesk text-[0.95rem] leading-[1.6] text-muted">
+        <p className="mt-4 max-w-xl b4w-copy font-SpaceGrotesk text-muted">
           One original a month, named and dated. Each one arrives on the
           integration you already have — nothing to re-certify, nothing to
           rebuild.
@@ -50,7 +50,7 @@ export default function Roadmap({ releases }) {
       </Reveal>
 
       <Reveal>
-        <div className="relative mt-12">
+        <div className="relative mt-7 md:mt-12">
           {/* The rail. Lit at the near end, neutral through the middle, and gone
               by the right-hand edge — the fade is the argument for the button
               underneath it. Only drawn at lg, where the grid is a single row and
@@ -70,48 +70,60 @@ export default function Roadmap({ releases }) {
               leaves the surplus tracks empty, which is the truthful picture:
               the rail runs on past the last announced title into open space,
               and the button underneath is what continues it. */}
-          <ol className="grid gap-6 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+          <ol className="grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
             {releases.map((r) => (
-              // pt-9 leaves room above the card for the node AND the label
-              // stacked under it, rather than the two sharing one line.
-              <li key={r.id} className="relative pt-9">
-                {/* Node. Sits on the rail's own y, so the dot reads as a stop on
-                    the line rather than a bullet beside it. */}
-                <span
-                  aria-hidden="true"
-                  className={`absolute left-0 top-0 h-2.5 w-2.5 rounded-full border ${
-                    r.isNext
-                      ? "border-accent bg-accent"
-                      : "border-line bg-panel-high"
-                  }`}
-                />
-                {/* The month is the axis, so it is always the month — "This
-                    month" alone would have been the one node on the rail you
-                    could not place against the others. The nearest release is
-                    marked beside it instead.
-                    BELOW the rail, not beside it. Sitting the label at the same
-                    y put the rail through the top of its capitals: the line is
-                    at y=5 and 11px type on the template's 1.7 line-height starts
-                    its cap height at about y=5.5. `leading-none` is what makes
-                    that placement predictable — the label's box is now its type
-                    size rather than 1.7x it. Flush left, so it aligns with the
-                    card edge and the node above it. */}
+              // Two layouts, because there are two contexts.
+              //
+              // Below lg there is no rail: the dot and the month are one line in
+              // normal flow, dot first, reading as a label on the card under it.
+              // They used to be two absolutely-positioned elements stacked
+              // inside 45px of reserved padding, which on a phone read as a
+              // stray dot with a caption beneath it.
+              //
+              // At lg the rail appears and the two separate again — the dot goes
+              // ON the line and the month goes BELOW it. They cannot share a y
+              // there: the rail sits at top-[5px] and 11px type on the same
+              // centre puts the hairline straight through the middle of the
+              // capitals.
+              <li key={r.id} className="relative flex flex-col lg:block lg:pt-9">
                 <p
-                  className={`!mb-0 absolute left-0 top-[15px] whitespace-nowrap font-JetBrainsMono text-[11px] uppercase leading-none tracking-[0.08em] ${
+                  className={`!mb-0 flex items-center whitespace-nowrap font-JetBrainsMono text-[11px] uppercase leading-none tracking-[0.08em] lg:absolute lg:left-0 lg:top-[15px] lg:block ${
                     r.isNext ? "text-accent" : "text-faint"
                   }`}
                 >
+                  {/* Out of flow at lg, 15px back up the li, so its centre lands
+                      on the rail's own y while the month sits clear underneath.
+                      mr-2 rather than a `gap` on the parent: the parent is only
+                      a flex container below lg, and the separator below needs
+                      its own spacing either way — a gap would double up on it. */}
+                  <span
+                    aria-hidden="true"
+                    className={`mr-2 h-2.5 w-2.5 shrink-0 rounded-full border lg:absolute lg:left-0 lg:top-[-15px] ${
+                      r.isNext
+                        ? "border-accent bg-accent"
+                        : "border-line bg-panel-high"
+                    }`}
+                  />
+                  {/* The month is the axis, so it is always the month — "This
+                      month" alone would have been the one node on the rail you
+                      could not place against the others. The nearest release is
+                      marked beside it instead. */}
                   {r.label}
                   {r.isNext && (
-                    <span className="text-accent">
-                      {" · "}
-                      {r.isThisMonth ? "This month" : "Next"}
+                    // ml-1, not a leading space in the string: below lg this is a
+                    // flex item, flex items are blockified, and leading
+                    // whitespace inside a block is collapsed away.
+                    <span className="ml-1 text-accent">
+                      {r.isThisMonth ? "· This month" : "· Next"}
                     </span>
                   )}
                 </p>
 
+                {/* flex-1 below lg (the li is a flex column, so the card takes
+                    the slack and every plate in a row ends on the same line);
+                    h-full at lg, where the li is a block again. */}
                 <article
-                  className={`b4w-bezel flex h-full flex-col overflow-hidden rounded-2xl border bg-panel-high ${
+                  className={`b4w-bezel mt-3 flex flex-1 flex-col overflow-hidden rounded-2xl border bg-panel-high lg:mt-0 lg:h-full ${
                     r.isNext ? "border-accent/45" : "border-line"
                   }`}
                 >
@@ -138,7 +150,7 @@ export default function Roadmap({ releases }) {
                     <span className="w-fit rounded-full border border-line bg-bg/60 px-1.5 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted">
                       {r.category}
                     </span>
-                    <p className="!mb-0 font-SpaceGrotesk text-[0.85rem] leading-[1.55] text-muted">
+                    <p className="!mb-0 b4w-copy font-SpaceGrotesk text-muted">
                       {r.teaser}
                     </p>
                   </div>
@@ -152,8 +164,8 @@ export default function Roadmap({ releases }) {
       {/* Sits under the faded end of the rail on desktop: the line runs out, and
           this is what continues it. */}
       <Reveal>
-        <div className="mt-10 flex flex-col items-start gap-4 border-t border-line/50 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="!mb-0 max-w-md font-SpaceGrotesk text-[0.9rem] leading-[1.55] text-muted">
+        <div className="mt-8 flex flex-col items-start gap-4 border-t border-line/50 pt-6 sm:flex-row sm:items-center sm:justify-between md:mt-10 md:pt-8">
+          <p className="!mb-0 max-w-md b4w-copy font-SpaceGrotesk text-muted">
             The public rail stops here. The full schedule — mechanics, dates and
             the titles we haven&rsquo;t announced — goes out under NDA.
           </p>

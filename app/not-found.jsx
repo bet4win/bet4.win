@@ -30,10 +30,10 @@ export default function NotFoundPage() {
           <p className="mb-4 font-SpaceGrotesk text-[13px] uppercase tracking-[0.08em] text-accent">
             Error 404
           </p>
-          <h1 className="mb-3 max-w-xl b4w-display !text-[clamp(2rem,1.4rem+2vw,2.9rem)] !text-ink">
+          <h1 className="mb-3 max-w-xl b4w-display !text-[clamp(2rem,1.4rem+2vw,2.9rem)] max-[359px]:!text-[1.75rem] !text-ink">
             This page rolled snake eyes.
           </h1>
-          <p className="mb-8 max-w-md font-SpaceGrotesk text-[1.05rem] leading-[1.6] text-muted">
+          <p className="mb-8 max-w-md b4w-copy--lead font-SpaceGrotesk text-muted">
             The page you&rsquo;re looking for has moved or never existed.
             Let&rsquo;s get you back to the catalogue.
           </p>

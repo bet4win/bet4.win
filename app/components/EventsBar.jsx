@@ -90,7 +90,7 @@ export default function EventsBar({ events, initialDismissed = false }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-accent),transparent)] opacity-70"
       />
-      <div className="mx-auto flex max-w-[1280px] items-center gap-2.5 px-5 py-2.5 md:gap-5 md:px-12">
+      <div className="mx-auto flex max-w-[1280px] items-center gap-2.5 px-5 py-2 md:gap-5 md:px-12 md:py-2.5">
         <span className="hidden shrink-0 items-center gap-2 rounded-full bg-accent px-3 py-1.5 font-SpaceGrotesk text-[10px] font-bold uppercase tracking-[0.12em] text-accent-ink shadow-[0_4px_16px_-6px_rgba(58,227,152,0.75)] sm:inline-flex">
           <Calendar className="h-3.5 w-3.5" />
           Meet us at
@@ -126,10 +126,14 @@ export default function EventsBar({ events, initialDismissed = false }) {
                 {event.dates}
               </span>
               {/* How soon, in words. The dates alone made the reader do the
-                  arithmetic before they could tell whether this mattered
-                  today. */}
+                  arithmetic before they could tell whether this mattered today.
+                  Dropped below sm. It cannot share the dates' line — the slide
+                  only gets ~216px on a phone and the dates are 133px of it — so
+                  on a handset it was a third stacked line, and a name, a date
+                  and a chip stacked three-high beside a button is the strip
+                  reading as clutter rather than as an announcement. */}
               {event.countdown && (
-                <span className="shrink-0 whitespace-nowrap rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.08em] text-accent">
+                <span className="hidden shrink-0 whitespace-nowrap rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 font-SpaceGrotesk text-[10px] font-semibold uppercase tracking-[0.08em] text-accent sm:inline-block">
                   {event.countdown}
                 </span>
               )}
@@ -219,7 +223,11 @@ export default function EventsBar({ events, initialDismissed = false }) {
             });
             if (openBooking(`events_bar:${active.id}`)) e.preventDefault();
           }}
-          className="b4w-btn b4w-btn--primary b4w-btn--sm"
+          // --sm keeps the strip slim, but this is the one thing on it anybody
+          // is meant to press, and at 36px it was under the 44px touch target.
+          // The slide beside it already stands three lines tall on a phone, so
+          // the taller pill costs the bar nothing.
+          className="b4w-btn b4w-btn--primary b4w-btn--sm min-h-[44px] sm:min-h-0"
         >
           {/* Shortened rather than dropped on phones: the strip exists to get a
               meeting booked, so the action survives every breakpoint. */}
@@ -228,11 +236,16 @@ export default function EventsBar({ events, initialDismissed = false }) {
           <ArrowRight className="h-3.5 w-3.5" />
         </a>
 
+        {/* Dismissal is a desktop control. On a phone it was 44px of a 216px
+            strip spent on a button whose whole value is saving you from
+            scrolling past ~52px — and this strip is in normal flow, not fixed,
+            so it leaves the screen on the first scroll and stays gone. The
+            width it frees goes to the announcement instead. */}
         <button
           type="button"
           onClick={dismiss}
           aria-label="Hide event announcements"
-          className="b4w-btn b4w-btn--quiet b4w-btn--icon b4w-btn--sm !text-faint"
+          className="b4w-btn b4w-btn--quiet b4w-btn--icon b4w-btn--sm !text-faint hidden sm:inline-flex"
         >
           <Close className="h-4 w-4" />
         </button>

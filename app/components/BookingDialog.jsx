@@ -56,6 +56,10 @@ export default function BookingDialog() {
   const [source, setSource] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | loading | ready | error
   const [booked, setBooked] = useState(false);
+  // Phone-shaped: the sheet gives the scheduler one screenful, so the frame is
+  // sized to the sheet and Calendly scrolls inside it. See the note where the
+  // widget is initialised.
+  const [compact, setCompact] = useState(false);
 
   const embedRef = useRef(null);
   const closeRef = useRef(null);
@@ -106,6 +110,11 @@ export default function BookingDialog() {
   useEffect(() => {
     if (!open) return;
     let cancelled = false;
+    // Read once, here, rather than held in state and read on the next render:
+    // this value decides how the widget is initialised, and initialising is the
+    // thing that happens in this effect.
+    const isCompact = !window.matchMedia("(min-width: 768px)").matches;
+    setCompact(isCompact);
     setStatus("loading");
 
     loadWidget()
@@ -123,7 +132,17 @@ export default function BookingDialog() {
           // not the page it sits on, so that margin cannot be recoloured and
           // has to be removed instead. Their docs allow one auto-resizing embed
           // per page; this is the only one on the site.
-          resize: true,
+          //
+          // NOT on a phone. There the scheduler is ~830px of content and the
+          // sheet can offer ~715px, so a self-sized frame is 120px taller than
+          // the box it sits in and gets clipped by it — an iframe overflowing a
+          // scrollable ancestor is the one arrangement mobile browsers handle
+          // badly, and the symptom is taps inside the frame landing at the wrong
+          // offset or not registering at all. At this width the frame is given
+          // the sheet's own height instead and Calendly scrolls inside it: one
+          // scroll surface, nothing clipped, and no white margin either, because
+          // their content is the taller of the two here.
+          resize: !isCompact,
           prefill: {},
           // camelCase here — the widget maps these onto the booking record, and
           // they are what tells us which control produced a meeting.
@@ -184,7 +203,23 @@ export default function BookingDialog() {
         // dialog without scrolling — and the arrangement people recognise.
         // Width is cheap here precisely because the embed's page is white and
         // so is this panel: any surplus is invisible.
-        className="b4w-bezel flex h-[92vh] w-full flex-col overflow-hidden border border-line bg-panel-low shadow-2xl sm:h-auto sm:max-h-[86vh] sm:w-[1060px] sm:max-w-full sm:rounded-2xl"
+        // svh, not vh and not dvh. On a phone this is a bottom sheet pinned to
+        // the bottom of the screen, and the three units mean three different
+        // things there:
+        //   vh  — the LARGE viewport, the height the page has once the address
+        //         bar has collapsed. With the bar showing, 92vh is taller than
+        //         what is visible, so the sheet's header sat under the chrome.
+        //   dvh — whatever is visible right now, which sounds correct and is
+        //         worse: it changes as the address bar collapses, so the sheet
+        //         resizes underneath a finger that is mid-scroll.
+        //   svh — the SMALL viewport, the height with the bar showing. Fits in
+        //         every state and never changes, which is what a fixed overlay
+        //         wants: the one thing a sheet must not do is move while it is
+        //         being touched.
+        className="b4w-bezel flex h-[92svh] w-full flex-col overflow-hidden border border-line bg-panel-low shadow-2xl sm:h-auto sm:max-h-[86svh] sm:w-[1060px] sm:max-w-full sm:rounded-2xl"
+        // The sheet reaches the bottom edge, so on a device with a home
+        // indicator the last row of the scheduler sat underneath it.
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex min-h-12 shrink-0 items-center justify-between gap-4 border-b border-line bg-bg/80 px-4">
@@ -213,12 +248,16 @@ export default function BookingDialog() {
             is Calendly's to decide and it grows once a date is picked and the
             time list appears. The dialog caps at 86vh and this scrolls inside
             it. */}
-        <div className="relative flex-1 overflow-y-auto">
+        <div
+          className={`relative flex-1 ${
+            compact ? "overflow-hidden" : "overflow-y-auto"
+          }`}
+        >
           {status === "error" ? (
             // A blocked script is a normal outcome, not an edge case — plenty of
             // people run one. Hand them the plain link rather than an empty box.
             <div className="flex h-full flex-col items-center justify-center gap-5 p-8 text-center">
-              <p className="!mb-0 max-w-sm font-SpaceGrotesk text-[0.95rem] leading-[1.6] text-muted">
+              <p className="!mb-0 max-w-sm b4w-copy font-SpaceGrotesk text-muted">
                 The scheduler could not load — a content blocker will usually be
                 why. You can open it directly instead.
               </p>
@@ -254,9 +293,13 @@ export default function BookingDialog() {
               <div
                 ref={embedRef}
                 style={{ colorScheme: "light" }}
-                // min-h holds the panel open while the widget boots, so the
-                // dialog does not appear as a title bar and then jump.
-                className="min-h-[34rem] w-full bg-white"
+                // Compact: exactly the sheet's height, so the frame inside it
+                // has somewhere definite to fill and nothing overflows.
+                // Otherwise min-h holds the panel open while the widget boots,
+                // so the dialog does not appear as a title bar and then jump.
+                className={`w-full bg-white ${
+                  compact ? "h-full" : "min-h-[34rem]"
+                }`}
               />
             </>
           )}

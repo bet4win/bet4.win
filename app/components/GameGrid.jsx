@@ -124,17 +124,11 @@ export default function GameGrid({
   const pool = filter === ALL ? items : items.filter((g) => g.category === filter);
   const visible = limit ? pool.slice(0, limit) : pool;
 
+  // Cards are links to the game pages now; the modal below is still mounted
+  // here because the spotlight, the hero deck and ?game= deep links all open it
+  // through registerGameLauncher. The grid no longer opens it itself.
   const cards = visible.map((game, i) => (
-    <GameCard
-      key={game.id}
-      game={game}
-      index={i}
-      ceiling={CEILING}
-      onLaunch={(g) => {
-        trackEvent("game_launch", { game_id: g.id, game_title: g.title });
-        openGame(g);
-      }}
-    />
+    <GameCard key={game.id} game={game} index={i} ceiling={CEILING} />
   ));
 
   return (
@@ -150,7 +144,11 @@ export default function GameGrid({
         />
       )}
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+      {/* One column under 360px. Two columns there give each card a 94px body,
+          and the catalogue has single-word titles — "Blackjack", "Baccarat",
+          "Roulette" — that cannot wrap and were simply cut off. Every phone from
+          an iPhone SE 2 up is 375px or wider and gets the two-up grid. */}
+      <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
         {cards}
       </div>
 
@@ -178,10 +176,14 @@ function CategoryFilter({ items, value, onChange }) {
     // A group of toggles rather than a radiogroup: these are buttons that change
     // what is listed below, and aria-pressed says exactly that without promising
     // arrow-key roving that the component does not implement.
+    // Desktop only. Seven pills wrap to three rows on a phone — about 170px of
+    // screen, before the catalogue they are filtering has shown a single card.
+    // The grid below is already ordered and finite, and scrolling it is cheaper
+    // than reading a control panel first.
     <div
       role="group"
       aria-label="Filter the catalogue by category"
-      className="mb-6 flex flex-wrap gap-2"
+      className="mb-6 hidden flex-wrap gap-2 md:flex"
     >
       {options.map((label) => {
         const on = label === value;

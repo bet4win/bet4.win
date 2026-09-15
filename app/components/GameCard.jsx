@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Clock, Play } from "./Icons";
+import { ArrowRight, Clock } from "./Icons";
 import { onceInView, prefersReducedMotion } from "@/app/lib/motion";
 import { useTilt } from "@/app/lib/tilt";
 import { slugFor } from "@/app/lib/slug";
@@ -49,7 +49,7 @@ function useCountUp(target, active) {
   return value;
 }
 
-export default function GameCard({ game, ceiling, index, onLaunch }) {
+export default function GameCard({ game, ceiling, index }) {
   const live = isLive(game);
   const ref = useRef(null);
   const tiltRef = useRef(null);
@@ -101,57 +101,75 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
             New
           </span>
         )}
-        <span
-          className="absolute right-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full border border-line bg-bg/70 px-2.5 py-1 font-SpaceGrotesk text-[10px] uppercase tracking-[0.08em] text-muted backdrop-blur"
-          aria-hidden="true"
-        >
-          {live ? (
-            <>
-              {/* Neutral type, accent dot. Every card in the catalogue is live,
-                  so a coloured LIVE badge is wallpaper — it would appear on all
-                  twelve tiles and compete with the NEW chip opposite it, which
-                  is the one that actually distinguishes anything. The pulse
-                  carries "running"; the word is just the label. */}
-              <span className="h-1.5 w-1.5 rounded-full bg-accent b4w-pulse" />
-              Live
-            </>
-          ) : (
-            <>
-              <Clock className="h-3 w-3" />
-              {game.status}
-            </>
-          )}
-        </span>
+        {/* Only the exceptions get a badge now.
+            "Live" used to sit on every tile in the catalogue, because every
+            title in it is live — a label that appears on all seventeen cards
+            distinguishes none of them, and it was competing with the NEW chip
+            opposite for the one corner a reader actually checks. What is left
+            is the case that says something: a title that is NOT yet live says
+            when it arrives. */}
+        {!live && (
+          <span
+            className="absolute right-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full border border-line bg-bg/70 px-2.5 py-1 font-SpaceGrotesk text-[10px] uppercase tracking-[0.08em] text-muted backdrop-blur"
+            aria-hidden="true"
+          >
+            <Clock className="h-3 w-3" />
+            {game.status}
+          </span>
+        )}
       </div>
 
       <div className="machined-surface flex flex-1 flex-col gap-3 p-4 md:p-5">
-        <div className="flex items-center justify-between gap-2">
-          <h3 className="b4w-display !mb-0 truncate text-[1.15rem] !text-ink">
+        <div className="flex items-start justify-between gap-2">
+          {/* line-clamp-2, not truncate, and the size comes down with the card.
+              Two columns on a 390px screen give the title a 124px box; at a flat
+              1.15rem "Video Poker" needed 188px of it and a single clipped line
+              rendered the catalogue's longest names as "VIDE…". Two lines of
+              display face at 0.85rem fit every title in the catalogue, and the
+              grid's h-full already equalises the rows. */}
+          <h3 className="b4w-display !mb-0 line-clamp-2 text-[clamp(0.85rem,0.72rem+0.674vw,1.15rem)] !text-ink [text-wrap:balance]">
             {game.title}
           </h3>
           {live && (
+            // xl, because that is the first width at which the card can spare
+            // the 36px. The arrow only ever appears on hover, so below that it
+            // was invisible on a phone and invisible on a tablet while still
+            // holding the title's box open — which is what turned "Blackjack"
+            // into "Blackja…" in the two-up and three-up grids.
             <ArrowRight
-              className="h-4 w-4 shrink-0 -translate-x-1 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+              className="hidden h-4 w-4 shrink-0 -translate-x-1 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 xl:block"
               aria-hidden="true"
             />
           )}
         </div>
 
         {/* Mechanic family. Every game used to read "Originals", which told an
-            operator nothing; these say what the player is actually asked to do. */}
+            operator nothing; these say what the player is actually asked to do.
+            Off below md, with the RTP and volatility row underneath. On a phone
+            the card body is ~124px wide, and four stacked facts in it is a spec
+            sheet at thumbnail size. The art, the name and the ceiling are the
+            pitch; the rest is on the game's own page, one tap away. */}
         {game.category && (
-          <span className="-mt-1 w-fit rounded-full border border-line bg-bg/60 px-1.5 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted">
+          <span className="-mt-1 hidden w-fit rounded-full border border-line bg-bg/60 px-1.5 py-0.5 font-SpaceGrotesk text-[9px] font-semibold uppercase tracking-[0.1em] text-muted md:inline-block">
             {game.category}
           </span>
         )}
 
         {game.maxMultiplier ? (
-          <div>
+          // mt-auto below md, where the RTP row that used to carry it is hidden.
+          // Without it the slack in a row collects under the last element, so a
+          // card with a one-line title sat its figures 35px higher than the card
+          // beside it — and the whole point of a grid of ceilings is that you can
+          // read down the column. At md the figures row takes the job back.
+          <div className="mt-auto md:mt-0">
             <p className="!mb-0 font-SpaceGrotesk text-[11px] uppercase tracking-[0.09em] text-faint">
               Max multiplier
             </p>
             {/* Gold: this is money. The chrome stays cool, the numbers don't. */}
-            <p className="!mb-0 mt-1 font-JetBrainsMono text-[clamp(1.15rem,0.85rem+1.1vw,1.65rem)] font-semibold !leading-none !tracking-[-0.02em] !text-accent tabular-nums">
+            {/* The floor comes down to 0.95rem for the same reason the title's
+                does: "1,000,000×" is ten glyphs, and at the old 1.15rem floor
+                they measured 138px inside a 124px card body. */}
+            <p className="!mb-0 mt-1 font-JetBrainsMono text-[clamp(0.95rem,0.65rem+1.1vw,1.65rem)] font-semibold !leading-none !tracking-[-0.02em] !text-accent tabular-nums">
               {fmt.format(counted)}
               <span className="ml-0.5 text-accent">×</span>
             </p>
@@ -177,7 +195,7 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
         {(game.rtp || game.volatility) && (
           // flex-wrap rather than inline text: on narrow cards the volatility
           // moves to its own line as a unit instead of splitting mid-phrase.
-          <dl className="!mb-0 mt-auto flex flex-wrap items-center gap-x-3.5 gap-y-1 border-t border-line/70 pt-3 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em]">
+          <dl className="!mb-0 mt-auto hidden flex-wrap items-center gap-x-3.5 gap-y-1 border-t border-line/70 pt-3 font-SpaceGrotesk text-[11px] uppercase tracking-[0.05em] md:flex">
             {game.rtp && (
               <div className="flex items-baseline gap-1 whitespace-nowrap">
                 <dt className="text-faint">RTP</dt>
@@ -205,43 +223,23 @@ export default function GameCard({ game, ceiling, index, onLaunch }) {
       // than all twelve cards landing at once.
       style={{ transitionDelay: `${(index % 4) * 70}ms` }}
     >
-      {/* The tilt is published from HERE, not from the <article>. The demo
-          button has to be a sibling of the link (a <button> inside an <a> is
-          invalid), so it sits outside the article and would inherit none of the
-          --tilt-* properties. Hanging them on the common ancestor lets the card
-          and the button read the same pointer. */}
+      {/* The tilt is published from HERE rather than from the <article> so that
+          --tilt-* inherits down to everything the card is made of. */}
       <div ref={tiltRef} className="group relative h-full">
         {live ? (
-          <>
-            {/* The card is a real link so the game pages stay crawlable and
-                openable in a new tab. */}
-            <Link
-              href={`/games/${slugFor(game)}`}
-              className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-              aria-label={`${game.title} — game details`}
-            >
-              {tile}
-            </Link>
-
-            {/* Centred over the art, matching the hero deck. The wrapper is a
-                square pinned to the top so "centre" means the middle of the
-                artwork rather than the middle of the whole card, caption
-                included. It takes no pointer events so the link underneath stays
-                clickable everywhere the button is not. */}
-            <span className="pointer-events-none absolute inset-x-0 top-0 flex aspect-square items-center justify-center">
-              <button
-                type="button"
-                onClick={() => onLaunch(game)}
-                aria-label={`Play ${game.title} demo`}
-                // Still forced visible on touch: without hover there is no other
-                // way to reach the demo from the grid.
-                className="b4w-btn b4w-btn--glass b4w-card-float pointer-events-auto opacity-0 transition-opacity duration-300 focus-visible:opacity-100 group-hover:opacity-100 max-md:opacity-100"
-              >
-                <Play className="h-3.5 w-3.5" />
-                Play demo
-              </button>
-            </span>
-          </>
+          // The card is a real link so the game pages stay crawlable and
+          // openable in a new tab. It used to have a "Play demo" button laid
+          // over the artwork as a sibling — forced permanently visible on touch,
+          // because there is no hover to reveal it — which put a glass pill over
+          // every piece of key art in the grid. The card is one target again;
+          // the demo is a full-width button on the page it opens.
+          <Link
+            href={`/games/${slugFor(game)}`}
+            className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            aria-label={`${game.title} — game details`}
+          >
+            {tile}
+          </Link>
         ) : (
           tile
         )}

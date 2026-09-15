@@ -59,7 +59,7 @@ export default function NewsCard({ post, headingLevel: H = "h3" }) {
             {post.title}
           </H>
 
-          <p className="!mb-0 font-SpaceGrotesk text-[0.9rem] leading-[1.6] text-muted">
+          <p className="!mb-0 b4w-copy font-SpaceGrotesk text-muted">
             {post.dek}
           </p>
 
