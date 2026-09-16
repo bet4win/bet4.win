@@ -1239,6 +1239,15 @@ html.js .b4w-magnitude[data-grown] {
      over part of the centre card's face. Each card carries its own
      perspective() in its transform instead; see .b4w-cover. */
   position: relative;
+  /* The swipe contract, and the reason HeroWall never calls preventDefault: the
+     browser keeps the vertical axis and the pinch, and hands us the horizontal
+     one. A page that cannot be scrolled or zoomed with a finger on the hero
+     would be a bad trade for a carousel gesture.
+     It lives on the stage rather than on .b4w-deck because the stage is where
+     the gesture is bound, and touch-action is read off the HIT TARGET's
+     ancestor chain — a finger landing in a corner of the deck that no card
+     reaches hits the stage itself, which is below the deck in that chain. */
+  touch-action: pan-y pinch-zoom;
 }
 /* A real 3D rendering context, and the shared vanishing point for the cards in
  * it. This is what makes the deck read as cards rather than as pictures being
@@ -1266,11 +1275,21 @@ html.js .b4w-magnitude[data-grown] {
 .b4w-deck {
   perspective: 900px;
   transform-style: preserve-3d;
-  /* The swipe contract, and the reason HeroWall never calls preventDefault: the
-     browser keeps the vertical axis and the pinch, and hands us the horizontal
-     one. A page that cannot be scrolled or zoomed with a finger on the hero
-     would be a bad trade for a carousel gesture. */
-  touch-action: pan-y pinch-zoom;
+  /* THE DECK'S OWN BOX WAS EATING EVERY CLICK AIMED AT A NEIGHBOUR.
+     preserve-3d puts this element's own box into the 3D space as a plane at
+     z = 0, and the side cards live at translateZ(-200px) — so for the whole
+     width of the deck the empty parent sat *in front of* them and won the hit
+     test. Only the part of a neighbour that overhung the deck box was
+     clickable: 68px of its 258px face on a desktop, and 25px hard against the
+     screen edge on a 390px phone. The card looked like a 250px target and
+     behaved like a 25px one, and the band right beside the centre card — where
+     anyone actually aims — was the dead part.
+     Taking the parent out of hit testing leaves the cards as the only targets,
+     which is what the layout has always looked like. Nothing is lost by it:
+     this element has no paint of its own, and the swipe is bound to
+     .b4w-tilt-stage above rather than here, so the gesture still covers the
+     whole column — including the corners of this box that no card reaches. */
+  pointer-events: none;
 }
 /* Cards follow the finger 1:1 while a swipe is in flight, so no easing — the
    deck is being held, not played. The transition comes back on release, which
@@ -1340,6 +1359,9 @@ html.js .b4w-magnitude[data-grown] {
   /* So the tilt on the child composes in the deck's 3D space rather than being
      flattened into this card's plane. */
   transform-style: preserve-3d;
+  /* Back on, against the none the deck inherits down. The ghost ring turns it
+     off again below. */
+  pointer-events: auto;
   opacity: var(--op, 1);
   transition:
     transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),

@@ -76,20 +76,32 @@ export default function HeroWall() {
   // are trying not to hit.
   //
   // The cards travel with the finger rather than waiting for the gesture to end
-  // and then jumping. `touch-action: pan-y pinch-zoom` on the deck is what makes
+  // and then jumping. `touch-action: pan-y pinch-zoom` on the stage is what makes
   // that safe: the browser keeps scrolling and zooming for itself and hands us
   // the horizontal axis only, so there is no preventDefault anywhere here and no
   // way for this to trap the page.
   //
-  // Touch and pen only. On a fine pointer the deck already answers to hover, its
-  // neighbours are easy targets, and a click-drag would be fighting useTilt over
-  // the same pointermove.
+  // LISTENS ON THE STAGE, WRITES TO THE DECK. The deck is `pointer-events: none`
+  // so that a click aimed at a neighbour reaches it instead of being swallowed by
+  // the empty parent sitting in front of it (see .b4w-deck in globals.css) — and
+  // an element that is not a hit target cannot be the one you start a drag on.
+  // Hanging the gesture on the stage is not a workaround for that but a better
+  // surface anyway: the whole column swipes, including the corners of the deck
+  // where the shorter neighbours do not reach and the slivers of card that
+  // overhang the deck's own box.
+  //
+  // Nothing to collide with up there. useTilt is bound to this same element but
+  // bails out unless (hover: hover) and (pointer: fine), and this is touch and
+  // pen only, so the two never see the same pointermove.
   useEffect(() => {
-    const el = deckRef.current;
-    if (!el || LIVE.length < 2) return;
+    const stage = stageRef.current;
+    const deck = deckRef.current;
+    if (!stage || !deck || LIVE.length < 2) return;
 
     let g = null; // the gesture in flight
-    const offset = (px) => el.style.setProperty("--drag", `${Math.round(px)}px`);
+    // --drag and data-dragging stay on the deck: they inherit to the cards and
+    // key the rule that drops their transition mid-swipe.
+    const offset = (px) => deck.style.setProperty("--drag", `${Math.round(px)}px`);
 
     const release = (dir) => {
       if (!g) return;
@@ -103,7 +115,7 @@ export default function HeroWall() {
       // it lands on whatever card the swipe started on. Mark it for swallowing
       // (see onClick) or every swipe also launches a game.
       swipedRef.current = true;
-      el.removeAttribute("data-dragging");
+      deck.removeAttribute("data-dragging");
       offset(0);
       setPaused(false);
       if (dir) setIndex((i) => (i + dir + LIVE.length) % LIVE.length);
@@ -121,7 +133,7 @@ export default function HeroWall() {
         if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
         if (Math.abs(dy) >= Math.abs(dx)) return release(0);
         g.axis = "x";
-        el.setAttribute("data-dragging", "");
+        deck.setAttribute("data-dragging", "");
         setPaused(true);
       }
 
@@ -133,7 +145,10 @@ export default function HeroWall() {
       if (!g || e.pointerId !== g.id) return;
       // Distance OR speed: a deliberate drag past a fifth of the deck, or a
       // flick that never travelled far because it was over so quickly.
-      const far = Math.abs(g.dx) > el.offsetWidth * 0.18;
+      // Measured against the deck, not the stage the listener is on — the
+      // threshold is calibrated to the width of the cards being moved, and the
+      // stage is wider than they are.
+      const far = Math.abs(g.dx) > deck.offsetWidth * 0.18;
       const fast = Math.abs(g.dx) > 24 && e.timeStamp - g.t < 300;
       release(far || fast ? (g.dx < 0 ? 1 : -1) : 0);
     };
@@ -146,7 +161,7 @@ export default function HeroWall() {
       swipedRef.current = false;
       if (g || e.pointerType === "mouse") return;
       g = { id: e.pointerId, x: e.clientX, y: e.clientY, dx: 0, t: e.timeStamp, axis: null };
-      // On window, not the deck: a finger routinely leaves a 460px-wide card
+      // On window, not the stage: a finger routinely leaves a 460px-wide deck
       // mid-swipe, and listeners on the element stop hearing it the moment it
       // does — including the pointerup that would end the gesture.
       window.addEventListener("pointermove", onMove);
@@ -161,11 +176,11 @@ export default function HeroWall() {
       e.stopPropagation();
     };
 
-    el.addEventListener("pointerdown", onDown);
-    el.addEventListener("click", onClick, true);
+    stage.addEventListener("pointerdown", onDown);
+    stage.addEventListener("click", onClick, true);
     return () => {
-      el.removeEventListener("pointerdown", onDown);
-      el.removeEventListener("click", onClick, true);
+      stage.removeEventListener("pointerdown", onDown);
+      stage.removeEventListener("click", onClick, true);
       release(0);
     };
   }, []);
