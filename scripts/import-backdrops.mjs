@@ -40,6 +40,7 @@ const SLUGS = {
   diamonds: "diamonds",
   keno: "keno",
   limbo: "limbo",
+  chicken: "chicken",
 };
 
 mkdirSync(OUT, { recursive: true });

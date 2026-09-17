@@ -144,6 +144,19 @@ export default function Roadmap({ releases }) {
                     <h3 className="relative !mb-0 b4w-display !text-[clamp(1.35rem,1rem+1vw,1.85rem)] !leading-[0.92] !text-ink [text-wrap:balance]">
                       {r.title}
                     </h3>
+                    {/* Stamped on the plate rather than added to the month line
+                        beneath the dot. The month line is the rail's axis and
+                        already carries one conditional marker ("Next" / "This
+                        month"); a second one there would make the two compete at
+                        11px. On the plate it reads as what it is — a stamp on the
+                        sheet, in the corner the title is not using. `relative`
+                        for the same reason as the h3: the plate's texture is a
+                        positioned ::before and would otherwise paint over it. */}
+                    {r.delivered && (
+                      <span className="absolute right-3 top-3 rounded-full border border-accent/50 bg-accent/15 px-2 py-0.5 font-JetBrainsMono text-[9px] font-semibold uppercase leading-none tracking-[0.12em] text-accent">
+                        Delivered
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex flex-1 flex-col gap-3 p-4">

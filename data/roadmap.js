@@ -7,13 +7,21 @@
 // all of which key off `status === "active"` but would still need a thumbnail to
 // render at all.
 //
-// Chicken is the one title that exists in BOTH files: it is far enough along to
-// carry a lobby tile, so `games.js` lists it with `status: "09/2026"` and the
-// grid shows it greyed out. Keep the month here in step with that status.
+// Chicken is the one title that exists in BOTH files, and since 2026-09-17 it is
+// there for the opposite reason to before. It used to be listed here because it
+// was unbuilt; it stays listed here now because it SHIPPED in the month this rail
+// promised it in, and `delivered: true` badges it as such. A roadmap that only
+// ever shows unkept promises is a wish list — the one node an operator can check
+// against the catalogue above is the whole reason to believe the rest of it.
 //
-// !! SHIP WINDOWS ARE UNCONFIRMED except Chicken's, which matches games.js.
-// The other three are placed on the "a new original every month" cadence the
-// rest of the site promises. They are the one thing on this page nobody can
+// A delivered title is deliberately never the "next" one: `upcomingReleases`
+// skips it when it picks `nextId`, so the accent stays on what is actually still
+// coming. Its live catalogue entry (art, launch URL, published figures) lives in
+// `games.js`; this entry is still just a name, a mechanic and a month.
+//
+// !! SHIP WINDOWS ARE UNCONFIRMED except Chicken's, which is now a fact rather
+// than a forecast. The rest is placed on the "a new original every month" cadence
+// the rest of the site promises. Those are the one thing on this page nobody can
 // check from the outside, so they want a real sign-off before this goes live —
 // edit `ships` below and nothing else changes.
 //
@@ -25,9 +33,10 @@ export const roadmap = [
     title: "Chicken",
     category: "Minefield",
     ships: "2026-09",
-    // Mechanic, not flavour. An operator scanning four unbuilt titles is asking
-    // "is this another one of the same" — so each line has to say what the
-    // player is actually doing.
+    delivered: true,
+    // Mechanic, not flavour. An operator scanning the rail is asking "is this
+    // another one of the same" — so each line has to say what the player is
+    // actually doing.
     teaser:
       "Cross the traffic one lane at a time. Every lane clear steps the multiplier; one wrong step ends the run.",
   },
@@ -75,7 +84,10 @@ export function upcomingReleases(now = new Date()) {
   // The first title whose window has not already passed. Everything before it
   // stays on the rail — a roadmap that silently drops last month's release
   // looks like it was never promised.
-  const nextId = sorted.find((r) => r.ships >= current)?.id;
+  // Delivered titles are excluded: one that shipped this month would otherwise
+  // win `ships >= current` and take the "Next" marker off the title that is
+  // actually still coming.
+  const nextId = sorted.find((r) => !r.delivered && r.ships >= current)?.id;
   return sorted.map((r) => ({
     ...r,
     label: shipLabel(r.ships),

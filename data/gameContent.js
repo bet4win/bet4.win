@@ -71,6 +71,16 @@ export const gameContent = {
       "Winnings are rounded down to the smallest currency unit (e.g., one cent).",
     ],
   },
+  chicken: {
+    // This game's locale ships `description` rather than `description_html`, so
+    // the paragraphs below are its three newline-separated blocks, unchanged.
+    source: "chicken/public/locales/en/game.json",
+    paragraphs: [
+      "Pick a risk level, then move the chicken forward one lane at a time. Every lane you clear raises your multiplier by one rung. Hitting a car ends the round and loses the stake.",
+      "The cars are placed before your first move and never change position. Higher risk levels put more cars on the road and pay more for each lane you clear.",
+      "You can cash out after any cleared lane. Clearing the last safe lane ends the round and pays the top rung automatically.",
+    ],
+  },
   crash: {
     source: "crash/public/locales/en/game.json",
     paragraphs: [

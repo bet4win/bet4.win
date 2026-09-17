@@ -61,6 +61,8 @@ import blackjackBanner from "@/public/assets/img/banners/blackjack.jpg";
 import blackjackWide from "@/public/assets/img/banners/blackjack-wide.jpg";
 import baccaratBanner from "@/public/assets/img/banners/baccarat.jpg";
 import baccaratWide from "@/public/assets/img/banners/baccarat-wide.jpg";
+import chickenBanner from "@/public/assets/img/banners/chicken.jpg";
+import chickenWide from "@/public/assets/img/banners/chicken-wide.jpg";
 // Each game ships a pre-blurred 16:9 scene from its own marketing pack
 // (marketing/<game>/backgrounds/<game>_bg-main-blur.png). It is the room the
 // game is actually played in, out of focus — which is what the homepage
@@ -84,6 +86,7 @@ import wheelBackdrop from "@/public/assets/img/backdrops/wheel.jpg";
 import diamondsBackdrop from "@/public/assets/img/backdrops/diamonds.jpg";
 import kenoBackdrop from "@/public/assets/img/backdrops/keno.jpg";
 import limboBackdrop from "@/public/assets/img/backdrops/limbo.jpg";
+import chickenBackdrop from "@/public/assets/img/backdrops/chicken.jpg";
 
 // Per-game card figures. All three are game-specific — there is no catalogue-wide
 // default, so a game that omits a field simply doesn't show it on its card.
@@ -135,6 +138,29 @@ export const games = [
         { value: "∞", label: "uncapped ladder" },
       ],
     },
+  },
+  {
+    id: "3",
+    category: "Minefield",
+    title: "Chicken",
+    banner: chickenBanner,
+    bannerWide: chickenWide,
+    backdrop: chickenBackdrop,
+    // Seven certified payout packs ship with the engine — 92, 94, 95, 96, 97, 98
+    // and 99 — and the client renders the ladder for whichever one the live round
+    // reports, so the range is the shipping tables rather than one configured
+    // figure. (apps/chicken/src/app/game/ladders/.)
+    rtp: "92–99%",
+    // Player-chosen, and the spread IS the game rather than a footnote to it:
+    // Easy puts one car on a twenty-lane road and tops out at 19.2x, while on
+    // Expert there are ten cars and the very first lane already pays 1.92x —
+    // about a coin flip. Same shape as roulette's, for the same reason.
+    volatility: "Low–High",
+    maxMultiplier: 1000000, // chicken/src/app/app.tsx
+    image: chicken,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=3c5e5c0ebd5f4e76b8465300b2f5f50b&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
     id: "15",
