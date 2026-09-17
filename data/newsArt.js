@@ -8,6 +8,7 @@ export const newsArt = {
   "american-roulette-release": "american-roulette-release.373a023d.jpg",
   "baccarat-release": "baccarat-release.f526225d.jpg",
   "blackjack-release": "blackjack-release.2ba51fbd.jpg",
+  "chicken-release": "chicken-release.814bf9b2.jpg",
   "coin-release": "coin-release.87506258.jpg",
   "crash-release": "crash-release.d0a299e4.jpg",
   "diamonds-release": "diamonds-release.e203b1c0.jpg",

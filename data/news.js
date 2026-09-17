@@ -951,4 +951,74 @@ export const posts = [
       },
     ],
   },
+
+  // The one date on this page that is neither editorial nor a guess: Chicken
+  // shipped on 2026-09-17, which is also the month the roadmap rail promised it
+  // in. That puts it six days after Baccarat rather than the fortnight the rest
+  // of the run is spaced by — the truth wins over the cadence here, because this
+  // is the release the roadmap is being checked against.
+  //
+  // The lane count is deliberately not stated as a flat number in the body. The
+  // engine ships two payout providers with different road lengths (20 lanes and
+  // 25), and which one an operator is served is their configuration, so a
+  // headline "twenty lanes" would be wrong for half the estate. The figure below
+  // names the default and says what decides it.
+  {
+    slug: "chicken-release",
+    kicker: "Release",
+    date: "2026-09-17",
+    title: "Chicken is live: four risk tiers, one crossing",
+    dek: "A multi-lane road with the cars already placed. Every lane cleared steps the multiplier, and the risk tier decides how many cars are out there.",
+    image: {
+      kind: "release",
+      art: "chicken",
+      alt: "Chicken lobby tile: a plump cream-white chicken mid-step on a dark road, beside glowing amber multiplier markers receding into the distance",
+    },
+    body: [
+      {
+        type: "p",
+        text: "Chicken is live on the Bet4.win RGS and available to every operator already on the integration.",
+      },
+      {
+        type: "p",
+        text: "A risk tier is picked before the first step, and then the chicken crosses the road one lane at a time. Every lane cleared raises the multiplier by one rung. Hitting a car ends the round and loses the stake.",
+      },
+      {
+        type: "p",
+        text: "The cars are placed before the first move and never change position, and that is the whole game rather than a detail of it. Nothing is dodged and nothing is timed — the road is already decided, and the only question left is how far into it to walk.",
+      },
+      {
+        type: "p",
+        text: "The tier is what sets the odds. Easy puts one car on the road, Medium three, Hard five and Expert ten. More cars means a steeper rung for every lane survived: on Easy the first lane is close to a certainty, and on Expert it is close to a coin flip.",
+      },
+      {
+        type: "p",
+        text: "A player can cash out after any lane they have cleared. Clear the last safe lane and the round pays the top rung automatically — there is no final decision to get wrong.",
+      },
+      {
+        type: "pull",
+        text: "The road is drawn before the first step, and nothing on it moves.",
+      },
+      {
+        type: "p",
+        text: "Which is what makes the round verifiable. The car map is committed when the round opens, before the player has moved, and published with the seed when it closes — so a crossing can be re-checked afterwards against a layout that could not have been changed while it was being walked.",
+      },
+      { type: "h2", text: "The figures" },
+      {
+        type: "ul",
+        items: [
+          "RTP 92–99%, set by which of the seven certified payout tables an operator is served.",
+          "Volatility from low to high, and the player chooses it: the four risk tiers run from one car on the road to ten.",
+          "Up to 1,000,000×. A full Expert crossing on the default payout pack pays around 177,000×; operators can enforce a lower per-bet cap.",
+          "Road length comes from the payout pack — twenty lanes on the default one.",
+          "Per-round provable fairness: the car map is committed before the first step and the seed is published when the round closes.",
+        ],
+      },
+      { type: "h2", text: "Availability" },
+      {
+        type: "p",
+        text: "Chicken ships on the same connection as the rest of the catalogue, in full white-label branding, and is demo-playable before it goes anywhere near a live lobby. Territory availability is set at the operator level, against their own licences.",
+      },
+    ],
+  },
 ];
