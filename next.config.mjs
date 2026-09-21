@@ -68,22 +68,6 @@ const nextConfig = {
       },
     ];
   },
-  async redirects() {
-    // Enforce the www canonical: 308 the apex host to www, preserving the path.
-    // `value` is compiled into `^…$`, so the dots are escaped to keep this an
-    // exact host match and it can't loop on www requests.
-    // This rule is what actually serves the production apex 308 — it compiles
-    // into .next/routes-manifest.json, which Vercel applies at its proxy layer
-    // (hence the single-region x-vercel-id and no x-matched-path on the 308).
-    return [
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: "bet4\\.win" }],
-        destination: "https://www.bet4.win/:path*",
-        permanent: true,
-      },
-    ];
-  },
 };
 
 export default nextConfig;

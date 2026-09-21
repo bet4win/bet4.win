@@ -152,5 +152,6 @@ the games listed in its own `GAMES` array — keep that array in sync with the
 
 ## Deployment
 
-Vercel. The apex-to-www 308 is a redirect rule in `next.config.mjs`, applied at
-Vercel's proxy layer. Canonical host is `https://www.bet4.win`.
+Vercel. Canonical host is `https://www.bet4.win`. The apex-to-www redirect is no
+longer in `next.config.mjs` — it has to come from the Vercel domain settings
+(add `bet4.win` as a redirect to `www.bet4.win`).
