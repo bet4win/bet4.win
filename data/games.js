@@ -109,6 +109,11 @@ import chickenBackdrop from "@/public/assets/img/backdrops/chicken.jpg";
 //                   a URL with a literal space). Set this and `slugFor` uses it.
 //   isNew         — renders a NEW badge on the card. Drop the flag once the
 //                   title is no longer a recent release; nothing expires it.
+//   seasons       — seasonal variants of this title, as season id -> launch
+//                   URL. Each variant is its own game on the RGS, so this is a
+//                   second `url` rather than a flag. Puts a glyph on the card
+//                   and an entry in the launch menu. Ids must be listed in
+//                   app/lib/seasons.js; anything else is ignored.
 export const games = [
   {
     id: "16",
@@ -124,6 +129,14 @@ export const games = [
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5539fc3e4671414fb3229a9eee641720&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
     aspectRatio: "16/9",
+    // Seasonal variants: season id -> its own launch URL. Each is a separate
+    // game on the RGS with its own id, and the launch endpoint resolves it to
+    // a client URL already carrying `?season=halloween` — see
+    // app/lib/seasons.js. Punch is currently the only title with any.
+    seasons: {
+      halloween:
+        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=987f5a63ff4b4ede9790989d6e874eba&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    },
     // Drives the homepage spotlight. Move this block to another game to change
     // which original is featured — see <FeaturedGame /> in app/page.jsx.
     // Figures come from the game spec (manual-crash archetype, growth 1.06,

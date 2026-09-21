@@ -6,7 +6,12 @@ import { Close } from "./Icons";
 // centered window whose iframe keeps the game's aspect ratio; on phones (either
 // orientation) it goes fullscreen, covering iOS safe areas. `game` is null when
 // closed.
-export default function GameModal({ game, onClose }) {
+//
+// `url` overrides the game's own launch URL, and `season` names the variant it
+// opens — both come from the game page's launcher, since a seasonal variant is
+// a separate game on the RGS with its own launch URL. Every other caller passes
+// neither and gets `game.url`.
+export default function GameModal({ game, url, season, onClose }) {
   useEffect(() => {
     if (!game) return;
     const onKey = (e) => e.key === "Escape" && onClose();
@@ -22,6 +27,7 @@ export default function GameModal({ game, onClose }) {
   if (!game) return null;
 
   const ratio = game.aspectRatio ?? "16/9";
+  const src = url ?? game.url;
 
   return (
     <div
@@ -39,6 +45,12 @@ export default function GameModal({ game, onClose }) {
         <div className="game-modal-header flex min-h-11 shrink-0 items-center justify-between border-b border-line bg-bg/80">
           <span className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-accent">
             {game.title} · demo
+            {/* The variant is named in the season's own colour, so the header
+                says which build is running without a second chip. Only the
+                seasonal options set it; "Standard" leaves the header alone. */}
+            {season && (
+              <span style={{ color: season.tint }}> · {season.label}</span>
+            )}
           </span>
           <button
             type="button"
@@ -52,8 +64,12 @@ export default function GameModal({ game, onClose }) {
 
         <div className="game-iframe-wrapper relative flex-1 win:flex-none">
           <iframe
-            key={game.id}
-            src={game.url}
+            // Keyed on the URL rather than the game id: a title's variants
+            // share `game.id` and differ only in where they launch, so a key
+            // that can't tell them apart would hold the old document on
+            // screen if anything ever swapped one for the other in place.
+            key={src}
+            src={src}
             title={`${game.title} demo`}
             className="absolute inset-0 h-full w-full border-0"
             allow="autoplay; fullscreen; clipboard-write"

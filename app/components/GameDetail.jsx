@@ -3,24 +3,38 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import GameModal from "./GameModal";
+import SeasonLaunch from "./SeasonLaunch";
 import Section from "./Section";
 import { ArrowLeft, Play } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
+import { STANDARD, seasonOptions } from "@/app/lib/seasons";
 
 const fmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
 
 export default function GameDetail({ game, content }) {
   // The page itself is the shareable URL, so unlike the catalogue modal there is
-  // no history/param juggling here — just open and close.
-  const [open, setOpen] = useState(false);
+  // no history/param juggling here — just open and close. `launched` carries
+  // which build is running: null for the game's own URL, otherwise the pinned
+  // variant's.
+  const [launched, setLaunched] = useState(null);
 
-  const launch = () => {
+  // Empty unless the game ships seasonal dressing, which is what turns the
+  // plain button below into the split one.
+  const seasons = seasonOptions(game);
+
+  const launch = (url, option) => {
+    // Only a real season labels the modal; "Standard" is the ordinary game.
+    const season = option && option.id !== STANDARD ? option : null;
+
     trackEvent("game_launch", {
       game_id: game.id,
       game_title: game.title,
       source: "game_page",
+      // Absent for a game with no variants, so the ordinary event keeps the
+      // shape it has always had in the analytics.
+      ...(option ? { season: option.id } : {}),
     });
-    setOpen(true);
+    setLaunched({ url, season });
   };
 
   const stats = [
@@ -117,14 +131,18 @@ export default function GameDetail({ game, content }) {
                 ))}
               </dl>
 
-              <button
-                type="button"
-                onClick={launch}
-                className="b4w-btn b4w-btn--primary b4w-btn--lg mt-7 flex w-full"
-              >
-                <Play className="h-4 w-4" />
-                Play demo
-              </button>
+              {seasons.length > 0 ? (
+                <SeasonLaunch options={seasons} onLaunch={launch} />
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => launch(null, null)}
+                  className="b4w-btn b4w-btn--primary b4w-btn--lg mt-7 flex w-full"
+                >
+                  <Play className="h-4 w-4" />
+                  Play demo
+                </button>
+              )}
 
               <p className="!mb-0 mt-6 border-t border-line/60 pt-5 font-SpaceGrotesk text-[0.8rem] leading-[1.6] text-faint">
                 Figures show the default configuration. Live values follow the
@@ -139,7 +157,12 @@ export default function GameDetail({ game, content }) {
         </div>
       </Section>
 
-      <GameModal game={open ? game : null} onClose={() => setOpen(false)} />
+      <GameModal
+        game={launched ? game : null}
+        url={launched?.url}
+        season={launched?.season}
+        onClose={() => setLaunched(null)}
+      />
     </>
   );
 }

@@ -14,6 +14,7 @@
 // pulled out of the package.
 import React from "react";
 import {
+  RiArrowDownSLine,
   RiArrowLeftLine,
   RiArrowLeftSLine,
   RiArrowRightLine,
@@ -23,6 +24,7 @@ import {
   RiCheckLine,
   RiCloseLine,
   RiFlashlightLine,
+  RiGhostFill,
   RiLinkedinFill,
   RiMailLine,
   RiMenuLine,
@@ -55,6 +57,7 @@ export const ArrowLeft = decorative(RiArrowLeftLine, "ArrowLeft");
 export const ArrowUpRight = decorative(RiArrowRightUpLine, "ArrowUpRight");
 export const ChevronLeft = decorative(RiArrowLeftSLine, "ChevronLeft");
 export const ChevronRight = decorative(RiArrowRightSLine, "ChevronRight");
+export const ChevronDown = decorative(RiArrowDownSLine, "ChevronDown");
 export const Close = decorative(RiCloseLine, "Close");
 export const Menu = decorative(RiMenuLine, "Menu");
 export const Refresh = decorative(RiRefreshLine, "Refresh");
@@ -73,6 +76,14 @@ export const Clock = decorative(RiTimeLine, "Clock");
 export const Calendar = decorative(RiCalendarEventLine, "Calendar");
 export const Pulse = decorative(RiPulseLine, "Pulse");
 export const Sparkle = decorative(RiSparklingFill, "Sparkle");
+
+// --- Seasons ----------------------------------------------------------------
+// One glyph per season the client dresses a game in, named here so
+// app/lib/seasons.js can hold the mapping without importing `Ri*` itself.
+// `Fill` for both, because they render at 14px inside a chip on artwork: a
+// hairline outline at that size against a photograph is a smudge, and the two
+// have to read as one set when they are stacked in the launch menu.
+export const Ghost = decorative(RiGhostFill, "Ghost");
 
 // --- Contact ----------------------------------------------------------------
 // The `Fill` weight for LinkedIn and the `Line` weight for mail, deliberately:

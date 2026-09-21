@@ -6,6 +6,7 @@ import { ArrowRight, Clock } from "./Icons";
 import { onceInView, prefersReducedMotion } from "@/app/lib/motion";
 import { useTilt } from "@/app/lib/tilt";
 import { slugFor } from "@/app/lib/slug";
+import { SEASONS, seasonsFor } from "@/app/lib/seasons";
 
 const isLive = (game) => game.status === "active";
 
@@ -51,6 +52,7 @@ function useCountUp(target, active) {
 
 export default function GameCard({ game, ceiling, index }) {
   const live = isLive(game);
+  const seasons = seasonsFor(game);
   const ref = useRef(null);
   const tiltRef = useRef(null);
   const [revealed, setRevealed] = useState(false);
@@ -115,6 +117,43 @@ export default function GameCard({ game, ceiling, index }) {
           >
             <Clock className="h-3 w-3" />
             {game.status}
+          </span>
+        )}
+
+        {/* Seasonal builds this title ships. The corner is the one the status
+            pill would use, which is free on exactly the games that can have a
+            season — an unreleased title has no build to dress. */}
+        {live && seasons.length > 0 && (
+          <span
+            className="absolute right-2.5 top-2.5 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-bg/70 px-2 py-1 backdrop-blur"
+            // Named rather than aria-hidden: nothing else on the card says
+            // this game has a seasonal build. The wrapper carries the whole
+            // label, so the visible word below is not announced twice.
+            aria-label={`Seasonal versions: ${seasons
+              .map((id) => SEASONS[id].label)
+              .join(", ")}`}
+            role="img"
+          >
+            {seasons.map((id) => {
+              const { Icon, tint } = SEASONS[id];
+              return (
+                <Icon key={id} className="h-3.5 w-3.5" style={{ color: tint }} />
+              );
+            })}
+            {/* The word, once a card is wide enough to hold it. A glyph alone
+                is a puzzle — a reader scanning the grid has to hover or open
+                the page to find out what it means. Below md the card body is
+                ~124px and there is no room, so the glyph goes back to
+                carrying it alone; and past one season the names would be
+                longer than the art, so they drop out there too. */}
+            {seasons.length === 1 && (
+              <span
+                className="hidden font-SpaceGrotesk text-[10px] font-bold uppercase tracking-[0.1em] md:inline"
+                style={{ color: SEASONS[seasons[0]].tint }}
+              >
+                {SEASONS[seasons[0]].label}
+              </span>
+            )}
           </span>
         )}
       </div>

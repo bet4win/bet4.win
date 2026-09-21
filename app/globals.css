@@ -673,6 +673,38 @@ body.age-gate-locked {
   }
 }
 
+/* The trailing half of a split button — the chevron that opens the seasonal
+   launch menu. The two halves drop their facing radii at the call site, so all
+   this owns is the seam: the same white hairline the filled variants already
+   carry along their top edge, stood on end. */
+.b4w-split-end {
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
+}
+/* No sheen on this half. The sweep is sized to travel across a button, and on
+   a 38px stub beside a 200px one it reads as a separate glint firing out of
+   step with its own other half. */
+.b4w-split-end::after {
+  display: none;
+}
+
+/* A panel that opens off a control — currently just the seasonal launch menu.
+   Rises a few pixels rather than scaling: it hangs off the button's bottom
+   edge, and a scale from its corner drags the whole panel diagonally away from
+   the thing that opened it. */
+.b4w-pop {
+  animation: b4w-pop-in 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+@keyframes b4w-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* --- Header ----------------------------------------------------------------
  * Slides out of the way on the way down the page and comes straight back on the
  * way up. Header.jsx owns when; this owns how.
@@ -1562,6 +1594,11 @@ html.js .b4w-magnitude[data-grown] {
   }
   .b4w-btn:active {
     transform: none;
+  }
+  /* The panel is mounted only while it is open, so there is no final frame to
+     pin — switching the animation off simply puts it there at once. */
+  .b4w-pop {
+    animation: none;
   }
   html.js .b4w-reveal,
   html.js .b4w-reveal.is-revealed {
