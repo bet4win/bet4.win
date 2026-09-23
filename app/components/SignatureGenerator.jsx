@@ -1,7 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SITE_URL, bookingUrl } from "@/app/lib/site";
 import { upcomingEvents } from "@/data/events";
+import { MAIL_SIGNATURE_NAME, mailInstallerCommand } from "@/app/lib/mailInstaller";
 import { Check } from "./Icons";
 
 // Everything is served from the production origin, not window.location: a
@@ -189,25 +190,41 @@ export default function SignatureGenerator() {
   // the production URL.
   const preview = buildSignature(fields, "").html;
 
+  // Written into the iframe rather than passed as srcDoc, which would reload
+  // the frame — and blank it — on every keystroke.
+  function writeCopySource() {
+    const doc = copyRef.current?.contentDocument;
+    if (!doc?.body) return;
+    doc.body.style.margin = "0";
+    doc.body.innerHTML = signature.html;
+  }
+  useEffect(writeCopySource, [signature.html]); // eslint-disable-line react-hooks/exhaustive-deps
+
   function flash(kind) {
     setCopied(kind);
     setTimeout(() => setCopied((k) => (k === kind ? null : k)), 2000);
   }
 
   // Copies a real selection of the rendered signature rather than writing
-  // text/html to the clipboard. The browser then puts its own rich format on
-  // the pasteboard — in Safari a WebArchive carrying the images themselves,
-  // which is what Apple Mail's signature editor needs; given bare HTML it
-  // drops remote images. Selected from a copy kept rendered off-screen, with
-  // production image URLs, because the images have to be loaded already and
-  // Safari only allows the copy synchronously inside the click.
+  // text/html to the clipboard, so the browser puts its own rich format on the
+  // pasteboard, images included. The images have to be loaded already and
+  // Safari only allows the copy synchronously inside the click, so the source
+  // is kept rendered, with production image URLs, ahead of time. (Apple Mail
+  // does not use this at all — see copyMailInstaller.)
+  //
+  // It lives in a blank iframe, not in this page. Safari bakes the computed
+  // styles of the selection's surroundings into what it copies: from inside
+  // the page, the table arrived in Apple Mail carrying the site's near-black
+  // body background and Tailwind's reset, and that fill squared off every
+  // corner the card has.
   async function copyRich() {
-    const sel = window.getSelection();
-    const range = document.createRange();
-    range.selectNodeContents(copyRef.current);
+    const doc = copyRef.current.contentDocument;
+    const sel = doc.getSelection();
+    const range = doc.createRange();
+    range.selectNodeContents(doc.body);
     sel.removeAllRanges();
     sel.addRange(range);
-    const ok = document.execCommand("copy");
+    const ok = doc.execCommand("copy");
     sel.removeAllRanges();
     if (!ok) {
       await navigator.clipboard.write([
@@ -223,6 +240,11 @@ export default function SignatureGenerator() {
   async function copySource() {
     await navigator.clipboard.writeText(signature.html);
     flash("source");
+  }
+
+  async function copyMailInstaller() {
+    await navigator.clipboard.writeText(mailInstallerCommand(signature.html));
+    flash("mail");
   }
 
   return (
@@ -282,9 +304,11 @@ export default function SignatureGenerator() {
           style={{ background: PREVIEW_BG[theme] }}>
           <div dangerouslySetInnerHTML={{ __html: preview }} />
         </div>
-        <div ref={copyRef} aria-hidden="true"
-          style={{ position: "fixed", left: -10000, top: 0 }}
-          dangerouslySetInnerHTML={{ __html: signature.html }} />
+        {/* onLoad too: a frame's initial about:blank document can be replaced
+            once it finishes loading, taking what the effect wrote with it. */}
+        <iframe ref={copyRef} aria-hidden="true" tabIndex={-1} title="Signature copy source"
+          onLoad={writeCopySource}
+          style={{ position: "fixed", left: -10000, top: 0, width: CARD_W + 40, height: 400, border: 0 }} />
 
         <div className="mt-5 flex flex-wrap gap-3">
           <button type="button" onClick={copyRich} disabled={!ready}
@@ -300,18 +324,28 @@ export default function SignatureGenerator() {
         </div>
         <p className="!mt-3 !mb-0 font-SpaceGrotesk text-[12px] text-faint">
           {ready
-            ? "Paste “Copy signature” straight into Gmail, Outlook or Apple Mail signature settings. Use the HTML source for clients that take raw HTML."
+            ? "Paste “Copy signature” into Gmail or Outlook signature settings. Use the HTML source for clients that take raw HTML. Apple Mail needs the installer below."
             : "Name, role and a valid email are required before copying."}
         </p>
-        <details className="mt-4 rounded-xl border border-line p-4 font-SpaceGrotesk text-[13px] text-muted">
-          <summary className="cursor-pointer text-ink">Apple Mail</summary>
+        {/* Apple Mail rewrites a signature pasted into its Settings — the images
+            end up below the card at full size — so it gets an installer that
+            writes the signature file directly. See app/lib/mailInstaller.js. */}
+        <div className="mt-4 rounded-xl border border-line p-4 font-SpaceGrotesk text-[13px] text-muted">
+          <p className="!mb-0 text-ink">Apple Mail</p>
           <ol className="mt-3 list-decimal space-y-1.5 pl-5">
-            <li>Open this page in <strong className="text-ink">Safari</strong> and use “Copy signature”. Copied from Chrome, Mail drops the images.</li>
-            <li>In Mail → Settings → Signatures, create a signature and <strong className="text-ink">untick “Always match my default message font”</strong> — ticked, it strips the formatting.</li>
-            <li>Select the placeholder text in the signature editor and paste over it.</li>
-            <li>If the images still show as blank boxes, turn on remote content (Settings → Privacy, “Block all remote content” off). They load when a message is sent either way.</li>
+            <li>In Mail → Settings → Signatures, add a signature named <strong className="text-ink">{MAIL_SIGNATURE_NAME}</strong>. Leave whatever text Mail puts in it — don’t paste anything there.</li>
+            <li>Copy the installer, open <strong className="text-ink">Terminal</strong>, paste it and press Return. It closes Mail, installs the signature and reopens Mail.</li>
+            <li>Choose the signature in a new message. The images may show as “?” while you write; recipients see them.</li>
           </ol>
-        </details>
+          <button type="button" onClick={copyMailInstaller} disabled={!ready}
+            className="b4w-btn b4w-btn--ghost b4w-btn--sm mt-4">
+            {copied === "mail" ? "Copied" : "Copy Apple Mail installer"}
+            {copied === "mail" && <Check className="h-4 w-4" />}
+          </button>
+          <p className="!mt-3 !mb-0 text-[12px] text-faint">
+            The signature is locked so Mail can’t rewrite it. To change it, generate a new installer and run it the same way — don’t edit it in Mail. If Terminal says it can’t write the file, give it Full Disk Access in System Settings → Privacy &amp; Security.
+          </p>
+        </div>
       </div>
     </div>
   );
