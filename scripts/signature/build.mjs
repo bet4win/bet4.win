@@ -4,7 +4,6 @@
 //
 // - b4w-signature-banner.png — the studio banner under every signature.
 // - b4w-signature-sbc.png — the temporary SBC Summit invitation.
-// - b4w-signature-cap.png — the card's rounded top edge.
 // - icon-<network>.png — the social icons.
 //
 // The banners are OpenArt renders from marketing/signature/raw/, cropped to 3:1,
@@ -12,9 +11,8 @@
 // (generated text comes out garbled, so the art is generated without any).
 // Each is set at 1440x480 and shipped at 960x320, shown at 480x160.
 //
-// The card's corners are cut into the images as transparent pixels, not left to
-// CSS: Apple Mail and Outlook drop border-radius from a pasted signature. That
-// is why the banners are PNG rather than JPEG, and why they are 2x rather than
+// The banners' bottom corners are cut in as transparent pixels, because CSS
+// cannot clip an image inside a pasted table. That is why they are PNG rather than JPEG, and why they are 2x rather than
 // 3x and quantised to 256 colours — a full-colour 3x PNG is 1.2 MB, and a
 // signature rides on every email sent.
 import { execFile } from "node:child_process";
@@ -50,9 +48,6 @@ const OUT_W = 960;
 const OUT_H = 320;
 // 12px at display size, 2x.
 const RADIUS = 24;
-// The strip above the text; its bottom edge meets the card's navy.
-const CAP_H = 24;
-const CARD = "#0b1230";
 
 // Same accent as the business cards, so the signature and the card read as one
 // set. The icon disc is the signature card's own navy, one step lighter.
@@ -167,14 +162,6 @@ async function buildIcon(name, Icon) {
   console.log(`${out} ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)} KB`);
 }
 
-async function buildCap() {
-  const r = RADIUS;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${OUT_W}" height="${CAP_H}"><path d="M0 ${r}A${r} ${r} 0 0 1 ${r} 0H${OUT_W - r}A${r} ${r} 0 0 1 ${OUT_W} ${r}V${CAP_H}H0Z" fill="${CARD}"/></svg>`;
-  const out = join(OUT_DIR, "b4w-signature-cap.png");
-  const info = await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile(out);
-  console.log(`${out} ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)} KB`);
-}
-
 async function main() {
   if (!CHROME) throw new Error("No Chrome found — the banners are rendered through it.");
   for (const f of [LOGO, ...BANNERS.map((b) => b.art), ...Object.values(FONTS)]) {
@@ -184,7 +171,6 @@ async function main() {
   const dir = await mkdtemp(join(tmpdir(), "b4w-sig-"));
   try {
     for (const b of BANNERS) await buildBanner(dir, b);
-    await buildCap();
     for (const [name, Icon] of Object.entries(ICONS)) await buildIcon(name, Icon);
   } finally {
     await rm(dir, { recursive: true, force: true });
