@@ -10,11 +10,15 @@ import { Check } from "./Icons";
 // swaps in the local path so it shows before the images are deployed.
 const IMG = "/assets/img/email";
 
-// Both banners are 1440x480, rendered at a third of that so they stay sharp on
-// retina. Built by scripts/signature/build.mjs.
+// Both banners are 960x320, shown at half that so they stay sharp on retina.
+// Built by scripts/signature/build.mjs. The card's rounded corners are cut
+// into the images themselves — the cap above the text and the banner's bottom
+// edge — because Apple Mail and Outlook drop CSS border-radius from a pasted
+// signature.
 const CARD_W = 480;
 const BANNER_H = 160;
 const ICON = 24;
+const CAP_H = 12;
 
 // Email clients ignore stylesheets and web fonts, so everything below is table
 // layout with inline styles and a system font stack. The brand faces live in
@@ -102,8 +106,9 @@ function buildSignature({ name, role, email, socials, sbc }, origin = SITE_URL) 
     )}</a>`;
 
   const html = [
-    `<table cellpadding="0" cellspacing="0" border="0" role="presentation" width="${CARD_W}" bgcolor="${CARD}" style="border-collapse:separate;width:${CARD_W}px;max-width:100%;background:${CARD};border-radius:12px;overflow:hidden;font-family:${FONT};">`,
-    `<tr><td style="padding:22px 24px 18px;">`,
+    `<table cellpadding="0" cellspacing="0" border="0" role="presentation" width="${CARD_W}" style="border-collapse:collapse;width:${CARD_W}px;max-width:100%;font-family:${FONT};">`,
+    `<tr><td style="padding:0;font-size:0;line-height:0;">${img(`${origin}${IMG}/b4w-signature-cap.png`, CARD_W, CAP_H, "", "max-width:100%;")}</td></tr>`,
+    `<tr><td bgcolor="${CARD}" style="padding:10px 24px 18px;background:${CARD};">`,
     `<div style="font-size:20px;line-height:24px;font-weight:bold;letter-spacing:-0.2px;color:${NAME};">${esc(name)}</div>`,
     `<div style="padding-top:5px;font-size:11px;line-height:14px;font-weight:bold;letter-spacing:1.6px;text-transform:uppercase;color:${ROLE};">${esc(role)}</div>`,
     `<table cellpadding="0" cellspacing="0" border="0" role="presentation" width="100%" style="border-collapse:collapse;margin-top:16px;border-top:1px solid ${RULE};">`,
@@ -113,14 +118,14 @@ function buildSignature({ name, role, email, socials, sbc }, origin = SITE_URL) 
       : "",
     `</tr></table>`,
     `</td></tr>`,
-    `<tr><td style="padding:0;">${
+    `<tr><td style="padding:0;font-size:0;line-height:0;">${
       sbc
         ? banner(
-            "b4w-signature-sbc.jpg",
+            "b4w-signature-sbc.png",
             bookingUrl("email_signature", sbc.id),
             `Meet Bet4.win at ${sbc.name}, ${sbc.dates} — book a meeting`,
           )
-        : banner("b4w-signature-banner.jpg", SITE_URL, "Bet4.win — game studio")
+        : banner("b4w-signature-banner.png", SITE_URL, "Bet4.win — game studio")
     }</td></tr>`,
     `</table>`,
   ].join("");

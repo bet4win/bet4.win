@@ -2,14 +2,21 @@
 //
 //   node scripts/signature/build.mjs
 //
-// - b4w-signature-banner.jpg — the studio banner under every signature.
-// - b4w-signature-sbc.jpg — the temporary SBC Summit invitation.
+// - b4w-signature-banner.png — the studio banner under every signature.
+// - b4w-signature-sbc.png — the temporary SBC Summit invitation.
+// - b4w-signature-cap.png — the card's rounded top edge.
 // - icon-<network>.png — the social icons.
 //
 // The banners are OpenArt renders from marketing/signature/raw/, cropped to 3:1,
 // with the type set on top in the real brand faces through headless Chrome
 // (generated text comes out garbled, so the art is generated without any).
-// Each is 1440x480 and shown at 480x160, so it is sharp at 3x.
+// Each is set at 1440x480 and shipped at 960x320, shown at 480x160.
+//
+// The card's corners are cut into the images as transparent pixels, not left to
+// CSS: Apple Mail and Outlook drop border-radius from a pasted signature. That
+// is why the banners are PNG rather than JPEG, and why they are 2x rather than
+// 3x and quantised to 256 colours — a full-colour 3x PNG is 1.2 MB, and a
+// signature rides on every email sent.
 import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -39,6 +46,13 @@ const OUT_DIR = "public/assets/img/email";
 
 const W = 1440;
 const H = 480;
+const OUT_W = 960;
+const OUT_H = 320;
+// 12px at display size, 2x.
+const RADIUS = 24;
+// The strip above the text; its bottom edge meets the card's navy.
+const CAP_H = 24;
+const CARD = "#0b1230";
 
 // Same accent as the business cards, so the signature and the card read as one
 // set. The icon disc is the signature card's own navy, one step lighter.
@@ -47,7 +61,7 @@ const DISC = "#1f2a5c";
 
 const BANNERS = [
   {
-    out: "b4w-signature-banner.jpg",
+    out: "b4w-signature-banner.png",
     art: "marketing/signature/raw/banner-b.png",
     // As high as the window can sit without clipping the dragon's crest.
     cropTop: 50,
@@ -60,7 +74,7 @@ const BANNERS = [
     },
   },
   {
-    out: "b4w-signature-sbc.jpg",
+    out: "b4w-signature-sbc.png",
     art: "marketing/signature/raw/alternates/banner-a.png",
     cropTop: 0,
     copy: async () => `<div class="row"><span class="url">SBC Summit · 29 Sep – 1 Oct</span></div>
@@ -125,8 +139,14 @@ html, body { width:${W}px; height:${H}px; overflow:hidden; background:#0b1230 }
     `file://${src}`,
   ]);
 
+  // Bottom corners only: the top edge joins the text card above it.
+  const r = RADIUS;
+  const mask = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${OUT_W}" height="${OUT_H}"><path d="M0 0H${OUT_W}V${OUT_H - r}A${r} ${r} 0 0 1 ${OUT_W - r} ${OUT_H}H${r}A${r} ${r} 0 0 1 0 ${OUT_H - r}Z" fill="#fff"/></svg>`);
   const out = join(OUT_DIR, b.out);
-  const info = await sharp(shot).jpeg({ quality: 82, mozjpeg: true }).toFile(out);
+  const info = await sharp(await sharp(shot).resize(OUT_W, OUT_H).ensureAlpha().toBuffer())
+    .composite([{ input: mask, blend: "dest-in" }])
+    .png({ palette: true, colours: 256, dither: 1, compressionLevel: 9 })
+    .toFile(out);
   console.log(`${out} ${info.width}x${info.height} ${(info.size / 1024).toFixed(0)} KB`);
 }
 
@@ -147,6 +167,14 @@ async function buildIcon(name, Icon) {
   console.log(`${out} ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)} KB`);
 }
 
+async function buildCap() {
+  const r = RADIUS;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${OUT_W}" height="${CAP_H}"><path d="M0 ${r}A${r} ${r} 0 0 1 ${r} 0H${OUT_W - r}A${r} ${r} 0 0 1 ${OUT_W} ${r}V${CAP_H}H0Z" fill="${CARD}"/></svg>`;
+  const out = join(OUT_DIR, "b4w-signature-cap.png");
+  const info = await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toFile(out);
+  console.log(`${out} ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)} KB`);
+}
+
 async function main() {
   if (!CHROME) throw new Error("No Chrome found — the banners are rendered through it.");
   for (const f of [LOGO, ...BANNERS.map((b) => b.art), ...Object.values(FONTS)]) {
@@ -156,6 +184,7 @@ async function main() {
   const dir = await mkdtemp(join(tmpdir(), "b4w-sig-"));
   try {
     for (const b of BANNERS) await buildBanner(dir, b);
+    await buildCap();
     for (const [name, Icon] of Object.entries(ICONS)) await buildIcon(name, Icon);
   } finally {
     await rm(dir, { recursive: true, force: true });

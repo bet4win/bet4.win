@@ -3,8 +3,8 @@
 Generated 2026-09-23 for the `/signature` generator. `raw/banner-b.png` and
 `raw/alternates/banner-a.png` are build inputs: `node scripts/signature/build.mjs`
 crops each to 3:1, sets the type on top in Chrome, and writes
-`public/assets/img/email/b4w-signature-banner.jpg` (from b) and the temporary
-`b4w-signature-sbc.jpg` SBC Summit invitation (from a), both 1440x480 shown at
+`public/assets/img/email/b4w-signature-banner.png` (from b) and the temporary
+`b4w-signature-sbc.png` SBC Summit invitation (from a), both set at 1440x480, shipped as 960x320 PNGs with the corners cut in, shown at
 480x160, plus the social icons. OpenArt has no seed, so the render cannot be reproduced — keep it.
 
 Model `gpt-image-2-5-sunburst`, `image2image`, 21:9, 2K, medium, 2 images
