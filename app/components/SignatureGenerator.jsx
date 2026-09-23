@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { SITE_URL, bookingUrl } from "@/app/lib/site";
 import { upcomingEvents } from "@/data/events";
 import { Check } from "./Icons";
@@ -164,6 +164,7 @@ export default function SignatureGenerator() {
   const [socials, setSocials] = useState({});
   const [copied, setCopied] = useState(null);
   const [theme, setTheme] = useState("light");
+  const copyRef = useRef(null);
   const [withSbc, setWithSbc] = useState(Boolean(SBC));
 
   const ready = name.trim() && role.trim() && EMAIL_RE.test(email.trim());
@@ -186,31 +187,28 @@ export default function SignatureGenerator() {
     setTimeout(() => setCopied((k) => (k === kind ? null : k)), 2000);
   }
 
-  // Rich copy is what makes "paste into any client" work: Gmail, Outlook and
-  // Apple Mail all accept text/html off the clipboard into their signature
-  // editors. For browsers without ClipboardItem the fallback selects an
-  // off-screen copy rather than the preview, whose image srcs are local.
+  // Copies a real selection of the rendered signature rather than writing
+  // text/html to the clipboard. The browser then puts its own rich format on
+  // the pasteboard — in Safari a WebArchive carrying the images themselves,
+  // which is what Apple Mail's signature editor needs; given bare HTML it
+  // drops remote images. Selected from a copy kept rendered off-screen, with
+  // production image URLs, because the images have to be loaded already and
+  // Safari only allows the copy synchronously inside the click.
   async function copyRich() {
-    try {
+    const sel = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(copyRef.current);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    const ok = document.execCommand("copy");
+    sel.removeAllRanges();
+    if (!ok) {
       await navigator.clipboard.write([
         new ClipboardItem({
           "text/html": new Blob([signature.html], { type: "text/html" }),
           "text/plain": new Blob([signature.text], { type: "text/plain" }),
         }),
       ]);
-    } catch {
-      const holder = document.createElement("div");
-      holder.style.cssText = "position:fixed;left:-9999px;top:0;";
-      holder.innerHTML = signature.html;
-      document.body.appendChild(holder);
-      const range = document.createRange();
-      range.selectNodeContents(holder);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      document.execCommand("copy");
-      sel.removeAllRanges();
-      holder.remove();
     }
     flash("rich");
   }
@@ -277,6 +275,9 @@ export default function SignatureGenerator() {
           style={{ background: PREVIEW_BG[theme] }}>
           <div dangerouslySetInnerHTML={{ __html: preview }} />
         </div>
+        <div ref={copyRef} aria-hidden="true"
+          style={{ position: "fixed", left: -10000, top: 0 }}
+          dangerouslySetInnerHTML={{ __html: signature.html }} />
 
         <div className="mt-5 flex flex-wrap gap-3">
           <button type="button" onClick={copyRich} disabled={!ready}
@@ -295,6 +296,15 @@ export default function SignatureGenerator() {
             ? "Paste “Copy signature” straight into Gmail, Outlook or Apple Mail signature settings. Use the HTML source for clients that take raw HTML."
             : "Name, role and a valid email are required before copying."}
         </p>
+        <details className="mt-4 rounded-xl border border-line p-4 font-SpaceGrotesk text-[13px] text-muted">
+          <summary className="cursor-pointer text-ink">Apple Mail</summary>
+          <ol className="mt-3 list-decimal space-y-1.5 pl-5">
+            <li>Open this page in <strong className="text-ink">Safari</strong> and use “Copy signature”. Copied from Chrome, Mail drops the images.</li>
+            <li>In Mail → Settings → Signatures, create a signature and <strong className="text-ink">untick “Always match my default message font”</strong> — ticked, it strips the formatting.</li>
+            <li>Select the placeholder text in the signature editor and paste over it.</li>
+            <li>If the images still show as blank boxes, turn on remote content (Settings → Privacy, “Block all remote content” off). They load when a message is sent either way.</li>
+          </ol>
+        </details>
       </div>
     </div>
   );
