@@ -124,11 +124,25 @@ export default function GameGrid({
   const pool = filter === ALL ? items : items.filter((g) => g.category === filter);
   const visible = limit ? pool.slice(0, limit) : pool;
 
-  // Cards are links to the game pages now; the modal below is still mounted
-  // here because the spotlight, the hero deck and ?game= deep links all open it
-  // through registerGameLauncher. The grid no longer opens it itself.
+  // The card itself links to the game page; the button over its art opens the
+  // demo here. The modal is also reached from outside this component — the
+  // spotlight, the hero deck and ?game= deep links all go through
+  // registerGameLauncher.
   const cards = visible.map((game, i) => (
-    <GameCard key={game.id} game={game} index={i} ceiling={CEILING} />
+    <GameCard
+      key={game.id}
+      game={game}
+      index={i}
+      ceiling={CEILING}
+      onLaunch={(g) => {
+        trackEvent("game_launch", {
+          game_id: g.id,
+          game_title: g.title,
+          source: "catalogue",
+        });
+        openGame(g);
+      }}
+    />
   ));
 
   return (

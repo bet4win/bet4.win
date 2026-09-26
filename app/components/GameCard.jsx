@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Clock } from "./Icons";
+import { ArrowRight, Clock, Play } from "./Icons";
 import { onceInView, prefersReducedMotion } from "@/app/lib/motion";
 import { useTilt } from "@/app/lib/tilt";
 import { slugFor } from "@/app/lib/slug";
@@ -50,7 +50,7 @@ function useCountUp(target, active) {
   return value;
 }
 
-export default function GameCard({ game, ceiling, index }) {
+export default function GameCard({ game, ceiling, index, onLaunch }) {
   const live = isLive(game);
   const seasons = seasonsFor(game);
   const ref = useRef(null);
@@ -263,22 +263,45 @@ export default function GameCard({ game, ceiling, index }) {
       style={{ transitionDelay: `${(index % 4) * 70}ms` }}
     >
       {/* The tilt is published from HERE rather than from the <article> so that
-          --tilt-* inherits down to everything the card is made of. */}
+          --tilt-* inherits down to everything the card is made of — including
+          the demo button, which has to be a sibling of the link (a <button>
+          inside an <a> is invalid) and would otherwise inherit none of it. */}
       <div ref={tiltRef} className="group relative h-full">
         {live ? (
-          // The card is a real link so the game pages stay crawlable and
-          // openable in a new tab. It used to have a "Play demo" button laid
-          // over the artwork as a sibling — forced permanently visible on touch,
-          // because there is no hover to reveal it — which put a glass pill over
-          // every piece of key art in the grid. The card is one target again;
-          // the demo is a full-width button on the page it opens.
-          <Link
-            href={`/games/${slugFor(game)}`}
-            className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-            aria-label={`${game.title} — game details`}
-          >
-            {tile}
-          </Link>
+          <>
+            {/* The card is a real link so the game pages stay crawlable and
+                openable in a new tab. */}
+            <Link
+              href={`/games/${slugFor(game)}`}
+              className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+              aria-label={`${game.title} — game details`}
+            >
+              {tile}
+            </Link>
+
+            {/* Centred over the art, matching the hero deck. The wrapper is a
+                square pinned to the top so "centre" means the middle of the
+                artwork rather than the middle of the whole card, caption
+                included. It takes no pointer events so the link underneath
+                stays clickable everywhere the button is not. */}
+            {onLaunch && (
+              <span className="pointer-events-none absolute inset-x-0 top-0 flex aspect-square items-center justify-center">
+                <button
+                  type="button"
+                  onClick={() => onLaunch(game)}
+                  aria-label={`Play ${game.title} demo`}
+                  // Forced visible on touch: there is no hover to reveal it, and
+                  // without that the demo is unreachable from the grid. It does
+                  // mean a phone shows a glass pill on every piece of key art —
+                  // the cost of the grid being a launcher rather than an index.
+                  className="b4w-btn b4w-btn--glass b4w-btn--sm b4w-card-float pointer-events-auto opacity-0 transition-opacity duration-300 focus-visible:opacity-100 group-hover:opacity-100 max-md:opacity-100"
+                >
+                  <Play className="h-3.5 w-3.5" />
+                  Play demo
+                </button>
+              </span>
+            )}
+          </>
         ) : (
           tile
         )}
