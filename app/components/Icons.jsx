@@ -23,6 +23,7 @@ import {
   RiCalendarEventLine,
   RiCheckLine,
   RiCloseLine,
+  RiExternalLinkLine,
   RiFlashlightLine,
   RiGhostFill,
   RiLinkedinFill,
@@ -62,6 +63,11 @@ export const Close = decorative(RiCloseLine, "Close");
 export const Menu = decorative(RiMenuLine, "Menu");
 export const Refresh = decorative(RiRefreshLine, "Refresh");
 export const Play = decorative(RiPlayFill, "Play");
+// "Leaves this page" — the box-with-an-arrow, not the bare ArrowUpRight above.
+// The plain arrow already means "go deeper into the site" wherever it appears
+// here, and the demo pop-out is the one control that hands the reader to a
+// different origin.
+export const ExternalLink = decorative(RiExternalLinkLine, "ExternalLink");
 
 // --- Meaning ----------------------------------------------------------------
 // There is no plain `Shield`. Fairness is the only thing a shield stands for on

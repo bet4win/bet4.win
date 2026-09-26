@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { Close } from "./Icons";
+import { Close, ExternalLink } from "./Icons";
 
 // Launches a game. On wide AND tall viewports (desktops/tablets) it's a
 // centered window whose iframe keeps the game's aspect ratio; on phones (either
@@ -43,7 +43,12 @@ export default function GameModal({ game, url, season, onClose }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="game-modal-header flex min-h-11 shrink-0 items-center justify-between border-b border-line bg-bg/80">
-          <span className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-accent">
+          {/* truncate, because the controls beside it are now two buttons wide
+              and the windowed container derives its width from a header that is
+              assumed to be exactly 2.75rem tall (see .game-modal-container). A
+              long title wrapping to a second line would silently distort the
+              game's aspect ratio. */}
+          <span className="min-w-0 truncate font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-accent">
             {game.title} · demo
             {/* The variant is named in the season's own colour, so the header
                 says which build is running without a second chip. Only the
@@ -52,14 +57,33 @@ export default function GameModal({ game, url, season, onClose }) {
               <span style={{ color: season.tint }}> · {season.label}</span>
             )}
           </span>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close game"
-            className="b4w-btn b4w-btn--ghost b4w-btn--icon b4w-btn--sm"
-          >
-            <Close className="h-4 w-4" />
-          </button>
+          <div className="flex shrink-0 items-center gap-1">
+            {/* An anchor, not a button that calls window.open: the browser only
+                treats a new tab as wanted if it comes from a real navigation, so
+                a popup blocker swallows the scripted version on some setups —
+                and this way cmd-click, middle-click and "open in new window"
+                all behave. The modal closes on the way out, because leaving it
+                running behind the new tab means two copies of the same demo
+                talking to the RGS at once. */}
+            <a
+              href={src}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onClose}
+              aria-label={`Open ${game.title} demo in a new tab`}
+              className="b4w-btn b4w-btn--ghost b4w-btn--icon b4w-btn--sm"
+            >
+              <ExternalLink className="h-4 w-4" />
+            </a>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close game"
+              className="b4w-btn b4w-btn--ghost b4w-btn--icon b4w-btn--sm"
+            >
+              <Close className="h-4 w-4" />
+            </button>
+          </div>
         </div>
 
         <div className="game-iframe-wrapper relative flex-1 win:flex-none">
