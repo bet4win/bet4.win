@@ -7,20 +7,19 @@
 // all of which key off `status === "active"` but would still need a thumbnail to
 // render at all.
 //
-// Chicken is the one title that exists in BOTH files, and since 2026-09-17 it is
-// there for the opposite reason to before. It used to be listed here because it
-// was unbuilt; it stays listed here now because it SHIPPED in the month this rail
-// promised it in, and `delivered: true` badges it as such. A roadmap that only
-// ever shows unkept promises is a wish list — the one node an operator can check
-// against the catalogue above is the whole reason to believe the rest of it.
+// A title stays on the rail after it SHIPS, flagged `delivered: true`, rather than coming off
+// it. A roadmap that only ever shows unkept promises is a wish list — the nodes an operator can
+// check against the catalogue above are the whole reason to believe the rest of it. Delivered
+// titles rotate off once newer ones have proved the cadence (Chicken, September, did on
+// 2026-10-15).
 //
-// A delivered title is deliberately never the "next" one: `upcomingReleases`
-// skips it when it picks `nextId`, so the accent stays on what is actually still
-// coming. Its live catalogue entry (art, launch URL, published figures) lives in
-// `games.js`; this entry is still just a name, a mechanic and a month.
+// A delivered title is deliberately never the "next" one: `upcomingReleases` skips it when it
+// picks `nextId`, so the accent stays on what is actually still coming. Its live catalogue entry
+// (art, launch URL, published figures) lives in `games.js`; this entry is still just a name, a
+// mechanic and a month.
 //
-// !! SHIP WINDOWS ARE UNCONFIRMED except Chicken's, which is now a fact rather
-// than a forecast. The rest is placed on the "a new original every month" cadence
+// !! SHIP WINDOWS ARE UNCONFIRMED except the delivered ones, which are facts rather
+// than forecasts. The rest is placed on the "a new original every month" cadence
 // the rest of the site promises. Those are the one thing on this page nobody can
 // check from the outside, so they want a real sign-off before this goes live —
 // edit `ships` below and nothing else changes.
@@ -29,26 +28,40 @@
 // it, and works out which title is next.
 export const roadmap = [
   {
-    id: "chicken",
-    title: "Chicken",
-    category: "Minefield",
-    ships: "2026-09",
-    delivered: true,
-    // Mechanic, not flavour. An operator scanning the rail is asking "is this
-    // another one of the same" — so each line has to say what the player is
-    // actually doing.
-    teaser:
-      "Cross the traffic one lane at a time. Every lane clear steps the multiplier; one wrong step ends the run.",
-  },
-  {
     id: "diamond-mine",
     title: "Diamond Mine",
     category: "Crash",
     ships: "2026-10",
-    // Description condensed from the game's own spec (apps/diamond-mine/
+    delivered: true,
+    // Mechanic, not flavour. An operator scanning the rail is asking "is this
+    // another one of the same" — so each line has to say what the player is
+    // actually doing. Condensed from the game's own spec (apps/diamond-mine/
     // game.spec.yaml in the games repo), not written from scratch.
     teaser:
       "First-person dwarven mining on the crash ladder. Swing until the pillar fails — or cash out before the roof does.",
+  },
+  {
+    id: "keno-party",
+    title: "Keno Party",
+    category: "Instant",
+    ships: "2026-10",
+    delivered: true,
+    // Condensed from the game's own rules copy (multiplayer-keno/public/locales/en/game.json).
+    teaser:
+      "Keno on a shared draw. Every player at the table picks up to ten numbers, then one draw settles every ticket at once.",
+  },
+  {
+    id: "sunset-peak",
+    // WORKING TITLE — confirm the name before this rail goes live.
+    title: "Sunset Peak",
+    // Unconfirmed: the mechanic isn't locked yet. Climbing originals in development run on
+    // the crash ladder, so it sits there until the spec says otherwise.
+    category: "Crash",
+    ships: "2026-11",
+    // The brief as given (2026-10-15): a climb up a steep mountain for the sunset view. Kept to
+    // what that brief commits to — ledge-by-ledge risk — and nothing more specific.
+    teaser:
+      "Climb a steep mountain face for the sunset at the top. Every ledge gained raises the multiplier; one slip ends the climb.",
   },
 ];
 
