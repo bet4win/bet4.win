@@ -51,7 +51,7 @@
 // fabrication. Add real ones with the partner's approval.
 //
 // !! THE RELEASE DATES ARE EDITORIAL, NOT BUILD DATES. Every mechanic, figure
-// and payout in the seventeen release posts is taken from the game's own source
+// and payout in the twenty release posts is taken from the game's own source
 // (data/gameContent.js, which is the shipped locale copy, and the sourced
 // figures in data/games.js). The DATES are not. The real history is that six
 // titles predate 2026 entirely and seven more went out inside nine days in late
@@ -1018,6 +1018,106 @@ export const posts = [
       {
         type: "p",
         text: "Chicken ships on the same connection as the rest of the catalogue, in full white-label branding, and is demo-playable before it goes anywhere near a live lobby. Territory availability is set at the operator level, against their own licences.",
+      },
+    ],
+  },
+
+  {
+    slug: "diamond-mine-release",
+    kicker: "Release",
+    date: "2026-10-08",
+    title: "Diamond Mine is live: swing until the pillar fails",
+    dek: "A first-person mining original on the crash ladder. Every strike breaks more ore loose and steps the multiplier up six per cent — until one brings the roof down.",
+    image: {
+      kind: "release",
+      art: "diamond-mine",
+      alt: "Diamond Mine lobby tile: a wooden mine cart heaped with gold nuggets and pale-teal diamonds on a short iron rail, a pickaxe leaning against it",
+    },
+    body: [
+      {
+        type: "p",
+        text: "Diamond Mine is live on the Bet4.win RGS and available to every operator on the integration.",
+      },
+      {
+        type: "p",
+        text: "The player swings their picks at a load-bearing pillar, in the first person. Every landed strike breaks more rock away and raises the multiplier one rung — 6% a strike. Hauling the cart cashes out at any time and banks what has been broken loose. Swing once too often and the pillar fails: the mine collapses and the round is lost.",
+      },
+      {
+        type: "p",
+        text: "The rung the pillar fails on is drawn server-side when the bet is placed, before the first swing lands. The round is already decided while the player is deciding how far into it to go, which is what makes it verifiable afterwards — and why the ladder has no ceiling.",
+      },
+      {
+        type: "pull",
+        text: "The breaking point is set before the first swing. Every strike after that is the player's call.",
+      },
+      {
+        type: "p",
+        text: "Autoplay takes a target multiplier instead of swings. The server resolves the whole round in one step — it climbs to the target or meets the failing rung on the way — and the game replays it as a short flurry of strikes before showing the result.",
+      },
+      { type: "h2", text: "The figures" },
+      {
+        type: "ul",
+        items: [
+          "RTP 94–99%, set by game version and operator configuration.",
+          "High volatility, on an uncapped ladder.",
+          "Up to 1,000,000× on a round. Operators can enforce a lower per-bet cap.",
+          "Per-round provable fairness: the failing rung is committed before the first swing and the seed is published once the round closes.",
+        ],
+      },
+      { type: "h2", text: "Availability" },
+      {
+        type: "p",
+        text: "Diamond Mine ships on the same connection as the rest of the catalogue, in full white-label branding, and is demo-playable before it goes anywhere near a live lobby. Territory availability is set at the operator level, against their own licences.",
+      },
+    ],
+  },
+  {
+    slug: "keno-party-release",
+    kicker: "Release",
+    date: "2026-10-15",
+    title: "Keno Party is live: one draw, every ticket at the table",
+    dek: "Our first multiplayer keno. Every player at the table picks their numbers while betting is open, then a single draw settles all of their tickets at once.",
+    image: {
+      kind: "release",
+      art: "keno-party",
+      alt: "Keno Party lobby tile: three cream keno tickets, each topped with a gold player token, fanned behind a white lottery ball numbered 7, on a hot-pink glow",
+    },
+    body: [
+      {
+        type: "p",
+        text: "Keno Party is live on the Bet4.win RGS and available to every operator on the integration.",
+      },
+      {
+        type: "p",
+        text: "It is keno on a shared draw. While betting is open, every player at the table picks up to 10 numbers from 1 to 40. When betting closes, 10 numbers are drawn at random for everyone at once, and every ticket at the table is settled against the same draw.",
+      },
+      {
+        type: "p",
+        text: "A win depends on how many of a player's numbers match the draw and on the risk level they chose — classic, low, medium or high — following a predetermined payout structure. A bet placed after betting has closed simply joins the next draw.",
+      },
+      {
+        type: "pull",
+        text: "Ten numbers, one draw, everybody's ticket.",
+      },
+      {
+        type: "p",
+        text: "The table is visible while it plays. A live bets panel lists every player's bet and win in the round, alongside the previous rounds and the top wins, so a player is never drawing alone.",
+      },
+      { type: "h2", text: "The figures" },
+      {
+        type: "ul",
+        items: [
+          "RTP 92–99%, set by which of the seven certified payout tables an operator is served.",
+          "Volatility from low to high, and the player chooses it: four risk levels, picked per ticket.",
+          "Up to 1,000× on a ticket.",
+          "Pick 1 to 10 numbers from 40; 10 are drawn every round.",
+          "Per-draw provable fairness: each finished draw publishes its server seed, client seed and nonce.",
+        ],
+      },
+      { type: "h2", text: "Availability" },
+      {
+        type: "p",
+        text: "Keno Party ships on the same connection as the rest of the catalogue, in full white-label branding, and is demo-playable before it goes anywhere near a live lobby. Territory availability is set at the operator level, against their own licences.",
       },
     ],
   },
