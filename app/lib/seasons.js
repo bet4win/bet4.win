@@ -30,8 +30,10 @@ export const SEASONS = {
   christmas: {
     label: "Christmas",
     Icon: Snowflake,
-    // seasons/christmas.ts `--season-accent` in the client, for the same reason.
-    tint: "#d6332a",
+    // Baby blue, NOT the client's `--season-accent` (#d6332a): on a card the
+    // chip sits beside reds and golds of the art itself, and a red chip on a
+    // red-and-green Christmas tile disappears. Icy blue says winter at a glance.
+    tint: "#89cff0",
   },
 };
 
