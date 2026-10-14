@@ -130,9 +130,14 @@ export const games = [
     banner: punchBanner,
     bannerWide: punchWide,
     backdrop: punchBackdrop,
-    rtp: "94–99%",
+    // Four versions, 94–97 (Bet4win catalogue, 2026-10-15).
+    rtp: "94–97%",
     volatility: "High",
-    maxMultiplier: 1000000, // punch-game/src/app/app.tsx
+    // The insane ladder's cap (Bet4win catalogue, 2026-10-15). Three ladder
+    // profiles cap at 1,000x / 10,000x / 100,000x (punch-game/src/app/game/
+    // ladder.ts LADDER_CAP); there is no profile picker on screen yet, so rounds
+    // currently play the standard ladder (10,000x).
+    maxMultiplier: 100000,
     image: punch,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5539fc3e4671414fb3229a9eee641720&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -149,16 +154,19 @@ export const games = [
     },
     // Drives the homepage spotlight. Move this block to another game to change
     // which original is featured — see <FeaturedGame /> in app/page.jsx.
-    // Figures come from the game spec (manual-crash archetype, growth 1.06,
-    // rtp 96, uncapped ladder).
+    // Figures from the Bet4win catalogue (2026-10-15) and the shipped ladders
+    // (punch-game/src/app/game/ladder.ts): three profiles — safe 1.01x first rung,
+    // 79 rungs, 1,000x; standard 1.02x, 61 rungs, 10,000x; insane 1.10x, 25
+    // rungs, 100,000x. Rounds play the standard ladder until a picker ships.
     featured: {
       eyebrow: "New original · Live now",
       headline: "Every punch climbs the ladder. One too many tears the bag.",
-      body: "A first-person comic-book boxer built on our crash ladder. Every landed punch steps the multiplier up 6%, but the bust rung is drawn server-side before the round opens — so players can cash out whenever their nerve goes, then verify the round they just played.",
+      body: "A first-person comic-book boxer built on our crash ladder. Every landed punch steps the multiplier up a rung, but the bust rung is drawn server-side before the round opens — so players can cash out whenever their nerve goes, then verify the round they just played.",
       stats: [
-        { value: "96%", label: "RTP" },
-        { value: "×1.06", label: "per punch" },
-        { value: "∞", label: "uncapped ladder" },
+        { value: "94–97%", label: "RTP" },
+        { value: "61", label: "rungs to the top" },
+        // "10,000×" overflows the tile on a phone (80px in 66px at 390 wide).
+        { value: "10K×", label: "ladder top" },
       ],
     },
   },
@@ -179,7 +187,9 @@ export const games = [
     // Expert there are ten cars and the very first lane already pays 1.92x —
     // about a coin flip. Same shape as roulette's, for the same reason.
     volatility: "Low–High",
-    maxMultiplier: 1000000, // chicken/src/app/app.tsx
+    // A full Expert crossing at RTP 99: RTP x 184,756 — ten cars on twenty lanes,
+    // all ten safe lanes cleared, a 1 in 184,756 chance (Bet4win catalogue, 2026-10-15).
+    maxMultiplier: 182908.44,
     image: chicken,
     status: "active",
     isNew: true,
@@ -196,9 +206,12 @@ export const games = [
     banner: crashBanner,
     bannerWide: crashWide,
     backdrop: crashBackdrop,
-    rtp: "94–99%",
+    // One version; the catalogue lists it as "Crash 96" with an RTP of 0.97, and
+    // the RTP column is the figure quoted (Bet4win catalogue, 2026-10-15).
+    rtp: "97%",
     volatility: "High",
-    maxMultiplier: 1000000, // crash/src/app/app.tsx
+    // Set server-side by CRASH_MAX_MULTIPLIER (Bet4win catalogue, 2026-10-15).
+    maxMultiplier: 10000,
     image: crash,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=a444355ce84b419ea48869d9c15734ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win&branding=test",
@@ -213,15 +226,15 @@ export const games = [
     banner: kenoPartyBanner,
     bannerWide: kenoPartyWide,
     backdrop: kenoPartyBackdrop,
-    // Seven engine tables ship bundled in the client — 92, 94, 95, 96, 97, 98 and 99 —
-    // because this game's AUTH answers an empty payTableConfig; the ladder shows whichever
-    // one the operator runs. (multiplayer-keno/src/app/game/payouts.ts.)
-    rtp: "92–99%",
+    // One version on the RGS, "Keno Multiplayer 95" (Bet4win catalogue, 2026-10-15). The client bundles
+    // all seven engine tables (multiplayer-keno/src/app/game/payouts.ts) but only the 95
+    // one is served.
+    rtp: "95%",
     // The player picks one of four risk levels (classic, low, medium, high), and the low
     // table's top rungs are where the 1,000x lives. Same shape as roulette's.
     volatility: "Low–High",
-    // The top rung of every table in every version, and the spec's maxWin.
-    maxMultiplier: 1000, // multiplayer-keno/game.spec.yaml maxWin
+    // The top rung of every table, and the catalogue's max exposure.
+    maxMultiplier: 1000,
     image: kenoParty,
     status: "active",
     isNew: true,
@@ -236,11 +249,12 @@ export const games = [
     banner: diamondMineBanner,
     bannerWide: diamondMineWide,
     backdrop: diamondMineBackdrop,
-    // Punch's manual-crash contract and ladder (growth 1.06, uncapped), on its own backend
-    // game — so the same figures as Punch's card. (diamond-mine/game.spec.yaml.)
-    rtp: "94–99%",
+    // Not in the Bet4win catalogue, 2026-10-15. It runs Punch's manual-crash engine and
+    // ladders on its own backend game, so it carries Punch's figures until it is listed.
+    rtp: "94–97%",
     volatility: "High",
-    maxMultiplier: 1000000, // diamond-mine/game.spec.yaml maxWin
+    // Punch's insane-ladder cap; rounds currently play the standard ladder (10,000x).
+    maxMultiplier: 100000,
     image: diamondMine,
     status: "active",
     isNew: true,
@@ -253,9 +267,10 @@ export const games = [
     banner: dragonBanner,
     bannerWide: dragonWide,
     backdrop: dragonBackdrop,
-    rtp: "94–99%",
+    rtp: "92–99%",
     volatility: "High",
-    maxMultiplier: 251658.24, // dragon-tower IDragonTowerPaytableConfig.ts default
+    // Dragon 99 (Bet4win catalogue, 2026-10-15).
+    maxMultiplier: 259522.56,
     image: dragon,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=14fdde34d95011f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -274,7 +289,7 @@ export const games = [
     banner: videoPokerBanner,
     bannerWide: videoPokerWide,
     backdrop: videoPokerBackdrop,
-    rtp: "94–99%",
+    rtp: "92–99%",
     volatility: "High",
     // The royal flush, and the only rung that pays it: `maxWin` in
     // video-poker/game.spec.yaml, identical across all seven paytables. The
@@ -301,9 +316,10 @@ export const games = [
     // natural — but the two optional side bets reach 101x, so the range is real
     // and depends on how the player bets. Same shape as roulette.
     volatility: "Low\u2013High",
-    // 21+3's suited three-of-a-kind, the top rung of either side paytable and
-    // the same 101 the win-tier bands in lib/components are built around. The
-    // main game alone tops out at 2.5x.
+    // 21+3's suited three-of-a-kind, and no round can pay more than 101x of
+    // everything staked. Each bet has its own maximum: 8x on the main hand
+    // (split, then double both hands), 101x on 21+3, 26x on Perfect Pairs
+    // (Bet4win catalogue, 2026-10-15).
     maxMultiplier: 101,
     image: blackjack,
     status: "active",
@@ -368,9 +384,10 @@ export const games = [
     // unknown version, so the range is the six shipping tables, not a guess.
     rtp: "92–98%",
     volatility: "High",
-    // 0.96 x 2^20 — the ceiling rung, reachable only on a stake small enough
-    // that the exposure cap leaves all twenty calls available.
-    maxMultiplier: 1006632.96, // lib/components winBands.ts WIN_BANDS.coin
+    // 0.98 x 2^20 on the 98 table, the highest of the six (Bet4win catalogue, 2026-10-15) — twenty
+    // consecutive calls, reachable only on a stake small enough that the exposure cap
+    // leaves all twenty available.
+    maxMultiplier: 1027604.48,
     image: coin,
     status: "active",
     isNew: true,
@@ -385,11 +402,11 @@ export const games = [
     banner: hiloBanner,
     bannerWide: hiloWide,
     backdrop: hiloBackdrop,
-    // Shipping tables run 92–99; the engine falls back to 99 for an unknown
-    // version, which is what the client assumes when CONFIG carries no RTP.
-    rtp: "92–99%",
+    // One version, HiLo 98 (Bet4win catalogue, 2026-10-15).
+    rtp: "98%",
     volatility: "High",
-    maxMultiplier: 10000, // lib/components winBands.ts WIN_BANDS.hilo
+    // No maxMultiplier: the catalogue lists HiLo's max exposure as Unlimited
+    // (Bet4win catalogue, 2026-10-15), and the card shows no figure rather than an invented one.
     image: hilo,
     status: "active",
     isNew: true,
@@ -402,9 +419,10 @@ export const games = [
     banner: minesBanner,
     bannerWide: minesWide,
     backdrop: minesBackdrop,
-    rtp: "94–99%",
+    rtp: "92–99%",
     volatility: "High",
-    maxMultiplier: 5096294, // mines/src/app/app.tsx
+    // Mines 99 (Bet4win catalogue, 2026-10-15).
+    maxMultiplier: 5148297,
     image: mines,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9943920c44b211f0be34cdfe93e2b2d7&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -416,7 +434,7 @@ export const games = [
     banner: plinkoBanner,
     bannerWide: plinkoWide,
     backdrop: plinkoBackdrop,
-    rtp: "94–99%",
+    rtp: "92–99%",
     volatility: "High",
     maxMultiplier: 1000, // plinko/src/app/app.tsx
     image: plinko,
@@ -449,9 +467,10 @@ export const games = [
     banner: diceBanner,
     bannerWide: diceWide,
     backdrop: diceBackdrop,
-    rtp: "94–99%",
+    rtp: "92–99%",
     volatility: "High",
-    maxMultiplier: 9600, // dice getMaxWin(96) = floor(10001*96/100)
+    // Dice 99 (Bet4win catalogue, 2026-10-15).
+    maxMultiplier: 9900.99,
     image: dice,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5dcfc14083094c6b963d0dc6ad82ba68&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -463,7 +482,7 @@ export const games = [
     banner: wheelBanner,
     bannerWide: wheelWide,
     backdrop: wheelBackdrop,
-    rtp: "94–99%",
+    rtp: "92–99%",
     volatility: "High",
     maxMultiplier: 49.5, // lib/components winBands.ts WIN_BANDS.wheel
     image: wheel,
@@ -477,7 +496,8 @@ export const games = [
     banner: diamondsBanner,
     bannerWide: diamondsWide,
     backdrop: diamondsBackdrop,
-    rtp: "94–99%",
+    // Six versions, 92–98 (Bet4win catalogue, 2026-10-15).
+    rtp: "92–98%",
     volatility: "High",
     maxMultiplier: 50, // diamonds/src/app/app.tsx fallback (?? 50)
     image: diamonds,
@@ -491,7 +511,7 @@ export const games = [
     banner: kenoBanner,
     bannerWide: kenoWide,
     backdrop: kenoBackdrop,
-    rtp: "94–99%",
+    rtp: "92–99%",
     volatility: "High",
     maxMultiplier: 1000, // keno/src/app/app.tsx
     image: keno,
@@ -505,7 +525,7 @@ export const games = [
     banner: limboBanner,
     bannerWide: limboWide,
     backdrop: limboBackdrop,
-    rtp: "94–99%",
+    rtp: "92–99%",
     volatility: "High",
     maxMultiplier: 1000000, // limbo/src/app/app.tsx
     image: limbo,

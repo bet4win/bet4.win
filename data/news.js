@@ -184,7 +184,7 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 92–98%, set by game version and operator configuration.",
           "High volatility.",
           "Up to 50× on a round. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the seed for a finished round is published, so the reveal can be recomputed by anyone who wants to check it.",
@@ -230,9 +230,9 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 92–99%, set by game version and operator configuration.",
           "High volatility.",
-          "Up to 251,658× on a full Master climb. Operators can enforce a lower per-bet cap.",
+          "Up to 259,523× on a full Master climb. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the tile layout is committed before the first pick and the seed is published when the round closes.",
         ],
       },
@@ -272,7 +272,7 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 92–99%, set by game version and operator configuration.",
           "High volatility.",
           "Up to 1,000× on a round. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the seed for a finished round is published, so a player can re-run the drop rather than take our word for where the ball went.",
@@ -322,9 +322,9 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 92–99%, set by game version and operator configuration.",
           "High volatility, and the player sets where on that scale a round sits.",
-          "Up to 5,096,294× on the steepest grid. Operators can enforce a lower per-bet cap.",
+          "Up to 5,148,297× on the steepest grid. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the mine layout is committed before the first tile is turned and the seed is published when the round closes.",
         ],
       },
@@ -340,8 +340,8 @@ export const posts = [
     slug: "limbo-release",
     kicker: "Release",
     date: "2026-03-19",
-    title: "Limbo is live: one target, no ceiling",
-    dek: "The player names a multiplier before the round, and the round either beats it or it does not. There is no upper limit on what can be named.",
+    title: "Limbo is live: one target, up to a million",
+    dek: "The player names a multiplier before the round, and the round either beats it or it does not. Targets go as high as 1,000,000×.",
     image: {
       kind: "release",
       art: "limbo",
@@ -364,7 +364,7 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 92–99%, set by game version and operator configuration.",
           "High volatility.",
           "Up to 1,000,000× on a round. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the result is committed before the target is locked in, and the seed is published afterwards.",
@@ -406,9 +406,9 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 92–99%, set by game version and operator configuration.",
           "High volatility, with the player choosing where on that scale each roll sits.",
-          "Up to 9,600× on the thinnest target. Operators can enforce a lower per-bet cap.",
+          "Up to 9,901× on the thinnest target. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the roll is committed before the target is locked in, and the seed is published when the round closes.",
         ],
       },
@@ -448,9 +448,9 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 97%.",
           "High volatility.",
-          "Up to 1,000,000× on a round. Operators can enforce a lower per-bet cap.",
+          "Up to 10,000× on a round, set server-side. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the crash point is drawn and committed before the round opens, and the seed is published once it has closed — so nobody, including us, can move it while the multiplier is running.",
         ],
       },
@@ -494,7 +494,7 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 92–99%, set by game version and operator configuration.",
           "High volatility.",
           "Up to 49.5× on a spin. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the stopping segment is committed before the wheel turns and the seed is published when it stops.",
@@ -540,7 +540,7 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 92–99%, set by game version and operator configuration.",
           "High volatility.",
           "Up to 1,000× on a ticket. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the draw is committed before the ticket is marked and the seed is published afterwards, so the twenty numbers on screen can be recomputed independently.",
@@ -686,9 +686,9 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 92–99%, set by game version and operator configuration.",
+          "RTP 98%.",
           "High volatility.",
-          "Up to 10,000× on a streak. Operators can enforce a lower per-bet cap.",
+          "No ceiling on a streak: the maximum exposure is unlimited. Operators can enforce a per-bet cap.",
           "Per-round provable fairness: each card is committed before the call and the seed is published when the round closes.",
         ],
       },
@@ -705,7 +705,7 @@ export const posts = [
     kicker: "Release",
     date: "2026-07-15",
     title: "Punch is live: a crash ladder thrown by hand",
-    dek: "A first-person boxing original where every landed punch steps the multiplier up six per cent, and one of them tears the bag open.",
+    dek: "A first-person boxing original where every landed punch climbs the multiplier one rung, and one of them tears the bag open.",
     image: {
       kind: "release",
       art: "punch",
@@ -718,11 +718,11 @@ export const posts = [
       },
       {
         type: "p",
-        text: "It is a crash game with the timer taken out of it. The player rolls a wheel on the bag to set the stake, then throws punches in the first person. Every landed punch climbs the multiplier one rung — 6% a punch — and every punch risks tearing the bag open and ending the round.",
+        text: "It is a crash game with the timer taken out of it. The player rolls a wheel on the bag to set the stake, then throws punches in the first person. Every landed punch climbs the multiplier one rung, and every punch risks tearing the bag open and ending the round.",
       },
       {
         type: "p",
-        text: "The knockout rung is drawn server-side before the first punch lands, so the round is already decided while the player is deciding how far into it to go. That is what makes it verifiable afterwards, and it is also the reason the ladder has no ceiling: nothing about the draw depends on how long the round has run.",
+        text: "The knockout rung is drawn server-side before the first punch lands, so the round is already decided while the player is deciding how far into it to go. That is what makes it verifiable afterwards: nothing about the draw depends on how long the round has run.",
       },
       {
         type: "pull",
@@ -736,9 +736,9 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
-          "High volatility, on an uncapped ladder.",
-          "Up to 1,000,000× on a round. Operators can enforce a lower per-bet cap.",
+          "RTP 94–97%, set by game version and operator configuration.",
+          "High volatility. Three ladder profiles: safe tops out at 1,000× after 79 rungs, standard at 10,000× after 61, insane at 100,000× after 25. Rounds play the standard ladder.",
+          "Up to 100,000× on a round. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the knockout rung is committed before the first punch and the seed is published once the round closes.",
         ],
       },
@@ -784,7 +784,7 @@ export const posts = [
         items: [
           "RTP 92–98% across the six shipping tables, set by game version and operator configuration.",
           "High volatility.",
-          "Up to about 1,006,633× — twenty consecutive calls — reachable only on a stake small enough that all twenty stay available. Operators can enforce a lower per-bet cap.",
+          "Up to about 1,027,605× — twenty consecutive calls, on the 98% table — reachable only on a stake small enough that all twenty stay available. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: each flip is committed before the call and the seed is published when the round closes.",
         ],
       },
@@ -832,7 +832,7 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
+          "RTP 92–99%, set by game version and operator configuration.",
           "High volatility.",
           "Up to 800× on a royal flush. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the deal and the draw are committed before the hand is played and the seed is published when it closes.",
@@ -877,7 +877,7 @@ export const posts = [
       },
       {
         type: "p",
-        text: "They are also what gives the table its range. The main game tops out at 2.5× and sits close to even money; 21+3 reaches 101×. How volatile a session is depends on which of the three bets the player is actually placing.",
+        text: "They are also what gives the table its range. The main hand sits close to even money and tops out at 8× — split, then double both hands; 21+3 reaches 101×, and no round pays more than 101× of everything staked. How volatile a session is depends on which of the three bets the player is actually placing.",
       },
       { type: "h2", text: "The figures" },
       {
@@ -1009,7 +1009,7 @@ export const posts = [
         items: [
           "RTP 92–99%, set by which of the seven certified payout tables an operator is served.",
           "Volatility from low to high, and the player chooses it: the four risk tiers run from one car on the road to ten.",
-          "Up to 1,000,000×. A full Expert crossing on the default payout pack pays around 177,000×; operators can enforce a lower per-bet cap.",
+          "Up to 182,908×: a full Expert crossing — all ten safe lanes, a 1 in 184,756 chance — pays the RTP times 184,756, so 177,366× on the default 96% pack and 182,908× at 99%. Operators can enforce a lower per-bet cap.",
           "Road length comes from the payout pack — twenty lanes on the default one.",
           "Per-round provable fairness: the car map is committed before the first step and the seed is published when the round closes.",
         ],
@@ -1027,7 +1027,7 @@ export const posts = [
     kicker: "Release",
     date: "2026-10-08",
     title: "Diamond Mine is live: swing until the pillar fails",
-    dek: "A first-person mining original on the crash ladder. Every strike breaks more ore loose and steps the multiplier up six per cent — until one brings the roof down.",
+    dek: "A first-person mining original on the crash ladder. Every strike breaks more ore loose and climbs the multiplier a rung — until one brings the roof down.",
     image: {
       kind: "release",
       art: "diamond-mine",
@@ -1040,11 +1040,11 @@ export const posts = [
       },
       {
         type: "p",
-        text: "The player swings their picks at a load-bearing pillar, in the first person. Every landed strike breaks more rock away and raises the multiplier one rung — 6% a strike. Hauling the cart cashes out at any time and banks what has been broken loose. Swing once too often and the pillar fails: the mine collapses and the round is lost.",
+        text: "The player swings their picks at a load-bearing pillar, in the first person. Every landed strike breaks more rock away and raises the multiplier one rung. Hauling the cart cashes out at any time and banks what has been broken loose. Swing once too often and the pillar fails: the mine collapses and the round is lost.",
       },
       {
         type: "p",
-        text: "The rung the pillar fails on is drawn server-side when the bet is placed, before the first swing lands. The round is already decided while the player is deciding how far into it to go, which is what makes it verifiable afterwards — and why the ladder has no ceiling.",
+        text: "The rung the pillar fails on is drawn server-side when the bet is placed, before the first swing lands. The round is already decided while the player is deciding how far into it to go, which is what makes it verifiable afterwards.",
       },
       {
         type: "pull",
@@ -1058,9 +1058,9 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 94–99%, set by game version and operator configuration.",
-          "High volatility, on an uncapped ladder.",
-          "Up to 1,000,000× on a round. Operators can enforce a lower per-bet cap.",
+          "RTP 94–97%, set by game version and operator configuration.",
+          "High volatility, on Punch's ladders: safe tops out at 1,000×, standard at 10,000×, insane at 100,000×. Rounds play the standard ladder.",
+          "Up to 100,000× on a round. Operators can enforce a lower per-bet cap.",
           "Per-round provable fairness: the failing rung is committed before the first swing and the seed is published once the round closes.",
         ],
       },
@@ -1107,7 +1107,7 @@ export const posts = [
       {
         type: "ul",
         items: [
-          "RTP 92–99%, set by which of the seven certified payout tables an operator is served.",
+          "RTP 95%.",
           "Volatility from low to high, and the player chooses it: four risk levels, picked per ticket.",
           "Up to 1,000× on a ticket.",
           "Pick 1 to 10 numbers from 40; 10 are drawn every round.",
