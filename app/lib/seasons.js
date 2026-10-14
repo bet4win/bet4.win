@@ -15,7 +15,7 @@
 // What lives here is only the presentation half — the glyph and the label that
 // tell an operator the variant exists. The dressing itself is the client's,
 // in ../ui/lib/season/.
-import { Ghost, Play } from "@/app/components/Icons";
+import { Ghost, Play, Snowflake } from "@/app/components/Icons";
 
 export const SEASONS = {
   halloween: {
@@ -26,6 +26,12 @@ export const SEASONS = {
     // the game is. Deliberately not a brand colour: the chip's whole job is to
     // say "Halloween", and navy or mint would say "Bet4.win" instead.
     tint: "#ff7518",
+  },
+  christmas: {
+    label: "Christmas",
+    Icon: Snowflake,
+    // seasons/christmas.ts `--season-accent` in the client, for the same reason.
+    tint: "#d6332a",
   },
 };
 

@@ -139,11 +139,13 @@ export const games = [
     aspectRatio: "16/9",
     // Seasonal variants: season id -> its own launch URL. Each is a separate
     // game on the RGS with its own id, and the launch endpoint resolves it to
-    // a client URL already carrying `?season=halloween` — see
-    // app/lib/seasons.js. Punch is currently the only title with any.
+    // a client URL already carrying `?season=<id>` — see app/lib/seasons.js.
+    // Punch, Dragon and Chicken are the titles with a Christmas build.
     seasons: {
       halloween:
         "https://remote-gaming-dev.systems.bet4.win/api/launch?game=987f5a63ff4b4ede9790989d6e874eba&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+      christmas:
+        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9fd2de7ee70e4c0ca4aac8aea2356e42&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
     },
     // Drives the homepage spotlight. Move this block to another game to change
     // which original is featured — see <FeaturedGame /> in app/page.jsx.
@@ -182,6 +184,10 @@ export const games = [
     status: "active",
     isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=3c5e5c0ebd5f4e76b8465300b2f5f50b&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    seasons: {
+      christmas:
+        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9b3f8ebbce8240ee920ad8691848dd5f&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    },
   },
   {
     id: "15",
@@ -198,6 +204,49 @@ export const games = [
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=a444355ce84b419ea48869d9c15734ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win&branding=test",
   },
   {
+    id: "24",
+    category: "Crash",
+    title: "Diamond Mine",
+    // Two words, so the title can't produce the URL segment on its own.
+    slug: "diamond-mine",
+    banner: diamondMineBanner,
+    bannerWide: diamondMineWide,
+    backdrop: diamondMineBackdrop,
+    // Punch's manual-crash contract and ladder (growth 1.06, uncapped), on its own backend
+    // game — so the same figures as Punch's card. (diamond-mine/game.spec.yaml.)
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 1000000, // diamond-mine/game.spec.yaml maxWin
+    image: diamondMine,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=d3c40d524d9346118c835272955e21ac&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
+    id: "23",
+    category: "Instant",
+    // The repo slug is `multiplayer-keno`; the game is marketed as Keno Party, and two
+    // words means the title can't produce the URL segment on its own.
+    title: "Keno Party",
+    slug: "keno-party",
+    banner: kenoPartyBanner,
+    bannerWide: kenoPartyWide,
+    backdrop: kenoPartyBackdrop,
+    // Seven engine tables ship bundled in the client — 92, 94, 95, 96, 97, 98 and 99 —
+    // because this game's AUTH answers an empty payTableConfig; the ladder shows whichever
+    // one the operator runs. (multiplayer-keno/src/app/game/payouts.ts.)
+    rtp: "92–99%",
+    // The player picks one of four risk levels (classic, low, medium, high), and the low
+    // table's top rungs are where the 1,000x lives. Same shape as roulette's.
+    volatility: "Low–High",
+    // The top rung of every table in every version, and the spec's maxWin.
+    maxMultiplier: 1000, // multiplayer-keno/game.spec.yaml maxWin
+    image: kenoParty,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=88cf5bf1f9114f319763ecaf4f1a7a15&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
     id: "9",
     category: "Minefield",
     title: "Dragon",
@@ -210,6 +259,10 @@ export const games = [
     image: dragon,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=14fdde34d95011f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    seasons: {
+      christmas:
+        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=a8fb301d5ba74e949504d2e40dda95c1&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    },
     aspectRatio: "4/3",
   },
   {
@@ -283,49 +336,6 @@ export const games = [
     status: "active",
     isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=dde705cf2dfe4d26bf0b9306d6c7515d&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
-  },
-  {
-    id: "24",
-    category: "Crash",
-    title: "Diamond Mine",
-    // Two words, so the title can't produce the URL segment on its own.
-    slug: "diamond-mine",
-    banner: diamondMineBanner,
-    bannerWide: diamondMineWide,
-    backdrop: diamondMineBackdrop,
-    // Punch's manual-crash contract and ladder (growth 1.06, uncapped), on its own backend
-    // game — so the same figures as Punch's card. (diamond-mine/game.spec.yaml.)
-    rtp: "94–99%",
-    volatility: "High",
-    maxMultiplier: 1000000, // diamond-mine/game.spec.yaml maxWin
-    image: diamondMine,
-    status: "active",
-    isNew: true,
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=d3c40d524d9346118c835272955e21ac&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
-  },
-  {
-    id: "23",
-    category: "Instant",
-    // The repo slug is `multiplayer-keno`; the game is marketed as Keno Party, and two
-    // words means the title can't produce the URL segment on its own.
-    title: "Keno Party",
-    slug: "keno-party",
-    banner: kenoPartyBanner,
-    bannerWide: kenoPartyWide,
-    backdrop: kenoPartyBackdrop,
-    // Seven engine tables ship bundled in the client — 92, 94, 95, 96, 97, 98 and 99 —
-    // because this game's AUTH answers an empty payTableConfig; the ladder shows whichever
-    // one the operator runs. (multiplayer-keno/src/app/game/payouts.ts.)
-    rtp: "92–99%",
-    // The player picks one of four risk levels (classic, low, medium, high), and the low
-    // table's top rungs are where the 1,000x lives. Same shape as roulette's.
-    volatility: "Low–High",
-    // The top rung of every table in every version, and the spec's maxWin.
-    maxMultiplier: 1000, // multiplayer-keno/game.spec.yaml maxWin
-    image: kenoParty,
-    status: "active",
-    isNew: true,
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=88cf5bf1f9114f319763ecaf4f1a7a15&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
     id: "17",

@@ -35,6 +35,7 @@ import {
   RiRefreshLine,
   RiServerLine,
   RiShieldCheckLine,
+  RiSnowflakeFill,
   RiSparklingFill,
   RiTimeLine,
 } from "@remixicon/react";
@@ -90,6 +91,7 @@ export const Sparkle = decorative(RiSparklingFill, "Sparkle");
 // hairline outline at that size against a photograph is a smudge, and the two
 // have to read as one set when they are stacked in the launch menu.
 export const Ghost = decorative(RiGhostFill, "Ghost");
+export const Snowflake = decorative(RiSnowflakeFill, "Snowflake");
 
 // --- Contact ----------------------------------------------------------------
 // The `Fill` weight for LinkedIn and the `Line` weight for mail, deliberately:
