@@ -25,6 +25,8 @@ import americanRoulette from "@/public/assets/img/icons/thumbnails3/american-rou
 import videoPoker from "@/public/assets/img/icons/thumbnails3/video-poker.jpg";
 import blackjack from "@/public/assets/img/icons/thumbnails3/blackjack.jpg";
 import baccarat from "@/public/assets/img/icons/thumbnails3/baccarat.jpg";
+import kenoParty from "@/public/assets/img/icons/thumbnails3/keno-party.jpg";
+import diamondMine from "@/public/assets/img/icons/thumbnails3/diamond-mine.jpg";
 // Wide key art per game: `<slug>.jpg` (680x440) for the homepage spotlight,
 // `<slug>-wide.jpg` (1400x430) for the banner on /games/<slug>.
 import crashBanner from "@/public/assets/img/banners/crash.jpg";
@@ -63,6 +65,10 @@ import baccaratBanner from "@/public/assets/img/banners/baccarat.jpg";
 import baccaratWide from "@/public/assets/img/banners/baccarat-wide.jpg";
 import chickenBanner from "@/public/assets/img/banners/chicken.jpg";
 import chickenWide from "@/public/assets/img/banners/chicken-wide.jpg";
+import kenoPartyBanner from "@/public/assets/img/banners/keno-party.jpg";
+import kenoPartyWide from "@/public/assets/img/banners/keno-party-wide.jpg";
+import diamondMineBanner from "@/public/assets/img/banners/diamond-mine.jpg";
+import diamondMineWide from "@/public/assets/img/banners/diamond-mine-wide.jpg";
 // Each game ships a pre-blurred 16:9 scene from its own marketing pack
 // (marketing/<game>/backgrounds/<game>_bg-main-blur.png). It is the room the
 // game is actually played in, out of focus — which is what the homepage
@@ -87,6 +93,8 @@ import diamondsBackdrop from "@/public/assets/img/backdrops/diamonds.jpg";
 import kenoBackdrop from "@/public/assets/img/backdrops/keno.jpg";
 import limboBackdrop from "@/public/assets/img/backdrops/limbo.jpg";
 import chickenBackdrop from "@/public/assets/img/backdrops/chicken.jpg";
+import kenoPartyBackdrop from "@/public/assets/img/backdrops/keno-party.jpg";
+import diamondMineBackdrop from "@/public/assets/img/backdrops/diamond-mine.jpg";
 
 // Per-game card figures. All three are game-specific — there is no catalogue-wide
 // default, so a game that omits a field simply doesn't show it on its card.
@@ -275,6 +283,49 @@ export const games = [
     status: "active",
     isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=dde705cf2dfe4d26bf0b9306d6c7515d&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
+    id: "24",
+    category: "Crash",
+    title: "Diamond Mine",
+    // Two words, so the title can't produce the URL segment on its own.
+    slug: "diamond-mine",
+    banner: diamondMineBanner,
+    bannerWide: diamondMineWide,
+    backdrop: diamondMineBackdrop,
+    // Punch's manual-crash contract and ladder (growth 1.06, uncapped), on its own backend
+    // game — so the same figures as Punch's card. (diamond-mine/game.spec.yaml.)
+    rtp: "94–99%",
+    volatility: "High",
+    maxMultiplier: 1000000, // diamond-mine/game.spec.yaml maxWin
+    image: diamondMine,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=d3c40d524d9346118c835272955e21ac&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+  },
+  {
+    id: "23",
+    category: "Instant",
+    // The repo slug is `multiplayer-keno`; the game is marketed as Keno Party, and two
+    // words means the title can't produce the URL segment on its own.
+    title: "Keno Party",
+    slug: "keno-party",
+    banner: kenoPartyBanner,
+    bannerWide: kenoPartyWide,
+    backdrop: kenoPartyBackdrop,
+    // Seven engine tables ship bundled in the client — 92, 94, 95, 96, 97, 98 and 99 —
+    // because this game's AUTH answers an empty payTableConfig; the ladder shows whichever
+    // one the operator runs. (multiplayer-keno/src/app/game/payouts.ts.)
+    rtp: "92–99%",
+    // The player picks one of four risk levels (classic, low, medium, high), and the low
+    // table's top rungs are where the 1,000x lives. Same shape as roulette's.
+    volatility: "Low–High",
+    // The top rung of every table in every version, and the spec's maxWin.
+    maxMultiplier: 1000, // multiplayer-keno/game.spec.yaml maxWin
+    image: kenoParty,
+    status: "active",
+    isNew: true,
+    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=88cf5bf1f9114f319763ecaf4f1a7a15&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
     id: "17",

@@ -41,6 +41,9 @@ const SLUGS = {
   keno: "keno",
   limbo: "limbo",
   chicken: "chicken",
+  // Marketed as Keno Party; the marketing folder keeps the repo slug.
+  "keno-party": "multiplayer-keno",
+  "diamond-mine": "diamond-mine",
 };
 
 mkdirSync(OUT, { recursive: true });

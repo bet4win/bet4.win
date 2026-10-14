@@ -81,6 +81,23 @@ export const gameContent = {
       "You can cash out after any cleared lane. Clearing the last safe lane ends the round and pays the top rung automatically.",
     ],
   },
+  "diamond-mine": {
+    source: "diamond-mine/public/locales/en/game.json",
+    paragraphs: [
+      "Swing your picks at the load-bearing pillar. Every landed strike breaks more rock away and raises your multiplier.",
+      "Cash out by hauling the cart at any time to bank what you have broken loose. Swing once too often and the pillar fails — the mine collapses and the round is lost.",
+      "Winnings are rounded down to the smallest currency unit (e.g., one cent).",
+    ],
+  },
+  "keno-party": {
+    source: "multiplayer-keno/public/locales/en/game.json",
+    paragraphs: [
+      "Keno Party is keno on a shared draw. Every player at the table picks up to 10 numbers from 1 to 40 while betting is open. When betting closes, 10 numbers are drawn at random for everyone at once.",
+      "Your win depends on how many of your selected numbers match the drawn numbers and on the risk level you chose, following a predetermined payout structure. A bet placed after betting has closed joins the next draw.",
+      "The more matches you get, the bigger your reward!",
+      "Winnings are rounded down to the smallest currency unit (e.g., one cent).",
+    ],
+  },
   crash: {
     source: "crash/public/locales/en/game.json",
     paragraphs: [
