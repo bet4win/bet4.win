@@ -145,7 +145,8 @@ export const games = [
     // Seasonal variants: season id -> its own launch URL. Each is a separate
     // game on the RGS with its own id, and the launch endpoint resolves it to
     // a client URL already carrying `?season=<id>` — see app/lib/seasons.js.
-    // Punch, Dragon and Chicken are the titles with a Christmas build.
+    // Punch, Dragon, Chicken, Keno, Keno Party and Plinko are the titles with a
+    // Christmas build.
     seasons: {
       halloween:
         "https://remote-gaming-dev.systems.bet4.win/api/launch?game=987f5a63ff4b4ede9790989d6e874eba&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
@@ -239,6 +240,10 @@ export const games = [
     status: "active",
     isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=88cf5bf1f9114f319763ecaf4f1a7a15&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    seasons: {
+      christmas:
+        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5368a1df315d465a80e8e99d3d02f5b6&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    },
   },
   {
     id: "24",
@@ -440,6 +445,10 @@ export const games = [
     image: plinko,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=78106d6ed4d247fbb7ac517ad8aa40d5&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    seasons: {
+      christmas:
+        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=961d461bd6704d82a1e9233d5c61bd60&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    },
   },
   {
     id: "18",
@@ -517,6 +526,10 @@ export const games = [
     image: keno,
     status: "active",
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=25eb025cd4bf11f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    seasons: {
+      christmas:
+        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=ffcaad5af8c34a0f90b2ab3e9be51537&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    },
   },
   {
     id: "10",
