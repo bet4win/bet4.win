@@ -19,7 +19,6 @@ export default function GamesPage() {
   return (
     <PageShell>
       <PageHeader
-        eyebrow="A new original every month"
         title="The catalogue"
         intro={`${liveCount} provably-fair originals you can launch as a casino game provider — crash, mines, plinko, dice and more. Every title is demo-playable here and fully brandable for your platform.`}
       />
@@ -33,7 +32,7 @@ export default function GamesPage() {
         <Reveal>
           <h2
             id="all-games"
-            className="mb-8 font-SpaceGrotesk !text-[12px] !font-normal uppercase !tracking-[0.1em] !text-faint"
+            className="mb-8 font-Text !text-[12px] !font-normal !text-faint"
           >
             All originals
           </h2>

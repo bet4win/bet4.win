@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { games } from "@/data/games";
 import GameCard from "./GameCard";
+import CatalogueTable from "./CatalogueTable";
 import GameModal from "./GameModal";
 import { registerGameLauncher } from "@/app/lib/gameLauncher";
 import { trackEvent } from "@/app/lib/analytics";
@@ -20,10 +21,6 @@ const findBySlug = (slug) => {
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
 
-// Biggest ceiling in the catalogue — the reference the cards' magnitude bars are
-// scaled against, so a subset of cards still shares the full catalogue's scale.
-const CEILING = Math.max(...games.map((g) => g.maxMultiplier || 0));
-
 const ALL = "All";
 
 // The grid plus the demo modal and all the URL/history handling that goes with
@@ -37,6 +34,9 @@ export default function GameGrid({
   // of the catalogue; /games shows all of it.
   limit,
   filterable = false,
+  // "cards" for the browsing grid on /games, "table" for the side-by-side
+  // game sheet on the home page. Same modal, same history handling.
+  layout = "cards",
 }) {
   const [active, setActive] = useState(null);
   const [filter, setFilter] = useState(ALL);
@@ -124,26 +124,17 @@ export default function GameGrid({
   const pool = filter === ALL ? items : items.filter((g) => g.category === filter);
   const visible = limit ? pool.slice(0, limit) : pool;
 
-  // The card itself links to the game page; the button over its art opens the
-  // demo here. The modal is also reached from outside this component — the
-  // spotlight, the hero deck and ?game= deep links all go through
-  // registerGameLauncher.
-  const cards = visible.map((game, i) => (
-    <GameCard
-      key={game.id}
-      game={game}
-      index={i}
-      ceiling={CEILING}
-      onLaunch={(g) => {
-        trackEvent("game_launch", {
-          game_id: g.id,
-          game_title: g.title,
-          source: "catalogue",
-        });
-        openGame(g);
-      }}
-    />
-  ));
+  // The card or row links to the game page; its button opens the demo here.
+  // The modal is also reached from outside this component — the spotlight and
+  // ?game= deep links go through registerGameLauncher.
+  const launch = (g) => {
+    trackEvent("game_launch", {
+      game_id: g.id,
+      game_title: g.title,
+      source: "catalogue",
+    });
+    openGame(g);
+  };
 
   return (
     <div ref={sectionRef} id={scrollTargetId}>
@@ -158,13 +149,18 @@ export default function GameGrid({
         />
       )}
 
-      {/* One column under 360px. Two columns there give each card a 94px body,
-          and the catalogue has single-word titles — "Blackjack", "Baccarat",
-          "Roulette" — that cannot wrap and were simply cut off. Every phone from
-          an iPhone SE 2 up is 375px or wider and gets the two-up grid. */}
-      <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
-        {cards}
-      </div>
+      {layout === "table" ? (
+        <CatalogueTable items={visible} onLaunch={launch} />
+      ) : (
+        // One column under 360px. Two columns there give each card a 94px
+        // body, and the catalogue has single-word titles — "Blackjack",
+        // "Baccarat", "Roulette" — that cannot wrap and were simply cut off.
+        <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 md:grid-cols-3 md:gap-4 lg:grid-cols-4">
+          {visible.map((game) => (
+            <GameCard key={game.id} game={game} onLaunch={launch} />
+          ))}
+        </div>
+      )}
 
       <GameModal game={active} onClose={closeGame} />
     </div>
@@ -190,35 +186,36 @@ function CategoryFilter({ items, value, onChange }) {
     // A group of toggles rather than a radiogroup: these are buttons that change
     // what is listed below, and aria-pressed says exactly that without promising
     // arrow-key roving that the component does not implement.
-    // Desktop only. Seven pills wrap to three rows on a phone — about 170px of
-    // screen, before the catalogue they are filtering has shown a single card.
-    // The grid below is already ordered and finite, and scrolling it is cheaper
-    // than reading a control panel first.
+    //
+    // Text with a count and an underline on the selected one, not a row of
+    // pills: it is a list of the catalogue's sections, and the count tells the
+    // reader what each one holds before they press it. One line that scrolls
+    // sideways on a phone rather than three rows of buttons.
     <div
       role="group"
-      aria-label="Filter the catalogue by category"
-      className="mb-6 hidden flex-wrap gap-2 md:flex"
+      aria-label="Filter the catalogue by mechanic"
+      className="-mx-5 mb-2 flex gap-6 overflow-x-auto px-5 md:mx-0 md:flex-wrap md:px-0"
     >
       {options.map((label) => {
         const on = label === value;
+        const count = label === ALL ? items.length : counts.get(label);
         return (
           <button
             key={label}
             type="button"
             onClick={() => onChange(label)}
             aria-pressed={on}
-            // min-h on touch only: these are the primary control for the
-            // catalogue and at the desktop padding they measured 36px tall,
-            // under the 44px target guidance.
-            className={`b4w-btn min-h-[44px] sm:min-h-0 ${
-              on ? "b4w-btn--primary" : "b4w-btn--ghost"
+            className={`flex min-h-[44px] shrink-0 items-baseline gap-1.5 border-b-2 font-Text text-[15px] transition-colors ${
+              on
+                ? "border-ink font-semibold text-ink"
+                : "border-transparent text-muted hover:text-ink"
             }`}
           >
             {label}
+            <span className="b4w-figure text-[13px] text-faint">{count}</span>
           </button>
         );
       })}
     </div>
   );
 }
-

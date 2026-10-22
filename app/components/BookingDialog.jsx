@@ -223,7 +223,7 @@ export default function BookingDialog() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex min-h-12 shrink-0 items-center justify-between gap-4 border-b border-line bg-bg/80 px-4">
-          <span className="inline-flex items-center gap-2 font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-accent">
+          <span className="inline-flex items-center gap-2 font-Text text-[12px] text-accent">
             {booked ? (
               <>
                 <Check className="h-4 w-4" />
@@ -257,7 +257,7 @@ export default function BookingDialog() {
             // A blocked script is a normal outcome, not an edge case — plenty of
             // people run one. Hand them the plain link rather than an empty box.
             <div className="flex h-full flex-col items-center justify-center gap-5 p-8 text-center">
-              <p className="!mb-0 max-w-sm b4w-copy font-SpaceGrotesk text-muted">
+              <p className="!mb-0 max-w-sm b4w-copy font-Text text-muted">
                 The scheduler could not load — a content blocker will usually be
                 why. You can open it directly instead.
               </p>
@@ -279,7 +279,7 @@ export default function BookingDialog() {
           ) : (
             <>
               {status !== "ready" && (
-                <p className="absolute inset-0 flex items-center justify-center font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-faint">
+                <p className="absolute inset-0 flex items-center justify-center font-Text text-[12px] text-faint">
                   Loading the scheduler…
                 </p>
               )}

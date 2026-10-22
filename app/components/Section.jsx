@@ -1,7 +1,4 @@
-"use client";
-import React, { useEffect, useRef } from "react";
-import Motes from "./Motes";
-import { registerParallax } from "@/app/lib/parallax";
+import React from "react";
 
 // Full-bleed surface outside, max-width container inside.
 //
@@ -21,73 +18,35 @@ const SURFACE_CLASS = {
   raised: "bg-panel",
 };
 
-// Which lattice sits behind the top of the section. Not a style knob — see the
-// block above .b4w-grid in globals.css for what each one is claiming about the
-// section it's behind. `depth` accepts `true` as shorthand for the tight weave,
-// which is the default an interior page opens on.
-const LATTICE_CLASS = {
-  weave: "b4w-grid",
-  hatch: "b4w-grid b4w-grid--hatch",
-  cross: "b4w-grid b4w-grid--cross",
-};
-
 export default function Section({
   surface = "base",
   rule = false,
-  depth = false,
-  // Drifting gradient mesh. Reserved for the sections that can carry it — every
-  // section wearing texture is the same as none of them doing.
-  texture = false,
-  // Rising embers. Strictly a sub-set of `texture`: the motes are the loudest
-  // ambient layer, so they only appear where the aurora already is, and only on
-  // the two sections that open and close the page.
-  motes = 0,
+  // A full-bleed layer behind the content — a photograph, a wash — rendered
+  // before the container. It has to live here rather than in `children`: the
+  // container is positioned and max-width, so anything absolutely positioned
+  // inside it stops at the gutters.
+  backdrop = null,
+  // Retired ambient layers (aurora mesh, rising motes, lattice wash). Still
+  // accepted so a call site that passes them doesn't spread them onto the
+  // <section> as unknown DOM attributes; they render nothing.
+  texture: _texture,
+  motes: _motes,
+  depth: _depth,
   className = "",
   innerClassName = "",
   children,
   ...rest
 }) {
-  const ref = useRef(null);
-
-  // Publishes --sy while the section is on screen; the grid wash and the
-  // watermark translate against it so the backdrop drifts relative to the
-  // content instead of moving with it. No-ops under reduced motion.
-  useEffect(() => registerParallax(ref.current), []);
-
-  // The grid wash is wider than the section, so the x-axis is clipped to stop it
-  // scrolling the page sideways on phones. The ambient texture layers overflow
-  // on BOTH axes (the mesh animates out to scale 1.09), so those sections clip
-  // both — otherwise it drifts into its neighbours. Clip
-  // rather than hidden: see the note on .b4w-contain-x in globals.css for why
-  // making these scroll containers breaks anchor scrolling.
-  const clip = texture ? " b4w-contain" : depth ? " b4w-contain-x" : "";
-  // Looked up rather than interpolated, so a typo drops the layer entirely
-  // instead of emitting a .b4w-grid--nonsense that inherits the weave.
-  const lattice = depth ? LATTICE_CLASS[depth === true ? "weave" : depth] : "";
-
   return (
     <section
-      ref={ref}
       className={`relative ${SURFACE_CLASS[surface]}${rule ? " b4w-rule" : ""}${
-        lattice ? ` ${lattice}` : ""
-      }${clip}${className ? ` ${className}` : ""}`}
+        className ? ` ${className}` : ""
+      }`}
       {...rest}
     >
-      {texture && (
-        <>
-          {/* Two washes, not one: the cool pair drifts one way on a 34s cycle,
-              the warm pair the other way on 47s. Co-prime-ish periods are the
-              whole trick — with a single layer the eye learns the loop inside a
-              minute and the atmosphere turns into a tic. */}
-          <span aria-hidden="true" className="b4w-mesh" />
-          <span aria-hidden="true" className="b4w-mesh b4w-mesh--warm" />
-        </>
-      )}
-      {motes > 0 && <Motes count={motes} />}
-      {/* Decoration first, content last, and NOTHING here sets a z-index.
-          Every layer is position:absolute/relative with z-index:auto, so they
-          paint in tree order — mesh, grid wash, then content. That is
-          deliberate: an earlier version put `z-10` on the content container,
+      {backdrop}
+      {/* NOTHING here sets a z-index. An earlier version put `z-10` on the
+          content container,
           which made it a stacking context, and the fullscreen game modal nested
           inside <GamesPreview> had its z-9999 resolved *within* that context.
           The sticky z-50 header then painted over a modal that was supposed to

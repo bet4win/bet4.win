@@ -46,7 +46,7 @@ export default function Services() {
         >
           Engineered for scale
         </h2>
-        <p className="b4w-copy mt-1 font-SpaceGrotesk text-muted">
+        <p className="b4w-copy mt-1 font-Text text-muted">
           The complete infrastructure for modern iGaming operators.
         </p>
       </div>
@@ -71,10 +71,10 @@ export default function Services() {
               height={256}
               className="mb-5 w-full max-w-[7.5rem] object-contain transition-[scale] duration-300 group-hover:scale-105 lg:max-w-none"
             />
-            <h3 className="mb-2 font-SpaceGrotesk !text-[clamp(1.05rem,1.006rem+0.225vw,1.15rem)] !font-semibold !text-ink">
+            <h3 className="mb-2 font-Text !text-[clamp(1.05rem,1.006rem+0.225vw,1.15rem)] !font-semibold !text-ink">
               {title}
             </h3>
-            <p className="b4w-copy font-SpaceGrotesk text-muted">
+            <p className="b4w-copy font-Text text-muted">
               {body}
             </p>
           </div>

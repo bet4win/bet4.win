@@ -94,10 +94,10 @@ export default async function NewsPostPage({ params }) {
         intro={post.dek}
         titleSize="sm"
       >
-        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line/50 pt-5 font-SpaceGrotesk text-[11px] uppercase tracking-[0.07em] text-faint">
+        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-line/50 pt-5 font-Text text-[11px] text-faint">
           <time
             dateTime={post.date}
-            className="font-JetBrainsMono tracking-[0.04em] text-muted tabular-nums"
+            className="font-JetBrainsMono text-muted tabular-nums"
           >
             {formatDate(post.date)}
           </time>
@@ -162,7 +162,7 @@ export default async function NewsPostPage({ params }) {
           <Reveal>
             <h2
               id="more-news"
-              className="mb-6 font-SpaceGrotesk !text-[12px] !font-normal uppercase !tracking-[0.1em] !text-faint"
+              className="mb-6 font-Text !text-[12px] !font-normal !text-faint"
             >
               More news
             </h2>

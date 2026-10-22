@@ -59,7 +59,7 @@ gtag('config', '${GA_ID}');`}
           .b4w-copy) and the band is padded like a notice rather than a section,
           which brings it to roughly 190px. */}
       <div className="mx-auto flex max-w-[1280px] flex-col items-start gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between md:gap-4 md:px-12 md:py-5">
-        <p className="!mb-0 max-w-3xl b4w-copy font-SpaceGrotesk text-muted">
+        <p className="!mb-0 max-w-3xl b4w-copy font-Text text-muted">
           We use cookies to measure how this site is used and improve it. By
           continuing you consent to our use of cookies as described in our{" "}
           <Link

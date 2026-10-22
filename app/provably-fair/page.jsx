@@ -15,7 +15,6 @@ export default function ProvablyFairPage() {
   return (
     <PageShell>
       <PageHeader
-        eyebrow="Provably fair"
         title="Trust by maths, not by promise."
         intro="Every outcome is fixed before the bet is placed and can be recomputed afterwards by anyone holding the seeds. Nothing about it requires taking our word — the terminal below runs against the live RGS."
       />

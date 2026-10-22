@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Check, Palette } from "./Icons";
+import { Check } from "./Icons";
 import Section from "./Section";
 
 // Three fictional operator brands, chosen to be as far apart as three casino
@@ -66,14 +66,10 @@ export default function Theming() {
 
         {/* Copy */}
         <div>
-          <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.1em] text-accent">
-            <Palette className="h-3.5 w-3.5" />
-            Bespoke branding
-          </span>
           <h2 className="mb-4 max-w-md b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] max-[359px]:!text-[1.75rem] !text-ink">
             Every pixel,<br />your brand.
           </h2>
-          <p className="mb-10 max-w-md b4w-copy font-SpaceGrotesk text-muted">
+          <p className="mb-10 max-w-md b4w-copy font-Text text-muted">
             Hand your players a game that feels native to your platform.
             Colours, logos, typefaces, and background artwork all bend
             to your brand — across every title in the catalogue, at once.
@@ -83,7 +79,7 @@ export default function Theming() {
             {features.map((f) => (
               <li
                 key={f}
-                className="flex items-start gap-3 b4w-copy font-SpaceGrotesk text-muted"
+                className="flex items-start gap-3 b4w-copy font-Text text-muted"
               >
                 <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-accent">
                   <Check className="h-3.5 w-3.5" />
@@ -113,23 +109,23 @@ export default function Theming() {
             >
               <div className="flex items-center gap-2.5">
                 <span
-                  className="flex h-6 w-6 items-center justify-center rounded font-SpaceGrotesk text-[10px] font-bold transition-colors duration-500"
+                  className="flex h-6 w-6 items-center justify-center rounded font-Text text-[10px] font-bold transition-colors duration-500"
                   style={{ backgroundColor: brand.accent, color: brand.btnText }}
                 >
                   {brand.initials}
                 </span>
-                <span className="font-SpaceGrotesk text-[13px] font-semibold text-ink transition-all duration-500">
+                <span className="font-Text text-[13px] font-semibold text-ink transition-all duration-500">
                   {brand.label}
                 </span>
               </div>
-              <span className="font-SpaceGrotesk text-[11px] text-muted">
+              <span className="font-Text text-[11px] text-muted">
                 ◎ 1,000.00
               </span>
             </div>
 
             {/* Game label */}
             <div className="px-4 pb-1.5 pt-3">
-              <span className="font-SpaceGrotesk text-[10px] uppercase tracking-[0.08em] text-muted">
+              <span className="font-Text text-[10px] text-muted">
                 Mines
               </span>
             </div>
@@ -154,7 +150,7 @@ export default function Theming() {
               style={{ borderTop: `1px solid ${brand.cellBorder}` }}
             >
               <div
-                className="flex-1 rounded-lg px-3 py-2 font-SpaceGrotesk text-[12px] text-muted"
+                className="flex-1 rounded-lg px-3 py-2 font-Text text-[12px] text-muted"
                 style={{
                   backgroundColor: brand.cellBg,
                   border: `1px solid ${brand.cellBorder}`,
@@ -166,7 +162,7 @@ export default function Theming() {
                 {["½", "2×"].map((q) => (
                   <div
                     key={q}
-                    className="rounded-lg px-2 py-2 font-SpaceGrotesk text-[11px] text-muted transition-colors duration-500"
+                    className="rounded-lg px-2 py-2 font-Text text-[11px] text-muted transition-colors duration-500"
                     style={{
                       backgroundColor: brand.cellBg,
                       border: `1px solid ${brand.cellBorder}`,
@@ -177,7 +173,7 @@ export default function Theming() {
                 ))}
               </div>
               <div
-                className="flex-1 rounded-lg py-2 text-center font-SpaceGrotesk text-[12px] font-bold uppercase tracking-[0.06em] transition-colors duration-500"
+                className="flex-1 rounded-lg py-2 text-center font-Text text-[12px] font-bold transition-colors duration-500"
                 style={{ backgroundColor: brand.accent, color: brand.btnText }}
               >
                 Play
@@ -216,7 +212,7 @@ export default function Theming() {
             ))}
           </div>
 
-          <p className="font-SpaceGrotesk text-[11px] uppercase tracking-[0.06em] text-faint">
+          <p className="font-Text text-[11px] text-faint">
             Try switching brands ↑
           </p>
         </div>

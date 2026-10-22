@@ -18,7 +18,6 @@ export default function PlatformPage() {
   return (
     <PageShell>
       <PageHeader
-        eyebrow="Platform"
         title="One integration. The whole catalogue."
         intro="A certified Remote Gaming Server behind every original we ship, connected once and reported on in one place — so adding next month's game costs you nothing but a config change."
       />

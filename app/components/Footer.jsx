@@ -61,7 +61,7 @@ const COLUMNS = [
         kind: "booking",
         external: true,
       },
-      { label: CONTACT, href: `mailto:${CONTACT}`, track: "footer_contact", kind: "email", mono: true },
+      { label: CONTACT, href: `mailto:${CONTACT}`, track: "footer_contact", kind: "email" },
     ],
   },
   {
@@ -83,10 +83,10 @@ const COLUMNS = [
 // hit the wrong one. The padding is taken back out of the list's gap below, so
 // the target grows from 17px to 37px without the column getting any taller.
 const linkClass =
-  "inline-block py-1.5 font-SpaceGrotesk text-[13px] !text-muted transition-colors hover:!text-accent focus-visible:!text-accent focus-visible:outline-2 focus-visible:outline-brand focus-visible:outline-offset-4";
+  "inline-block py-1.5 font-Text text-[14px] !text-muted transition-colors hover:!text-ink focus-visible:!text-ink focus-visible:outline-2 focus-visible:outline-brand focus-visible:outline-offset-4";
 
 function FooterLink({ link }) {
-  const className = `${linkClass}${link.mono ? " !font-JetBrainsMono !text-[12px]" : ""}`;
+  const className = linkClass;
   const onClick = (e) => {
     if (link.track) {
       trackEvent("cta_click", { label: link.track, cta_type: link.kind || "internal" });
@@ -122,13 +122,6 @@ export default function Footer() {
 
   return (
     <footer className="relative border-t border-line/40 bg-panel">
-      {/* The same accent hairline the events strip carries, so the page opens and
-          closes on the same note. */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-accent),transparent)] opacity-40"
-      />
-
       <div className="mx-auto max-w-[1280px] px-5 md:px-12">
         <div className="grid grid-cols-2 gap-x-8 gap-y-8 py-10 md:gap-y-11 md:py-14 md:grid-cols-4 lg:grid-cols-6">
           {/* Brand column. Two of six at lg so the blurb gets a readable measure
@@ -151,7 +144,7 @@ export default function Footer() {
                 className="h-7 w-auto"
               />
             </Link>
-            <p className="mt-5 max-w-sm font-SpaceGrotesk text-[13px] leading-[1.7] text-muted">
+            <p className="mt-5 max-w-sm font-Text text-[13px] leading-[1.7] text-muted">
               A provably-fair remote gaming server for iGaming operators. One
               integration, a certified RNG, and a new original every month —
               every title fully brandable as your own.
@@ -196,7 +189,7 @@ export default function Footer() {
                   seventeen links with no structure. */}
               <h2
                 id={`footer-${col.heading}`}
-                className="!mb-4 font-SpaceGrotesk !text-[11px] !font-semibold uppercase !tracking-[0.1em] !text-ink"
+                className="!mb-3 font-Text !text-[14px] !font-semibold !text-ink"
               >
                 {col.heading}
               </h2>
@@ -221,7 +214,7 @@ export default function Footer() {
             <span
               role="img"
               aria-label="18 plus only"
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-accent/50 font-SpaceGrotesk text-[11px] font-semibold tracking-[0.02em] text-accent"
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-accent/50 font-Text text-[11px] font-semibold text-accent"
             >
               18+
             </span>
@@ -250,7 +243,7 @@ export default function Footer() {
           {/* The single most important sentence in the footer. This site sells to
               operators; a visitor who arrives from a search for a game name has
               to be told, unambiguously, that they cannot play here for money. */}
-          <p className="!mb-0 max-w-xl font-SpaceGrotesk text-[12px] leading-[1.6] text-faint md:text-right">
+          <p className="!mb-0 max-w-xl font-Text text-[12px] leading-[1.6] text-faint md:text-right">
             Bet4.win is a B2B games supplier for licensed operators — not a
             consumer casino. 18+ only. Please gamble responsibly.
           </p>
@@ -260,7 +253,7 @@ export default function Footer() {
             line. They are left out rather than guessed — see data/proof.js for
             the same rule applied to the diligence figures. */}
         <div className="border-t border-line/40 py-6">
-          <p className="!mb-0 font-SpaceGrotesk text-[12px] text-faint">
+          <p className="!mb-0 font-Text text-[12px] text-faint">
             © {year} Bet4.win. All rights reserved.
           </p>
         </div>

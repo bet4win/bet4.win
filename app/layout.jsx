@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Space_Grotesk, JetBrains_Mono, Archivo_Black } from "next/font/google";
+import { Archivo, Libre_Franklin, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";
 import AgeGate from "@/app/components/AgeGate";
 import BookingDialog from "@/app/components/BookingDialog";
@@ -18,28 +18,32 @@ import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/app/lib/site";
 // Self-hosted at build time (no render-blocking Google Fonts <link>, no FOUT).
 // The CSS variables are wired into the Tailwind @theme tokens in globals.css so
 // the existing font utilities resolve to them.
-const spaceGrotesk = Space_Grotesk({
+//
+// Archivo for headlines, at its widest (wdth 125) and set in sentence case:
+// an expanded gothic reads like casino signage and a sports scoreboard, which
+// is the world these games come from. Libre Franklin for everything a person
+// reads — the same American-gothic lineage, built for running text. Space
+// Grotesk went because it had become the default face of AI-generated landing
+// pages; the site read as a template before anyone reached the games.
+const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
+  axes: ["wdth"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
+const franklin = Libre_Franklin({
+  subsets: ["latin"],
+  variable: "--font-franklin",
+  display: "swap",
+});
+
+// Hashes, seeds and code on the fairness pages. Not for figures any more — a
+// multiplier is a number, and the text face sets it in tabular lining figures.
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-jetbrains-mono",
-  display: "swap",
-});
-
-// Poster-weight display face, used only for headline moments and the ticker.
-// Space Grotesk alone reads like a SaaS dashboard; the catalogue is comic-book
-// arcade art and needs a voice with some shout in it. Deliberately not one of
-// the ubiquitous condensed poster faces.
-const archivoBlack = Archivo_Black({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-archivo-black",
   display: "swap",
 });
 
@@ -108,7 +112,7 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${archivoBlack.variable}`}
+      className={`${archivo.variable} ${franklin.variable} ${jetbrainsMono.variable}`}
       // The inline script below adds `js` to this element before React hydrates,
       // so the server markup and the live DOM legitimately differ by that one
       // class. Scoped to <html>'s own attributes — descendants are still checked.

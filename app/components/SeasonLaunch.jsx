@@ -105,7 +105,7 @@ export default function SeasonLaunch({ options, onLaunch }) {
           id={panelId}
           className="b4w-pop absolute right-0 top-[calc(100%+0.5rem)] z-20 w-full min-w-[15rem] overflow-hidden rounded-xl border border-line bg-panel-high pb-1.5 shadow-2xl"
         >
-          <p className="!mb-0 px-4 pb-1.5 pt-3 font-SpaceGrotesk text-[10px] uppercase tracking-[0.1em] text-faint">
+          <p className="!mb-0 px-4 pb-1.5 pt-3 font-Text text-[10px] text-faint">
             Launch a variant
           </p>
           {options.map((option) => (
@@ -113,7 +113,7 @@ export default function SeasonLaunch({ options, onLaunch }) {
               key={option.id}
               type="button"
               onClick={() => choose(option)}
-              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left font-SpaceGrotesk text-[13px] text-ink transition-colors hover:bg-bg/60 focus-visible:bg-bg/60 focus-visible:outline-none"
+              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left font-Text text-[13px] text-ink transition-colors hover:bg-bg/60 focus-visible:bg-bg/60 focus-visible:outline-none"
             >
               <option.Icon
                 className="h-4 w-4 shrink-0"

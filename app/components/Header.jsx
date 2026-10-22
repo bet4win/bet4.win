@@ -23,7 +23,7 @@ const DIRECTION_DELTA = 8;
 const NAV = [
   { label: "Platform", href: "/platform" },
   { label: "Games", href: "/games" },
-  { label: "Provably Fair", href: "/provably-fair" },
+  { label: "Provably fair", href: "/provably-fair" },
   { label: "Branding", href: "/branding" },
   { label: "News", href: "/news" },
 ];
@@ -102,7 +102,7 @@ export default function Header() {
       // would be a trap. focus bubbles, so anything inside it — the logo, a nav
       // link, the menu button — brings the whole bar back.
       onFocus={() => setHidden(false)}
-      className="b4w-header sticky top-0 z-50 w-full border-b border-line/40 bg-bg/80 backdrop-blur-md"
+      className="b4w-header sticky top-0 z-50 w-full border-b border-line/40 bg-bg"
     >
       {/* py-3 on phones. The bar is sticky, so its height is subtracted from
           every screenful of every page rather than paid once — and at py-4 around
@@ -133,8 +133,8 @@ export default function Header() {
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
-              className={`relative font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] transition-colors hover:!text-ink focus-visible:!text-ink focus-visible:outline-none ${
-                isActive(item.href) ? "!text-accent" : "!text-muted"
+              className={`relative font-Text text-[15px] font-medium transition-colors hover:!text-ink focus-visible:!text-ink focus-visible:outline-none ${
+                isActive(item.href) ? "!text-ink" : "!text-muted"
               }`}
             >
               {item.label}
@@ -144,7 +144,7 @@ export default function Header() {
               {isActive(item.href) && (
                 <span
                   aria-hidden="true"
-                  className="absolute -bottom-1.5 left-0 h-px w-full bg-accent"
+                  className="absolute -bottom-1.5 left-0 h-0.5 w-full bg-ink"
                 />
               )}
             </Link>
@@ -198,7 +198,7 @@ export default function Header() {
         <div
           id="mobile-nav"
           ref={panelRef}
-          className="border-t border-line/40 bg-bg/95 backdrop-blur-md lg:hidden"
+          className="border-t border-line/40 bg-bg lg:hidden"
         >
           <nav aria-label="Main" className="flex flex-col px-5 py-3">
             {NAV.map((item) => (
@@ -206,8 +206,8 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
-                className={`border-b border-line/40 py-3.5 font-SpaceGrotesk text-[13px] uppercase tracking-[0.06em] transition-colors last:border-b-0 hover:!text-ink focus-visible:!text-ink focus-visible:outline-none ${
-                  isActive(item.href) ? "!text-accent" : "!text-muted"
+                className={`border-b border-line/40 py-3.5 font-Text text-[16px] font-medium transition-colors last:border-b-0 hover:!text-ink focus-visible:!text-ink focus-visible:outline-none ${
+                  isActive(item.href) ? "!text-ink" : "!text-muted"
                 }`}
               >
                 {item.label}

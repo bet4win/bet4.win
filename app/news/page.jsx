@@ -43,7 +43,6 @@ export default function NewsIndexPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <PageHeader
-        eyebrow="Newsroom"
         title="News"
         intro="Integrations, platform releases and new originals. Everything here is something that shipped — there are no announcements of announcements."
       />
@@ -55,7 +54,7 @@ export default function NewsIndexPage() {
         <Reveal>
           <h2
             id="all-news"
-            className="mb-8 font-SpaceGrotesk !text-[12px] !font-normal uppercase !tracking-[0.1em] !text-faint"
+            className="mb-8 font-Text !text-[12px] !font-normal !text-faint"
           >
             {posts.length} {posts.length === 1 ? "post" : "posts"}
           </h2>

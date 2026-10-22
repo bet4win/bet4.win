@@ -1,57 +1,56 @@
 "use client";
 import React from "react";
 import Section from "./Section";
-import { ArrowRight } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
 import { bookingUrl } from "@/app/lib/site";
 import { openBooking } from "@/app/lib/booking";
 
+// The ask, said plainly and left-aligned like everything above it. It used to
+// be a centred "Ready to integrate?" on a drifting aurora with embers rising
+// through it — the closing block every generated landing page ends on.
 export default function ClosingCta() {
   return (
     <Section
       id="contact"
-      surface="raised"
+      surface="base"
       rule
-      texture
-      motes={8}
-      innerClassName="py-16 text-center md:py-28"
+      innerClassName="grid gap-8 py-14 md:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] md:items-end md:gap-14 md:py-20"
     >
-      <div className="mx-auto flex max-w-2xl flex-col items-center">
-        <h2 className="mb-3 b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] max-[359px]:!text-[1.75rem] !text-ink">
-          Ready to integrate?
+      <div>
+        <h2 className="b4w-display !mb-0 !text-[clamp(1.9rem,1.3rem+2vw,2.9rem)] !text-ink [text-wrap:balance]">
+          Book a <span className="whitespace-nowrap">30-minute</span> demo
         </h2>
-        <p className="mb-8 b4w-copy--lead font-SpaceGrotesk text-muted">
-          Add a verifiably-fair originals suite to your brand.
+        <p className="!mb-0 mt-4 max-w-xl b4w-copy--lead font-Text text-muted">
+          We&rsquo;ll walk your team through the catalogue, the integration and
+          the branding, on a call that fits your calendar.
         </p>
-        <div className="flex flex-col items-center gap-3 sm:flex-row">
-          {/* The pair is deliberate: pick a slot, or just write to us. Somebody
-              who wants to ask a question before committing to half an hour of
-              someone's calendar still has a door. */}
-          <a
-            href={bookingUrl("closing_cta")}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => {
-              trackEvent("cta_click", { label: "book_demo", cta_type: "booking" });
-              if (openBooking("closing_cta")) e.preventDefault();
-            }}
-            className="b4w-btn b4w-btn--primary b4w-btn--lg"
-          >
-            Book a demo
-            <ArrowRight className="h-4 w-4" />
-          </a>
+      </div>
+
+      <div className="flex flex-col items-start gap-4 md:items-end">
+        <a
+          href={bookingUrl("closing_cta")}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={(e) => {
+            trackEvent("cta_click", { label: "book_demo", cta_type: "booking" });
+            if (openBooking("closing_cta")) e.preventDefault();
+          }}
+          className="b4w-btn b4w-btn--primary b4w-btn--lg"
+        >
+          Pick a time
+        </a>
+        {/* The address, written out: a reader who wants to ask a question first
+            can copy it without opening a mail client. */}
+        <p className="!mb-0 font-Text text-[15px] text-muted">
+          Or write to{" "}
           <a
             href="mailto:info@bet4.win"
             onClick={() => trackEvent("cta_click", { label: "email_direct", cta_type: "email" })}
-            // The address is set in mono and NOT uppercased — it is a literal
-            // string someone may want to read character by character, which is
-            // the one thing the button family's tracking-out label style is
-            // worst at.
-            className="b4w-btn b4w-btn--quiet !font-JetBrainsMono !text-[13px] !normal-case !tracking-normal"
+            className="!text-ink underline decoration-line underline-offset-4 hover:decoration-ink"
           >
             info@bet4.win
           </a>
-        </div>
+        </p>
       </div>
     </Section>
   );

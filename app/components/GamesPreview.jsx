@@ -1,62 +1,45 @@
 import React from "react";
 import Link from "next/link";
 import GameGrid from "./GameGrid";
-import Reveal from "./Reveal";
 import Section from "./Section";
 import { ArrowRight } from "./Icons";
 import { games } from "@/data/games";
 
 const live = games.filter((g) => g.status === "active");
 
-// A taste of the catalogue on the home page — the full grid lives at /games, so
-// this shows eight and gets out of the way. GameGrid still handles ?game= links
-// for any title, not just the eight rendered here.
+// The whole catalogue, side by side. The hero already shows what the games look
+// like; this is where an operator compares them, so it lists every title rather
+// than a taste of eight. GameGrid still handles ?game= links for any title.
 export default function GamesPreview() {
   return (
-    // id="games" is the target for the "View games" / "Play demo" anchors in the
-    // hero and the spotlight. Nothing on the site carried that id before, so
-    // both fallbacks silently scrolled nowhere.
+    // id="games" is the target for the "Compare all" / "Play the demo" anchors
+    // in the hero and the spotlight.
     <Section
       id="games"
-      // Base, and this is the section the whole alternation below is arranged
-      // around: a card is bg-panel-high, and on bg-panel it sat at a 1.30 value
-      // step — a tile you had to look for. On the floor it is 1.54, and the
-      // grid reads as objects on a surface rather than as a lighter grid on a
-      // light band. Everything from the spotlight down flips to suit it.
       surface="base"
-      rule
       aria-labelledby="games-preview-heading"
-      innerClassName="py-12 md:py-20"
+      innerClassName="py-14 md:py-20"
     >
-      {/* One flex container for all three blocks so the "see all" link can sit
-          beside the heading on desktop but after the cards on phones, without
-          rendering the link twice. DOM order stays heading -> link -> grid,
-          which matches the desktop reading order; only mobile reorders. */}
-      <div className="flex flex-col gap-6 md:flex-row md:flex-wrap md:items-end md:justify-between md:gap-8">
-        <Reveal className="md:order-1">
-          <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-accent">
-            A new original every month
-          </p>
+      <div className="mb-8 flex flex-col gap-4 md:mb-10 md:flex-row md:items-end md:justify-between md:gap-10">
+        <div>
           <h2
             id="games-preview-heading"
-            className="mt-2 b4w-display !text-[clamp(2.1rem,1.3rem+2.4vw,3.1rem)] max-[359px]:!text-[1.8rem] !text-ink"
+            className="b4w-display !mb-0 !text-[clamp(1.7rem,1.2rem+1.6vw,2.4rem)] !text-ink"
           >
-            The catalogue
+            Every game, side by side
           </h2>
-        </Reveal>
-
-        <div className="order-2 w-full md:order-3">
-          <GameGrid items={live} limit={8} filterable />
-          <Link
-            href="/games"
-            className="b4w-btn b4w-btn--primary b4w-btn--lg mx-auto mt-6 flex w-fit md:mt-8"
-          >
-            See all {live.length} games
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+          <p className="!mb-0 mt-3 max-w-2xl b4w-copy font-Text text-muted">
+            RTP ranges cover every version we certify. Max win is the default
+            cap, and you can set a lower one per operator.
+          </p>
         </div>
-
+        <Link href="/games" className="b4w-btn b4w-btn--quiet self-start md:self-auto">
+          Browse the game pages
+          <ArrowRight className="h-4 w-4" />
+        </Link>
       </div>
+
+      <GameGrid items={live} filterable layout="table" />
     </Section>
   );
 }

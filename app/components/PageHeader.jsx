@@ -38,18 +38,12 @@ export default function PageHeader({
   return (
     <Section
       surface="base"
-      depth
-      texture
-      motes={7}
       // Reduced from pt-32/md:pt-40 when the header went from fixed to sticky —
       // that padding existed only to clear a header that no longer overlaps.
       innerClassName="pb-6 pt-10 md:pb-8 md:pt-24"
     >
       {eyebrow && (
-        <p className="!mb-0 flex items-center gap-3 font-SpaceGrotesk text-[11px] uppercase tracking-[0.12em] text-accent">
-          {eyebrow}
-          <span aria-hidden="true" className="h-px w-12 bg-accent/40" />
-        </p>
+        <p className="!mb-0 font-Text text-[15px] font-semibold text-brand">{eyebrow}</p>
       )}
       <h1
         className={`b4w-display mt-4 max-w-3xl !text-ink ${TITLE_SIZE[titleSize]}`}
@@ -57,7 +51,7 @@ export default function PageHeader({
         {title}
       </h1>
       {intro && (
-        <p className="mt-5 max-w-2xl b4w-copy--lead font-SpaceGrotesk text-muted">
+        <p className="mt-5 max-w-2xl b4w-copy--lead font-Text text-muted">
           {intro}
         </p>
       )}

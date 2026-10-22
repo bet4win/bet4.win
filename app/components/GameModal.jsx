@@ -48,7 +48,7 @@ export default function GameModal({ game, url, season, onClose }) {
               assumed to be exactly 2.75rem tall (see .game-modal-container). A
               long title wrapping to a second line would silently distort the
               game's aspect ratio. */}
-          <span className="min-w-0 truncate font-SpaceGrotesk text-[12px] uppercase tracking-[0.06em] text-accent">
+          <span className="min-w-0 truncate font-Text text-[12px] text-accent">
             {game.title} · demo
             {/* The variant is named in the season's own colour, so the header
                 says which build is running without a second chip. Only the

@@ -1,7 +1,6 @@
 import React from "react";
 import Section from "./Section";
 import FairnessVerifier from "./FairnessVerifier";
-import { ShieldCheck } from "./Icons";
 
 const steps = [
   {
@@ -27,15 +26,10 @@ export default function ProvablyFair() {
       id="provably-fair"
       surface="raised"
       rule
-      texture
       innerClassName="py-12 md:py-20"
     >
       <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-2">
         <div>
-          <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 font-SpaceGrotesk text-[11px] font-semibold uppercase tracking-[0.1em] text-accent">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            Absolute transparency
-          </span>
           <h2 className="mb-8 max-w-md b4w-display !text-[clamp(2rem,1.3rem+2.2vw,3rem)] max-[359px]:!text-[1.75rem] !text-ink">
             Verify every result yourself.
           </h2>
@@ -59,10 +53,10 @@ export default function ProvablyFair() {
                   )}
                 </span>
                 <div>
-                  <h3 className="font-SpaceGrotesk !text-[clamp(1rem,0.956rem+0.225vw,1.1rem)] !font-semibold !text-ink">
+                  <h3 className="font-Text !text-[clamp(1rem,0.956rem+0.225vw,1.1rem)] !font-semibold !text-ink">
                     {s.title}
                   </h3>
-                  <p className="mt-1 max-w-md b4w-copy font-SpaceGrotesk text-muted">
+                  <p className="mt-1 max-w-md b4w-copy font-Text text-muted">
                     {s.body}
                   </p>
                 </div>

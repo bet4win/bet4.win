@@ -149,7 +149,7 @@ function buildSignature({ name, role, email, socials, sbc }, origin = SITE_URL) 
 }
 
 const inputCls =
-  "w-full !rounded-xl border border-line bg-bg px-3.5 py-2.5 font-SpaceGrotesk text-[14px] text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60";
+  "w-full !rounded-xl border border-line bg-bg px-3.5 py-2.5 font-Text text-[14px] text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60";
 const labelCls =
   "mb-1 block font-JetBrainsMono text-[11px] uppercase tracking-[0.05em] text-muted";
 
@@ -271,7 +271,7 @@ export default function SignatureGenerator() {
             <label className="mt-2 flex items-start gap-3 border-t border-line pt-4">
               <input type="checkbox" checked={withSbc} onChange={(e) => setWithSbc(e.target.checked)}
                 className="mt-1 h-4 w-4 accent-accent" />
-              <span className="font-SpaceGrotesk text-[14px] text-ink">
+              <span className="font-Text text-[14px] text-ink">
                 {SBC.name} banner
                 <span className="block text-[12px] text-faint">
                   Replaces the studio banner. Temporary — regenerate your signature without it after {SBC.dates.split("–").pop().trim()}.
@@ -322,7 +322,7 @@ export default function SignatureGenerator() {
             {copied === "source" && <Check className="h-4 w-4" />}
           </button>
         </div>
-        <p className="!mt-3 !mb-0 font-SpaceGrotesk text-[12px] text-faint">
+        <p className="!mt-3 !mb-0 font-Text text-[12px] text-faint">
           {ready
             ? "Paste “Copy signature” into Gmail or Outlook signature settings. Use the HTML source for clients that take raw HTML. Apple Mail needs the installer below."
             : "Name, role and a valid email are required before copying."}
@@ -330,7 +330,7 @@ export default function SignatureGenerator() {
         {/* Apple Mail rewrites a signature pasted into its Settings — the images
             end up below the card at full size — so it gets an installer that
             writes the signature file directly. See app/lib/mailInstaller.js. */}
-        <div className="mt-4 rounded-xl border border-line p-4 font-SpaceGrotesk text-[13px] text-muted">
+        <div className="mt-4 rounded-xl border border-line p-4 font-Text text-[13px] text-muted">
           <p className="!mb-0 text-ink">Apple Mail</p>
           <ol className="mt-3 list-decimal space-y-1.5 pl-5">
             <li>In Mail → Settings → Signatures, add a signature named <strong className="text-ink">{MAIL_SIGNATURE_NAME}</strong>. Leave whatever text Mail puts in it — don’t paste anything there.</li>

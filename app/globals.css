@@ -12,13 +12,10 @@
   }
 }
 @theme {
-  --font-SpaceGrotesk: var(--font-space-grotesk), "Space Grotesk", sans-serif;
-  /* Both of these are inherited defaults rather than things components ask for
-     by name: --font-Manrope is what <body> falls back to (it resolves to the
-     generic sans-serif — no Manrope face is loaded), and --font-Monospace is
-     the <code> default. Every deliberate choice on the page is SpaceGrotesk,
-     JetBrainsMono or Display. */
-  --font-Manrope: "Manrope", "sans-serif";
+  --font-Text: var(--font-franklin), "Libre Franklin", "Helvetica Neue", sans-serif;
+  /* --font-Monospace is the inherited <code> default rather than something a
+     component asks for by name. Every deliberate choice on the page is Text,
+     Display or JetBrainsMono — and the mono is for hashes and code only. */
   --font-Monospace: "SFMono-Regular,Menlo,Monaco,Consolas", "Liberation Mono",
     "Courier New", "monospace";
   /* Default Color */
@@ -130,7 +127,7 @@
    * that gets filled colour.
    */
   --font-JetBrainsMono: var(--font-jetbrains-mono), "JetBrains Mono", "SFMono-Regular", "Menlo", monospace;
-  --font-Display: var(--font-archivo-black), "Archivo Black", "Helvetica Neue", sans-serif;
+  --font-Display: var(--font-archivo), "Archivo", "Helvetica Neue", sans-serif;
   /* responsive Breakpoint */
   --breakpoint-*: initial;
   --breakpoint-xl: 1200px;
@@ -165,120 +162,6 @@
   }
   50% {
     opacity: 1;
-  }
-}
-
-
-/* Never scale(1) — see the note on b4w-mesh-alt below for why an inset:0 layer
-   at scale(1) is a trap. This one has no translate at that frame so it does not
-   produce the obvious dark band, but an exact fit still rounds to a ~1px
-   hairline of bare floor along an edge on fractional device pixel ratios. The
-   base is 1.08 so there is always overhang to round into. */
-@keyframes b4w-mesh {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1.08);
-    opacity: 0.9;
-  }
-  50% {
-    transform: translate3d(-3%, 2%, 0) scale(1.16);
-    opacity: 1;
-  }
-}
-
-/* A second wash running the opposite way on a different period, so the two
-   never line up and the canvas can't resolve into a pattern you predict. */
-/* A NOTE ON THE SCALES, because getting them wrong is invisible in code and
-   obvious on the page: this layer is `inset: 0`, so at scale(1) it fits its
-   section exactly and ANY translate drags an edge inside the box, revealing the
-   unlit floor as a dark band. This keyframe used to reach scale(1) at 50% while
-   translated 4% right and 3% up, which is precisely how the closing section grew
-   a black border down its left side and along its bottom every 47 seconds.
-   The rule: the scale must always overhang by more than the translate on that
-   axis. 4% and 3% of travel need >4% of overhang per side, so the smallest
-   scale here is 1.10 (5% a side) and never 1. b4w-mesh above is safe for the
-   opposite reason — it sits at scale(1) only when its translate is 0, and only
-   ever grows from there. */
-@keyframes b4w-mesh-alt {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1.16);
-    opacity: 0.75;
-  }
-  50% {
-    transform: translate3d(4%, -3%, 0) scale(1.1);
-    opacity: 1;
-  }
-}
-
-/* A mote lifting through a section and fading out near the top. Each one is
-   given its own duration and delay at the call site, so the field never
-   pulses in unison. */
-@keyframes b4w-rise {
-  0% {
-    transform: translate3d(0, 0, 0);
-    opacity: 0;
-  }
-  12% {
-    opacity: var(--mote-peak, 0.55);
-  }
-  78% {
-    opacity: var(--mote-peak, 0.55);
-  }
-  100% {
-    transform: translate3d(var(--mote-drift, 12px), -120px, 0);
-    opacity: 0;
-  }
-}
-
-/* A highlight travelling along a section's hairline — the one thing that makes
-   a 1px rule read as lit rather than printed. */
-@keyframes b4w-rule-sweep {
-  /* Both ends stay INSIDE the section. The glint is 38% wide and translated by
-     a percentage of its own width, so 0% -> 163% runs its left edge from 0 to
-     61.9% and its right edge to 99.9%. Starting off-canvas at -60% would have
-     hung 23% of the page width past the left edge of every ruled section —
-     invisible only because the template's body rule happens to hide overflow-x,
-     which is not a thing to rely on. */
-  from {
-    transform: translateX(0%);
-  }
-  to {
-    transform: translateX(163%);
-  }
-}
-
-/* Slow breathing glow, for the halo under the spotlight card. */
-@keyframes b4w-breathe {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.9;
-    transform: scale(1.05);
-  }
-}
-
-/* Conic sweep behind the spotlight frame — a slot reel turning, one rotation a
-   minute. Slow enough to be atmosphere, present enough to say "running". */
-@keyframes b4w-sweep {
-  to {
-    transform: rotate(1turn);
-  }
-}
-
-/* Packets moving along the connector lines in the Platform door's diagram.
-   The travel MUST be a whole number of dash periods, or the loop is not a loop:
-   the pattern is `3 9`, so it repeats every 12 units, and the old -40 left the
-   last iteration 4 units short of lining up with the first. Every 3.8s the
-   packets jumped backwards. -48 is four periods, so the end state is pixel-for-
-   pixel the start state and the dashes just keep going. Change one of these two
-   numbers and you change the other. */
-@keyframes b4w-flow {
-  to {
-    stroke-dashoffset: -48;
   }
 }
 
@@ -379,43 +262,35 @@
    fold. Paint the canvas dark for the home route only — other pages stay light. */
 body.home-dark {
   background-color: #060a16;
-  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-family: var(--font-Text);
 }
-/* Contains the decorative glows, which are deliberately larger than their
-   sections (negative insets, blur, and the drift animation's scale) and would
-   otherwise let the page scroll sideways on phones.
-   Applied per-section, NOT to <html>: making <html> non-visible stops viewport
-   overflow propagation, at which point body's own `overflow-y: auto` turns body
-   into the scroll container and window.scrollTo/anchor scrolling silently
-   stop working. `clip` on one axis keeps the vertical bleed intact. */
-.b4w-contain-x {
-  overflow-x: clip;
-}
-/* Both axes, for sections carrying the ambient mesh. .b4w-mesh animates out to
-   scale(1.09); with only the x-axis clipped it bled vertically into the
-   neighbouring section and drifted there on a 34s cycle — which is exactly the
-   "background moving up and down" under the Explore block. Clip, not hidden:
-   hidden would make these scroll containers. */
-.b4w-contain {
-  overflow: clip;
-}
+
 /* Set server-side by the root layout while the 18+ gate is up, so the page
    behind it can't be scrolled even before hydration. AgeGate removes it. */
 body.age-gate-locked {
   overflow: hidden;
 }
-/* --- Arcade treatment ------------------------------------------------------
- * The catalogue is comic-book key art; the chrome around it should read like
- * the bezel of a machine, not a settings panel. Depth, warm light and weight.
+/* --- Type ------------------------------------------------------------------
+ * Archivo at full width, heavy, in sentence case. It used to be Archivo Black
+ * in capitals with negative tracking, which is the poster-headline move every
+ * generated landing page makes; an expanded face in sentence case keeps the
+ * shout and loses the template.
  */
-
-/* Poster display face. Tight tracking because Archivo Black is already wide —
-   at headline sizes the default spacing reads loose and corporate. */
 .b4w-display {
   font-family: var(--font-Display);
-  letter-spacing: -0.035em;
-  line-height: 0.95;
-  text-transform: uppercase;
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  text-transform: none;
+}
+
+/* Figures: multipliers, RTPs, dates. Tabular lining numerals in the text face
+   so a column of them lines up without borrowing a code font to do it. */
+.b4w-figure {
+  font-family: var(--font-Text);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum", "lnum";
 }
 
 /* --- Body copy -------------------------------------------------------------
@@ -454,33 +329,23 @@ body.age-gate-locked {
   line-height: 1.6;
 }
 
-/* Raised panel: a lit top edge and a deep shadow underneath, so cards sit like
-   physical objects rather than flat rectangles with a hairline border. */
+/* Was a lit top edge and a deep drop shadow. Cards are flat now: the art on
+   them is the only thing on the page that should look lit. */
 .b4w-bezel {
-  background-image: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.07) 0%,
-    rgba(255, 255, 255, 0) 45%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    0 14px 34px -20px rgba(0, 0, 0, 0.95);
+  background-image: none;
+  box-shadow: none;
 }
 
 /* --- Controls --------------------------------------------------------------
- * One shape for every control on the site: a full pill, deliberately
- * low-profile. Every button used to carry its own twenty-class string, which is
- * why the header's CTA, the hero's and the spotlight's had three different
- * heights and two different radii. The shape is declared once here; call sites
- * pick a variant and a size and nothing else.
+ * One shape for every control on the site: a small radius, a solid fill, the
+ * label in sentence case. The previous set — full pills, tracked capitals, a
+ * coloured glow under the primary and a light sweep across it on hover — is the
+ * stock button of generated sites, and it made every action look the same
+ * weight of "important".
  *
  * `border: 1px solid transparent` on the base, not just on the outlined
- * variants — a filled pill and an outlined one have to measure the same height,
- * or a row containing both sits crooked.
- *
- * These live in @layer components, which beats @layer base, so the inherited
- * template's `a { color: … }` no longer needs `!text-white` to be overridden at
- * every call site.
+ * variants — a filled button and an outlined one have to measure the same
+ * height, or a row containing both sits crooked.
  */
 .b4w-btn {
   position: relative;
@@ -489,164 +354,91 @@ body.age-gate-locked {
   justify-content: center;
   gap: 0.5rem;
   flex-shrink: 0;
-  overflow: hidden;
   border: 1px solid transparent;
-  border-radius: 9999px;
-  /* Low profile: ~35px at the default size, ~42px large. The point of the pill
-     is that it reads as a slim capsule, so the vertical padding is the first
-     thing to keep honest — anything over ~0.85rem and it stops being a pill and
-     starts being a lozenge. */
-  padding: 0.7rem 1.35rem;
-  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
-  font-size: 12px;
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-Text);
+  font-size: 15px;
   font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0;
   white-space: nowrap;
   transition:
-    background-color 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.12s ease;
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 .b4w-btn:focus-visible {
   outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }
-.b4w-btn:active {
-  transform: translateY(1px);
-}
 
-/* Sizes. The default is the small one: most controls on this page are
-   secondary, and a page of large buttons has no primary action. */
 .b4w-btn--sm {
-  padding: 0.4rem 0.9rem;
-  font-size: 11px;
+  padding: 0.4rem 0.7rem;
+  font-size: 13px;
   gap: 0.375rem;
 }
 .b4w-btn--lg {
-  padding: 0.8rem 1.75rem;
-  font-size: 13px;
-  letter-spacing: 0.05em;
+  padding: 0.8rem 1.3rem;
+  font-size: 16px;
 }
 
-/* Primary: the logo's blue, lit from the top edge and sitting on its own
-   coloured shadow so it reads as the one thing to press. */
 .b4w-btn--primary {
-  background-image: linear-gradient(
-    180deg,
-    var(--color-brand-strong) 0%,
-    var(--color-brand-deep) 100%
-  );
+  background-color: var(--color-brand-strong);
   color: #ffffff;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    0 8px 26px -12px rgba(33, 105, 222, 0.9);
 }
 .b4w-btn--primary:hover {
-  background-image: linear-gradient(
-    180deg,
-    #2e77e8 0%,
-    var(--color-brand-strong) 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
-    0 12px 32px -12px rgba(33, 105, 222, 1);
+  background-color: var(--color-brand-deep);
 }
 
-/* Accent: mint, dark type. Reserved for the fairness terminal's own action —
-   the one control on the site that isn't "talk to us" or "play this". */
+/* Mint, dark type. Reserved for the fairness terminal's own action. */
 .b4w-btn--accent {
-  background-image: linear-gradient(
-    180deg,
-    var(--color-accent) 0%,
-    var(--color-accent-deep) 100%
-  );
+  background-color: var(--color-accent);
   color: var(--color-accent-ink);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.45),
-    0 8px 26px -12px rgba(58, 227, 152, 0.7);
 }
 .b4w-btn--accent:hover {
-  background-image: linear-gradient(
-    180deg,
-    #63eeb0 0%,
-    var(--color-accent) 100%
-  );
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    0 12px 32px -12px rgba(58, 227, 152, 0.9);
+  background-color: var(--color-accent-deep);
 }
 
-/* Ghost: a hairline pill on the page's own surface. */
 .b4w-btn--ghost {
   border-color: var(--color-line);
-  background-color: color-mix(in srgb, var(--color-panel-high) 45%, transparent);
+  background-color: transparent;
   color: var(--color-ink);
 }
 .b4w-btn--ghost:hover {
-  border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
-  background-color: color-mix(in srgb, var(--color-panel-high) 85%, transparent);
-  color: var(--color-ink);
+  border-color: var(--color-muted);
 }
 
-/* Quiet: type and an icon, no box. The tertiary action in a row of two. */
+/* Type and an icon, no box. The tertiary action in a row of two. */
 .b4w-btn--quiet {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-  color: var(--color-muted);
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-line);
+  text-underline-offset: 0.3em;
 }
 .b4w-btn--quiet:hover {
-  color: var(--color-ink);
+  text-decoration-color: currentColor;
 }
 
-/* Glass: frosted, for controls that sit on top of artwork. */
+/* For controls that sit on top of artwork. Opaque rather than frosted: a blur
+   behind a button is decoration, and it costs a compositing layer per card. */
 .b4w-btn--glass {
-  border-color: rgba(255, 255, 255, 0.22);
-  background-color: rgba(6, 10, 22, 0.55);
+  border-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(6, 10, 22, 0.85);
   color: #ffffff;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.9);
 }
 .b4w-btn--glass:hover {
-  border-color: color-mix(in srgb, var(--color-accent) 60%, transparent);
-  background-color: rgba(6, 10, 22, 0.78);
-}
-
-/* Filled variants get the light sweep; outlined ones don't — a sheen needs a
-   surface to travel across. */
-.b4w-btn--primary::after,
-.b4w-btn--accent::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    transparent 34%,
-    rgba(255, 255, 255, 0.32) 50%,
-    transparent 66%
-  );
-  transform: translateX(-130%);
-  transition: transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.b4w-btn--primary:hover::after,
-.b4w-btn--primary:focus-visible::after,
-.b4w-btn--accent:hover::after,
-.b4w-btn--accent:focus-visible::after {
-  transform: translateX(130%);
+  background-color: var(--color-bg);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .b4w-btn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
-  transform: none;
 }
 
-/* Icon-only control: square-ish pill, same family. */
 .b4w-btn--icon {
   padding: 0;
   width: 2.5rem;
@@ -657,14 +449,9 @@ body.age-gate-locked {
   width: 1.75rem;
   height: 1.75rem;
 }
-/* Phones converge the two sizes on 44px, from opposite directions.
-   The small one is the events strip's dismiss and its chevrons: at 1.75rem it
-   measured 35px, under the 44px touch target floor, on the one control a reader
-   presses to get 84px of their screen back. The regular one is the header's
-   menu button, and the header is sticky — at 2.5rem it was the tallest thing in
-   the bar and set its height, so those 5px were being paid on every screenful of
-   the page rather than once. 44px is the floor for one and the ceiling for the
-   other, so below md they meet there. */
+/* 44px on phones for both: the events strip's dismiss was under the touch
+   target floor at 1.75rem, and the sticky header's menu button set the bar's
+   height at 2.5rem. */
 @media (max-width: 767px) {
   .b4w-btn--icon,
   .b4w-btn--icon.b4w-btn--sm {
@@ -674,17 +461,9 @@ body.age-gate-locked {
 }
 
 /* The trailing half of a split button — the chevron that opens the seasonal
-   launch menu. The two halves drop their facing radii at the call site, so all
-   this owns is the seam: the same white hairline the filled variants already
-   carry along their top edge, stood on end. */
+   launch menu. */
 .b4w-split-end {
   border-left: 1px solid rgba(255, 255, 255, 0.22);
-}
-/* No sheen on this half. The sweep is sized to travel across a button, and on
-   a 38px stub beside a 200px one it reads as a separate glint firing out of
-   step with its own other half. */
-.b4w-split-end::after {
-  display: none;
 }
 
 /* A panel that opens off a control — currently just the seasonal launch menu.
@@ -737,7 +516,7 @@ body.age-gate-locked {
 /* Long-form policy copy. Scoped so the template's bare-tag styles don't have to
    be fought element by element on every paragraph. */
 .b4w-prose h2 {
-  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-family: var(--font-Text);
   font-size: clamp(1.05rem, 0.92rem + 0.67vw, 1.35rem);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -748,7 +527,7 @@ body.age-gate-locked {
   margin-top: 0;
 }
 .b4w-prose h3 {
-  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-family: var(--font-Text);
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--color-ink);
@@ -792,83 +571,6 @@ body.age-gate-locked {
   font-size: 0.85em;
   color: var(--color-accent);
 }
-/* --- Motion system ---------------------------------------------------------
- * Entrance animations are gated behind `html.js` (set by an inline script in the
- * root layout). Without scripting the hidden state is never applied, so content
- * can't get stranded at opacity 0 for a reader or a crawler.
- */
-html.js .b4w-reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-html.js .b4w-reveal.is-revealed {
-  opacity: 1;
-  /* `none`, not translateY(0) — a live transform would make this element the
-     containing block for the fixed-position game modal nested inside it. */
-  transform: none;
-}
-
-/* Log-scaled ceiling meter on each game card; grows once the card reveals.
-   Masked into discrete rungs rather than drawn as a smooth bar — every game in
-   this catalogue is a ladder you climb until it busts, so the meter reads as
-   rungs on that ladder. Cool at the base, accent at the top: risk paying out. */
-.b4w-magnitude {
-  width: var(--w);
-  background-image: linear-gradient(
-    90deg,
-    var(--color-brand-strong) 0%,
-    var(--color-accent) 100%
-  );
-  -webkit-mask-image: repeating-linear-gradient(
-    90deg,
-    #000 0 5px,
-    transparent 5px 8px
-  );
-  mask-image: repeating-linear-gradient(90deg, #000 0 5px, transparent 5px 8px);
-}
-html.js .b4w-magnitude {
-  width: 0;
-  transition: width 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) 0.1s;
-}
-html.js .b4w-magnitude[data-grown] {
-  width: var(--w);
-}
-
-/* Card hover: lift, warm the border, and lay a cyan edge-glow under it. */
-/* A card is a control, not a paragraph. Dragging across one while aiming at it
-   should not leave a blue selection over the title and the figures. */
-.b4w-card,
-.b4w-cover {
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-.b4w-card {
-  /* The resting border colour belongs here, not to a `border-line` utility at
-     the call site. Utilities outrank components whatever the specificity, so
-     while the card carried one the hover rule below could never warm the border
-     — the lift and the glow arrived and the edge stayed cold. */
-  border-color: var(--color-line);
-  transition:
-    transform 0.35s cubic-bezier(0.22, 0.61, 0.36, 1),
-    border-color 0.35s ease,
-    box-shadow 0.35s ease;
-}
-.b4w-card--live:hover,
-:focus-visible > .b4w-card--live {
-  /* A custom property, not `transform` — .b4w-card already owns transform for
-     the pointer tilt, and a second rule setting it would silently replace the
-     tilt the moment you hovered. */
-  --lift: -7px;
-  border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    0 22px 46px -18px rgba(0, 0, 0, 0.9),
-    0 0 34px -8px rgba(58, 227, 152, 0.28);
-}
 
 /* Ambient drift for the decorative radial washes, so the canvas is never
    perfectly still. Long and small enough to register as atmosphere, not motion. */
@@ -879,18 +581,6 @@ html.js .b4w-magnitude[data-grown] {
 
 .b4w-pulse {
   animation: b4w-pulse 2.4s ease-in-out infinite;
-}
-
-/* A halo that swells and settles. One per page — under the spotlight card. */
-.b4w-breathe {
-  animation: b4w-breathe 9s ease-in-out infinite;
-  will-change: opacity, transform;
-}
-
-/* One rotation a minute. Used for the conic light behind the spotlight frame. */
-.b4w-sweep {
-  animation: b4w-sweep 60s linear infinite;
-  will-change: transform;
 }
 
 /* --- Section surfaces ------------------------------------------------------
@@ -907,212 +597,6 @@ html.js .b4w-magnitude[data-grown] {
    surface step does the work now, which is why the step had to get bigger. */
 .b4w-rule {
   border-top: 1px solid var(--color-line);
-}
-/* …and a slow highlight crossing it. One travelling glint per boundary is the
-   cheapest liveliness on the page: nothing moves, nothing reflows, and the
-   hairline stops reading as a printed line.
-   ::after, NOT ::before — .b4w-grid already claims ::before on this same
-   <section>, and a section is routinely both ruled and depth-washed. The
-   translate is a percentage of the glint's own 38% width, so its right edge
-   peaks at 98.8% and it can never widen the page. */
-.b4w-rule::after {
-  content: "";
-  position: absolute;
-  top: -1px;
-  left: 0;
-  height: 1px;
-  width: 38%;
-  pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    color-mix(in srgb, var(--color-accent) 70%, transparent),
-    transparent
-  );
-  opacity: 0.75;
-  animation: b4w-rule-sweep 11s linear infinite;
-}
-
-/* --- Background depth ------------------------------------------------------
- * A lattice behind the top of a section, radially faded so it reads as
- * atmosphere and is gone before it reaches the content.
- *
- * Three of them, all from the same family — hatched line, at three scales and
- * two angles. A square grid, the thing every other product hero is wearing to
- * the point where it now signals "generated" rather than "engineered", is not
- * one of the three.
- *
- * The lattice is the MASK and the fade is the PAINT, rather than the other way
- * round. That keeps it to a single mask layer, and it keeps the line colour on
- * --color-line: an SVG in a data URI can't read a custom property, so a baked-in
- * stroke colour would quietly stop tracking the theme.
- *
- * Each variant sets three things: the mask image, its size, and a weight. The
- * weight is not decoration — the tight weave lays down roughly 13× the line
- * length per unit area that the open cross does, so without compensation the
- * three sections would read as three volumes rather than three materials.
- */
-/* WEAVE — the default, and so the hero and the interior-page openers that stand
- * in for it. It lives on the base class rather than in a modifier so that a
- * section wearing .b4w-grid alone still gets a lattice: with --b4w-lattice
- * unset, mask-image resolves to none and the fade paints as a solid wash.
- *
- * A crosshatch pulled tight enough that it stops reading as drawn lines and
- * starts reading as a woven surface — closer to engraved security printing than
- * to a diagram, which suits a page whose whole argument is "this is certified".
- *
- * An SVG tile rather than a pair of repeating-linear-gradients, which is what
- * the two coarser variants below use. At this pitch gradients moiré badly: the
- * browser evaluates the gradient per pixel across the whole box, so the phase of
- * a 1px band drifts and the field breaks into wavy light and dark stripes. A
- * tile is rasterised once and stamped, so every repeat is identical.
- *
- * The tile is an 8×8 X drawn corner to corner, which tiles into a continuous
- * ±45° crosshatch of perpendicular pitch 8/sqrt(2) = 5.66px. Both line families
- * stay unbroken across tile edges because a diagonal leaving one corner is the
- * diagonal entering the next tile's opposite corner. The paths overshoot to -1
- * and 9 so the corners themselves are covered rather than being two half-strokes
- * meeting; the tile clips the excess. */
-.b4w-grid {
-  --b4w-lattice-weight: 0.2;
-  /* Held in a custom property only so the prefixed and unprefixed mask-image
-     declarations below don't have to carry the same URL twice. */
-  --b4w-lattice: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cg fill='none' stroke='%23fff'%3E%3Cpath d='M-1 -1L9 9'/%3E%3Cpath d='M-1 9L9 -1'/%3E%3C/g%3E%3C/svg%3E");
-  --b4w-lattice-size: 8px 8px;
-}
-
-/* HATCH — the roadmap.
- *
- * Same -45° drafting hatch the roadmap's own card plates wear (.b4w-plate), at
- * architectural scale instead of 10px. The section is titled "In production";
- * hatch is what you draw on something that isn't built yet, and the cards inside
- * it are literally placeholders for art that does not exist. The section and its
- * contents end up made of the same material. */
-.b4w-grid--hatch {
-  --b4w-lattice: repeating-linear-gradient(-45deg, #000 0 1px, transparent 1px 16px);
-  /* Back to auto — a gradient carries its own geometry and sizes to the box,
-     and the weave's 8×8 tile would squash it. */
-  --b4w-lattice-size: auto;
-  --b4w-lattice-weight: 0.24;
-}
-
-/* CROSS — the diligence section.
- *
- * The same crosshatch as the default, opened out by a factor of four so it reads
- * as drafted diamonds rather than as cloth: ruled ledger, work checked by hand.
- * It sits behind "Checkable, not claimable", a section of figures somebody is
- * meant to audit rather than admire. Coarse enough that gradients are safe here
- * — see the note on moiré above, which only bites at the tight pitch. */
-.b4w-grid--cross {
-  --b4w-lattice: repeating-linear-gradient(45deg, #000 0 1px, transparent 1px 22px),
-    repeating-linear-gradient(-45deg, #000 0 1px, transparent 1px 22px);
-  /* Two mask layers, and the default mask-composite of `add` is what makes them
-     a crosshatch rather than an intersection of two single hatches. */
-  --b4w-lattice-size: auto;
-  --b4w-lattice-weight: 0.16;
-}
-
-.b4w-grid::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /* No z-index on purpose — see the note in Section.jsx. This paints first
-     simply by being first in tree order. */
-  pointer-events: none;
-  background-image: radial-gradient(
-    ellipse 78% 62% at 50% 0%,
-    color-mix(in srgb, var(--color-line) 60%, transparent) 0%,
-    transparent 72%
-  );
-  -webkit-mask-image: var(--b4w-lattice);
-  mask-image: var(--b4w-lattice);
-  -webkit-mask-size: var(--b4w-lattice-size);
-  mask-size: var(--b4w-lattice-size);
-  opacity: var(--b4w-lattice-weight);
-}
-
-/* Outlined display-face watermark behind a section heading. Decorative only —
-   aria-hidden at every call site — and clipped by the section's own overflow so
-   it can be oversized without widening the page. */
-
-
-/* --- Aliveness ------------------------------------------------------------
- * Three ambient layers, all of them slow. The rule the whole system follows:
- * at most one thing per viewport should be asking for attention at a time.
- */
-
-/* A real child element, not a pseudo-element: .b4w-grid already owns ::before
-   on the section, and a second layer claiming it would silently replace the
-   grid. A child also keeps the tree-order painting rule <Section> relies on. */
-
-
-/* Drifting gradient mesh. Two washes moving on different periods so the canvas
-   never resolves into a pattern you can predict. */
-.b4w-mesh {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  /* Two weights of the same royal blue at two depths, rather than two different
-     hues. A second hue up here is what turns atmosphere into a gradient mesh
-     you notice; the same blue near and far just reads as depth. */
-  background:
-    radial-gradient(
-      44rem 28rem at 18% 12%,
-      color-mix(in srgb, var(--color-brand) 17%, transparent),
-      transparent 62%
-    ),
-    radial-gradient(
-      38rem 26rem at 84% 78%,
-      color-mix(in srgb, var(--color-brand-strong) 22%, transparent),
-      transparent 60%
-    );
-  animation: b4w-mesh 34s ease-in-out infinite;
-}
-/* The accent half of the aurora, on its own period and its own direction. One
-   mint wash is what stops the atmosphere reading as unbroken blue — and it is
-   the only place the accent appears at this scale. Kept low (9%): at any more
-   it stops being light in the room and starts being a green gradient. */
-.b4w-mesh--warm {
-  background:
-    radial-gradient(
-      34rem 22rem at 72% 18%,
-      color-mix(in srgb, var(--color-accent) 9%, transparent),
-      transparent 58%
-    ),
-    radial-gradient(
-      40rem 24rem at 12% 88%,
-      color-mix(in srgb, var(--color-brand-deep) 26%, transparent),
-      transparent 60%
-    );
-  animation: b4w-mesh-alt 47s ease-in-out infinite;
-}
-
-/* --- Motes -----------------------------------------------------------------
- * A sparse field of embers lifting through a section. This is the page's
- * "juice": it is the only motion on the site that is purely atmospheric, so it
- * is kept to a handful of 2px specks moving over 20+ seconds — dust in a
- * spotlight, not a particle demo. Each mote's position, size, duration and
- * delay come from inline custom properties at the call site.
- */
-.b4w-motes {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: clip;
-}
-.b4w-mote {
-  position: absolute;
-  bottom: -8px;
-  left: var(--mote-x, 50%);
-  width: var(--mote-size, 3px);
-  height: var(--mote-size, 3px);
-  border-radius: 9999px;
-  background: var(--mote-colour, var(--color-accent));
-  box-shadow: 0 0 10px 1px currentColor;
-  color: var(--mote-colour, var(--color-accent));
-  opacity: 0;
-  animation: b4w-rise var(--mote-dur, 22s) linear var(--mote-delay, 0s) infinite;
-  will-change: transform, opacity;
 }
 
 /* --- Explore doors ---------------------------------------------------------
@@ -1155,21 +639,6 @@ html.js .b4w-magnitude[data-grown] {
     0 0 34px -10px rgba(58, 227, 152, 0.24);
 }
 
-/* Packets travelling from the single endpoint out to the catalogue. The dash
-   pattern IS the packet; the line underneath is drawn separately and stays
-   still, so the path reads as a wire with traffic on it. */
-.b4w-flow {
-  stroke-dasharray: 3 9;
-  /* Slow. Three diagrams animate in this block at once, and the packets are the
-     only one of the three that actually travels — at 2.6s they pulled the eye
-     off the copy beside them.
-     4.5s rather than the old 3.8s because the travel went from 40 units to 48
-     to close the loop (see @keyframes b4w-flow); the pair holds the packets at
-     the same ~10.6 units/sec they were already moving at. */
-  animation: b4w-flow 4.5s linear infinite;
-  opacity: 0.85;
-}
-
 .b4w-rebrand {
   animation: b4w-rebrand 9s ease-in-out infinite;
 }
@@ -1177,375 +646,6 @@ html.js .b4w-magnitude[data-grown] {
 .b4w-settle {
   animation: b4w-settle 4.5s ease-in-out infinite;
 }
-
-/* --- Roadmap plate ---------------------------------------------------------
- * Card art for a game that does not have any yet.
- *
- * The four titles on the roadmap are in production, which means their key art is
- * genuinely not drawn — not "we haven't chosen a picture" but "the picture does
- * not exist". A dark rectangle where the tile art goes reads as a broken image;
- * a borrowed or generated placeholder promises a look nobody has signed off. So
- * the plate is an artefact in its own right: a punched sheet, dot grid over a
- * shallow diagonal hatch, with the title set in the display face on top of it.
- *
- * The texture lives on ::before rather than on the element, because the element
- * has children: a mask applied to the box would fade the title with it. On
- * ::before the mask can clear the bottom of the plate, which is exactly where
- * the name sits.
- */
-.b4w-plate::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: repeating-linear-gradient(
-      -45deg,
-      color-mix(in srgb, var(--color-line) 26%, transparent) 0 1px,
-      transparent 1px 10px
-    ),
-    radial-gradient(
-      circle at 1px 1px,
-      color-mix(in srgb, var(--color-line) 75%, transparent) 1px,
-      transparent 0
-    );
-  background-size: auto, 14px 14px;
-  /* Gone well before the title starts. The name is bottom-aligned and can run to
-     two lines, which on the shortest plate (3:1 on a phone) is over half the
-     box — so the texture stops at 44% rather than fading to nothing at the
-     bottom edge. Relying on paint order alone was not enough: the hatch is a
-     1px diagonal at 26% opacity, and even sitting *behind* white display type it
-     read as lines drawn across the letterforms. */
-  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 12%, transparent 44%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 12%, transparent 44%);
-}
-
-/* --- Spotlight -------------------------------------------------------------
- * The featured-game card is the one deep object on the page. The pointer
- * anywhere over it publishes --tilt-*, and three layers answer at three
- * different depths: the blurred room furthest back and moving AGAINST the
- * cursor, the key art in the middle and actually rotating, the glass panel
- * nearest and moving WITH it. Opposite signs across the stack is the whole
- * illusion — same magnitude in the same direction just slides the card around.
- */
-.b4w-spot-back {
-  translate: calc(var(--tilt-nx, 0) * -20px) calc(var(--tilt-ny, 0) * -12px);
-}
-.b4w-spot-art {
-  transform: perspective(1100px) rotateX(var(--tilt-x, 0deg))
-    rotateY(var(--tilt-y, 0deg));
-  transition: box-shadow 0.4s ease;
-}
-.b4w-spot-near {
-  translate: calc(var(--tilt-nx, 0) * 8px) calc(var(--tilt-ny, 0) * 5px);
-}
-
-/* Frosted panel over artwork. Distinct from .machined-surface, which is a lit
-   edge on an opaque fill — this one actually refracts what is behind it, so it
-   is only ever used where there IS something behind it. */
-.b4w-glass {
-  background-color: color-mix(in srgb, var(--color-bg) 55%, transparent);
-  backdrop-filter: blur(18px) saturate(130%);
-  -webkit-backdrop-filter: blur(18px) saturate(130%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    0 20px 50px -28px rgba(0, 0, 0, 0.95);
-}
-
-/* The grid layer drifts with scroll rather than sitting still, which is what
-   stops it reading as a texture printed onto the page. */
-.b4w-grid::before {
-  translate: 0 calc(var(--sy, 0) * -18px);
-}
-
-/* --- Pointer-reactive surfaces -------------------------------------------- */
-
-/* The stage holds the perspective; the slab inside it is what actually turns.
-   Splitting them means children can use translateZ against a single shared
-   vanishing point instead of each establishing their own. */
-.b4w-tilt-stage {
-  /* No `perspective` property here. It used to live on this element, which
-     forced .b4w-deck to carry transform-style: preserve-3d so the perspective
-     could reach the cards — and preserve-3d makes the browser depth-sort the
-     cards as real planes in 3D, ignoring z-index. The rotated centre card and
-     its rotated neighbour then physically intersected, so the neighbour painted
-     over part of the centre card's face. Each card carries its own
-     perspective() in its transform instead; see .b4w-cover. */
-  position: relative;
-  /* The swipe contract, and the reason HeroWall never calls preventDefault: the
-     browser keeps the vertical axis and the pinch, and hands us the horizontal
-     one. A page that cannot be scrolled or zoomed with a finger on the hero
-     would be a bad trade for a carousel gesture.
-     It lives on the stage rather than on .b4w-deck because the stage is where
-     the gesture is bound, and touch-action is read off the HIT TARGET's
-     ancestor chain — a finger landing in a corner of the deck that no card
-     reaches hits the stage itself, which is below the deck in that chain. */
-  touch-action: pan-y pinch-zoom;
-}
-/* A real 3D rendering context, and the shared vanishing point for the cards in
- * it. This is what makes the deck read as cards rather than as pictures being
- * swapped.
- *
- * It was flat, with the cards composited by an integer z-index handed down from
- * JS. That cannot work for a carousel, because z-index does not animate: on the
- * first frame of an advance the incoming card took the centre's z-index while
- * it was still sitting in the right-hand slot, so a third of the centre card's
- * artwork was replaced by its neighbour's in one frame and the travel
- * underneath went unread. Under preserve-3d there is no z-index to jump —
- * the browser sorts by actual depth every frame, so a card coming forward
- * passes its neighbour continuously.
- *
- * An earlier pass tried preserve-3d and reverted it because the side card cut
- * through the centre one. That is the same cause from the other end: the cards
- * were separated only by rotation, so at ±17° on a ~313px card their planes
- * swept ±46px of depth through each other at the same z. They are separated by
- * 200px of translateZ per slot now — four times the rotation's own excursion —
- * so they cannot intersect.
- *
- * The perspective lives HERE rather than on .b4w-tilt-stage: it has to be on
- * the cards' direct parent so all five share one vanishing point, and the stage
- * above is also the element useTilt writes to. */
-.b4w-deck {
-  perspective: 900px;
-  transform-style: preserve-3d;
-  /* THE DECK'S OWN BOX WAS EATING EVERY CLICK AIMED AT A NEIGHBOUR.
-     preserve-3d puts this element's own box into the 3D space as a plane at
-     z = 0, and the side cards live at translateZ(-200px) — so for the whole
-     width of the deck the empty parent sat *in front of* them and won the hit
-     test. Only the part of a neighbour that overhung the deck box was
-     clickable: 68px of its 258px face on a desktop, and 25px hard against the
-     screen edge on a 390px phone. The card looked like a 250px target and
-     behaved like a 25px one, and the band right beside the centre card — where
-     anyone actually aims — was the dead part.
-     Taking the parent out of hit testing leaves the cards as the only targets,
-     which is what the layout has always looked like. Nothing is lost by it:
-     this element has no paint of its own, and the swipe is bound to
-     .b4w-tilt-stage above rather than here, so the gesture still covers the
-     whole column — including the corners of this box that no card reaches. */
-  pointer-events: none;
-}
-/* Cards follow the finger 1:1 while a swipe is in flight, so no easing — the
-   deck is being held, not played. The transition comes back on release, which
-   is what carries the cards the rest of the way to their new slots. */
-.b4w-deck[data-dragging] .b4w-cover {
-  transition: none;
-}
-/* The pointer tilt lives on .b4w-cover-tilt, one element inside the card, and
- * NOT on .b4w-cover itself.
- *
- * There used to be a rule here dropping the centre card's transform transition
- * while the pointer was over the stage, because useTilt rewrites --tilt-* every
- * frame and a 500ms ease on the same `transform` made the card lag the cursor
- * by a third of a second. That was a correct fix for the tilt and a silent bug
- * for the carousel: the pointer is by definition over the stage when you CLICK
- * a neighbour to advance the deck, so on every click the incoming card had no
- * transition and teleported into the centre while the outgoing one animated
- * away — which is the content-swap the auto-advance no longer does.
- *
- * Two properties on two elements instead: the slot placement on .b4w-cover,
- * always transitioned, and the tilt here, never transitioned. It does not need
- * one — useTilt already eases toward the pointer in JS (see the damping there),
- * so the smoothing happens before the value reaches CSS at all.
- *
- * Scoped to the centre card on purpose. --tilt-* is published on the stage and
- * inherits to all five; letting every card read it made the whole deck rock in
- * unison like one slab on a hinge. */
-.b4w-cover-tilt {
-  transform-style: preserve-3d;
-}
-.b4w-cover[data-role="centre"] .b4w-cover-tilt {
-  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-}
-
-/* A card in the deck. --o is its signed offset from centre and --d is the
- * absolute one; both are handed down from JS, because abs() is still too new to
- * rely on.
- *
- * There is no `scale` here and no z-index. The size falloff is what the
- * perspective on .b4w-deck does to a card pushed 200px further back, and the
- * paint order is what the 3D rendering context works out from that depth — both
- * of them continuous, which is the entire point. --hs is the only scale left,
- * and it is the hover nudge.
- *
- * WHY THE STEP IS 63.5% AND NOT THE 52% IT READS AS ON SCREEN: translateX now
- * happens in 3D and is then projected. A card 200px back is drawn at 900/1100 =
- * 0.82 of its size, and its sideways offset is foreshortened by the same
- * factor, so 63.5% of a card's width lands where a flat 52% used to. The
- * composition is unchanged; only the arithmetic that produces it is. */
-.b4w-cover {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  /* Wider on phones so titles like "Video Poker" fit the caption instead of
-     truncating; the neighbours still peek, just by less. */
-  width: 78%;
-  /* --drag is the live swipe offset, published on .b4w-deck by HeroWall. It
-     comes FIRST so it is a shift in the deck's own space rather than along the
-     axis this card has already been rotated onto — and because it is applied
-     before translateZ, the perspective foreshortens it, so the cards further
-     back travel slightly less than the one under the finger. That parallax is
-     free and it is most of why the gesture reads as moving a deck. */
-  transform: translateX(var(--drag, 0px))
-    translateX(calc(-50% + (var(--o, 0) * 63.5%)))
-    translateZ(calc(var(--d, 0) * -200px)) scale(var(--hs, 1))
-    rotateY(calc(var(--o, 0) * -17deg));
-  /* So the tilt on the child composes in the deck's 3D space rather than being
-     flattened into this card's plane. */
-  transform-style: preserve-3d;
-  /* Back on, against the none the deck inherits down. The ghost ring turns it
-     off again below. */
-  pointer-events: auto;
-  opacity: var(--op, 1);
-  transition:
-    transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1),
-    opacity 0.55s ease;
-}
-
-/* Only the card you are actually looking at answers the pointer. Tilting the
-   whole deck made three cards rock in unison like one slab on a hinge; tilting
-   just the centre one makes it the thing in your hands and the other two
-   scenery behind it. --tilt-* are published on the stage by useTilt and inherit
-   down, so this rule is the only thing that decides who listens. */
-.b4w-cover[data-role="centre"] {
-  transform: translateX(var(--drag, 0px)) translateX(-50%) translateZ(0)
-    scale(var(--hs, 1));
-  /* Mild overshoot on the way in — the card lands rather than glides. */
-  transition:
-    transform 0.5s cubic-bezier(0.34, 1.32, 0.64, 1),
-    opacity 0.5s ease;
-}
-.b4w-cover[data-role="centre"]:hover,
-.b4w-cover[data-role="centre"]:focus-within {
-  --hs: 1.055;
-}
-
-/* Inner parallax: the art sits at a shallower depth than its frame, so it
-   drifts as the card turns. This is what gives the card thickness.
-   Magnitude matters more than it looks. The card is ALREADY displacing the art
-   via its own 3D rotation, so a large translate on top compounds with it and
-   the image reads as sliding loose inside the frame rather than sitting inside
-   it — 9px did exactly that. 4px against a ~10deg turn reads as depth.
-   scale is overscan, and it is a base value, never eased up from 1: `translate`
-   tracks the pointer instantly, so art that is not already larger than its frame
-   will show the card through the gap on the very first frame of movement. */
-.b4w-cover-art {
-  /* Only as much overscan as the parallax actually needs. The shift is 4px; on
-     the narrowest art box (~284px) that is 1.4% a side, so 1.04 covers it with
-     room to spare. It was 1.07, and on the hero's portrait cards that stacked on
-     top of the 1.33x upscale object-cover already applies to fit square art into
-     a 3:4 box — the art read as badly over-zoomed. */
-  scale: 1.04;
-  translate: calc(var(--tilt-nx, 0) * -4px) calc(var(--tilt-ny, 0) * -4px);
-  transition: scale 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.b4w-cover[data-role="centre"]:hover .b4w-cover-art {
-  scale: 1.07;
-}
-
-@media (min-width: 576px) {
-  .b4w-cover {
-    width: 68%;
-  }
-}
-
-
-/* Card details fold away until the card is engaged. grid-template-rows 0fr->1fr
-   is the only way to transition to an auto height without measuring it in JS;
-   the inner wrapper needs overflow:hidden and min-height:0 or the row collapses
-   to the content's height rather than to nothing. Keyed off the card, not the
-   panel, so keyboard focus opens it as well as hover. */
-/* Foreground elements move AGAINST the artwork as the card turns.
-   The art sits behind the card's face and shifts one way (-4px); anything meant
-   to read as floating above the face has to shift the other way, and further.
-   Same pointer input, opposite sign, bigger throw — that contrast is the entire
-   depth cue. Without it a button pinned over a tilting card reads as painted on. */
-.b4w-card-float {
-  translate: calc(var(--tilt-nx, 0) * 9px) calc(var(--tilt-ny, 0) * 9px);
-}
-
-.b4w-cover-detail {
-  display: grid;
-  grid-template-rows: 0fr;
-  opacity: 0;
-  transition:
-    grid-template-rows 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
-    opacity 0.3s ease;
-}
-.b4w-cover-detail > * {
-  overflow: hidden;
-  min-height: 0;
-}
-.b4w-cover[data-role="centre"]:hover .b4w-cover-detail,
-.b4w-cover[data-role="centre"]:focus-within .b4w-cover-detail {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-/* A touch device has no hover, so on a phone the RTP and the max win were
-   folded away with nothing that could ever open them — the two figures the
-   hero deck exists to show. The fold is a desktop affordance for keeping the
-   resting card quiet; it is not permission to withhold the numbers. Keyed on
-   the pointer rather than on a width breakpoint, because what decides this is
-   whether hover exists, not how wide the screen is. */
-@media (hover: none) {
-  .b4w-cover-detail {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-}
-
-/* The offscreen ring is scenery — invisible, unfocusable, unclickable. The
-   ±1 neighbours ARE clickable: clicking one is how you move the deck now. */
-.b4w-cover[data-role="ghost"] {
-  pointer-events: none;
-}
-.b4w-cover[data-role="side"] {
-  cursor: pointer;
-}
-.b4w-cover[data-role="side"]:hover,
-.b4w-cover[data-role="side"]:focus-visible {
-  --op: 0.72;
-  --hs: 1.04;
-}
-.b4w-cover[data-role="side"]:focus-visible {
-  outline: 2px solid var(--color-brand);
-  outline-offset: 6px;
-  border-radius: 1rem;
-}
-
-
-/* Cards tilt on the same variables. The hover lift is folded into this
-   transform rather than being its own rule — two rules both setting `transform`
-   means the last one wins and the tilt silently dies on hover. */
-.b4w-card {
-  transform: perspective(620px) rotateX(var(--tilt-x, 0deg))
-    rotateY(var(--tilt-y, 0deg)) translateY(var(--lift, 0));
-}
-/* While the pointer is actually driving a card, drop the transform transition.
-   useTilt rewrites --tilt-* every frame, so with a 0.35s ease still attached
-   every frame was fighting the last one and the tilt arrived a third of a second
-   late — present in the DOM, invisible to the eye. The transition stays on for
-   the return to rest and for the hover lift; the deck's centre card already had
-   this exemption and the catalogue cards did not. */
-.b4w-card:hover {
-  transition:
-    border-color 0.35s ease,
-    box-shadow 0.35s ease;
-}
-/* Same inner parallax as .b4w-cover-art — see the note there for why the
-   translate stays small and why the scale is a base value. */
-.b4w-card-art {
-  /* Only as much overscan as the parallax actually needs. The shift is 4px; on
-     the narrowest art box (~284px) that is 1.4% a side, so 1.04 covers it with
-     room to spare. It was 1.07, and on the hero's portrait cards that stacked on
-     top of the 1.33x upscale object-cover already applies to fit square art into
-     a 3:4 box — the art read as badly over-zoomed. */
-  scale: 1.04;
-  translate: calc(var(--tilt-nx, 0) * -4px) calc(var(--tilt-ny, 0) * -4px);
-  transition: scale 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.b4w-card--live:hover .b4w-card-art {
-  scale: 1.07;
-}
-
 
 /* Events strip crossfade. Opacity only, no transform, so the slide stays
    readable under prefers-reduced-motion — there only the auto-advance timer is
@@ -1560,10 +660,6 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-pulse,
   .b4w-drift,
   .b4w-marquee-track,
-  .b4w-rule::after,
-  .b4w-breathe,
-  .b4w-sweep,
-  .b4w-flow,
   .b4w-rebrand,
   .b4w-settle {
     animation: none;
@@ -1577,17 +673,7 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-rebrand {
     background-color: #e8a045;
   }
-  /* The halo's opacity lives in its keyframes, so switching the animation off
-     would leave it at the element's own 1 — brighter than it ever gets while
-     breathing. Pin it to the middle of its range. */
-  .b4w-breathe {
-    opacity: 0.7;
-  }
-  /* The motes are pure atmosphere with no static state worth keeping, so the
-     whole field goes rather than freezing mid-rise. */
-  .b4w-motes {
-    display: none;
-  }
+
   .b4w-btn--primary::after,
   .b4w-btn--accent::after {
     display: none;
@@ -1600,24 +686,7 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-pop {
     animation: none;
   }
-  html.js .b4w-reveal,
-  html.js .b4w-reveal.is-revealed {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  html.js .b4w-magnitude {
-    width: var(--w);
-    transition: none;
-  }
-  .b4w-card {
-    transition: none;
-    transform: none;
-  }
-  .b4w-card--live:hover,
-  :focus-visible > .b4w-card--live {
-    --lift: 0px;
-  }
+
   /* The door keeps its border warm and its glow — those are state, not motion.
      Only the travel goes. */
   .b4w-door {
@@ -1639,54 +708,7 @@ html.js .b4w-magnitude[data-grown] {
   .b4w-header[data-hidden] {
     translate: none;
   }
-  /* The mesh stops entirely rather than slowing down: a drifting background is
-     exactly the kind of persistent movement this setting exists to switch off.
-     The surface stays, the motion goes. */
-  .b4w-mesh,
-  .b4w-mesh--warm {
-    animation: none;
-  }
-  .b4w-deck {
-    transform: none;
-  }
-  /* Cards still move between positions — that is the carousel working, not
-     decoration — but they arrive instantly instead of gliding. The deck's own
-     depth is layout rather than motion, so translateZ stays; only the pointer
-     tilt on the centre card goes. */
-  .b4w-cover,
-  .b4w-cover[data-role="centre"],
-  .b4w-cover-art,
-  .b4w-cover-detail {
-    transition: none;
-  }
-  /* --drag stays. A card following a finger 1:1 is direct manipulation, not
-     animation — taking it away here would make the swipe feel broken to exactly
-     the people who asked for less motion, not calmer. */
-  .b4w-cover[data-role="centre"] {
-    transform: translateX(var(--drag, 0px)) translateX(-50%) translateZ(0)
-      scale(var(--hs, 1));
-  }
-  .b4w-card-float,
-  .b4w-spot-back,
-  .b4w-spot-near {
-    translate: none;
-  }
-  .b4w-spot-art {
-    transform: none;
-  }
-  .b4w-cover-art,
-  .b4w-cover[data-role="centre"]:hover .b4w-cover-art,
-  .b4w-card-art,
-  .b4w-card--live:hover .b4w-card-art {
-    translate: none;
-    /* Overscan stays — it keeps the art inside its frame, it is not motion. */
-    scale: 1.04;
-  }
-  /* --sy is never set when reduced motion is on (parallax.js returns early), so
-     this resolves to 0 anyway — pinned here so it stays true if that changes. */
-  .b4w-grid::before {
-    translate: none;
-  }
+
 }
 }
 
@@ -1731,7 +753,7 @@ body {
   @apply flex flex-col;
 }
 body {
-  @apply text-[0.8rem] font-medium leading-[1.7] text-[#60697b] bg-[#fefefe] m-0 font-Manrope;
+  @apply text-[0.8rem] font-medium leading-[1.7] text-[#60697b] bg-[#fefefe] m-0 font-Text;
 }
 body {
   @apply overflow-x-hidden;

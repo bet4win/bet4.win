@@ -1,15 +1,11 @@
 import PageShell from "@/app/components/PageShell";
 import Hero from "@/app/components/Hero";
 import FeaturedGame from "@/app/components/FeaturedGame";
-import TrustBar from "@/app/components/TrustBar";
-import Ticker from "@/app/components/Ticker";
-import Proof from "@/app/components/Proof";
 import GamesPreview from "@/app/components/GamesPreview";
 import Roadmap from "@/app/components/Roadmap";
-import ExploreLinks from "@/app/components/ExploreLinks";
+import Pillars from "@/app/components/Pillars";
 import NewsPreview from "@/app/components/NewsPreview";
 import ClosingCta from "@/app/components/ClosingCta";
-import Reveal from "@/app/components/Reveal";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/app/lib/site";
 import { slugFor } from "@/app/lib/slug";
 import { games } from "@/data/games";
@@ -117,9 +113,14 @@ const jsonLd = {
   ],
 };
 
-// Home is now a hub, not the whole site: establish who we are, prove it, show
-// the newest game, sample the catalogue, then hand off to the four real pages.
-// Platform / provably-fair / branding live at their own routes.
+// Home is a hub: the catalogue first, because at twenty titles it is the
+// argument; then the newest release, every game side by side, what ships next,
+// what comes with the integration, and the ask. Platform / provably-fair /
+// branding live at their own routes.
+//
+// Nothing here fades in on scroll. Every section is in the server HTML at full
+// opacity, which is what a reader skimming to the table — or a crawler, or a
+// screenshot — actually gets.
 export default function HomePage() {
   return (
     <PageShell>
@@ -127,35 +128,16 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Hero and the spotlight are above the fold and deliberately not wrapped
-          in <Reveal>: starting them at opacity 0 would push LCP out by the
-          length of the reveal transition. Scroll motion begins below them. */}
       <Hero />
-      {/* The catalogue's real ceilings, on a loop. Signature moment: the numbers
-          do the selling, and it reads as a games company rather than a SaaS. */}
-      <Ticker />
-      <TrustBar />
       <FeaturedGame slug="punch" />
       <GamesPreview />
-      {/* "…and then what." The catalogue above answers what an operator can take
-          today; this is the evidence behind the monthly-release claim the hero
-          opens with. Computed here rather than inside the component — the "this
-          month" label depends on the date, and deriving that on the client would
+      {/* Computed here rather than inside the component — the "this month"
+          label depends on the date, and deriving that on the client would
           disagree with this markup across a month boundary. */}
       <Roadmap releases={upcomingReleases()} />
-      {/* The diligence material an operator screens on. */}
-      <Proof />
-      <Reveal>
-        <ExploreLinks />
-      </Reveal>
-      {/* Last piece of evidence before the ask: other people have already done
-          this integration. */}
-      <Reveal>
-        <NewsPreview />
-      </Reveal>
-      <Reveal>
-        <ClosingCta />
-      </Reveal>
+      <Pillars />
+      <NewsPreview />
+      <ClosingCta />
     </PageShell>
   );
 }

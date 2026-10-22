@@ -15,7 +15,6 @@ export default function BrandingPage() {
   return (
     <PageShell>
       <PageHeader
-        eyebrow="Branding"
         title="Games that look like they were built for you."
         intro="White-labelling here is not a logo in the corner. Swap the palette once and it lands across the whole catalogue — try the brand switcher below."
       />

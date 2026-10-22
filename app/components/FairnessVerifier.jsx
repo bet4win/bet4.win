@@ -16,7 +16,7 @@ const DEFAULT_SERVER_SEED =
 const inputCls =
   "w-full !rounded-xl border border-line bg-bg px-3.5 py-2.5 font-JetBrainsMono text-[13px] text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60";
 const labelCls =
-  "mb-1 block font-JetBrainsMono text-[11px] uppercase tracking-[0.05em] text-muted";
+  "mb-1 block font-JetBrainsMono text-[11px] text-muted";
 
 function defaultsFor(game) {
   const out = {};
@@ -178,10 +178,10 @@ export default function FairnessVerifier() {
                 {rows.map((row) =>
                   row.primary ? (
                     <div key={row.label} className="flex items-baseline gap-3">
-                      <span className="text-[11px] uppercase tracking-[0.05em] text-faint">
+                      <span className="text-[11px] text-faint">
                         {row.label}
                       </span>
-                      <span className="font-SpaceGrotesk text-[clamp(1.3rem,1.125rem+0.9vw,1.7rem)] font-bold !text-ink">
+                      <span className="font-Text text-[clamp(1.3rem,1.125rem+0.9vw,1.7rem)] font-bold !text-ink">
                         {row.value}
                       </span>
                     </div>
@@ -197,7 +197,7 @@ export default function FairnessVerifier() {
           )}
         </div>
       )}
-      <p className="!mt-3 !mb-0 font-SpaceGrotesk text-[12px] text-faint">
+      <p className="!mt-3 !mb-0 font-Text text-[12px] text-faint">
         Recomputed from the seeds above by the live RGS — change the nonce and
         re-run to see a different, deterministic outcome.
       </p>

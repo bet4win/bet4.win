@@ -71,7 +71,7 @@ export default async function GamePage({ params }) {
   };
 
   return (
-    <div className="min-h-screen bg-bg font-SpaceGrotesk text-ink antialiased">
+    <div className="min-h-screen bg-bg font-Text text-ink antialiased">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -87,7 +87,7 @@ export default async function GamePage({ params }) {
           >
             <h2
               id="more-games"
-              className="mb-6 font-SpaceGrotesk !text-[12px] !font-normal uppercase !tracking-[0.1em] !text-faint"
+              className="mb-6 font-Text !text-[12px] !font-normal !text-faint"
             >
               More originals
             </h2>
@@ -104,7 +104,7 @@ export default async function GamePage({ params }) {
                     sizes="(min-width:992px) 300px, 46vw"
                     className="h-auto w-full"
                   />
-                  <span className="block px-3.5 py-3 font-SpaceGrotesk text-[1rem] font-semibold !text-ink">
+                  <span className="block px-3.5 py-3 font-Text text-[1rem] font-semibold !text-ink">
                     {g.title}
                   </span>
                 </Link>

@@ -55,9 +55,6 @@ export default function GameDetail({ game, content }) {
           route opens with, and given the same lit canvas. */}
       <Section
         surface="base"
-        depth
-        texture
-        motes={7}
         innerClassName="pb-12 pt-10 md:pb-16 md:pt-20"
       >
         <nav aria-label="Breadcrumb" className="mb-6">
@@ -82,7 +79,7 @@ export default function GameDetail({ game, content }) {
 
         <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:gap-16">
           <div className="flex-1">
-            <p className="font-SpaceGrotesk text-[12px] uppercase tracking-[0.08em] text-accent">
+            <p className="font-Text text-[12px] text-accent">
               {game.category} · Live
             </p>
             <h1 className="b4w-display mt-2 !text-[clamp(2.4rem,1.5rem+2.8vw,3.5rem)] !text-ink">
@@ -91,14 +88,14 @@ export default function GameDetail({ game, content }) {
 
             {content?.paragraphs?.length > 0 && (
               <div className="mt-7">
-                <h2 className="font-SpaceGrotesk !text-[12px] !font-normal uppercase !tracking-[0.1em] !text-faint">
+                <h2 className="font-Text !text-[12px] !font-normal !text-faint">
                   How it plays
                 </h2>
                 <div className="mt-4 flex flex-col gap-4">
                   {content.paragraphs.map((p, i) => (
                     <p
                       key={i}
-                      className="!mb-0 max-w-2xl b4w-copy--lead font-SpaceGrotesk text-muted"
+                      className="!mb-0 max-w-2xl b4w-copy--lead font-Text text-muted"
                     >
                       {p}
                     </p>
@@ -117,7 +114,7 @@ export default function GameDetail({ game, content }) {
                     key={s.label}
                     className="flex flex-col-reverse border-b border-line/60 pb-4 last:border-b-0 last:pb-0"
                   >
-                    <dt className="mt-1 font-SpaceGrotesk text-[11px] uppercase tracking-[0.08em] text-faint">
+                    <dt className="mt-1 font-Text text-[11px] text-faint">
                       {s.label}
                     </dt>
                     <dd
@@ -144,7 +141,7 @@ export default function GameDetail({ game, content }) {
                 </button>
               )}
 
-              <p className="!mb-0 mt-6 border-t border-line/60 pt-5 font-SpaceGrotesk text-[0.8rem] leading-[1.6] text-faint">
+              <p className="!mb-0 mt-6 border-t border-line/60 pt-5 font-Text text-[0.8rem] leading-[1.6] text-faint">
                 Figures show the default configuration. Live values follow the
                 game version and the setup agreed per operator — see{" "}
                 <Link href="/terms" className="!text-muted underline underline-offset-2 hover:!text-ink">
