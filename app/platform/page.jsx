@@ -10,7 +10,7 @@ import Reveal from "@/app/components/Reveal";
 export const metadata = {
   title: "The platform",
   description:
-    "One certified Remote Gaming Server, a single API integration, and the promo tooling operators run on — built for concurrency and white-labelled as your own.",
+    "One Remote Gaming Server with a certified RNG, a single API integration, and the promo tooling operators run on — built for concurrency and white-labelled as your own.",
   alternates: { canonical: "/platform" },
 };
 
@@ -21,7 +21,7 @@ export default function PlatformPage() {
         title="One integration. The whole catalogue."
         scene="crash"
         art="crash"
-        intro="A certified Remote Gaming Server behind every original we ship, connected once and reported on in one place — so adding next month's game costs you nothing but a config change."
+        intro="One Remote Gaming Server, on a certified RNG, behind every original we ship, connected once and reported on in one place — so adding next month's game costs you nothing but a config change."
       />
       <TrustBar />
       <Reveal>

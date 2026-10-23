@@ -18,7 +18,7 @@ const uptime = claims.find((c) => c.label === "Platform uptime")?.value;
 const PILLARS = [
   {
     title: "One integration, the whole catalogue",
-    body: `A certified RGS and RNG behind every game we ship. Next month's release arrives as a config change${
+    body: `One RGS, on a certified RNG, behind every game we ship. Next month's release arrives as a config change${
       uptime ? `, on a platform running at ${uptime} uptime` : ""
     }.`,
     href: "/platform",
@@ -44,7 +44,7 @@ const PILLARS = [
 
 export default function Pillars() {
   return (
-    <section aria-labelledby="pillars-heading" className="bg-bg py-12">
+    <section aria-labelledby="pillars-heading" className="bg-bg pb-10 pt-12">
       <div className="mx-auto max-w-[1280px] px-5 md:px-12">
         <h2
           id="pillars-heading"
@@ -71,10 +71,11 @@ export default function Pillars() {
                   aria-hidden="true"
                   className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/45 via-45% to-transparent"
                 />
-                {/* The same box, at the same place, on every panel. The cut-outs
-                    are cropped to their outline at import, so object-contain
-                    sizes each one to the box rather than to its canvas. */}
-                <div className="relative mb-auto h-[160px] md:h-[170px]">
+                {/* Art, title and copy run down from the top of every panel, so the
+                    titles line up across the row; the link sits at the bottom.
+                    The cut-outs are cropped to their outline at import, so
+                    object-contain sizes each one to the box, not its canvas. */}
+                <div className="relative h-[150px] md:h-[150px]">
                   <Image
                     src={artFor(p.scene).art}
                     alt=""
@@ -83,12 +84,12 @@ export default function Pillars() {
                     className="object-contain drop-shadow-[0_20px_24px_rgba(0,0,0,0.55)] transition-transform duration-500 group-hover:-translate-y-1.5"
                   />
                 </div>
-                <h3 className="!mb-0 mt-8 font-Display text-[clamp(1.2rem,1.05rem+0.6vw,1.5rem)] font-extrabold !leading-[1.05] tracking-[-0.02em] !text-ink [font-stretch:125%]">
+                <h3 className="!mb-0 mt-6 font-Display md:min-h-[3.15em] text-[clamp(1.2rem,1.05rem+0.6vw,1.5rem)] font-extrabold !leading-[1.05] tracking-[-0.02em] !text-ink [font-stretch:125%]">
                   {p.title}
                 </h3>
                 <p className="!mb-0 mt-3 b4w-copy font-Text text-ink/80">{p.body}</p>
                 {p.cert && <CertMark tone="light" className="mt-3 !text-[13px]" />}
-                <span className="mt-5 inline-flex items-center gap-2 font-Text text-[15px] font-semibold text-ink">
+                <span className="mt-auto inline-flex items-center gap-2 pt-5 font-Text text-[15px] font-semibold text-ink">
                   {p.link}
                   <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </span>

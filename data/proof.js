@@ -10,7 +10,7 @@
 // just a question of taste.
 export const claims = [
   { value: "99.99%", label: "Platform uptime", mono: true },
-  { value: "Certified", label: "RGS and RNG", mono: false },
+  { value: "Certified", label: "RNG (Gaming Associates)", mono: false },
 ];
 
 // The RNG's independent certification. Shown as a mark (<CertMark>) wherever
