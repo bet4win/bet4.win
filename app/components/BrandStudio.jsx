@@ -16,20 +16,6 @@ import { artFor } from "@/data/gameArt";
 // switching costs no font download and still shows a real change of voice.
 const BRANDS = [
   {
-    id: "golden",
-    label: "Golden Palace",
-    name: "Golden Palace",
-    mark: "GP",
-    accent: "#e8b04a",
-    onAccent: "#1d1203",
-    surface: "rgba(20, 14, 6, 0.86)",
-    tile: "#2a2111",
-    edge: "rgba(232, 176, 74, 0.35)",
-    font: "Georgia, 'Times New Roman', serif",
-    fontLabel: "Serif",
-    fontStyle: { fontWeight: 700, letterSpacing: "0.01em" },
-  },
-  {
     id: "rouge",
     label: "Rouge Club",
     name: "ROUGE CLUB",
@@ -42,6 +28,20 @@ const BRANDS = [
     font: "var(--font-Display)",
     fontLabel: "Condensed sans",
     fontStyle: { fontWeight: 800, fontStretch: "75%", letterSpacing: "0.02em" },
+  },
+  {
+    id: "golden",
+    label: "Golden Palace",
+    name: "Golden Palace",
+    mark: "GP",
+    accent: "#e8b04a",
+    onAccent: "#1d1203",
+    surface: "rgba(20, 14, 6, 0.86)",
+    tile: "#2a2111",
+    edge: "rgba(232, 176, 74, 0.35)",
+    font: "Georgia, 'Times New Roman', serif",
+    fontLabel: "Serif",
+    fontStyle: { fontWeight: 700, letterSpacing: "0.01em" },
   },
   {
     id: "aqua",
