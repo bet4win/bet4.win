@@ -54,7 +54,7 @@ export default function Roadmap({ releases }) {
                 {next.label} · {next.category}
               </p>
               {art ? (
-                <h3 className="!mb-0">
+                <h3 className="!mb-0 w-full">
                   <Wordmark
                     art={art}
                     alt={next.title}

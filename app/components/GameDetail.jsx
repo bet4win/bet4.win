@@ -71,8 +71,8 @@ export default function GameDetail({ game, content }) {
         </div>
 
         <div className="mx-auto grid max-w-[1280px] items-center gap-6 px-5 pb-14 md:px-12 md:pb-20 lg:min-h-[560px] lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-          <div className="order-2 flex flex-col items-start gap-6 lg:order-1">
-            <h1 className="!mb-0">
+          <div className="relative z-10 order-2 flex min-w-0 flex-col items-start gap-6 lg:order-1">
+            <h1 className="!mb-0 w-full">
               {art ? (
                 <Wordmark
                   art={art}

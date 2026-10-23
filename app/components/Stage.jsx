@@ -42,9 +42,10 @@ const GUTTER = "max(1.25rem, calc((100vw - 1280px) / 2 + 3rem))";
 
 // The size every title's LETTERS come out at on the stage (see <Wordmark>).
 export const STAGE_LETTER = "clamp(40px, 3.4vw + 23px, 76px)";
-// Wide titles may run past the copy column into the room; capped short of the
-// hero so the longest (American Roulette, 10:1) still reads.
-export const STAGE_WORDMARK_MAX = "min(640px, calc(100vw - 2.5rem))";
+// Capped at the copy column. Letting the widest titles (American Roulette,
+// 10:1) run on into the room put them under the hero; inside the column they
+// come out a little smaller instead, which reads better than half a word.
+export const STAGE_WORDMARK_MAX = "min(640px, 100%)";
 
 export default function Stage({ initialSlug }) {
   const start = Math.max(0, liveCatalogue.findIndex((e) => e.slug === initialSlug));
@@ -179,14 +180,14 @@ export default function Stage({ initialSlug }) {
       <div className="h-[72px] md:h-[84px]" />
 
       <div className="mx-auto grid w-full max-w-[1280px] flex-1 items-center gap-6 px-5 md:px-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-8">
-        <div key={`copy-${look}`} className="b4w-stage-rise order-2 flex flex-col items-start gap-4 pb-4 md:gap-5 lg:order-1 lg:py-2">
+        <div key={`copy-${look}`} className="b4w-stage-rise relative z-10 order-2 flex min-w-0 flex-col items-start gap-4 pb-4 md:gap-5 lg:order-1 lg:py-2">
           {inSeason && (
             <p className="!mb-0 inline-flex items-center gap-2 font-Text text-[15px] font-semibold" style={{ color: SEASONS[season].tint }}>
               {React.createElement(SEASONS[season].Icon, { className: "h-4 w-4" })}
               {SEASONS[season].label} edition
             </p>
           )}
-          <h2 className="!mb-0">
+          <h2 className="!mb-0 w-full">
             <Wordmark
               art={art}
               alt={game.title}
