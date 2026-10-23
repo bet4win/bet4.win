@@ -6,7 +6,7 @@ import React from "react";
 const stats = [
   "Uptime 99.99%",
   "Fast response times worldwide",
-  "RNG certified by Gaming Associates for the UKGC jurisdiction",
+  "RNG certified by Gaming Associates (GA)",
   "Bespoke design and branding",
 ];
 

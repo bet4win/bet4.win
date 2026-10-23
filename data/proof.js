@@ -19,8 +19,6 @@ export const claims = [
 export const rngCertificate = {
   lab: "Gaming Associates",
   labShort: "GA",
-  jurisdiction: "UKGC",
-  jurisdictionName: "UK Gambling Commission",
 };
 
 // --- Partly filled in ---------------------------------------------------------

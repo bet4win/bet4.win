@@ -3,10 +3,10 @@ import { ShieldCheck } from "./Icons";
 import { rngCertificate as cert } from "@/data/proof";
 
 // The RNG certification, stated the same way everywhere it appears: who tested
-// it and for which jurisdiction. "For the UKGC jurisdiction", never a bare
-// "UKGC": the certificate is a test against that regulator's standards, and a
-// regulator's name on its own reads as a licence, which this is not. No report reference — that goes to an
-// operator's compliance team on request, not onto a marketing page.
+// it. No jurisdiction — the certificate transfers to whichever market an
+// operator licenses in, so naming one would understate it — and no report
+// reference, which goes to an operator's compliance team on request rather
+// than onto a marketing page.
 //
 // `tone="light"` is for sitting on a game's room, where muted grey text would
 // sink into the picture.
@@ -22,12 +22,7 @@ export default function CertMark({ className = "", tone = "muted" }) {
         RNG certified by{" "}
         <span className="font-semibold text-ink">
           {cert.lab} ({cert.labShort})
-        </span>{" "}
-        for the{" "}
-        <abbr title={cert.jurisdictionName} className="font-semibold text-ink no-underline">
-          {cert.jurisdiction}
-        </abbr>{" "}
-        jurisdiction
+        </span>
       </span>
     </p>
   );

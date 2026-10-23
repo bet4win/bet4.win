@@ -209,8 +209,8 @@ export default function Footer() {
         </div>
 
         {/* Compliance band. Licence badges (MGA, UKGC) must only appear for
-            licences actually held; the RNG certificate is stated in words, as a
-            test against the UKGC's standards, not as a regulator's badge. */}
+            licences actually held; the RNG certificate is stated in words,
+            naming the test lab and no regulator. */}
         <div className="flex flex-col gap-5 border-t border-line/40 py-7 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-wrap items-center gap-5">
             <span
