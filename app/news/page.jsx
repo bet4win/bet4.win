@@ -44,6 +44,7 @@ export default function NewsIndexPage() {
       />
       <PageHeader
         title="News"
+        scene="keno-party"
         intro="Integrations, platform releases and new originals. Everything here is something that shipped — there are no announcements of announcements."
       />
 

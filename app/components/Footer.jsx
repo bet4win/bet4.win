@@ -121,7 +121,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative border-t border-line/40 bg-panel">
+    <footer className="relative border-t border-line bg-panel-low">
       <div className="mx-auto max-w-[1280px] px-5 md:px-12">
         <div className="grid grid-cols-2 gap-x-8 gap-y-8 py-10 md:gap-y-11 md:py-14 md:grid-cols-4 lg:grid-cols-6">
           {/* Brand column. Two of six at lg so the blurb gets a readable measure

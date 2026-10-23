@@ -16,6 +16,8 @@ export default function BrandingPage() {
     <PageShell>
       <PageHeader
         title="Games that look like they were built for you."
+        scene="diamonds"
+        art="diamonds"
         intro="White-labelling here is not a logo in the corner. Swap the palette once and it lands across the whole catalogue — try the brand switcher below."
       />
       <Theming />

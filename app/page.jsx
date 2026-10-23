@@ -1,7 +1,7 @@
 import PageShell from "@/app/components/PageShell";
-import Hero from "@/app/components/Hero";
-import FeaturedGame from "@/app/components/FeaturedGame";
-import GamesPreview from "@/app/components/GamesPreview";
+import Stage from "@/app/components/Stage";
+import LobbyRail from "@/app/components/LobbyRail";
+import DemoHost from "@/app/components/DemoHost";
 import Roadmap from "@/app/components/Roadmap";
 import Pillars from "@/app/components/Pillars";
 import NewsPreview from "@/app/components/NewsPreview";
@@ -113,24 +113,19 @@ const jsonLd = {
   ],
 };
 
-// Home is a hub: the catalogue first, because at twenty titles it is the
-// argument; then the newest release, every game side by side, what ships next,
-// what comes with the integration, and the ask. Platform / provably-fair /
-// branding live at their own routes.
-//
-// Nothing here fades in on scroll. Every section is in the server HTML at full
-// opacity, which is what a reader skimming to the table — or a crawler, or a
-// screenshot — actually gets.
+// Home is a games studio's front page: the stage puts one game at a time on
+// the whole first screen, the lobby shows the range, then what ships next,
+// what comes with the integration, the news and the ask. Platform /
+// provably-fair / branding live at their own routes.
 export default function HomePage() {
   return (
-    <PageShell>
+    <PageShell overlayHeader>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Hero />
-      <FeaturedGame slug="punch" />
-      <GamesPreview />
+      <Stage initialSlug="punch" />
+      <LobbyRail />
       {/* Computed here rather than inside the component — the "this month"
           label depends on the date, and deriving that on the client would
           disagree with this markup across a month boundary. */}
@@ -138,6 +133,7 @@ export default function HomePage() {
       <Pillars />
       <NewsPreview />
       <ClosingCta />
+      <DemoHost />
     </PageShell>
   );
 }

@@ -19,7 +19,7 @@ import { ChevronDown, Play } from "./Icons";
 // Not `role="menu"`. That pattern promises arrow-key roving and a focus trap,
 // and this is a short list of buttons in a popover; `aria-expanded` plus the
 // natural tab order is the honest description of what it actually does.
-export default function SeasonLaunch({ options, onLaunch }) {
+export default function SeasonLaunch({ options, onLaunch, className = "mt-7" }) {
   // The undressed build is always first; the rest are the seasons, and they
   // are what the trigger advertises.
   const [standard, ...variants] = options;
@@ -67,7 +67,7 @@ export default function SeasonLaunch({ options, onLaunch }) {
   };
 
   return (
-    <div ref={wrapRef} className="relative mt-7" onBlur={onFocusOut}>
+    <div ref={wrapRef} className={`relative ${className}`} onBlur={onFocusOut}>
       <div className="flex">
         <button
           type="button"
@@ -78,7 +78,7 @@ export default function SeasonLaunch({ options, onLaunch }) {
           className="b4w-btn b4w-btn--primary b4w-btn--lg flex flex-1 !rounded-r-none"
         >
           <Play className="h-4 w-4" />
-          Play demo
+          Play the demo
         </button>
         <button
           ref={toggleRef}

@@ -48,7 +48,7 @@ export default function Section({
       {/* NOTHING here sets a z-index. An earlier version put `z-10` on the
           content container,
           which made it a stacking context, and the fullscreen game modal nested
-          inside <GamesPreview> had its z-9999 resolved *within* that context.
+          inside the catalogue had its z-9999 resolved *within* that context.
           The sticky z-50 header then painted over a modal that was supposed to
           cover the screen. Same class of trap as the transform note in
           Reveal.jsx. */}

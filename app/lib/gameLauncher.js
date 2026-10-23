@@ -1,13 +1,14 @@
-// Lets a button outside the catalogue (the Punch spotlight) open the game modal
-// that <Games> owns.
+import { trackEvent } from "@/app/lib/analytics";
+
+// Lets any button on the page open the demo modal that <DemoHost> owns.
 //
-// Games' open/close path is entangled with pushState/popstate history handling
-// so the modal is shareable and Back-closable. Hoisting that into a context
-// would mean moving the history logic and rewiring the page tree; this keeps it
-// where it is and just gives it a second entry point.
+// DemoHost's open/close path is entangled with pushState/popstate handling so
+// the modal is shareable and Back-closable. Hoisting that into a context would
+// mean rewiring the page tree; this keeps it in one place and gives it a
+// global entry point instead.
 let handler = null;
 
-// <Games> registers itself on mount. Last mount wins — there is only ever one.
+// <DemoHost> registers itself on mount. Last mount wins — there is only ever one.
 export function registerGameLauncher(fn) {
   handler = fn;
   return () => {
@@ -15,10 +16,16 @@ export function registerGameLauncher(fn) {
   };
 }
 
-// Open a game by slug (its lowercased title, e.g. "punch"). No-op if the
-// catalogue hasn't mounted yet, which is why the spotlight's Play demo button
-// falls back to the #games anchor.
+// Open a game by slug (e.g. "punch"). Returns false if no DemoHost is mounted,
+// so an <a href> fallback can still navigate.
 export function launchGame(slug) {
   if (!handler) return false;
   return handler(slug);
+}
+
+// The one call a "Play the demo" control makes: attribute the launch, then
+// open it. `source` says which control it was ("stage", "lobby", …).
+export function playDemo(game, slug, source) {
+  trackEvent("game_launch", { game_id: game.id, game_title: game.title, source });
+  return launchGame(slug);
 }

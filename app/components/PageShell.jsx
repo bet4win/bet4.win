@@ -4,7 +4,7 @@ import Footer from "@/app/components/Footer";
 
 // Every route renders through this, so the header, the skip link and the footer
 // stay identical across the site instead of being re-declared per page.
-export default function PageShell({ children }) {
+export default function PageShell({ children, overlayHeader = false }) {
   return (
     // shrink-0 is load-bearing, and the reason is three properties away from
     // here. The template's base layer sets `body { display: flex; height: 100% }`,
@@ -18,14 +18,14 @@ export default function PageShell({ children }) {
     // broke was the sticky header inside it: a sticky element cannot travel
     // past its containing block, so the header unstuck about one viewport down
     // and scrolled away with the page for the rest of the site.
-    <div className="min-h-screen shrink-0 bg-bg font-Text text-ink antialiased">
+    <div className="relative min-h-screen shrink-0 bg-bg font-Text text-ink antialiased">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-brand-strong focus:px-4 focus:py-2 focus:font-Text focus:text-[13px] focus:!text-white"
       >
         Skip to content
       </a>
-      <Header />
+      <Header overlay={overlayHeader} />
       <main id="main">{children}</main>
       <Footer />
     </div>

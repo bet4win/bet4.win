@@ -1,10 +1,9 @@
 import React from "react";
 import PageShell from "@/app/components/PageShell";
 import PageHeader from "@/app/components/PageHeader";
-import FeaturedGame from "@/app/components/FeaturedGame";
 import GameGrid from "@/app/components/GameGrid";
 import ClosingCta from "@/app/components/ClosingCta";
-import Reveal from "@/app/components/Reveal";
+import DemoHost from "@/app/components/DemoHost";
 import { games } from "@/data/games";
 
 const liveCount = games.filter((g) => g.status === "active").length;
@@ -20,27 +19,17 @@ export default function GamesPage() {
     <PageShell>
       <PageHeader
         title="The catalogue"
-        intro={`${liveCount} provably-fair originals you can launch as a casino game provider — crash, mines, plinko, dice and more. Every title is demo-playable here and fully brandable for your platform.`}
+        scene="chicken"
+        art="chicken"
+        intro={`${liveCount} provably fair originals: crash, mines, plinko, cards, roulette and more. Every title is playable here as a demo, and every one ships in your brand.`}
       />
 
-      <FeaturedGame slug="punch" />
-
-      <section
-        aria-labelledby="all-games"
-        className="mx-auto max-w-[1280px] px-5 py-10 md:px-12"
-      >
-        <Reveal>
-          <h2
-            id="all-games"
-            className="mb-8 font-Text !text-[12px] !font-normal !text-faint"
-          >
-            All originals
-          </h2>
-        </Reveal>
-        <GameGrid items={games} filterable />
+      <section aria-label="All games" className="mx-auto max-w-[1320px] px-5 pb-20 pt-6 md:px-12 md:pb-28">
+        <GameGrid />
       </section>
 
       <ClosingCta />
+      <DemoHost />
     </PageShell>
   );
 }

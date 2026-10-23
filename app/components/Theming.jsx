@@ -81,9 +81,7 @@ export default function Theming() {
                 key={f}
                 className="flex items-start gap-3 b4w-copy font-Text text-muted"
               >
-                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-accent">
-                  <Check className="h-3.5 w-3.5" />
-                </span>
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-ink" />
                 {f}
               </li>
             ))}

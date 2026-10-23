@@ -22,95 +22,26 @@
   --color-*: initial;
   --color-white: #ffffff;
   --color-black: #000000;
-  /* Dark studio palette.
-   *
-   * TWO section surfaces, strictly alternating: --color-bg and --color-panel.
-   * --color-panel-high is a CARD fill, never a section — three section colours
-   * read as three unrelated decisions rather than one rhythm. Cards therefore
-   * always sit a step above whichever surface they are on.
-   *
-   * The surfaces are royal navy, not slate. Slate is a neutral wearing a hint
-   * of blue: it has nowhere to go, so every card on it reads as the same grey
-   * box a shade lighter. Real chroma in the floor gives the raised panels
-   * somewhere to travel, and the value steps still match the slate ones at
-   * every hop — bg/panel 1.184, panel/card 1.252, floor to card 1.483. Colour
-   * is doing the separating now as well as value, which is why the same
-   * arithmetic reads as a much bigger change.
-   *
-   * WHERE THE CARD STEP IS SPENT. panel/card is the smaller of the two numbers
-   * on purpose: the catalogue grid sits on the FLOOR, not on the panel, so the
-   * step a game card actually gets is 1.483. On the panel it was 1.30 and the
-   * tiles read as a lighter grid drawn on a light band rather than as objects
-   * resting on a surface. Moving that section is what bought the contrast; see
-   * the note in GamesPreview.jsx.
-   *
-   * Navy specifically, and NOT the indigo-violet an earlier pass used: violet
-   * with a warm accent is Revolver's palette, and a competitor's colours are
-   * the one thing a brand cannot borrow. It also happens to be the right
-   * answer — the logo is royal blue, so the floor is now the same hue family
-   * as the mark rather than a neighbouring one.
-   *
-   * Navy also gives the accent below somewhere to sit: the mint needs a deep,
-   * blue, chromatic field behind it to read as a signal lamp rather than as
-   * highlighter, and slate does not supply one. */
-  --color-bg: #060a16;
-  --color-panel: #0f1c3f;
-  --color-panel-low: #03050d;
-  /* Was #1b2f63, which measured 57% saturation and read as blue-grey — a slate
-     slab with a tint rather than a navy card. Same lightness (25%), ten more
-     points of chroma, so it loses the grey without losing the step it needs
-     against the floor. It is NOT darker: deepening it to ~#101f52 does read
-     quieter, but it drops the card/floor step to 1.26 — below where it was
-     before the catalogue moved, which would have undone the swap. */
-  --color-panel-high: #152a6b;
-  --color-line: #2b5090;
-  --color-ink: #f1f4fc;
-  /* The text ramp is NEARLY neutral, and that is the point. It used to be
-   * #a6b5da / #8f9fc8 — 41% and 34% saturation at 223°, which is periwinkle. On
-   * a page where body copy is the largest area of coloured pixels there is,
-   * that tinted every paragraph lilac and the whole site read lavender rather
-   * than royal blue. At 20% and 18% the copy still reads cool rather than grey,
-   * and the blue below is once again the only blue on the page. Luminance is
-   * unchanged to within 1%, so every contrast ratio the old pair passed, this
-   * one passes: muted is 9.8:1 on the floor and 8.2:1 on the panel. */
-  --color-muted: #acb7c8;
-  --color-faint: #99a5b8;
-  /* brand — the logo's own blue (#4270ff), split into a text weight and a fill
-   * weight. The fill is darker than the mark because white on the mark's blue
-   * measures 4.21:1, under the 4.5 a 12px button label needs.
-   *
-   * HUE 217, not 226. Every blue here used to sit at 226-228°, which is the
-   * violet side of blue, and at the lightness the text weight needs (#7e9bff was
-   * 75%) that is periwinkle, not royal. Pulling the family to ~217 is what makes
-   * it read as blue rather than as pale violet; the text weight also comes down
-   * from 75% to 68% lightness, which is as dark as it can go and still clear
-   * 4.5:1 for the 13px mono in the integration sample (it measures 4.8:1 on a
-   * card). The fill weight is the one that is properly royal — 74% saturation at
-   * 50% lightness — and it carries white at 5.1:1. */
-  --color-brand: #5c9bff;
-  --color-brand-strong: #2169de;
-  --color-brand-deep: #1a52b4;
-  /* accent — the one signal colour. It replaces the cyan this palette used to
-   * run on: cyan is the default "technology" hue on a dark page, and it sat on
-   * the eyebrows, the figures, the fairness layer and the nav at once, all at
-   * the same pitch. A page where everything is highlighted is a page where
-   * nothing is.
-   *
-   * Mint. At ~148deg it is unambiguously green rather than the blue-green that
-   * would just be cyan wearing a hat, and green is the correct meaning for what
-   * it actually marks here: the multiplier figures are money, and a round you
-   * can verify either checks out or it doesn't.
-   *
-   * ONE weight, unlike the brand blue above. Mint sits high in the luminance
-   * range, so the same value carries 11px type on a navy card (7.73:1) AND
-   * takes dark text when it is a filled chip (10.00:1). An earlier pass on a
-   * mid-luminance accent needed a separate fill weight for exactly the reason
-   * this one doesn't. */
+  /* Near-black with a little blue in it, white type, and almost no colour of
+     the page's own. Every game ships a painted scene and a cut-out hero, and
+     those carry the colour; the chrome around them stays out of the way. The
+     navy-and-glow palette this replaces competed with the art for attention. */
+  --color-bg: #08090e;
+  --color-panel: #11131b;
+  --color-panel-low: #040509;
+  --color-panel-high: #1b1e29;
+  --color-line: #2a2e3d;
+  --color-ink: #f5f6fa;
+  --color-muted: #a6abbb;
+  --color-faint: #8a90a3;
+  /* The logo's blue. Used for the wordmark and for focus rings; actions are
+     white, because on a page this dark the brightest thing is the button. */
+  --color-brand: #6f8dff;
+  --color-brand-strong: #4270ff;
+  --color-brand-deep: #2f5ae6;
+  /* Mint survives only as the NEW tag and "delivered" — small, factual flags. */
   --color-accent: #3ae398;
-  /* Bottom of a filled gradient, and its hover. Still takes the dark ink. */
   --color-accent-deep: #14c489;
-  /* Text ON a filled accent — near-black with a green cast, so a mint chip
-   * reads as one object rather than as dark type dropped onto a colour. */
   --color-accent-ink: #05231a;
   /*
    * Roles, no free-for-all:
@@ -261,7 +192,7 @@
    constrains it via height:100% + flex, so the white shows through below the
    fold. Paint the canvas dark for the home route only — other pages stay light. */
 body.home-dark {
-  background-color: #060a16;
+  background-color: var(--color-bg);
   font-family: var(--font-Text);
 }
 
@@ -384,11 +315,11 @@ body.age-gate-locked {
 }
 
 .b4w-btn--primary {
-  background-color: var(--color-brand-strong);
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #08090e;
 }
 .b4w-btn--primary:hover {
-  background-color: var(--color-brand-deep);
+  background-color: #dfe2ea;
 }
 
 /* Mint, dark type. Reserved for the fairness terminal's own action. */
@@ -406,7 +337,7 @@ body.age-gate-locked {
   color: var(--color-ink);
 }
 .b4w-btn--ghost:hover {
-  border-color: var(--color-muted);
+  border-color: var(--color-ink);
 }
 
 /* Type and an icon, no box. The tertiary action in a row of two. */
@@ -463,7 +394,7 @@ body.age-gate-locked {
 /* The trailing half of a split button — the chevron that opens the seasonal
    launch menu. */
 .b4w-split-end {
-  border-left: 1px solid rgba(255, 255, 255, 0.22);
+  border-left: 1px solid rgba(8, 9, 14, 0.18);
 }
 
 /* A panel that opens off a control — currently just the seasonal launch menu.
@@ -866,4 +797,44 @@ select {
   -webkit-appearance: none !important;
 }
 
+}
+
+/* --- Stage -----------------------------------------------------------------
+ * The home stage changes rooms when a game is picked. The scene fades in over
+ * the previous one (which stays mounted underneath), the copy rises a few
+ * pixels, and the hero lands a beat later. This is the one place on the site
+ * where motion carries information: something just changed.
+ */
+.b4w-stage-fade {
+  animation: b4w-stage-fade 0.6s ease both;
+}
+.b4w-stage-rise {
+  animation: b4w-stage-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.b4w-stage-pop {
+  animation: b4w-stage-pop 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) 0.05s both;
+}
+@keyframes b4w-stage-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes b4w-stage-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+@keyframes b4w-stage-pop {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .b4w-stage-fade,
+  .b4w-stage-rise,
+  .b4w-stage-pop {
+    animation: none;
+  }
 }

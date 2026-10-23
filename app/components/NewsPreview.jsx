@@ -15,14 +15,14 @@ export default function NewsPreview() {
 
   return (
     <Section
-      surface="raised"
+      surface="base"
       aria-labelledby="news-heading"
-      innerClassName="py-14 md:py-20"
+      innerClassName="py-16 md:py-24"
     >
       <div className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-end md:gap-8">
         <h2
           id="news-heading"
-          className="b4w-display !mb-0 !text-[clamp(1.7rem,1.2rem+1.6vw,2.4rem)] !text-ink"
+          className="b4w-display !mb-0 !text-[clamp(1.8rem,1.2rem+2vw,3rem)] !text-ink"
         >
           Recently shipped
         </h2>

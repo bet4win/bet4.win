@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, Close, Menu } from "./Icons";
+import { Close, Menu } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
 import { prefersReducedMotion } from "@/app/lib/motion";
 import { bookingUrl } from "@/app/lib/site";
@@ -21,14 +21,18 @@ const DIRECTION_DELTA = 8;
 
 // Real routes now, not same-page anchors — each label goes somewhere.
 const NAV = [
-  { label: "Platform", href: "/platform" },
   { label: "Games", href: "/games" },
+  { label: "Platform", href: "/platform" },
   { label: "Provably fair", href: "/provably-fair" },
   { label: "Branding", href: "/branding" },
   { label: "News", href: "/news" },
 ];
 
-export default function Header() {
+// `overlay` lays the header over the top of the page instead of above it, with
+// no fill, so a full-bleed scene can run behind it (the home stage). It is then
+// not sticky either: the stage is the first screen, and a transparent bar over
+// the content below it would be unreadable.
+export default function Header({ overlay = false }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -102,7 +106,11 @@ export default function Header() {
       // would be a trap. focus bubbles, so anything inside it — the logo, a nav
       // link, the menu button — brings the whole bar back.
       onFocus={() => setHidden(false)}
-      className="b4w-header sticky top-0 z-50 w-full border-b border-line/40 bg-bg"
+      className={
+        overlay
+          ? "absolute inset-x-0 top-0 z-50 w-full"
+          : "b4w-header sticky top-0 z-50 w-full border-b border-line/60 bg-bg"
+      }
     >
       {/* py-3 on phones. The bar is sticky, so its height is subtracted from
           every screenful of every page rather than paid once — and at py-4 around
@@ -176,7 +184,6 @@ export default function Header() {
             className="b4w-btn b4w-btn--primary hidden sm:inline-flex"
           >
             Book a demo
-            <ArrowRight className="h-4 w-4" />
           </a>
 
           <button
@@ -227,7 +234,6 @@ export default function Header() {
               className="b4w-btn b4w-btn--primary b4w-btn--lg mt-5 w-full"
             >
               Book a demo
-              <ArrowRight className="h-4 w-4" />
             </a>
           </nav>
         </div>

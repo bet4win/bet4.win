@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PageShell from "@/app/components/PageShell";
@@ -7,6 +6,7 @@ import PageHeader from "@/app/components/PageHeader";
 import NewsBody from "@/app/components/NewsBody";
 import NewsCard from "@/app/components/NewsCard";
 import ClosingCta from "@/app/components/ClosingCta";
+import NewsArt from "@/app/components/NewsArt";
 import Reveal from "@/app/components/Reveal";
 import { ArrowLeft, ArrowUpRight } from "@/app/components/Icons";
 import {
@@ -133,14 +133,12 @@ export default async function NewsPostPage({ params }) {
           {/* Described here, unlike on the cards: as the hero it is the first
               thing on the page, and there is no adjacent headline yet doing the
               same job. `priority` because it is the LCP element. */}
-          <Image
-            src={art.src}
+          <NewsArt
+            post={post}
             alt={art.alt}
-            width={art.width}
-            height={art.height}
             priority
             sizes="(min-width:768px) 720px, 92vw"
-            className="mb-10 h-auto w-full rounded-2xl border border-line"
+            className="mb-10 w-full rounded-xl"
           />
 
           <NewsBody blocks={post.body} />

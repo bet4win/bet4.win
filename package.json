@@ -8,7 +8,8 @@
     "start": "next start",
     "gen:og": "node scripts/generate-og-cards.mjs",
     "gen:backdrops": "node scripts/import-backdrops.mjs",
-    "gen:news-art": "node scripts/generate-news-images.mjs"
+    "gen:news-art": "node scripts/generate-news-images.mjs",
+    "gen:art": "node scripts/import-game-art.mjs"
   },
   "dependencies": {
     "@remixicon/react": "^4.9.0",

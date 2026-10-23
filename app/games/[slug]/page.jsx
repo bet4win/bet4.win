@@ -1,10 +1,11 @@
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import GameDetail from "@/app/components/GameDetail";
+import LobbyCard from "@/app/components/LobbyCard";
+import DemoHost from "@/app/components/DemoHost";
+import { liveCatalogue } from "@/app/lib/catalogue";
 import { games } from "@/data/games";
 import { gameContent } from "@/data/gameContent";
 import { SITE_URL, SITE_NAME } from "@/app/lib/site";
@@ -52,9 +53,12 @@ export default async function GamePage({ params }) {
   if (!game) notFound();
 
   const content = gameContent[slugFor(game)];
-  const others = liveGames()
-    .filter((g) => g.id !== game.id)
-    .slice(0, 4);
+  // The next four titles after this one in catalogue order, wrapping, so every
+  // game page links onward to a different set rather than all to the first four.
+  const at = liveCatalogue.findIndex((e) => e.game.id === game.id);
+  const others = [1, 2, 3, 4]
+    .map((n) => liveCatalogue[(at + n) % liveCatalogue.length])
+    .filter((e) => e && e.game.id !== game.id);
 
   // Describes the game as a product so search engines can surface the specs
   // rather than only the page title.
@@ -81,37 +85,23 @@ export default async function GamePage({ params }) {
         <GameDetail game={game} content={content} />
 
         {others.length > 0 && (
-          <section
-            aria-labelledby="more-games"
-            className="mx-auto max-w-[1280px] px-5 pb-24 md:px-12"
-          >
+          <section aria-labelledby="more-games" className="mx-auto max-w-[1320px] px-5 pb-24 md:px-12">
             <h2
               id="more-games"
-              className="mb-6 font-Text !text-[12px] !font-normal !text-faint"
+              className="b4w-display !mb-0 !text-[clamp(1.5rem,1.1rem+1.4vw,2.2rem)] !text-ink"
             >
               More originals
             </h2>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {others.map((g) => (
-                <Link
-                  key={g.id}
-                  href={`/games/${slugFor(g)}`}
-                  className="group overflow-hidden rounded-2xl border border-line bg-panel transition-colors hover:border-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                >
-                  <Image
-                    src={g.banner}
-                    alt=""
-                    sizes="(min-width:992px) 300px, 46vw"
-                    className="h-auto w-full"
-                  />
-                  <span className="block px-3.5 py-3 font-Text text-[1rem] font-semibold !text-ink">
-                    {g.title}
-                  </span>
-                </Link>
+            <ul className="!mb-0 mt-8 grid list-none grid-cols-2 gap-x-5 gap-y-10 p-0 md:grid-cols-4">
+              {others.map((entry) => (
+                <li key={entry.slug}>
+                  <LobbyCard entry={entry} source="more_games" sizes="(min-width:768px) 300px, 46vw" />
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         )}
+        <DemoHost />
       </main>
       <Footer />
     </div>

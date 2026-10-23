@@ -41,14 +41,14 @@ export default function ProvablyFair() {
           <ol className="!mb-0 flex list-none flex-col gap-6 !pl-0">
             {steps.map((s, i) => (
               <li key={s.n} className="relative flex items-start gap-5">
-                <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-accent/35 bg-accent/10 font-JetBrainsMono text-[12px] font-semibold text-accent tabular-nums">
+                <span className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line bg-panel font-Text text-[14px] font-bold text-ink tabular-nums">
                   {s.n}
                   {/* The connector to the next step. Drawn from the marker, not
                       between the rows, so it stays put when the copy wraps. */}
                   {i < steps.length - 1 && (
                     <span
                       aria-hidden="true"
-                      className="absolute left-1/2 top-full h-6 w-px -translate-x-1/2 bg-gradient-to-b from-accent/35 to-transparent"
+                      className="absolute left-1/2 top-full h-6 w-px -translate-x-1/2 bg-line"
                     />
                   )}
                 </span>
