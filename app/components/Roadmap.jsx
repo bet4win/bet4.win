@@ -4,7 +4,14 @@ import Image from "next/image";
 import Wordmark from "./Wordmark";
 import { STAGE_LETTER, STAGE_WORDMARK_MAX } from "./Stage";
 import { artFor } from "@/data/gameArt";
+import Link from "next/link";
+import { ArrowRight } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
+import { liveCatalogue } from "@/app/lib/catalogue";
+
+// Roadmap ids are the games' URL slugs, so a delivered title can link to its
+// own page once it is in the live catalogue.
+const isLive = (id) => liveCatalogue.some((e) => e.slug === id);
 
 // What ships next, presented the way the live games are: the next title in its
 // own scene, with its own hero and wordmark, because its marketing pack exists
@@ -75,7 +82,7 @@ export default function Roadmap({ releases }) {
           <a
             href="mailto:info@bet4.win?subject=Full%20roadmap%20request"
             onClick={() => trackEvent("cta_click", { label: "request_roadmap", cta_type: "email" })}
-            className="b4w-btn b4w-btn--ghost b4w-btn--lg"
+            className="b4w-btn b4w-btn--primary b4w-btn--lg"
           >
             Request the full roadmap
           </a>
@@ -103,7 +110,18 @@ export default function Roadmap({ releases }) {
                   {r.label}
                   {r.delivered && <span className="ml-2 font-semibold text-accent">Delivered</span>}
                 </p>
-                <h3 className="!mb-0 font-Text text-[18px] font-bold !text-ink">{r.title}</h3>
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="!mb-0 font-Text text-[18px] font-bold !text-ink">{r.title}</h3>
+                  {isLive(r.id) && (
+                    <Link
+                      href={`/games/${r.id}`}
+                      aria-label={`${r.title} — game page`}
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/30 text-ink transition-colors hover:border-white hover:bg-white hover:text-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    >
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  )}
+                </div>
                 <p className="!mb-0 font-Text text-[14px] leading-snug text-muted">{r.teaser}</p>
               </li>
             ))}

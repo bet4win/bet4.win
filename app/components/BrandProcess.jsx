@@ -51,7 +51,7 @@ export default function BrandProcess() {
           <ol className="!mb-0 mt-10 grid list-none gap-x-8 gap-y-10 p-0 md:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s, i) => (
               <li key={s.title} className="relative border-t-2 border-white/90 pt-5">
-                <span className="b4w-figure font-Display text-[44px] font-extrabold leading-none text-white/15 [font-stretch:125%]">
+                <span className="b4w-figure font-Display text-[44px] font-extrabold leading-none text-ink/80 [font-stretch:125%]">
                   {i + 1}
                 </span>
                 <h3 className="!mb-0 mt-3 font-Text text-[19px] font-bold !leading-snug !text-ink">{s.title}</h3>
