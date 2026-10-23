@@ -23,7 +23,9 @@ export default function LobbyCard({ entry, sizes = "300px", source = "lobby" }) 
         href={`/games/${slug}`}
         className="block rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
       >
-        <LobbyArt entry={entry} sizes={sizes} />
+        {/* The season glyphs are listed under the card here, and the corner
+            holds the demo button. */}
+        <LobbyArt entry={entry} sizes={sizes} showMarks={false} />
         <div className="mt-3 flex items-baseline justify-between gap-3 font-Text text-[14px]">
           <span className="flex min-w-0 items-center gap-2 text-muted">
             <span className="truncate">{game.category}</span>

@@ -16,16 +16,22 @@ export function registerGameLauncher(fn) {
   };
 }
 
-// Open a game by slug (e.g. "punch"). Returns false if no DemoHost is mounted,
-// so an <a href> fallback can still navigate.
-export function launchGame(slug) {
+// Open a game by slug (e.g. "punch"), optionally in one of its seasonal
+// builds ("christmas"). Returns false if no DemoHost is mounted, so an <a href>
+// fallback can still navigate.
+export function launchGame(slug, season = null) {
   if (!handler) return false;
-  return handler(slug);
+  return handler(slug, season);
 }
 
 // The one call a "Play the demo" control makes: attribute the launch, then
 // open it. `source` says which control it was ("stage", "lobby", …).
-export function playDemo(game, slug, source) {
-  trackEvent("game_launch", { game_id: game.id, game_title: game.title, source });
-  return launchGame(slug);
+export function playDemo(game, slug, source, season = null) {
+  trackEvent("game_launch", {
+    game_id: game.id,
+    game_title: game.title,
+    source,
+    ...(season ? { season } : {}),
+  });
+  return launchGame(slug, season);
 }

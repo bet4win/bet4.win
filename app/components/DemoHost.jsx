@@ -5,6 +5,7 @@ import GameModal from "./GameModal";
 import { registerGameLauncher } from "@/app/lib/gameLauncher";
 import { trackEvent } from "@/app/lib/analytics";
 import { slugFor } from "@/app/lib/slug";
+import { SEASONS } from "@/app/lib/seasons";
 
 const isLive = (game) => game.status === "active";
 
@@ -14,6 +15,17 @@ const findBySlug = (slug) => {
   if (!slug) return null;
   const s = slug.toLowerCase();
   return games.find((g) => isLive(g) && (g.id === s || slugFor(g) === s)) || null;
+};
+
+// A season id is only honoured if the game actually ships that build.
+const seasonFor = (game, season) =>
+  game && season && game.seasons?.[season] && SEASONS[season] ? season : null;
+
+// What the URL says should be open: ?game=<slug>[&season=<id>].
+const fromUrl = () => {
+  const params = new URLSearchParams(window.location.search);
+  const game = findBySlug(params.get("game"));
+  return game ? { game, season: seasonFor(game, params.get("season")) } : null;
 };
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
@@ -32,12 +44,14 @@ export default function DemoHost() {
   // by a shared link (the param was already in the URL). Decides how to close.
   const pushedRef = useRef(false);
 
-  const openGame = (game) => {
+  const openGame = (game, season = null) => {
     const params = new URLSearchParams(window.location.search);
     params.set("game", slugFor(game));
+    if (season) params.set("season", season);
+    else params.delete("season");
     window.history.pushState(null, "", `?${params}`);
     pushedRef.current = true;
-    setActive(game);
+    setActive({ game, season });
   };
 
   const closeGame = () => {
@@ -48,6 +62,7 @@ export default function DemoHost() {
     }
     const params = new URLSearchParams(window.location.search);
     params.delete("game");
+    params.delete("season");
     const qs = params.toString();
     window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname);
     setActive(null);
@@ -56,10 +71,10 @@ export default function DemoHost() {
   // openGame only closes over window and setActive, both stable.
   useEffect(
     () =>
-      registerGameLauncher((slug) => {
+      registerGameLauncher((slug, season) => {
         const match = findBySlug(slug);
         if (!match) return false;
-        openGame(match);
+        openGame(match, seasonFor(match, season));
         return true;
       }),
     [],
@@ -68,7 +83,7 @@ export default function DemoHost() {
   useEffect(() => {
     const onPop = () => {
       pushedRef.current = false;
-      setActive(findBySlug(new URLSearchParams(window.location.search).get("game")));
+      setActive(fromUrl());
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
@@ -77,7 +92,7 @@ export default function DemoHost() {
   // A shared link: open the game on first load and attribute the launch.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const match = findBySlug(params.get("game"));
+    const match = fromUrl();
     if (!match) return;
 
     const utmParams = Object.fromEntries(
@@ -90,9 +105,10 @@ export default function DemoHost() {
     const timer = setTimeout(() => {
       setActive(match);
       trackEvent("game_launch", {
-        game_id: match.id,
-        game_title: match.title,
+        game_id: match.game.id,
+        game_title: match.game.title,
         source: "deep_link",
+        ...(match.season ? { season: match.season } : {}),
         ...utmParams,
       });
     }, 150);
@@ -100,5 +116,13 @@ export default function DemoHost() {
     return () => clearTimeout(timer);
   }, []);
 
-  return <GameModal game={active} onClose={closeGame} />;
+  const season = active?.season;
+  return (
+    <GameModal
+      game={active?.game ?? null}
+      url={season ? active.game.seasons[season] : undefined}
+      season={season ? SEASONS[season] : null}
+      onClose={closeGame}
+    />
+  );
 }

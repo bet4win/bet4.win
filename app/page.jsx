@@ -119,7 +119,7 @@ const jsonLd = {
 // provably-fair / branding live at their own routes.
 export default function HomePage() {
   return (
-    <PageShell overlayHeader>
+    <PageShell overlayHeader snap>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

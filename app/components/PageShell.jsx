@@ -4,7 +4,10 @@ import Footer from "@/app/components/Footer";
 
 // Every route renders through this, so the header, the skip link and the footer
 // stay identical across the site instead of being re-declared per page.
-export default function PageShell({ children, overlayHeader = false }) {
+// `snap` makes each top-level section of <main> a full screen that the page
+// snaps to, so Space / Page Down move one section at a time (see .b4w-snap in
+// globals.css). The homepage uses it; reading pages don't.
+export default function PageShell({ children, overlayHeader = false, snap = false }) {
   return (
     // shrink-0 is load-bearing, and the reason is three properties away from
     // here. The template's base layer sets `body { display: flex; height: 100% }`,
@@ -26,7 +29,9 @@ export default function PageShell({ children, overlayHeader = false }) {
         Skip to content
       </a>
       <Header overlay={overlayHeader} />
-      <main id="main">{children}</main>
+      <main id="main" className={snap ? "b4w-snap" : undefined}>
+        {children}
+      </main>
       <Footer />
     </div>
   );

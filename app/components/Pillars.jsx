@@ -42,7 +42,7 @@ const PILLARS = [
 
 export default function Pillars() {
   return (
-    <section aria-labelledby="pillars-heading" className="bg-bg py-16 md:py-24">
+    <section aria-labelledby="pillars-heading" className="bg-bg py-12">
       <div className="mx-auto max-w-[1280px] px-5 md:px-12">
         <h2
           id="pillars-heading"
@@ -51,12 +51,12 @@ export default function Pillars() {
           What comes with the integration
         </h2>
 
-        <ul className="!mb-0 mt-10 grid list-none gap-5 p-0 md:mt-12 md:grid-cols-3 [&>li]:h-full">
+        <ul className="!mb-0 mt-8 grid list-none gap-5 p-0 md:mt-10 md:grid-cols-3 [&>li]:h-full">
           {PILLARS.map((p) => (
             <li key={p.href}>
               <Link
                 href={p.href}
-                className="group relative isolate flex h-full min-h-[420px] flex-col justify-end overflow-hidden rounded-xl p-6 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:min-h-[520px] md:p-7"
+                className="group relative isolate flex h-full min-h-[420px] flex-col overflow-hidden rounded-xl p-6 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:min-h-[430px] md:p-7"
               >
                 <Image
                   src={artFor(p.scene).scene}
@@ -69,7 +69,10 @@ export default function Pillars() {
                   aria-hidden="true"
                   className="absolute inset-0 -z-10 bg-gradient-to-t from-black/90 via-black/45 via-45% to-transparent"
                 />
-                <div className="relative mb-6 h-[180px] md:h-[210px]">
+                {/* The same box, at the same place, on every panel. The cut-outs
+                    are cropped to their outline at import, so object-contain
+                    sizes each one to the box rather than to its canvas. */}
+                <div className="relative mb-auto h-[160px] md:h-[170px]">
                   <Image
                     src={artFor(p.scene).art}
                     alt=""
@@ -78,7 +81,7 @@ export default function Pillars() {
                     className="object-contain drop-shadow-[0_20px_24px_rgba(0,0,0,0.55)] transition-transform duration-500 group-hover:-translate-y-1.5"
                   />
                 </div>
-                <h3 className="!mb-0 font-Display text-[clamp(1.3rem,1.1rem+0.8vw,1.75rem)] font-extrabold !leading-[1.05] tracking-[-0.02em] !text-ink [font-stretch:125%]">
+                <h3 className="!mb-0 mt-8 font-Display text-[clamp(1.2rem,1.05rem+0.6vw,1.5rem)] font-extrabold !leading-[1.05] tracking-[-0.02em] !text-ink [font-stretch:125%]">
                   {p.title}
                 </h3>
                 <p className="!mb-0 mt-3 b4w-copy font-Text text-ink/80">{p.body}</p>

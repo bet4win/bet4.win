@@ -838,3 +838,33 @@ select {
     animation: none;
   }
 }
+
+/* --- One section per screen ------------------------------------------------
+ * On the homepage every top-level section is a full screen and the page snaps
+ * to their tops, so Space and Page Down move exactly one section. Mandatory
+ * rather than proximity: a keyboard page is ~87% of the viewport, and
+ * proximity snapping can leave it resting a few lines short.
+ *
+ * Only where a section can actually fit a screen. On a phone or a short laptop
+ * the sections run longer than the viewport, and forcing a snap there traps
+ * the reader between two section tops.
+ */
+@media (min-width: 768px) and (min-height: 640px) {
+  html:has(main.b4w-snap) {
+    scroll-snap-type: y mandatory;
+  }
+  main.b4w-snap > section {
+    scroll-snap-align: start;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  /* A centred flex column would shrink-wrap the max-width containers. */
+  main.b4w-snap > section > * {
+    width: 100%;
+  }
+  main.b4w-snap ~ footer {
+    scroll-snap-align: end;
+  }
+}

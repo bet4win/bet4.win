@@ -33,7 +33,7 @@ export default function Roadmap({ releases }) {
         </>
       )}
 
-      <div className="mx-auto grid max-w-[1280px] gap-8 px-5 py-16 md:px-12 md:py-24 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-center">
+      <div className="mx-auto grid max-w-[1280px] gap-8 px-5 py-12 md:px-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-center">
         <div className="order-2 flex flex-col items-start gap-5 lg:order-1">
           <h2
             id="roadmap-heading"
@@ -82,7 +82,7 @@ export default function Roadmap({ releases }) {
         </div>
 
         {art && (
-          <div className="relative order-1 h-[38svh] min-h-[240px] lg:order-2 lg:h-[560px]">
+          <div className="relative order-1 h-[38svh] min-h-[240px] lg:order-2 lg:h-[46svh] lg:max-h-[480px]">
             <Image
               src={art.art}
               alt=""
@@ -95,10 +95,10 @@ export default function Roadmap({ releases }) {
       </div>
 
       {rest.length > 0 && (
-        <div className="mx-auto max-w-[1280px] px-5 pb-16 md:px-12 md:pb-20">
-          <ol className="!mb-0 grid list-none gap-px overflow-hidden rounded-xl border border-line bg-line p-0 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto max-w-[1280px] px-5 pb-12 md:px-12">
+          <ol className="!mb-0 flex list-none flex-col gap-px overflow-hidden rounded-xl border border-line bg-line p-0 sm:flex-row">
             {rest.map((r) => (
-              <li key={r.id} className="flex flex-col gap-1 bg-bg/90 p-5">
+              <li key={r.id} className="flex flex-1 flex-col gap-1 bg-bg/90 p-5">
                 <p className="b4w-figure !mb-0 font-Text text-[14px] text-muted">
                   {r.label}
                   {r.delivered && <span className="ml-2 font-semibold text-accent">Delivered</span>}
