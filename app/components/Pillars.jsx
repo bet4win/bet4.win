@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight } from "./Icons";
 import { claims } from "@/data/proof";
 import { artFor } from "@/data/gameArt";
+import CertMark from "./CertMark";
 
 // What an operator gets besides the games, and the page that proves each part.
 // Three tall panels, each set in a game's room so the section belongs to the
@@ -30,6 +31,7 @@ const PILLARS = [
     href: "/provably-fair",
     link: "How verification works",
     scene: "dice",
+    cert: true,
   },
   {
     title: "Your brand on every game",
@@ -85,6 +87,7 @@ export default function Pillars() {
                   {p.title}
                 </h3>
                 <p className="!mb-0 mt-3 b4w-copy font-Text text-ink/80">{p.body}</p>
+                {p.cert && <CertMark tone="light" className="mt-3 !text-[13px]" />}
                 <span className="mt-5 inline-flex items-center gap-2 font-Text text-[15px] font-semibold text-ink">
                   {p.link}
                   <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />

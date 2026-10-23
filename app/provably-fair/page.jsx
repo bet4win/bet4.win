@@ -1,6 +1,7 @@
 import React from "react";
 import PageShell from "@/app/components/PageShell";
 import PageHeader from "@/app/components/PageHeader";
+import CertMark from "@/app/components/CertMark";
 import ProvablyFair from "@/app/components/ProvablyFair";
 import ClosingCta from "@/app/components/ClosingCta";
 
@@ -19,7 +20,9 @@ export default function ProvablyFairPage() {
         scene="dice"
         art="dice"
         intro="Every outcome is fixed before the bet is placed and can be recomputed afterwards by anyone holding the seeds. Nothing about it requires taking our word — the terminal below runs against the live RGS."
-      />
+      >
+        <CertMark tone="light" className="mt-6" />
+      </PageHeader>
       <ProvablyFair />
       <ClosingCta />
     </PageShell>

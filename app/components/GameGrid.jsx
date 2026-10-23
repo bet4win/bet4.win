@@ -57,7 +57,7 @@ function CategoryFilter({ value, onChange }) {
     <div
       role="group"
       aria-label="Filter the catalogue by mechanic"
-      className="-mx-5 flex gap-6 overflow-x-auto border-b border-line px-5 md:mx-0 md:px-0"
+      className="-mx-5 flex gap-6 overflow-x-auto border-b border-line px-5 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden"
     >
       {options.map((label) => {
         const on = label === value;

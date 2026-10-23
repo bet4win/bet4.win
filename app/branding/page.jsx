@@ -1,7 +1,8 @@
 import React from "react";
 import PageShell from "@/app/components/PageShell";
 import PageHeader from "@/app/components/PageHeader";
-import Theming from "@/app/components/Theming";
+import BrandStudio from "@/app/components/BrandStudio";
+import BrandProcess from "@/app/components/BrandProcess";
 import ClosingCta from "@/app/components/ClosingCta";
 
 export const metadata = {
@@ -18,9 +19,10 @@ export default function BrandingPage() {
         title="Games that look like they were built for you."
         scene="diamonds"
         art="diamonds"
-        intro="White-labelling here is not a logo in the corner. Swap the palette once and it lands across the whole catalogue — try the brand switcher below."
+        intro="White-labelling here is not a logo in the corner. Your logo, colours and typeface go into one theme, and every game in the catalogue wears it — see it on a real game below."
       />
-      <Theming />
+      <BrandStudio />
+      <BrandProcess />
       <ClosingCta />
     </PageShell>
   );

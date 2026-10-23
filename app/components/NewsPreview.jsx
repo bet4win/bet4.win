@@ -5,9 +5,9 @@ import NewsCard from "./NewsCard";
 import { ArrowRight } from "./Icons";
 import { latestPosts } from "@/app/lib/news";
 
-const POSTS = latestPosts(2);
+const POSTS = latestPosts(4);
 
-// The two most recent posts. Release announcements and partner integrations,
+// The four most recent posts — a full screen has room for a row of four. Release announcements and partner integrations,
 // so it is the last piece of evidence before the ask: other people have already
 // done this integration.
 export default function NewsPreview() {
@@ -24,7 +24,7 @@ export default function NewsPreview() {
           id="news-heading"
           className="b4w-display !mb-0 !text-[clamp(1.8rem,1.2rem+2vw,3rem)] !text-ink"
         >
-          Recently shipped
+          Recent news
         </h2>
         <Link href="/news" className="b4w-btn b4w-btn--quiet -ml-1 shrink-0 md:ml-0">
           All news
@@ -32,9 +32,9 @@ export default function NewsPreview() {
         </Link>
       </div>
 
-      <div className="mt-8 grid gap-6 md:mt-10 md:grid-cols-2">
+      <div className="mt-8 grid gap-x-6 gap-y-10 md:mt-10 md:grid-cols-2 lg:grid-cols-4">
         {POSTS.map((post) => (
-          <NewsCard key={post.slug} post={post} />
+          <NewsCard key={post.slug} post={post} compact />
         ))}
       </div>
     </Section>

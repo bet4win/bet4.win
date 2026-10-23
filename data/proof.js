@@ -13,16 +13,26 @@ export const claims = [
   { value: "Certified", label: "RGS and RNG", mono: false },
 ];
 
-// --- Not yet filled in -------------------------------------------------------
-// Both competitors publish all four of these and we currently cannot evidence
-// any of them, so they render as nothing. Give one a `value` and it appears in
+// The RNG's independent certification. Shown as a mark (<CertMark>) wherever
+// the site says the RNG is certified. The report reference is deliberately not
+// published; operators who need it ask for the certificate.
+export const rngCertificate = {
+  lab: "Gaming Associates",
+  labShort: "GA",
+  jurisdiction: "UKGC",
+  jurisdictionName: "UK Gambling Commission",
+};
+
+// --- Partly filled in ---------------------------------------------------------
+// Both competitors publish all four of these. Only the test lab can be
+// evidenced so far (the GA RNG certificate above); the rest render as nothing. Give one a `value` and it appears in
 // the grid automatically — no component change needed.
 //
 // Do not populate these with approximations. An operator's compliance team will
 // ask for the certificate behind whatever is written here.
 export const pendingClaims = [
   { key: "licence", value: "", label: "Licence number", mono: true },
-  { key: "lab", value: "", label: "Independent test lab", mono: false },
+  { key: "lab", value: "Gaming Associates", label: "RNG test lab", mono: false },
   { key: "operators", value: "", label: "Live operators", mono: true },
   { key: "markets", value: "", label: "Regulated markets", mono: true },
 ];

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Wordmark from "./Wordmark";
 import { seasonArtFor } from "@/data/gameArt";
 import { SEASONS, seasonsFor } from "@/app/lib/seasons";
+import { isNewRelease } from "@/app/lib/catalogue";
 
 // The picture on a lobby card: the game's own play scene, its cut-out hero
 // standing in it, and its wordmark as the title — the three pieces of its
@@ -63,7 +64,7 @@ export default function LobbyArt({ entry, sizes, season = null, showMarks = true
           })}
         </span>
       )}
-      {game.isNew && (
+      {isNewRelease(game) && (
         <span className="absolute left-3 top-3 rounded-sm bg-accent px-1.5 py-px font-Text text-[12px] font-bold text-accent-ink">
           New
         </span>

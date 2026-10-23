@@ -115,8 +115,9 @@ import diamondMineBackdrop from "@/public/assets/img/backdrops/diamond-mine.jpg"
 //                   are lowercased to build /games/<slug>, which breaks on any
 //                   multi-word title ("American Roulette" -> "american roulette",
 //                   a URL with a literal space). Set this and `slugFor` uses it.
-//   isNew         — renders a NEW badge on the card. Drop the flag once the
-//                   title is no longer a recent release; nothing expires it.
+//   (NEW badges are not set here. A title is NEW for a month after the date
+//   of its release post in data/news.js — see isNewRelease in
+//   app/lib/catalogue.js.)
 //   seasons       — seasonal variants of this title, as season id -> launch
 //                   URL. Each variant is its own game on the RGS, so this is a
 //                   second `url` rather than a flag. Puts a glyph on the card
@@ -193,7 +194,6 @@ export const games = [
     maxMultiplier: 182908.44,
     image: chicken,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=3c5e5c0ebd5f4e76b8465300b2f5f50b&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
     seasons: {
       christmas:
@@ -238,7 +238,6 @@ export const games = [
     maxMultiplier: 1000,
     image: kenoParty,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=88cf5bf1f9114f319763ecaf4f1a7a15&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
     seasons: {
       christmas:
@@ -262,7 +261,6 @@ export const games = [
     maxMultiplier: 100000,
     image: diamondMine,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=d3c40d524d9346118c835272955e21ac&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
@@ -303,7 +301,6 @@ export const games = [
     maxMultiplier: 800,
     image: videoPoker,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=4518a8a7b97b475f83f16e473a78e3ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
@@ -328,7 +325,6 @@ export const games = [
     maxMultiplier: 101,
     image: blackjack,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=97c9ed6766cd46e7a8bb1c711069d655&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
@@ -355,7 +351,6 @@ export const games = [
     maxMultiplier: 9,
     image: baccarat,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=dde705cf2dfe4d26bf0b9306d6c7515d&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
@@ -375,7 +370,6 @@ export const games = [
     maxMultiplier: 36, // roulette/game.spec.yaml maxWin
     image: roulette,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9abd83cf9b4542909b127c814eba03cb&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
@@ -395,7 +389,6 @@ export const games = [
     maxMultiplier: 1027604.48,
     image: coin,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=86eb86d3a9cf4141bc9ef30e20ea514b&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
@@ -414,7 +407,6 @@ export const games = [
     // (Bet4win catalogue, 2026-10-15), and the card shows no figure rather than an invented one.
     image: hilo,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=cd1a3052f0cb479aa7c167e4f377ec96&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {
@@ -466,7 +458,6 @@ export const games = [
     maxMultiplier: 36, // american-roulette/game.spec.yaml maxWin
     image: americanRoulette,
     status: "active",
-    isNew: true,
     url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=35886cb3d441489a845c089d47264058&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
   },
   {

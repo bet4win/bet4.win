@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   getVerifiableGames,
   verifyFairness,
@@ -42,15 +42,22 @@ export default function FairnessVerifier() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  // Several engines take seconds to recompute a round. Each run gets a ticket,
+  // and only the latest run's answer is shown — otherwise switching game while
+  // one is in flight put the slow answer under the new game's name.
+  const ticket = useRef(0);
 
   useEffect(() => {
+    ticket.current += 1;
     setParams(defaultsFor(game));
     setResult(null);
     setError(null);
+    setLoading(false);
   }, [idx]); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function onVerify(e) {
     e.preventDefault();
+    const mine = ++ticket.current;
     setLoading(true);
     setError(null);
     setResult(null);
@@ -67,11 +74,11 @@ export default function FairnessVerifier() {
         nonce: Number(nonce),
         params: built,
       });
-      setResult(r);
+      if (mine === ticket.current) setResult(r);
     } catch (err) {
-      setError(err?.message || "Verification failed.");
+      if (mine === ticket.current) setError(err?.message || "Verification failed.");
     } finally {
-      setLoading(false);
+      if (mine === ticket.current) setLoading(false);
     }
   }
 

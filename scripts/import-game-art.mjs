@@ -60,6 +60,24 @@ const HERO = new Set(["chicken", "dragon", "roulette", "american-roulette"]);
 
 // Seasonal builds that have their own marketing pack: slug -> season id ->
 // marketing folder. Season ids match app/lib/seasons.js and data/games.js.
+// Edges where a pack's hero is CUT rather than drawn — Punch's arm, Crash's
+// flame trail, the ibex's chest — that need fading out. Detection catches a
+// subject that runs off its canvas; these are cut a few pixels inside it, where
+// the numbers can't tell a cut from a flat edge that is meant to be there (the
+// dice's bar), so they are named.
+const FADE_EDGES = {
+  "punch-game": ["left"],
+  crash: ["bottom"],
+  limbo: ["bottom"],
+  "sunset-peak": ["bottom"],
+};
+
+// Packs keyed off a green screen whose edges still carry green painted into
+// the art itself (the ibex's fur tips). A key can't remove colour that belongs
+// to the subject's pixels, so these get a green despill: green is held to the
+// larger of red and blue wherever it exceeds both.
+const DESPILL_GREEN = new Set(["sunset-peak"]);
+
 // Packs whose "clear" background has the hero painted into it, so standing the
 // cut-out in front of it shows the subject twice. These use the blurred
 // background as their room instead.
@@ -166,11 +184,11 @@ async function prepareArt(src) {
 // Fades a cut-out's alpha to nothing over the last stretch of every edge it
 // runs off, so a cropped arm or tower trails away instead of stopping at a
 // straight line wherever it is placed.
-async function fadeBleed(pipeline, bleed) {
+async function fadeBleed(pipeline, bleed, despill = false) {
   const { data, info } = await pipeline.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const { width: W, height: H } = info;
-  const rampX = Math.max(40, Math.round(W * 0.16));
-  const rampY = Math.max(40, Math.round(H * 0.16));
+  const rampX = Math.max(60, Math.round(W * 0.24));
+  const rampY = Math.max(60, Math.round(H * 0.24));
   const ease = (t) => t * t * (3 - 2 * t);
   for (let y = 0; y < H; y++) {
     for (let x = 0; x < W; x++) {
@@ -179,7 +197,12 @@ async function fadeBleed(pipeline, bleed) {
       if (bleed.right && x >= W - rampX) k *= ease((W - 1 - x) / rampX);
       if (bleed.top && y < rampY) k *= ease(y / rampY);
       if (bleed.bottom && y >= H - rampY) k *= ease((H - 1 - y) / rampY);
-      if (k < 1) data[(y * W + x) * 4 + 3] = Math.round(data[(y * W + x) * 4 + 3] * k);
+      const i = (y * W + x) * 4;
+      if (k < 1) data[i + 3] = Math.round(data[i + 3] * k);
+      if (despill) {
+        const cap = Math.max(data[i], data[i + 2]);
+        if (data[i + 1] > cap) data[i + 1] = cap;
+      }
     }
   }
   return sharp(data, { raw: { width: W, height: H, channels: 4 } });
@@ -213,7 +236,9 @@ async function importSet(dir, outDir, { hero = false } = {}) {
       facts.framed = framed;
       if (crop) img = img.extract(crop);
       img = img.resize(1100, 1100, { fit: "inside", withoutEnlargement: true });
-      if (!framed && Object.values(bleed).some(Boolean)) img = await fadeBleed(img, bleed);
+      for (const edge of FADE_EDGES[dir] ?? []) bleed[edge] = true;
+      const despill = DESPILL_GREEN.has(dir);
+      if (!framed && (despill || Object.values(bleed).some(Boolean))) img = await fadeBleed(img, bleed, despill);
       await img.webp({ quality: 82 }).toFile(out);
     }
     if (kind === "wordmark") {

@@ -24,9 +24,14 @@ function deobfuscate(value) {
 }
 
 async function postBFF(payload, token) {
+  // The body is the base64 envelope, so it has to be labelled as one. The RGS
+  // now decodes by Content-Type — the game client's apiEncoding.ts sends
+  // application/x-base64 — and a base64 body labelled application/json reads
+  // as JSON with no `cmd` in it, which it refuses with "Provided command is
+  // not allowed". That is what broke the verifier, AUTH included.
   const headers = {
-    Accept: "application/json",
-    "Content-Type": "application/json",
+    Accept: "application/x-base64",
+    "Content-Type": "application/x-base64",
     "X-Requested-With": "XMLHttpRequest",
   };
   if (token) {
@@ -87,6 +92,9 @@ export async function verifyFairness(args) {
 // the game has one, falling back to index/number lists only where required.
 const mult = (v) => `${Number(v).toFixed(2)}×`;
 
+const SUIT = { H: "♥", D: "♦", C: "♣", S: "♠" };
+const card = (c) => `${c.rank}${SUIT[c.suit] ?? c.suit}`;
+
 export function formatOutcome(title, r) {
   if (!r || typeof r !== "object") return [];
   switch (title) {
@@ -106,6 +114,37 @@ export function formatOutcome(title, r) {
       return [{ label: "Mine positions", value: (r.minePositions ?? []).join(", ") }];
     case "Keno":
       return [{ label: "Drawn numbers", value: (r.finalDrawnNumbers ?? []).join(", ") }];
+    case "Punch":
+    case "Diamond Mine":
+      // The ladder rung the round busts on, drawn before the first strike.
+      return [
+        { label: "Bust multiplier", value: mult(r.burstMultiplier), primary: true },
+        { label: "Bust rung", value: `${r.burstStep} of ${r.ladderLength}` },
+      ];
+    case "Chicken":
+      return [
+        { label: "Cars in lanes", value: (r.carPositions ?? []).join(", "), primary: true },
+      ];
+    case "Keno Party":
+      return [{ label: "Drawn numbers", value: (r.finalDrawnNumbers ?? []).join(", ") }];
+    case "Roulette":
+    case "American Roulette":
+      return [{ label: "Pocket", value: String(r.resultLabel), primary: true }];
+    case "Video Poker":
+      return [{ label: "Dealt", value: (r.dealt ?? []).map(card).join("  "), primary: true }];
+    case "Baccarat":
+      return [
+        { label: "Winner", value: String(r.result).replace(/^./, (c) => c.toUpperCase()), primary: true },
+        { label: "Player / Banker", value: `${r.playerTotal} / ${r.bankerTotal}` },
+      ];
+    case "Coin":
+      return [{ label: "First ten flips", value: (r.sides ?? []).slice(0, 10).join(", ") }];
+    case "Blackjack":
+      return [{ label: "Shoe order (first ten)", value: (r.cards ?? []).slice(0, 10).join(", ") }];
+    case "HiLo":
+      return [
+        { label: "Deck positions (first ten)", value: (r.cards ?? []).slice(0, 10).map((c) => c.position).join(", ") },
+      ];
     case "Dragon":
       return [
         {
@@ -137,6 +176,9 @@ export const labelFor = (o) =>
 
 // Per-game parameter schema (mirrors each game's *ParamsComponent in the ui repo).
 export const PARAM_SCHEMAS = {
+  Chicken: [
+    { name: "risk", label: "Risk", type: "select", options: ["easy", "medium", "hard", "expert"], default: "medium" },
+  ],
   Mines: [{ name: "mines", label: "Mines", type: "number", min: 1, max: 24, step: 1, default: 3 }],
   Plinko: [
     { name: "risk", label: "Risk", type: "select", options: ["low", "medium", "high"], default: "medium" },

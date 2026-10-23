@@ -12,6 +12,7 @@ import { games } from "@/data/games";
 // so this is their current wordmark — already a reversed variant, which is why
 // it reads on the dark footer without a filter.
 import gambleAware from "@/public/assets/img/compliance/gambleaware.svg";
+import CertMark from "./CertMark";
 import logo from "@/public/assets/img/b4w-logo.svg";
 
 const CONTACT = "info@bet4.win";
@@ -207,10 +208,11 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Compliance band. Deliberately just these two marks: licence badges
-            (MGA, UKGC) must only appear for licences actually held. */}
+        {/* Compliance band. Licence badges (MGA, UKGC) must only appear for
+            licences actually held; the RNG certificate is stated in words, as a
+            test against the UKGC's standards, not as a regulator's badge. */}
         <div className="flex flex-col gap-5 border-t border-line/40 py-7 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center gap-5">
             <span
               role="img"
               aria-label="18 plus only"
@@ -238,6 +240,7 @@ export default function Footer() {
                 className="h-[21px] w-auto"
               />
             </a>
+            <CertMark className="!text-[12px]" />
           </div>
 
           {/* The single most important sentence in the footer. This site sells to
