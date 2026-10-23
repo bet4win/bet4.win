@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import Wordmark from "./Wordmark";
+import { STAGE_LETTER, STAGE_WORDMARK_MAX } from "./Stage";
 import { artFor } from "@/data/gameArt";
 import { trackEvent } from "@/app/lib/analytics";
 
@@ -46,11 +48,13 @@ export default function Roadmap({ releases }) {
               </p>
               {art ? (
                 <h3 className="!mb-0">
-                  <Image
-                    src={art.wordmark}
+                  <Wordmark
+                    art={art}
                     alt={next.title}
-                    sizes="(min-width:768px) 460px, 80vw"
-                    className="h-auto max-h-[120px] w-auto max-w-[min(460px,100%)] object-contain object-left drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
+                    letter={STAGE_LETTER}
+                    maxWidth={STAGE_WORDMARK_MAX}
+                    sizes="(min-width:768px) 680px, 90vw"
+                    className="drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
                   />
                 </h3>
               ) : (

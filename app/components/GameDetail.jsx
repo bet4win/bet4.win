@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import GameModal from "./GameModal";
 import SeasonLaunch from "./SeasonLaunch";
+import Wordmark from "./Wordmark";
+import { STAGE_LETTER, STAGE_WORDMARK_MAX } from "./Stage";
 import { ArrowLeft, Play } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
 import { STANDARD, seasonOptions } from "@/app/lib/seasons";
@@ -72,12 +74,14 @@ export default function GameDetail({ game, content }) {
           <div className="order-2 flex flex-col items-start gap-6 lg:order-1">
             <h1 className="!mb-0">
               {art ? (
-                <Image
-                  src={art.wordmark}
+                <Wordmark
+                  art={art}
                   alt={game.title}
+                  letter={STAGE_LETTER}
+                  maxWidth={STAGE_WORDMARK_MAX}
                   priority
-                  sizes="(min-width:768px) 520px, 80vw"
-                  className="h-auto max-h-[clamp(70px,12vw,150px)] w-auto max-w-[min(520px,100%)] object-contain object-left drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
+                  sizes="(min-width:768px) 680px, 90vw"
+                  className="drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
                 />
               ) : (
                 <span className="b4w-display !text-[clamp(2.4rem,1.5rem+2.8vw,3.5rem)] !text-ink">

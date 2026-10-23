@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import LobbyArt from "./LobbyArt";
+import Wordmark from "./Wordmark";
 import { ArrowLeft, ArrowRight, Play } from "./Icons";
 import { liveCatalogue } from "@/app/lib/catalogue";
 import { playDemo } from "@/app/lib/gameLauncher";
@@ -22,6 +23,12 @@ import { trackEvent } from "@/app/lib/analytics";
 // Pads the rail so its first card lines up with the page's content edge,
 // while the row itself still runs to both edges of the screen.
 const GUTTER = "max(1.25rem, calc((100vw - 1280px) / 2 + 3rem))";
+
+// The size every title's LETTERS come out at on the stage (see <Wordmark>).
+export const STAGE_LETTER = "clamp(40px, 3.4vw + 23px, 76px)";
+// Wide titles may run past the copy column into the room; capped short of the
+// hero so the longest (American Roulette, 10:1) still reads.
+export const STAGE_WORDMARK_MAX = "min(640px, calc(100vw - 2.5rem))";
 
 export default function Stage({ initialSlug }) {
   const start = Math.max(0, liveCatalogue.findIndex((e) => e.slug === initialSlug));
@@ -59,10 +66,6 @@ export default function Stage({ initialSlug }) {
     if (top < -40) window.scrollTo({ top: window.scrollY + top, behavior: "smooth" });
   };
 
-  const page = (dir) => {
-    const rail = railRef.current;
-    if (rail) rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: "smooth" });
-  };
 
   const figures = [
     ["RTP", game.rtp],
@@ -112,21 +115,27 @@ export default function Stage({ initialSlug }) {
         className="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-bg/85 to-transparent"
       />
 
+      {/* The page's heading, for search and screen readers. On screen the
+          games carry the pitch; a line of company copy over a game's room read
+          as a caption that belonged to neither. */}
+      <h1 className="sr-only">
+        Bet4.win: {liveCatalogue.length} provably fair originals for operators, on one
+        integration. A new one every month.
+      </h1>
+
       {/* Clears the overlaid header. */}
       <div className="h-[72px] md:h-[84px]" />
 
       <div className="mx-auto grid w-full max-w-[1280px] flex-1 items-center gap-6 px-5 md:px-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-8">
         <div key={`copy-${slug}`} className="b4w-stage-rise order-2 flex flex-col items-start gap-4 pb-4 md:gap-5 lg:order-1 lg:py-2">
-          <h1 className="!mb-0 max-w-[34rem] font-Text !text-[clamp(0.8rem,0.7rem+0.35vw,0.95rem)] !font-medium !leading-snug !text-ink/85">
-            {liveCatalogue.length} provably fair originals for operators, on one
-            integration. A new one every month.
-          </h1>
           <h2 className="!mb-0">
-            <Image
-              src={art.wordmark}
+            <Wordmark
+              art={art}
               alt={game.title}
-              sizes="(min-width:768px) 520px, 80vw"
-              className="h-auto max-h-[clamp(64px,10vw,124px)] w-auto max-w-[min(480px,100%)] object-contain object-left drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
+              letter={STAGE_LETTER}
+              maxWidth={STAGE_WORDMARK_MAX}
+              sizes="(min-width:768px) 680px, 90vw"
+              className="drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
             />
           </h2>
           <p className="!mb-0 max-w-[30rem] font-Text !text-[clamp(0.9rem,0.78rem+0.5vw,1.05rem)] !font-medium !leading-[1.45] !text-ink">
@@ -188,16 +197,16 @@ export default function Stage({ initialSlug }) {
             </Link>
             <button
               type="button"
-              onClick={() => page(-1)}
-              aria-label="Scroll the lobby back"
+              onClick={() => show(index - 1, "arrow")}
+              aria-label="Previous game"
               className="b4w-btn b4w-btn--ghost b4w-btn--icon !border-white/25"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
             <button
               type="button"
-              onClick={() => page(1)}
-              aria-label="Scroll the lobby forward"
+              onClick={() => show(index + 1, "arrow")}
+              aria-label="Next game"
               className="b4w-btn b4w-btn--ghost b4w-btn--icon !border-white/25"
             >
               <ArrowRight className="h-4 w-4" />
