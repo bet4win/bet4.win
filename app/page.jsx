@@ -1,6 +1,5 @@
 import PageShell from "@/app/components/PageShell";
 import Stage from "@/app/components/Stage";
-import LobbyRail from "@/app/components/LobbyRail";
 import DemoHost from "@/app/components/DemoHost";
 import Roadmap from "@/app/components/Roadmap";
 import Pillars from "@/app/components/Pillars";
@@ -114,7 +113,8 @@ const jsonLd = {
 };
 
 // Home is a games studio's front page: the stage puts one game at a time on
-// the whole first screen, the lobby shows the range, then what ships next,
+// the whole first screen with the lobby along its bottom to choose from, then
+// what ships next,
 // what comes with the integration, the news and the ask. Platform /
 // provably-fair / branding live at their own routes.
 export default function HomePage() {
@@ -125,7 +125,6 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Stage initialSlug="punch" />
-      <LobbyRail />
       {/* Computed here rather than inside the component — the "this month"
           label depends on the date, and deriving that on the client would
           disagree with this markup across a month boundary. */}
