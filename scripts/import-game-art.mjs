@@ -60,29 +60,29 @@ const HERO = new Set(["chicken", "dragon", "roulette", "american-roulette"]);
 
 // Seasonal builds that have their own marketing pack: slug -> season id ->
 // marketing folder. Season ids match app/lib/seasons.js and data/games.js.
-// Edges where a pack's hero is CUT rather than drawn — Punch's arm, Crash's
-// flame trail, the ibex's chest — that need fading out. Detection catches a
+// Edges where a pack's hero is CUT rather than drawn — Punch's arm, Limbo's
+// light trail, the ibex's chest — that need fading out. Detection catches a
 // subject that runs off its canvas; these are cut a few pixels inside it, where
 // the numbers can't tell a cut from a flat edge that is meant to be there (the
 // dice's bar), so they are named.
 const FADE_EDGES = {
   "punch-game": ["left"],
-  crash: ["bottom"],
   limbo: ["bottom"],
   "sunset-peak": ["bottom"],
 };
 
 // How far in from a cut edge the fade runs, as a share of the image. The
-// default is long because Punch's arm and the crash trails are meant to trail
+// default is long because Punch's arm and Limbo's trail are meant to trail
 // away. The seasonal Punch heroes are cut on three sides (chains, sleeve, the
 // bag's foot), and a long ramp on all three washed the whole subject out —
 // they only need the cut line itself softened.
 const FADE_RAMP = { "punch-christmas": 0.07, "punch-halloween": 0.07 };
 
 // Whole subjects that touch their canvas because they're cropped tight, not
-// because they're cut — the roulette wheels. Detection reads that as a bleed
-// and fades every side; these keep the edges they were drawn with.
-const WHOLE = new Set(["roulette", "american-roulette"]);
+// because they're cut — the roulette wheels, the plinko board's corner.
+// Detection reads that as a bleed and fades the side; these keep the edges
+// they were drawn with.
+const WHOLE = new Set(["roulette", "american-roulette", "plinko"]);
 
 // Packs keyed off a green screen whose edges still carry green painted into
 // the art itself (the ibex's fur tips). A key can't remove colour that belongs
