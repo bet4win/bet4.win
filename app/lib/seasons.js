@@ -1,16 +1,9 @@
 // Seasonal variants of a game: what they are called, what they look like on
 // this site, and where they launch.
 //
-// A seasonal variant is its OWN registered game on the RGS, not a flag on the
-// standard one. Punch Halloween has its own game id, and the launch endpoint
-// resolves it to a client URL that already carries `?season=halloween` —
-// configured against the game, not passed by whoever launched it. So there is
-// nothing for this site to append: a variant is simply a second launch URL,
-// and that is the whole integration.
-//
-// (Worth knowing if you are tempted to add `&season=…` to a URL by hand: the
-// launch endpoint copies only an allowlist of query parameters through to the
-// client, and `season` is not on it. A hand-added one is silently dropped.)
+// On this site a seasonal variant is simply a second launch URL: the same
+// client with `season=<id>`, which is what it dresses itself from (see `demo`
+// in data/games.js). On the RGS each variant is its own registered game.
 //
 // What lives here is only the presentation half — the glyph and the label that
 // tell an operator the variant exists. The dressing itself is the client's,

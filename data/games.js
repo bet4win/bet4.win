@@ -96,6 +96,14 @@ import chickenBackdrop from "@/public/assets/img/backdrops/chicken.jpg";
 import kenoPartyBackdrop from "@/public/assets/img/backdrops/keno-party.jpg";
 import diamondMineBackdrop from "@/public/assets/img/backdrops/diamond-mine.jpg";
 
+// A demo opens the game client straight from the CDN. With token=DEMO on a
+// deployed host the client is its own backend (../ui/lib/demo-backend): no
+// RGS, so no game id, operator or site to pass. `client` is the build's folder
+// on the CDN; `season` dresses it. The language follows the visitor's browser.
+const CDN = "https://b4wcdn.com/dev";
+const demo = (client, season) =>
+  `${CDN}/${client}/index.html?token=DEMO${season ? `&season=${season}` : ""}`;
+
 // Per-game card figures. All three are game-specific — there is no catalogue-wide
 // default, so a game that omits a field simply doesn't show it on its card.
 //
@@ -119,10 +127,9 @@ import diamondMineBackdrop from "@/public/assets/img/backdrops/diamond-mine.jpg"
 //   of its release post in data/news.js — see isNewRelease in
 //   app/lib/catalogue.js.)
 //   seasons       — seasonal variants of this title, as season id -> launch
-//                   URL. Each variant is its own game on the RGS, so this is a
-//                   second `url` rather than a flag. Puts a glyph on the card
-//                   and an entry in the launch menu. Ids must be listed in
-//                   app/lib/seasons.js; anything else is ignored.
+//                   URL (the same client with `season` set). Puts a glyph on
+//                   the card and an entry in the launch menu. Ids must be
+//                   listed in app/lib/seasons.js; anything else is ignored.
 export const games = [
   {
     id: "16",
@@ -141,18 +148,16 @@ export const games = [
     maxMultiplier: 100000,
     image: punch,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5539fc3e4671414fb3229a9eee641720&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("punch-game"),
     aspectRatio: "16/9",
-    // Seasonal variants: season id -> its own launch URL. Each is a separate
-    // game on the RGS with its own id, and the launch endpoint resolves it to
-    // a client URL already carrying `?season=<id>` — see app/lib/seasons.js.
-    // Punch, Dragon, Chicken, Keno, Keno Party and Plinko are the titles with a
-    // Christmas build.
+    // Seasonal variants: season id -> its own launch URL — see
+    // app/lib/seasons.js. Punch, Dragon, Chicken, Keno, Keno Party and Plinko
+    // are the titles with a Christmas build.
     seasons: {
       halloween:
-        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=987f5a63ff4b4ede9790989d6e874eba&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+        demo("punch-game", "halloween"),
       christmas:
-        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9fd2de7ee70e4c0ca4aac8aea2356e42&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+        demo("punch-game", "christmas"),
     },
     // Drives the homepage spotlight. Move this block to another game to change
     // which original is featured — see <FeaturedGame /> in app/page.jsx.
@@ -194,10 +199,10 @@ export const games = [
     maxMultiplier: 182908.44,
     image: chicken,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=3c5e5c0ebd5f4e76b8465300b2f5f50b&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("chicken"),
     seasons: {
       christmas:
-        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9b3f8ebbce8240ee920ad8691848dd5f&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+        demo("chicken", "christmas"),
     },
   },
   {
@@ -215,7 +220,7 @@ export const games = [
     maxMultiplier: 10000,
     image: crash,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=a444355ce84b419ea48869d9c15734ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win&branding=test",
+    url: demo("crash"),
   },
   {
     id: "23",
@@ -238,10 +243,10 @@ export const games = [
     maxMultiplier: 1000,
     image: kenoParty,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=88cf5bf1f9114f319763ecaf4f1a7a15&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("multiplayer-keno"),
     seasons: {
       christmas:
-        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5368a1df315d465a80e8e99d3d02f5b6&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+        demo("multiplayer-keno", "christmas"),
     },
   },
   {
@@ -261,7 +266,7 @@ export const games = [
     maxMultiplier: 100000,
     image: diamondMine,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=d3c40d524d9346118c835272955e21ac&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("diamond-mine"),
   },
   {
     id: "9",
@@ -276,10 +281,10 @@ export const games = [
     maxMultiplier: 259522.56,
     image: dragon,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=14fdde34d95011f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("dragon-tower"),
     seasons: {
       christmas:
-        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=a8fb301d5ba74e949504d2e40dda95c1&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+        demo("dragon-tower", "christmas"),
     },
     aspectRatio: "4/3",
   },
@@ -301,7 +306,7 @@ export const games = [
     maxMultiplier: 800,
     image: videoPoker,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=4518a8a7b97b475f83f16e473a78e3ab&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("video-poker"),
   },
   {
     id: "21",
@@ -325,7 +330,7 @@ export const games = [
     maxMultiplier: 101,
     image: blackjack,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=97c9ed6766cd46e7a8bb1c711069d655&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("blackjack"),
   },
   {
     id: "22",
@@ -351,7 +356,7 @@ export const games = [
     maxMultiplier: 9,
     image: baccarat,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=dde705cf2dfe4d26bf0b9306d6c7515d&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("baccarat"),
   },
   {
     id: "17",
@@ -370,7 +375,7 @@ export const games = [
     maxMultiplier: 36, // roulette/game.spec.yaml maxWin
     image: roulette,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9abd83cf9b4542909b127c814eba03cb&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("roulette"),
   },
   {
     id: "19",
@@ -389,7 +394,7 @@ export const games = [
     maxMultiplier: 1027604.48,
     image: coin,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=86eb86d3a9cf4141bc9ef30e20ea514b&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("coin"),
   },
   {
     id: "5",
@@ -407,7 +412,7 @@ export const games = [
     // (Bet4win catalogue, 2026-10-15), and the card shows no figure rather than an invented one.
     image: hilo,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=cd1a3052f0cb479aa7c167e4f377ec96&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("hilo"),
   },
   {
     id: "1",
@@ -422,7 +427,7 @@ export const games = [
     maxMultiplier: 5148297,
     image: mines,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=9943920c44b211f0be34cdfe93e2b2d7&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("mines"),
   },
   {
     id: "2",
@@ -436,10 +441,10 @@ export const games = [
     maxMultiplier: 1000, // plinko/src/app/app.tsx
     image: plinko,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=78106d6ed4d247fbb7ac517ad8aa40d5&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("plinko"),
     seasons: {
       christmas:
-        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=961d461bd6704d82a1e9233d5c61bd60&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+        demo("plinko", "christmas"),
     },
   },
   {
@@ -458,7 +463,7 @@ export const games = [
     maxMultiplier: 36, // american-roulette/game.spec.yaml maxWin
     image: americanRoulette,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=35886cb3d441489a845c089d47264058&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("american-roulette"),
   },
   {
     id: "4",
@@ -473,7 +478,7 @@ export const games = [
     maxMultiplier: 9900.99,
     image: dice,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=5dcfc14083094c6b963d0dc6ad82ba68&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("dice"),
   },
   {
     id: "6",
@@ -487,7 +492,7 @@ export const games = [
     maxMultiplier: 49.5, // lib/components winBands.ts WIN_BANDS.wheel
     image: wheel,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=8d74f1b250c74e0ca003ca551ec9bd90&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("wheel"),
   },
   {
     id: "7",
@@ -502,7 +507,7 @@ export const games = [
     maxMultiplier: 50, // diamonds/src/app/app.tsx fallback (?? 50)
     image: diamonds,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=e07d949ed84911f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("diamonds"),
   },
   {
     id: "8",
@@ -516,10 +521,10 @@ export const games = [
     maxMultiplier: 1000, // keno/src/app/app.tsx
     image: keno,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=25eb025cd4bf11f08de90242ac120002&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("keno"),
     seasons: {
       christmas:
-        "https://remote-gaming-dev.systems.bet4.win/api/launch?game=ffcaad5af8c34a0f90b2ab3e9be51537&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+        demo("keno", "christmas"),
     },
   },
   {
@@ -534,6 +539,6 @@ export const games = [
     maxMultiplier: 1000000, // limbo/src/app/app.tsx
     image: limbo,
     status: "active",
-    url: "https://remote-gaming-dev.systems.bet4.win/api/launch?game=17709360010649fa8f081e5c9920c42c&token=DEMO&operator=5e41c28de3724d1290bbafbf6ee31cee&lang=en&site=bet4.win",
+    url: demo("limbo"),
   },
 ];

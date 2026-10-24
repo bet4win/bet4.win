@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Image, { getImageProps } from "next/image";
-import { preload } from "react-dom";
 import Link from "next/link";
 import LobbyArt from "./LobbyArt";
 import Wordmark, { wordmarkSizes } from "./Wordmark";
@@ -57,19 +56,35 @@ export const stageWordmarkSizes = (art) => wordmarkSizes(art, { small: 49, large
 const SCENE_SIZES = "100vw";
 const HERO_SIZES = "(min-width:992px) 55vw, 90vw";
 
-// Starts fetching a look's room, hero and wordmark at exactly the sizes the
-// stage will ask for, so they're in by the time it's picked. Repeat calls for
-// the same files are free: React dedupes the preload.
-function preloadLook(art) {
-  for (const [src, sizes] of [
-    [art.scene, SCENE_SIZES],
-    [art.art, HERO_SIZES],
-    [art.wordmark, stageWordmarkSizes(art)],
-  ]) {
-    const { props } = getImageProps({ src, alt: "", sizes });
-    preload(props.src, { as: "image", imageSrcSet: props.srcSet, imageSizes: props.sizes });
+// Fetches and decodes a look's room, hero and wordmark at exactly the sizes the
+// stage will ask for, so the stage can hold the old look until the new one
+// paints whole on its first frame. One promise per look, kept for the visit.
+const looks = new Map();
+function loadLook(art) {
+  if (!looks.has(art)) {
+    looks.set(
+      art,
+      Promise.all(
+        [
+          [art.scene, SCENE_SIZES],
+          [art.art, HERO_SIZES],
+          [art.wordmark, stageWordmarkSizes(art)],
+        ].map(([src, sizes]) => {
+          const { props } = getImageProps({ src, alt: "", sizes });
+          const img = new window.Image();
+          img.sizes = props.sizes ?? "";
+          img.srcset = props.srcSet ?? "";
+          img.src = props.src;
+          return img.decode().catch(() => {});
+        }),
+      ),
+    );
   }
+  return looks.get(art);
 }
+
+// The longest a pick waits for its art before switching regardless.
+const LOAD_WAIT_MS = 1500;
 
 // How long each game holds the stage while the lobby tours itself.
 const TOUR_MS = 7000;
@@ -134,55 +149,67 @@ export default function Stage({ initialSlug }) {
   const art = artIn(entry, season);
   const look = `${slug}-${inSeason ? season : "standard"}`;
 
-  // Selects the game at index `i` (and optionally a season) on the stage.
+  // The pick still waiting on its art, if any. Only the latest one lands.
+  const pending = useRef(null);
+
+  // Selects the game at index `i` (and optionally a season) on the stage. The
+  // current look stays up until the new one's art is decoded.
   const select = (i, nextSeason, via, nextDir = i >= index ? 1 : -1) => {
     if (via !== "auto") setTouring(false);
-    if (i === index && nextSeason === season) return;
-    setUnder(art.scene);
-    setIndex(i);
-    setSeason(nextSeason);
-    setDir(nextDir);
+    if (i === index && nextSeason === season) {
+      pending.current = null;
+      return;
+    }
     if (i !== index && via !== "auto") {
       trackEvent("stage_select", { game_title: liveCatalogue[i].game.title, via });
     }
     keepInView(i, via !== "auto");
+    const pick = { i };
+    pending.current = pick;
+    Promise.race([
+      loadLook(artIn(liveCatalogue[i], nextSeason)),
+      new Promise((r) => setTimeout(r, LOAD_WAIT_MS)),
+    ]).then(() => {
+      if (pending.current !== pick) return;
+      pending.current = null;
+      setUnder(art.scene);
+      setIndex(i);
+      setSeason(nextSeason);
+      setDir(nextDir);
+    });
   };
 
+  const poolIn = (s) =>
+    liveCatalogue.map((e, i) => i).filter((i) => !s || hasSeason(liveCatalogue[i], s));
+
   // Steps through the games in the current season (all of them in Standard),
-  // wrapping at either end.
+  // wrapping at either end — from the pick still loading, if there is one, so
+  // two quick presses move two games.
   const step = (by, via = "arrow") => {
-    const pool = liveCatalogue
-      .map((e, i) => i)
-      .filter((i) => !season || hasSeason(liveCatalogue[i], season));
-    const at = pool.indexOf(index);
+    const pool = poolIn(season);
+    const at = pool.indexOf(pending.current?.i ?? index);
     const i = pool[(at + by + pool.length) % pool.length] ?? index;
     select(i, season, via, by);
   };
 
-  // What the tour (or the next arrow) shows next is fetched while this one
-  // is on stage.
+  // Both neighbours are fetched while this one is on stage: the tour and the
+  // next arrow go one way, the back arrow and a swipe the other.
   useEffect(() => {
-    const pool = liveCatalogue
-      .map((e, i) => i)
-      .filter((i) => !season || hasSeason(liveCatalogue[i], season));
-    const next = liveCatalogue[pool[(pool.indexOf(index) + 1) % pool.length]];
-    if (next) preloadLook(artIn(next, season));
+    const pool = poolIn(season);
+    const at = pool.indexOf(index);
+    for (const by of [1, -1]) {
+      const e = liveCatalogue[pool[(at + by + pool.length) % pool.length]];
+      if (e) loadLook(artIn(e, season));
+    }
   }, [index, season]);
 
   // A season the current game doesn't ship moves the stage to the first game
   // that does, so the switch always shows a dressed room.
+  const seasonTarget = (id) =>
+    id && !hasSeason(entry, id) ? liveCatalogue.findIndex((e) => hasSeason(e, id)) : index;
   const pickSeason = (id) => {
     trackEvent("stage_season", { season: id ?? "standard" });
-    if (id && !hasSeason(entry, id)) {
-      select(
-        liveCatalogue.findIndex((e) => hasSeason(e, id)),
-        id,
-        "season",
-        1,
-      );
-    } else {
-      select(index, id, "season", 1);
-    }
+    select(seasonTarget(id), id, "season", 1);
   };
 
   const keepInView = (i, page) => {
@@ -273,6 +300,7 @@ export default function Stage({ initialSlug }) {
           alt=""
           fill
           priority={index === start}
+          loading="eager"
           sizes={SCENE_SIZES}
           className="b4w-stage-scene object-cover"
         />
@@ -376,6 +404,7 @@ export default function Stage({ initialSlug }) {
               alt=""
               fill
               priority={index === start}
+              loading="eager"
               sizes={HERO_SIZES}
               className="b4w-stage-hero object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.6)] lg:p-[6%]"
             />
@@ -405,6 +434,8 @@ export default function Stage({ initialSlug }) {
                     key={id ?? "standard"}
                     type="button"
                     onClick={() => pickSeason(id)}
+                    onPointerEnter={() => loadLook(artIn(liveCatalogue[seasonTarget(id)], id))}
+                    onFocus={() => loadLook(artIn(liveCatalogue[seasonTarget(id)], id))}
                     aria-pressed={on}
                     className={`flex min-w-0 flex-auto items-center justify-center gap-1.5 rounded-md px-1.5 py-2 font-Text text-[12px] font-semibold transition-colors sm:text-[13px] md:flex-none md:gap-2 md:px-3 md:text-[14px] ${
                       on ? "bg-white text-bg" : "text-ink/75 hover:bg-white/10 hover:text-ink"
@@ -478,8 +509,8 @@ export default function Stage({ initialSlug }) {
                   type="button"
                   data-i={i}
                   onClick={() => show(i, "lobby")}
-                  onPointerEnter={() => preloadLook(artIn(e, season))}
-                  onFocus={() => preloadLook(artIn(e, season))}
+                  onPointerEnter={() => loadLook(artIn(e, season))}
+                  onFocus={() => loadLook(artIn(e, season))}
                   aria-pressed={on}
                   aria-label={e.game.title}
                   className={`group block w-[104px] rounded-lg text-left transition-[transform,opacity] duration-300 sm:w-[148px] lg:w-[158px] ${
