@@ -55,6 +55,9 @@ export const stageWordmarkSizes = (art) => wordmarkSizes(art, { small: 49, large
 
 const SCENE_SIZES = "100vw";
 const HERO_SIZES = "(min-width:992px) 55vw, 90vw";
+// Rooms and heroes are drawn large and carry soft gradients, which banding
+// shows up in first at the default 75.
+const ART_QUALITY = 90;
 
 // Fetches and decodes a look's room, hero and wordmark at exactly the sizes the
 // stage will ask for, so the stage can hold the old look until the new one
@@ -66,11 +69,11 @@ function loadLook(art) {
       art,
       Promise.all(
         [
-          [art.scene, SCENE_SIZES],
-          [art.art, HERO_SIZES],
+          [art.scene, SCENE_SIZES, ART_QUALITY],
+          [art.art, HERO_SIZES, ART_QUALITY],
           [art.wordmark, stageWordmarkSizes(art)],
-        ].map(([src, sizes]) => {
-          const { props } = getImageProps({ src, alt: "", sizes });
+        ].map(([src, sizes, quality]) => {
+          const { props } = getImageProps({ src, alt: "", sizes, quality });
           const img = new window.Image();
           img.sizes = props.sizes ?? "";
           img.srcset = props.srcSet ?? "";
@@ -291,6 +294,7 @@ export default function Stage({ initialSlug }) {
             alt=""
             fill
             sizes={SCENE_SIZES}
+            quality={ART_QUALITY}
             className="object-cover"
           />
         )}
@@ -302,6 +306,7 @@ export default function Stage({ initialSlug }) {
           priority={index === start}
           loading="eager"
           sizes={SCENE_SIZES}
+          quality={ART_QUALITY}
           className="b4w-stage-scene object-cover"
         />
       </div>
@@ -406,6 +411,7 @@ export default function Stage({ initialSlug }) {
               priority={index === start}
               loading="eager"
               sizes={HERO_SIZES}
+              quality={ART_QUALITY}
               className="b4w-stage-hero object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.6)] lg:p-[6%]"
             />
           </div>

@@ -95,6 +95,16 @@ const DESPILL_GREEN = new Set(["sunset-peak"]);
 // background as their room instead.
 const SCENE_FROM_BLUR = new Set(["punch-halloween"]);
 
+// A room is drawn edge to edge, so it needs ~2880px on a Retina laptop and
+// 2560px on a 2K desktop. The packs' rooms are 1920px banner sources; where a
+// larger original of the same room exists it is used instead: a pack's own
+// `<dir>_bg-hires.png` (regenerated at 4K for the site) or the game's in-game
+// background, named here.
+const SCENE_SOURCE = {
+  "punch-game": "../ui/apps/punch-game/src/assets/sprites/bg_wide.webp",
+};
+const SCENE_MAX = 3840;
+
 const SEASONAL = {
   punch: { halloween: "punch-halloween", christmas: "punch-christmas" },
   chicken: { christmas: "chicken-christmas" },
@@ -225,12 +235,15 @@ async function fadeBleed(pipeline, bleed, despill = false, ramp = 0.24) {
 async function importSet(dir, outDir, { hero = false } = {}) {
   const kg = path.join(SRC, dir, "key-graphics");
   const sources = {
-    // A `_hero` cut-out wins wherever one exists: the seasonal packs' heroes
-    // were isolated from their key visuals with Photoshop Select Subject
-    // (tools/marketing-gen/ps-select-subject.mjs --file).
+    // A `_hero` cut-out wins wherever one exists: isolated from the key visual
+    // with Photoshop Select Subject (tools/marketing-gen/ps-select-subject.mjs
+    // --file), or regenerated at 2K on a chroma screen and keyed for the site.
     art: path.join(kg, `${dir}_${hero || existsSync(path.join(kg, `${dir}_hero.png`)) ? "hero" : "key-visual"}.png`),
     wordmark: path.join(SRC, dir, "wordmarks", `${dir}_wordmark-h.png`),
-    scene: path.join(SRC, dir, "backgrounds", `${dir}_bg-main-clear.png`),
+    scene:
+      SCENE_SOURCE[dir] ??
+      [path.join(SRC, dir, "backgrounds", `${dir}_bg-hires.png`)].find(existsSync) ??
+      path.join(SRC, dir, "backgrounds", `${dir}_bg-main-clear.png`),
     blur: path.join(SRC, dir, "backgrounds", `${dir}_bg-main-blur.png`),
   };
   mkdirSync(outDir, { recursive: true });
@@ -248,21 +261,23 @@ async function importSet(dir, outDir, { hero = false } = {}) {
       const { framed, crop, bleed } = await prepareArt(src);
       facts.framed = framed;
       if (crop) img = img.extract(crop);
-      img = img.resize(1100, 1100, { fit: "inside", withoutEnlargement: true });
+      img = img.resize(2200, 2200, { fit: "inside", withoutEnlargement: true });
       if (WHOLE.has(dir)) for (const edge of Object.keys(bleed ?? {})) bleed[edge] = false;
       for (const edge of FADE_EDGES[dir] ?? []) bleed[edge] = true;
       const despill = DESPILL_GREEN.has(dir);
       if (!framed && (despill || Object.values(bleed).some(Boolean))) img = await fadeBleed(img, bleed, despill, FADE_RAMP[dir]);
-      await img.webp({ quality: 82 }).toFile(out);
+      await img.webp({ quality: 90 }).toFile(out);
     }
     if (kind === "wordmark") {
       const { crop, letter } = await measureWordmark(src);
       facts.letter = Math.round(letter * 1000) / 1000;
-      await img.extract(crop).resize(900, 300, { fit: "inside", withoutEnlargement: true }).webp({ quality: 85 }).toFile(out);
+      await img.extract(crop).resize(1800, 600, { fit: "inside", withoutEnlargement: true }).webp({ quality: 90 }).toFile(out);
     }
-    if (kind === "scene" && !SCENE_FROM_BLUR.has(dir)) await img.resize(1920).webp({ quality: 72 }).toFile(out);
+    if (kind === "scene" && !SCENE_FROM_BLUR.has(dir)) {
+      await img.resize({ width: SCENE_MAX, withoutEnlargement: true }).webp({ quality: 90 }).toFile(out);
+    }
     if (kind === "blur" && SCENE_FROM_BLUR.has(dir)) {
-      await img.resize(1920).webp({ quality: 72 }).toFile(path.join(outDir, "scene.webp"));
+      await img.resize({ width: SCENE_MAX, withoutEnlargement: true }).webp({ quality: 90 }).toFile(path.join(outDir, "scene.webp"));
       continue;
     }
     // Only framed sets need the blurred room: the picture stands in front of it.

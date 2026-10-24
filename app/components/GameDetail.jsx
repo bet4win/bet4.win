@@ -56,7 +56,7 @@ export default function GameDetail({ game, content }) {
       <section className="relative z-10 overflow-x-clip border-b border-line/60 bg-bg">
         {art && (
           <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
-            <Image src={art.scene} alt="" fill priority sizes="100vw" className="b4w-settle-scene object-cover" />
+            <Image src={art.scene} alt="" fill priority sizes="100vw" quality={90} className="b4w-settle-scene object-cover" />
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,9,14,0.92)_0%,rgba(8,9,14,0.55)_45%,rgba(8,9,14,0.08)_80%)] max-lg:bg-[linear-gradient(180deg,rgba(8,9,14,0.45)_0%,rgba(8,9,14,0.85)_60%)]" />
             <div className="absolute inset-x-0 -bottom-px h-28 bg-gradient-to-t from-bg to-transparent" />
           </div>
@@ -130,6 +130,7 @@ export default function GameDetail({ game, content }) {
                 fill
                 priority
                 sizes="(min-width:992px) 55vw, 90vw"
+                quality={90}
                 className="b4w-land-hero object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.6)]"
               />
             </div>

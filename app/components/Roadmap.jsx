@@ -35,7 +35,7 @@ export default function Roadmap({ releases }) {
           {/* Stops 2px short: at a fractional section edge the picture's last
               row otherwise rounds out past the fade as a light hairline. */}
           <div aria-hidden="true" className="absolute inset-x-0 bottom-[2px] top-0 -z-10">
-            <Image src={art.scene} alt="" fill sizes="100vw" className="object-cover" />
+            <Image src={art.scene} alt="" fill sizes="100vw" quality={90} className="object-cover" />
           </div>
           <div
             aria-hidden="true"
@@ -106,6 +106,7 @@ export default function Roadmap({ releases }) {
                   alt=""
                   fill
                   sizes="(min-width:992px) 55vw, 90vw"
+                  quality={90}
                   className="object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.55)]"
                 />
               </div>

@@ -15,7 +15,11 @@ const nextConfig = {
     // Small thumbnails render ~180px; default deviceSizes start at 640, so the
     // optimizer was shipping the full 512px source. These extra small widths let
     // the browser pick a right-sized candidate for the game tiles.
-    deviceSizes: [256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    // 2560 and 2880 are a 2K desktop and a Retina laptop drawing a room edge to
+    // edge; without them both fetched the 3840 rendition.
+    deviceSizes: [256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 2560, 2880, 3840],
+    // 90 is for the rooms and key visuals (see ART_QUALITY in Stage.jsx).
+    qualities: [75, 90],
     // 1yr. Safe because the optimizer's sources are statically imported game
     // thumbnails / icons (data/games.js, Services.jsx) emitted to
     // /_next/static/media with a content hash — new bytes get a new URL, so a
