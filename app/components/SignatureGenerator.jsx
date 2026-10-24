@@ -149,7 +149,7 @@ function buildSignature({ name, role, email, socials, sbc }, origin = SITE_URL) 
 }
 
 const inputCls =
-  "w-full !rounded-xl border border-line bg-bg px-3.5 py-2.5 font-Text text-[14px] text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60";
+  "w-full !rounded-md border border-line bg-bg px-3.5 py-2.5 font-Text text-[14px] text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60";
 const labelCls =
   "mb-1 block font-JetBrainsMono text-[11px] uppercase tracking-[0.05em] text-muted";
 
@@ -250,7 +250,7 @@ export default function SignatureGenerator() {
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
       <form
-        className="rounded-2xl border border-line bg-panel-high p-5"
+        className="rounded-lg border border-line bg-panel-high p-5"
         onSubmit={(e) => e.preventDefault()}
       >
         <div className="grid gap-4">
@@ -286,11 +286,11 @@ export default function SignatureGenerator() {
         <div className="mb-1 flex items-center justify-between">
           <p className={`${labelCls} !mb-0`}>Preview</p>
           <div role="group" aria-label="Preview background"
-            className="flex gap-1 rounded-full border border-line p-0.5">
+            className="flex gap-1 rounded-lg border border-line p-1">
             {Object.keys(PREVIEW_BG).map((t) => (
               <button key={t} type="button" aria-pressed={theme === t}
                 onClick={() => setTheme(t)}
-                className={`rounded-full px-3 py-1 font-JetBrainsMono text-[11px] uppercase tracking-[0.05em] ${
+                className={`rounded-md px-3 py-1 font-JetBrainsMono text-[11px] uppercase tracking-[0.05em] ${
                   theme === t ? "bg-ink/10 text-ink" : "text-muted"
                 }`}>
                 {t}
@@ -300,7 +300,7 @@ export default function SignatureGenerator() {
         </div>
         {/* A mail client's surface, not this site's: a light compose window or
             a dark-mode one. */}
-        <div className="rounded-2xl border border-line p-6"
+        <div className="rounded-lg border border-line p-6"
           style={{ background: PREVIEW_BG[theme] }}>
           <div dangerouslySetInnerHTML={{ __html: preview }} />
         </div>
@@ -330,7 +330,7 @@ export default function SignatureGenerator() {
         {/* Apple Mail rewrites a signature pasted into its Settings — the images
             end up below the card at full size — so it gets an installer that
             writes the signature file directly. See app/lib/mailInstaller.js. */}
-        <div className="mt-4 rounded-xl border border-line p-4 font-Text text-[13px] text-muted">
+        <div className="mt-4 rounded-lg border border-line p-4 font-Text text-[13px] text-muted">
           <p className="!mb-0 text-ink">Apple Mail</p>
           <ol className="mt-3 list-decimal space-y-1.5 pl-5">
             <li>In Mail → Settings → Signatures, add a signature named <strong className="text-ink">{MAIL_SIGNATURE_NAME}</strong>. Leave whatever text Mail puts in it — don’t paste anything there.</li>

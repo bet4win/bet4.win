@@ -77,7 +77,7 @@ export default function AgeGate() {
     >
       <div
         ref={panelRef}
-        className="machined-surface w-full max-w-md rounded-2xl border border-line bg-panel-high p-7 text-center shadow-2xl md:p-9"
+        className="machined-surface w-full max-w-md rounded-lg border border-line bg-panel-high p-7 text-center shadow-2xl md:p-9"
       >
         {status === "denied" ? (
           <>
@@ -104,7 +104,7 @@ export default function AgeGate() {
         ) : (
           <>
             <span
-              className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-full border border-accent/30 bg-accent/10 text-accent"
+              className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-md border border-accent/30 bg-accent/10 text-accent"
               aria-hidden="true"
             >
               <ShieldCheck className="h-6 w-6" />

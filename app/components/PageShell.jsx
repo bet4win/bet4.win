@@ -24,7 +24,7 @@ export default function PageShell({ children, overlayHeader = false, snap = fals
     <div className="relative min-h-screen shrink-0 bg-bg font-Text text-ink antialiased">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-brand-strong focus:px-4 focus:py-2 focus:font-Text focus:text-[13px] focus:!text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-brand-strong focus:px-4 focus:py-2 focus:font-Text focus:text-[13px] focus:!text-white"
       >
         Skip to content
       </a>

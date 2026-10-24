@@ -102,7 +102,7 @@ export default function BrandStudio() {
                     setSwitched(true);
                   }}
                   aria-pressed={on}
-                  className={`flex flex-col items-center justify-center gap-1.5 rounded-lg border px-2 py-2.5 text-center font-Text text-[13px] font-semibold leading-tight transition-colors md:flex-row md:gap-2.5 md:px-3.5 md:text-[15px] ${
+                  className={`flex flex-col items-center justify-center gap-1.5 rounded-md border px-2 py-2.5 text-center font-Text text-[13px] font-semibold leading-tight transition-colors md:flex-row md:gap-2.5 md:px-3.5 md:text-[15px] ${
                     on ? "border-white bg-white text-bg" : "border-line text-ink/80 hover:border-ink/50 hover:text-ink"
                   }`}
                 >
@@ -117,7 +117,7 @@ export default function BrandStudio() {
         <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:items-stretch">
           {/* --- The game, in the operator's skin ---------------------------- */}
           <div
-            className="relative isolate overflow-hidden rounded-xl transition-[box-shadow] duration-500"
+            className="relative isolate overflow-hidden rounded-lg transition-[box-shadow] duration-500"
             style={{ boxShadow: `0 0 0 1px ${brand.edge}, 0 30px 80px -30px ${brand.accent}55` }}
           >
             <Image src={MINES.scene} alt="" fill sizes="(min-width:992px) 60vw, 100vw" className="-z-10 object-cover" />
@@ -140,7 +140,7 @@ export default function BrandStudio() {
                 </span>
               </div>
               <span
-                className="b4w-figure rounded-full px-3 py-1 text-[14px] font-semibold transition-colors duration-500"
+                className="b4w-figure rounded-md px-3 py-1 text-[14px] font-semibold transition-colors duration-500"
                 style={{ backgroundColor: brand.tile, color: brand.accent, border: `1px solid ${brand.edge}` }}
               >
                 € 1,000.00
@@ -155,7 +155,7 @@ export default function BrandStudio() {
                   return (
                     <div
                       key={i}
-                      className={`relative aspect-square rounded-lg ${switched ? "b4w-tile" : ""}`}
+                      className={`relative aspect-square rounded-md ${switched ? "b4w-tile" : ""}`}
                       style={{
                         "--i": (i % 5) + Math.floor(i / 5),
                         backgroundColor: open ? `${brand.accent}26` : brand.tile,
@@ -204,7 +204,7 @@ export default function BrandStudio() {
           </div>
 
           {/* --- The theme behind it ------------------------------------------ */}
-          <aside aria-label="The theme" className="flex flex-col rounded-xl border border-line bg-panel p-5 md:p-6">
+          <aside aria-label="The theme" className="flex flex-col rounded-lg border border-line bg-panel p-5 md:p-6">
             <h3 className="!mb-0 font-Text text-[17px] font-bold !text-ink">What the operator supplied</h3>
             <p className="!mb-0 mt-1.5 font-Text text-[14px] text-muted">
               That&rsquo;s the whole theme. Every game reads it when it opens.
@@ -215,14 +215,14 @@ export default function BrandStudio() {
                 [
                   "Accent",
                   <span key="a" className="inline-flex items-center gap-2">
-                    <span className="h-4 w-4 rounded" style={{ backgroundColor: brand.accent }} />
+                    <span className="h-4 w-4 rounded-sm" style={{ backgroundColor: brand.accent }} />
                     <span className="font-JetBrainsMono text-[13px]">{brand.accent}</span>
                   </span>,
                 ],
                 [
                   "Surface",
                   <span key="s" className="inline-flex items-center gap-2">
-                    <span className="h-4 w-4 rounded border border-white/20" style={{ backgroundColor: brand.tile }} />
+                    <span className="h-4 w-4 rounded-sm border border-white/20" style={{ backgroundColor: brand.tile }} />
                     <span className="font-JetBrainsMono text-[13px]">{brand.tile}</span>
                   </span>,
                 ],

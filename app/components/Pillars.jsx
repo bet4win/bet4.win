@@ -59,7 +59,7 @@ export default function Pillars() {
             <li key={p.href}>
               <Link
                 href={p.href}
-                className="group relative isolate flex h-full min-h-[420px] flex-col overflow-hidden rounded-xl p-6 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:min-h-[430px] md:p-7"
+                className="group relative isolate flex h-full min-h-[420px] flex-col overflow-hidden rounded-lg p-6 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:min-h-[430px] md:p-7"
               >
                 <Image
                   src={artFor(p.scene).scene}

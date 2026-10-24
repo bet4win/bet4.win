@@ -116,7 +116,7 @@ export default function Roadmap({ releases }) {
 
       {rest.length > 0 && (
         <div className="mx-auto max-w-[1280px] px-5 pb-12 md:px-12">
-          <ol className="!mb-0 flex list-none flex-col gap-px overflow-hidden rounded-xl border border-line bg-line p-0 sm:flex-row">
+          <ol className="!mb-0 flex list-none flex-col gap-px overflow-hidden rounded-lg border border-line bg-line p-0 sm:flex-row">
             {rest.map((r, i) => (
               <li key={r.id} className="flex flex-1 bg-bg/90 p-5">
                 <div className="b4w-step flex w-full flex-col gap-1" style={{ "--i": i }}>
@@ -130,7 +130,7 @@ export default function Roadmap({ releases }) {
                       <Link
                         href={`/games/${r.id}`}
                         aria-label={`${r.title} — game page`}
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/30 text-ink transition-colors hover:border-white hover:bg-white hover:text-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-white/30 text-ink transition-colors hover:border-white hover:bg-white hover:text-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                       >
                         <span className="b4w-arrow-loop">
                           <ArrowRight className="h-4 w-4" />

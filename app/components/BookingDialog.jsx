@@ -216,7 +216,7 @@ export default function BookingDialog() {
         //         every state and never changes, which is what a fixed overlay
         //         wants: the one thing a sheet must not do is move while it is
         //         being touched.
-        className="b4w-bezel flex h-[92svh] w-full flex-col overflow-hidden border border-line bg-panel-low shadow-2xl sm:h-auto sm:max-h-[86svh] sm:w-[1060px] sm:max-w-full sm:rounded-2xl"
+        className="b4w-bezel flex h-[92svh] w-full flex-col overflow-hidden border border-line bg-panel-low shadow-2xl sm:h-auto sm:max-h-[86svh] sm:w-[1060px] sm:max-w-full sm:rounded-lg"
         // The sheet reaches the bottom edge, so on a device with a home
         // indicator the last row of the scheduler sat underneath it.
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}

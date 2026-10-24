@@ -14,7 +14,7 @@ const DEFAULT_SERVER_SEED =
   "f9e2d1c3b4a5968778695a4b3c2d1e0f1122334455667788990011223344556677";
 
 const inputCls =
-  "w-full !rounded-xl border border-line bg-bg px-3.5 py-2.5 font-JetBrainsMono text-[13px] text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60";
+  "h-[48px] w-full !rounded-md border border-line bg-bg px-3.5 font-JetBrainsMono text-[13px] text-ink placeholder:text-faint focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60";
 const labelCls =
   "mb-1 block font-JetBrainsMono text-[11px] text-muted";
 
@@ -88,7 +88,7 @@ export default function FairnessVerifier() {
   return (
     <form
       onSubmit={onVerify}
-      className="relative overflow-hidden rounded-2xl border border-line bg-panel-high p-5 shadow-2xl"
+      className="relative overflow-hidden rounded-lg border border-line bg-panel-high p-5 shadow-2xl"
     >
       <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-line pb-3 font-JetBrainsMono text-[12px] text-muted">
         <span>Verification terminal</span>
@@ -120,12 +120,13 @@ export default function FairnessVerifier() {
 
         <div className="col-span-2">
           <label className={labelCls} htmlFor="fv-server">Server seed (revealed)</label>
-          <div className="flex items-stretch gap-2">
-            <input id="fv-server" className={inputCls} value={serverSeed}
+          <div className="flex items-center gap-2">
+            <input id="fv-server" className={`${inputCls} min-w-0`} value={serverSeed}
               onChange={(e) => setServerSeed(e.target.value)} spellCheck={false} />
             <button type="button" onClick={() => setServerSeed(randomHex())}
               aria-label="Randomize server seed" title="Randomize server seed"
-              className="b4w-btn b4w-btn--ghost b4w-btn--icon">
+              // The fields' 48px, square, in the fields' fill.
+              className="b4w-btn b4w-btn--ghost b4w-btn--icon !h-[48px] !w-[48px] shrink-0 bg-bg">
               <Refresh className="h-5 w-5" />
             </button>
           </div>

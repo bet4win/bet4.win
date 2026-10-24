@@ -82,7 +82,7 @@ export default function BrandProcess() {
           </div>
 
           {/* The on-request case, shown rather than described: Punch's own art. */}
-          <figure className="!mb-0 relative isolate overflow-hidden rounded-xl">
+          <figure className="!mb-0 relative isolate overflow-hidden rounded-lg">
             <div className="relative aspect-[4/5]">
               <Image src={PUNCH.scene} alt="" fill sizes="(min-width:992px) 40vw, 100vw" className="-z-10 object-cover" />
               <div className="absolute inset-0 -z-10 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />

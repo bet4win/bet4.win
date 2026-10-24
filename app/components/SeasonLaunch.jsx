@@ -103,7 +103,7 @@ export default function SeasonLaunch({ options, onLaunch, className = "mt-7" }) 
       {open && (
         <div
           id={panelId}
-          className="b4w-pop absolute right-0 top-[calc(100%+0.5rem)] z-20 w-full min-w-[15rem] overflow-hidden rounded-xl border border-line bg-panel-high pb-1.5 shadow-2xl"
+          className="b4w-pop absolute right-0 top-[calc(100%+0.5rem)] z-20 w-full min-w-[15rem] overflow-hidden rounded-lg border border-line bg-panel-high pb-1.5 shadow-2xl"
         >
           <p className="!mb-0 px-4 pb-1.5 pt-3 font-Text text-[10px] text-faint">
             Launch a variant

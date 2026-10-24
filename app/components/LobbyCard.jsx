@@ -21,7 +21,7 @@ export default function LobbyCard({ entry, sizes = "300px", source = "lobby" }) 
     <div className="group relative">
       <Link
         href={`/games/${slug}`}
-        className="block rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+        className="block rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
       >
         {/* The season glyphs are listed under the card here, and the corner
             holds the demo button. */}
@@ -53,7 +53,7 @@ export default function LobbyCard({ entry, sizes = "300px", source = "lobby" }) 
         type="button"
         onClick={() => playDemo(game, slug, source)}
         aria-label={`Play the ${game.title} demo`}
-        className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full sm:right-3 sm:top-3 sm:h-10 sm:w-10 border border-white/30 bg-black/60 text-white transition-[background-color,color,scale] duration-200 hover:scale-110 hover:bg-white hover:text-black active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-md sm:right-3 sm:top-3 sm:h-10 sm:w-10 border border-white/30 bg-black/60 text-white transition-[background-color,color,scale] duration-200 hover:scale-110 hover:bg-white hover:text-black active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       >
         <Play className="h-4 w-4 translate-x-px" />
       </button>

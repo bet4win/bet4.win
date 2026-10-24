@@ -20,7 +20,7 @@ export default function Integration() {
             name and what was its value. Names take the brand blue, values and
             the response take the accent, and the method gets the accent because
             it is the one word that says what this does. */}
-        <div className="order-2 overflow-x-auto rounded-2xl border border-line bg-panel-high p-6 lg:order-1">
+        <div className="order-2 overflow-x-auto rounded-lg border border-line bg-panel-high p-6 lg:order-1">
           <div className="whitespace-pre font-JetBrainsMono text-[13px] leading-[1.7] !text-muted">
             <span className="!text-accent">GET</span>{" "}
             <span className="!text-ink">/api/launch</span>

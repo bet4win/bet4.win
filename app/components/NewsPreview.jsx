@@ -40,13 +40,13 @@ export default function NewsPreview() {
         <article>
           <Link
             href={`/news/${LEAD.slug}`}
-            className="group flex flex-col gap-5 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+            className="group flex flex-col gap-5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
           >
             <NewsArt
               post={LEAD}
               sizes="(min-width:992px) 680px, 92vw"
               aspect="aspect-[1200/630] lg:aspect-[16/9]"
-              className="rounded-xl"
+              className="rounded-lg"
             />
             <div className="flex flex-col gap-3">
               <p className="!mb-0 font-Text text-[14px] text-muted">

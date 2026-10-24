@@ -91,7 +91,7 @@ export default function EventsBar({ events, initialDismissed = false }) {
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,var(--color-accent),transparent)] opacity-70"
       />
       <div className="mx-auto flex max-w-[1280px] items-center gap-2.5 px-5 py-2 md:gap-5 md:px-12 md:py-2.5">
-        <span className="hidden shrink-0 items-center gap-2 rounded-full bg-accent px-3 py-1.5 font-Text text-[10px] font-bold text-accent-ink shadow-[0_4px_16px_-6px_rgba(58,227,152,0.75)] sm:inline-flex">
+        <span className="hidden shrink-0 items-center gap-2 rounded-sm bg-accent px-3 py-1.5 font-Text text-[10px] font-bold text-accent-ink shadow-[0_4px_16px_-6px_rgba(58,227,152,0.75)] sm:inline-flex">
           <Calendar className="h-3.5 w-3.5" />
           Meet us at
         </span>
@@ -133,7 +133,7 @@ export default function EventsBar({ events, initialDismissed = false }) {
                   and a chip stacked three-high beside a button is the strip
                   reading as clutter rather than as an announcement. */}
               {event.countdown && (
-                <span className="hidden shrink-0 whitespace-nowrap rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 font-Text text-[10px] font-semibold text-accent sm:inline-block">
+                <span className="hidden shrink-0 whitespace-nowrap rounded-sm border border-accent/30 bg-accent/10 px-2 py-0.5 font-Text text-[10px] font-semibold text-accent sm:inline-block">
                   {event.countdown}
                 </span>
               )}

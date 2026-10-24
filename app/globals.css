@@ -57,6 +57,15 @@
    * single pulsing accent dot, and NEW (the actual exception) is the one badge
    * that gets filled colour.
    */
+  /* Three corners and a circle. 4px for tags; 6px for anything you press,
+     type into or pick (buttons, inputs, tabs, chips); 10px for anything that
+     holds content (cards, pictures, panels, menus, dialogs). A circle only
+     for things that are round — dots, the 18+ mark, timeline markers. In px,
+     not rem: the root is 20px here, so the rem defaults came out oversized. */
+  --radius-*: initial;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
   --font-JetBrainsMono: var(--font-jetbrains-mono), "JetBrains Mono", "SFMono-Regular", "Menlo", monospace;
   --font-Display: var(--font-archivo), "Archivo", "Helvetica Neue", sans-serif;
   /* responsive Breakpoint */
@@ -286,7 +295,7 @@ body.age-gate-locked {
   gap: 0.5rem;
   flex-shrink: 0;
   border: 1px solid transparent;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   padding: 0.6rem 1rem;
   font-family: var(--font-Text);
   font-size: 15px;

@@ -313,7 +313,7 @@ export default function Stage({ initialSlug }) {
           {inSeason && (
             // Above the copy rather than in it, so dressing a game for a
             // season never pushes the copy down.
-            <p className="!mb-0 absolute bottom-full left-0 mb-3 inline-flex items-center gap-2 rounded-full bg-black/55 px-3 py-1 font-Text text-[14px] font-semibold" style={{ color: SEASONS[season].tint }}>
+            <p className="!mb-0 absolute bottom-full left-0 mb-3 inline-flex items-center gap-2 rounded-md bg-black/55 px-3 py-1 font-Text text-[14px] font-semibold" style={{ color: SEASONS[season].tint }}>
               {React.createElement(SEASONS[season].Icon, { className: "h-4 w-4" })}
               {SEASONS[season].label} edition
             </p>
@@ -482,7 +482,7 @@ export default function Stage({ initialSlug }) {
                   onFocus={() => preloadLook(artIn(e, season))}
                   aria-pressed={on}
                   aria-label={e.game.title}
-                  className={`group block w-[104px] rounded-xl text-left transition-[transform,opacity] duration-300 sm:w-[148px] lg:w-[158px] ${
+                  className={`group block w-[104px] rounded-lg text-left transition-[transform,opacity] duration-300 sm:w-[148px] lg:w-[158px] ${
                     on
                       ? "-translate-y-3 opacity-100"
                       : off

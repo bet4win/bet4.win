@@ -38,7 +38,7 @@ export default function GameModal({ game, url, season, onClose }) {
       onClick={onClose}
     >
       <div
-        className="game-modal-container absolute inset-0 flex flex-col overflow-hidden bg-panel-low shadow-2xl win:static win:inset-auto win:h-auto win:max-h-[90vh] win:rounded-2xl win:border win:border-line"
+        className="game-modal-container absolute inset-0 flex flex-col overflow-hidden bg-panel-low shadow-2xl win:static win:inset-auto win:h-auto win:max-h-[90vh] win:rounded-lg win:border win:border-line"
         style={{ '--game-ratio': ratio }}
         onClick={(e) => e.stopPropagation()}
       >

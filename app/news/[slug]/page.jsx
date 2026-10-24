@@ -138,7 +138,7 @@ export default async function NewsPostPage({ params }) {
             alt={art.alt}
             priority
             sizes="(min-width:768px) 720px, 92vw"
-            className="mb-10 w-full rounded-xl"
+            className="mb-10 w-full rounded-lg"
           />
 
           <NewsBody blocks={post.body} />

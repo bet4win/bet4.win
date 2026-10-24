@@ -37,7 +37,7 @@ export default function LobbyArt({ entry, sizes, season = null, showMarks = true
   const marks = season ? (inSeason ? [season] : []) : seasonsFor(game);
 
   return (
-    <div className={`relative aspect-[3/4] overflow-hidden rounded-xl bg-panel [container-type:inline-size] ${className}`}>
+    <div className={`relative aspect-[3/4] overflow-hidden rounded-lg bg-panel [container-type:inline-size] ${className}`}>
       <Image
         src={art.scene}
         alt=""
@@ -71,7 +71,7 @@ export default function LobbyArt({ entry, sizes, season = null, showMarks = true
         <span
           role="img"
           aria-label={`${marks.map((id) => SEASONS[id].label).join(" and ")} version`}
-          className="absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full bg-black/65 px-1.5 py-1"
+          className="absolute right-2.5 top-2.5 flex items-center gap-1 rounded-md bg-black/65 px-1.5 py-1"
         >
           {marks.map((id) => {
             const { Icon, tint } = SEASONS[id];
