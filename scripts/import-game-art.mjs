@@ -72,6 +72,13 @@ const FADE_EDGES = {
   "sunset-peak": ["bottom"],
 };
 
+// How far in from a cut edge the fade runs, as a share of the image. The
+// default is long because Punch's arm and the crash trails are meant to trail
+// away. The seasonal Punch heroes are cut on three sides (chains, sleeve, the
+// bag's foot), and a long ramp on all three washed the whole subject out —
+// they only need the cut line itself softened.
+const FADE_RAMP = { "punch-christmas": 0.07, "punch-halloween": 0.07 };
+
 // Whole subjects that touch their canvas because they're cropped tight, not
 // because they're cut — the roulette wheels. Detection reads that as a bleed
 // and fades every side; these keep the edges they were drawn with.
@@ -189,11 +196,12 @@ async function prepareArt(src) {
 // Fades a cut-out's alpha to nothing over the last stretch of every edge it
 // runs off, so a cropped arm or tower trails away instead of stopping at a
 // straight line wherever it is placed.
-async function fadeBleed(pipeline, bleed, despill = false) {
+async function fadeBleed(pipeline, bleed, despill = false, ramp = 0.24) {
   const { data, info } = await pipeline.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const { width: W, height: H } = info;
-  const rampX = Math.max(60, Math.round(W * 0.24));
-  const rampY = Math.max(60, Math.round(H * 0.24));
+  const floor = ramp < 0.24 ? 24 : 60;
+  const rampX = Math.max(floor, Math.round(W * ramp));
+  const rampY = Math.max(floor, Math.round(H * ramp));
   const ease = (t) => t * t * (3 - 2 * t);
   for (let y = 0; y < H; y++) {
     for (let x = 0; x < W; x++) {
@@ -244,7 +252,7 @@ async function importSet(dir, outDir, { hero = false } = {}) {
       if (WHOLE.has(dir)) for (const edge of Object.keys(bleed ?? {})) bleed[edge] = false;
       for (const edge of FADE_EDGES[dir] ?? []) bleed[edge] = true;
       const despill = DESPILL_GREEN.has(dir);
-      if (!framed && (despill || Object.values(bleed).some(Boolean))) img = await fadeBleed(img, bleed, despill);
+      if (!framed && (despill || Object.values(bleed).some(Boolean))) img = await fadeBleed(img, bleed, despill, FADE_RAMP[dir]);
       await img.webp({ quality: 82 }).toFile(out);
     }
     if (kind === "wordmark") {

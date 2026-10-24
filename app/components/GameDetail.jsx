@@ -50,16 +50,16 @@ export default function GameDetail({ game, content }) {
 
   return (
     <>
-      <section className="relative isolate overflow-hidden border-b border-line/60 bg-bg">
+      {/* Clipped sideways only, and stacked above the page below it: the
+          seasonal launch menu hangs out of the bottom of this band. The room
+          is clipped in its own layer instead. */}
+      <section className="relative z-10 overflow-x-clip border-b border-line/60 bg-bg">
         {art && (
-          <>
-            <Image src={art.scene} alt="" fill priority sizes="100vw" className="b4w-settle-scene -z-10 object-cover" />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,9,14,0.92)_0%,rgba(8,9,14,0.55)_45%,rgba(8,9,14,0.08)_80%)] max-lg:bg-[linear-gradient(180deg,rgba(8,9,14,0.45)_0%,rgba(8,9,14,0.85)_60%)]"
-            />
-            <div aria-hidden="true" className="absolute inset-x-0 -bottom-px -z-10 h-28 bg-gradient-to-t from-bg to-transparent" />
-          </>
+          <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden">
+            <Image src={art.scene} alt="" fill priority sizes="100vw" className="b4w-settle-scene object-cover" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,9,14,0.92)_0%,rgba(8,9,14,0.55)_45%,rgba(8,9,14,0.08)_80%)] max-lg:bg-[linear-gradient(180deg,rgba(8,9,14,0.45)_0%,rgba(8,9,14,0.85)_60%)]" />
+            <div className="absolute inset-x-0 -bottom-px h-28 bg-gradient-to-t from-bg to-transparent" />
+          </div>
         )}
 
         <div className="mx-auto max-w-[1280px] px-5 pt-6 md:px-12 md:pt-10">

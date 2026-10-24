@@ -938,7 +938,7 @@ select {
   translate: calc(var(--mx, 0) * -14px) calc(var(--my, 0) * -8px);
 }
 .b4w-parallax-hero {
-  translate: calc(var(--mx, 0) * 18px) calc(var(--my, 0) * 10px);
+  translate: calc(var(--mx, 0) * 18px + var(--drag, 0px)) calc(var(--my, 0) * 10px);
 }
 @keyframes b4w-fade {
   from {

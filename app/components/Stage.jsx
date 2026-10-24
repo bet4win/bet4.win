@@ -209,6 +209,35 @@ export default function Stage({ initialSlug }) {
 
   const show = (i, via) => select(i, season, via);
 
+  // Swiping the hero on a touch screen steps through the games. The art
+  // follows the finger (--drag) and the next game lands from the side it was
+  // flicked toward. touch-action: pan-y leaves vertical scrolling to the
+  // browser, which cancels the gesture when it takes over.
+  const swipe = useRef(null);
+  const heroRef = useRef(null);
+  const drag = (px) => heroRef.current?.style.setProperty("--drag", `${px}px`);
+  const swipeHandlers = {
+    onPointerDown: (e) => {
+      if (e.pointerType === "mouse") return;
+      swipe.current = { x: e.clientX, dx: 0 };
+    },
+    onPointerMove: (e) => {
+      if (!swipe.current) return;
+      swipe.current.dx = e.clientX - swipe.current.x;
+      drag(swipe.current.dx * 0.5);
+    },
+    onPointerUp: () => {
+      const dx = swipe.current?.dx ?? 0;
+      swipe.current = null;
+      drag(0);
+      if (Math.abs(dx) > 48) step(dx < 0 ? 1 : -1, "swipe");
+    },
+    onPointerCancel: () => {
+      swipe.current = null;
+      drag(0);
+    },
+  };
+
 
   const figures = [
     ["RTP", game.rtp],
@@ -335,7 +364,11 @@ export default function Stage({ initialSlug }) {
           </div>
         </div>
 
-        <div className="b4w-parallax-hero relative order-1 min-h-[150px] lg:order-2 lg:h-full lg:min-h-[420px]">
+        <div
+          ref={heroRef}
+          {...swipeHandlers}
+          className="b4w-parallax-hero relative order-1 min-h-[150px] touch-pan-y select-none lg:order-2 lg:h-full lg:min-h-[420px]"
+        >
           <div className="b4w-float absolute inset-0">
             <Image
               key={`art-${look}`}
@@ -363,7 +396,7 @@ export default function Stage({ initialSlug }) {
 
           {/* Dress the lobby for a season. */}
           {SEASON_TABS.length > 0 && (
-            <div role="group" aria-label="Show the lobby in a season" className="flex min-w-0 flex-1 items-center gap-1 rounded-lg border border-white/15 bg-black/40 p-1 md:flex-none">
+            <div role="group" aria-label="Show the lobby in a season" className="flex h-11 min-w-0 flex-1 items-stretch gap-1 rounded-lg border border-white/15 bg-black/40 p-1 md:h-auto md:flex-none">
               {[{ id: null, count: liveCatalogue.length }, ...SEASON_TABS].map(({ id, count }) => {
                 const on = season === id;
                 const meta = id ? SEASONS[id] : null;
@@ -373,7 +406,7 @@ export default function Stage({ initialSlug }) {
                     type="button"
                     onClick={() => pickSeason(id)}
                     aria-pressed={on}
-                    className={`flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-1.5 py-2 font-Text text-[12px] font-semibold transition-colors sm:text-[13px] md:flex-none md:gap-2 md:px-3 md:text-[14px] ${
+                    className={`flex min-w-0 flex-auto items-center justify-center gap-1.5 rounded-md px-1.5 py-2 font-Text text-[12px] font-semibold transition-colors sm:text-[13px] md:flex-none md:gap-2 md:px-3 md:text-[14px] ${
                       on ? "bg-white text-bg" : "text-ink/75 hover:bg-white/10 hover:text-ink"
                     }`}
                   >
@@ -401,7 +434,9 @@ export default function Stage({ initialSlug }) {
               aria-pressed={touring}
               aria-label={touring ? "Stop the lobby tour" : "Tour the lobby"}
               title={touring ? "Stop the lobby tour" : "Tour the lobby"}
-              className="b4w-btn b4w-btn--ghost b4w-btn--icon !border-white/25"
+              // On phones it sits beside the season switch, so it wears the
+              // switch's shape; on larger screens, the arrows'.
+              className="b4w-btn b4w-btn--ghost b4w-btn--icon !border-white/25 max-md:!h-11 max-md:!w-11 max-md:!rounded-lg max-md:!border-white/15 max-md:!bg-black/40"
             >
               {touring ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 translate-x-px" />}
             </button>
