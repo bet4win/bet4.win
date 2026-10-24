@@ -5,6 +5,20 @@ import { seasonArtFor } from "@/data/gameArt";
 import { SEASONS, seasonsFor } from "@/app/lib/seasons";
 import { isNewRelease } from "@/app/lib/catalogue";
 
+const LETTER = 0.13;
+const CAP = 0.88;
+
+// The card's `sizes`, scaled to the share of the card's width this wordmark
+// really takes (its letters at 13% of the card, no wider than 88%) — only the
+// trailing length of each entry, never the media condition.
+function wordmarkSizes(sizes, art) {
+  const share = Math.min(CAP, (LETTER / (art.letter || 0.85)) * (art.wordmark.width / art.wordmark.height));
+  return sizes
+    .split(",")
+    .map((part) => part.replace(/([\d.]+)(px|vw)\s*$/, (_, n, u) => `${Math.ceil(n * share)}${u}`))
+    .join(",");
+}
+
 // The picture on a lobby card: the game's own play scene, its cut-out hero
 // standing in it, and its wordmark as the title — the three pieces of its
 // marketing pack, composed the way a casino lobby presents a game. Shared by
@@ -45,11 +59,11 @@ export default function LobbyArt({ entry, sizes, season = null, showMarks = true
         <Wordmark
           art={art}
           alt={game.title}
-          letter="13cqw"
-          maxWidth="88%"
+          letter={`${LETTER * 100}cqw`}
+          maxWidth={`${CAP * 100}%`}
           align="center"
           glint="hover"
-          sizes={sizes}
+          sizes={wordmarkSizes(sizes, art)}
           className="drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]"
         />
       </div>

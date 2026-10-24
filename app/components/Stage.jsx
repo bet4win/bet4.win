@@ -1,9 +1,10 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
+import { preload } from "react-dom";
 import Link from "next/link";
 import LobbyArt from "./LobbyArt";
-import Wordmark from "./Wordmark";
+import Wordmark, { wordmarkSizes } from "./Wordmark";
 import Reel from "./Reel";
 import Weather from "./Weather";
 import { ArrowLeft, ArrowRight, Pause, Play } from "./Icons";
@@ -49,6 +50,26 @@ export const STAGE_LETTER = "clamp(40px, 3.4vw + 23px, 76px)";
 // 10:1) run on into the room put them under the hero; inside the column they
 // come out a little smaller instead, which reads better than half a word.
 export const STAGE_WORDMARK_MAX = "min(640px, 100%)";
+// The width a wordmark really draws at on a stage-sized heading: STAGE_LETTER
+// is 49px at the phone breakpoint and 76px at most; the column caps it at 640.
+export const stageWordmarkSizes = (art) => wordmarkSizes(art, { small: 49, large: 76, cap: 640 });
+
+const SCENE_SIZES = "100vw";
+const HERO_SIZES = "(min-width:992px) 55vw, 90vw";
+
+// Starts fetching a look's room, hero and wordmark at exactly the sizes the
+// stage will ask for, so they're in by the time it's picked. Repeat calls for
+// the same files are free: React dedupes the preload.
+function preloadLook(art) {
+  for (const [src, sizes] of [
+    [art.scene, SCENE_SIZES],
+    [art.art, HERO_SIZES],
+    [art.wordmark, stageWordmarkSizes(art)],
+  ]) {
+    const { props } = getImageProps({ src, alt: "", sizes });
+    preload(props.src, { as: "image", imageSrcSet: props.srcSet, imageSizes: props.sizes });
+  }
+}
 
 // How long each game holds the stage while the lobby tours itself.
 const TOUR_MS = 7000;
@@ -138,6 +159,16 @@ export default function Stage({ initialSlug }) {
     select(i, season, via, by);
   };
 
+  // What the tour (or the next arrow) shows next is fetched while this one
+  // is on stage.
+  useEffect(() => {
+    const pool = liveCatalogue
+      .map((e, i) => i)
+      .filter((i) => !season || hasSeason(liveCatalogue[i], season));
+    const next = liveCatalogue[pool[(pool.indexOf(index) + 1) % pool.length]];
+    if (next) preloadLook(artIn(next, season));
+  }, [index, season]);
+
   // A season the current game doesn't ship moves the stage to the first game
   // that does, so the switch always shows a dressed room.
   const pickSeason = (id) => {
@@ -200,7 +231,7 @@ export default function Stage({ initialSlug }) {
             src={under}
             alt=""
             fill
-            sizes="100vw"
+            sizes={SCENE_SIZES}
             className="object-cover"
           />
         )}
@@ -210,7 +241,7 @@ export default function Stage({ initialSlug }) {
           alt=""
           fill
           priority={index === start}
-          sizes="100vw"
+          sizes={SCENE_SIZES}
           className="b4w-stage-scene object-cover"
         />
       </div>
@@ -257,7 +288,8 @@ export default function Stage({ initialSlug }) {
               letter={STAGE_LETTER}
               maxWidth={STAGE_WORDMARK_MAX}
               glint="arrive"
-              sizes="(min-width:768px) 680px, 90vw"
+              priority={index === start}
+              sizes={stageWordmarkSizes(art)}
               className="drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
             />
           </h2>
@@ -300,7 +332,7 @@ export default function Stage({ initialSlug }) {
               alt=""
               fill
               priority={index === start}
-              sizes="(min-width:992px) 55vw, 90vw"
+              sizes={HERO_SIZES}
               className="b4w-stage-hero object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.6)] lg:p-[6%]"
             />
           </div>
@@ -399,6 +431,8 @@ export default function Stage({ initialSlug }) {
                   type="button"
                   data-i={i}
                   onClick={() => show(i, "lobby")}
+                  onPointerEnter={() => preloadLook(artIn(e, season))}
+                  onFocus={() => preloadLook(artIn(e, season))}
                   aria-pressed={on}
                   aria-label={e.game.title}
                   className={`group block w-[128px] rounded-xl text-left transition-[transform,opacity] duration-300 sm:w-[148px] lg:w-[158px] ${

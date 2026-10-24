@@ -3,7 +3,7 @@ import React from "react";
 import { useArrival } from "@/app/lib/motion";
 import Image from "next/image";
 import Wordmark from "./Wordmark";
-import { STAGE_LETTER, STAGE_WORDMARK_MAX } from "./Stage";
+import { STAGE_LETTER, STAGE_WORDMARK_MAX, stageWordmarkSizes } from "./Stage";
 import { artFor } from "@/data/gameArt";
 import Link from "next/link";
 import { ArrowRight } from "./Icons";
@@ -63,7 +63,7 @@ export default function Roadmap({ releases }) {
                     letter={STAGE_LETTER}
                     maxWidth={STAGE_WORDMARK_MAX}
                     glint="arrive"
-                    sizes="(min-width:768px) 680px, 90vw"
+                    sizes={stageWordmarkSizes(art)}
                     className="drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
                   />
                 </h3>

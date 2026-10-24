@@ -6,7 +6,7 @@ import GameModal from "./GameModal";
 import SeasonLaunch from "./SeasonLaunch";
 import Wordmark from "./Wordmark";
 import Reel from "./Reel";
-import { STAGE_LETTER, STAGE_WORDMARK_MAX } from "./Stage";
+import { STAGE_LETTER, STAGE_WORDMARK_MAX, stageWordmarkSizes } from "./Stage";
 import { ArrowLeft, Play } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
 import { STANDARD, seasonOptions } from "@/app/lib/seasons";
@@ -82,7 +82,7 @@ export default function GameDetail({ game, content }) {
                   maxWidth={STAGE_WORDMARK_MAX}
                   priority
                   glint="arrive"
-                  sizes="(min-width:768px) 680px, 90vw"
+                  sizes={stageWordmarkSizes(art)}
                   className="drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
                 />
               ) : (
