@@ -22,13 +22,12 @@ export default function NewsCard({ post, headingLevel: H = "h3", compact = false
         {/* `alt=""` because the headline directly underneath says the same
             thing. The post page, where the picture is the hero rather than a
             thumbnail, does describe it. */}
-        <div className="b4w-develop" style={{ "--i": index }}>
-          <NewsArt
-            post={post}
-            sizes={compact ? "(min-width:992px) 300px, (min-width:768px) 46vw, 92vw" : "(min-width:992px) 560px, (min-width:768px) 46vw, 92vw"}
-            className="rounded-lg"
-          />
-        </div>
+        <NewsArt
+          post={post}
+          index={index}
+          sizes={compact ? "(min-width:992px) 300px, (min-width:768px) 46vw, 92vw" : "(min-width:992px) 560px, (min-width:768px) 46vw, 92vw"}
+          className="rounded-lg"
+        />
 
         <p className="!mb-0 font-Text text-[14px] text-muted">
           <time dateTime={post.date} className="b4w-figure text-ink">

@@ -72,6 +72,11 @@ const FADE_EDGES = {
   "sunset-peak": ["bottom"],
 };
 
+// Whole subjects that touch their canvas because they're cropped tight, not
+// because they're cut — the roulette wheels. Detection reads that as a bleed
+// and fades every side; these keep the edges they were drawn with.
+const WHOLE = new Set(["roulette", "american-roulette"]);
+
 // Packs keyed off a green screen whose edges still carry green painted into
 // the art itself (the ibex's fur tips). A key can't remove colour that belongs
 // to the subject's pixels, so these get a green despill: green is held to the
@@ -236,6 +241,7 @@ async function importSet(dir, outDir, { hero = false } = {}) {
       facts.framed = framed;
       if (crop) img = img.extract(crop);
       img = img.resize(1100, 1100, { fit: "inside", withoutEnlargement: true });
+      if (WHOLE.has(dir)) for (const edge of Object.keys(bleed ?? {})) bleed[edge] = false;
       for (const edge of FADE_EDGES[dir] ?? []) bleed[edge] = true;
       const despill = DESPILL_GREEN.has(dir);
       if (!framed && (despill || Object.values(bleed).some(Boolean))) img = await fadeBleed(img, bleed, despill);

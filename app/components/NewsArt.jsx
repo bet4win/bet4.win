@@ -10,20 +10,30 @@ import { artFor } from "@/data/gameArt";
 //
 // featuredImage() is untouched and still feeds the post's og:image: a social
 // card needs one flat file, and that is what the generator produces.
-export default function NewsArt({ post, priority = false, sizes, className = "", alt = "" }) {
+// `aspect` crops the frame (the room and hero are positioned in it, so any
+// ratio works); `index` staggers the hero's arrival where one is staged.
+export default function NewsArt({
+  post,
+  priority = false,
+  sizes,
+  className = "",
+  alt = "",
+  aspect = "aspect-[1200/630]",
+  index = 0,
+}) {
   const game = post.slug.endsWith("-release") ? artFor(post.slug.slice(0, -"-release".length)) : null;
 
   if (!game) {
     const art = featuredImage(post);
     return (
-      <div className={`relative aspect-[1200/630] overflow-hidden bg-bg ${className}`}>
+      <div className={`relative ${aspect} overflow-hidden bg-bg ${className}`}>
         <Image src={art.src} alt={alt} fill priority={priority} sizes={sizes} className="object-cover" />
       </div>
     );
   }
 
   return (
-    <div className={`relative isolate aspect-[1200/630] overflow-hidden bg-bg ${className}`}>
+    <div className={`relative isolate ${aspect} overflow-hidden bg-bg ${className}`}>
       <Image
         src={game.scene}
         alt=""
@@ -32,14 +42,16 @@ export default function NewsArt({ post, priority = false, sizes, className = "",
         sizes={sizes}
         className="-z-10 object-cover transition-transform duration-500 group-hover:scale-105"
       />
-      <Image
-        src={game.art}
-        alt={alt}
-        fill
-        priority={priority}
-        sizes={sizes}
-        className="!inset-y-[8%] !h-[84%] object-contain drop-shadow-[0_18px_22px_rgba(0,0,0,0.55)] transition-transform duration-500 group-hover:-translate-y-1.5"
-      />
+      <div className="b4w-news-hero absolute inset-0" style={{ "--i": index }}>
+        <Image
+          src={game.art}
+          alt={alt}
+          fill
+          priority={priority}
+          sizes={sizes}
+          className="!inset-y-[8%] !h-[84%] object-contain drop-shadow-[0_18px_22px_rgba(0,0,0,0.55)] transition-transform duration-500 group-hover:-translate-y-1.5"
+        />
+      </div>
     </div>
   );
 }

@@ -112,27 +112,29 @@ export default function Roadmap({ releases }) {
         <div className="mx-auto max-w-[1280px] px-5 pb-12 md:px-12">
           <ol className="!mb-0 flex list-none flex-col gap-px overflow-hidden rounded-xl border border-line bg-line p-0 sm:flex-row">
             {rest.map((r, i) => (
-              <li key={r.id} className="b4w-step flex flex-1 flex-col gap-1 bg-bg/90 p-5" style={{ "--i": i }}>
-                <p className="b4w-figure !mb-0 font-Text text-[14px] text-muted">
-                  {r.label}
-                  {r.delivered && <span className="ml-2 font-semibold text-accent">Delivered</span>}
-                </p>
-                <div className="flex items-center justify-between gap-3">
-                  <h3 className="!mb-0 font-Text text-[18px] font-bold !text-ink">{r.title}</h3>
-                  {isLive(r.id) && (
-                    <Link
-                      href={`/games/${r.id}`}
-                      aria-label={`${r.title} — game page`}
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/30 text-ink transition-colors hover:border-white hover:bg-white hover:text-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                    >
-                      <span className="b4w-arrow-loop">
-                        <ArrowRight className="h-4 w-4" />
-                        <ArrowRight className="h-4 w-4" />
-                      </span>
-                    </Link>
-                  )}
+              <li key={r.id} className="flex flex-1 bg-bg/90 p-5">
+                <div className="b4w-step flex w-full flex-col gap-1" style={{ "--i": i }}>
+                  <p className="b4w-figure !mb-0 font-Text text-[14px] text-muted">
+                    {r.label}
+                    {r.delivered && <span className="ml-2 font-semibold text-accent">Delivered</span>}
+                  </p>
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="!mb-0 font-Text text-[18px] font-bold !text-ink">{r.title}</h3>
+                    {isLive(r.id) && (
+                      <Link
+                        href={`/games/${r.id}`}
+                        aria-label={`${r.title} — game page`}
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/30 text-ink transition-colors hover:border-white hover:bg-white hover:text-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                      >
+                        <span className="b4w-arrow-loop">
+                          <ArrowRight className="h-4 w-4" />
+                          <ArrowRight className="h-4 w-4" />
+                        </span>
+                      </Link>
+                    )}
+                  </div>
+                  <p className="!mb-0 font-Text text-[14px] leading-snug text-muted">{r.teaser}</p>
                 </div>
-                <p className="!mb-0 font-Text text-[14px] leading-snug text-muted">{r.teaser}</p>
               </li>
             ))}
           </ol>
