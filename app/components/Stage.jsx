@@ -192,10 +192,13 @@ export default function Stage({ initialSlug }) {
     const card = rail?.querySelector(`[data-i="${i}"]`);
     if (rail && card) {
       const pad = parseFloat(getComputedStyle(rail).paddingLeft) || 0;
-      const left = card.offsetLeft - pad;
-      const right = card.offsetLeft + card.offsetWidth - rail.clientWidth + pad;
-      if (left < rail.scrollLeft) rail.scrollTo({ left, behavior: "smooth" });
-      else if (right > rail.scrollLeft) rail.scrollTo({ left: right, behavior: "smooth" });
+      const c = card.getBoundingClientRect();
+      const r = rail.getBoundingClientRect();
+      if (c.left < r.left + pad) {
+        rail.scrollTo({ left: rail.scrollLeft + c.left - r.left - pad, behavior: "smooth" });
+      } else if (c.right > r.right - pad) {
+        rail.scrollTo({ left: rail.scrollLeft + c.right - r.right + pad, behavior: "smooth" });
+      }
     }
 
     // Picked from below the fold (the rail can sit under it on a short
@@ -253,7 +256,7 @@ export default function Stage({ initialSlug }) {
       />
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 -z-10 h-[42%] bg-gradient-to-t from-bg via-bg/70 to-transparent"
+        className="absolute inset-x-0 -bottom-px -z-10 h-[42%] bg-gradient-to-t from-bg via-bg/70 to-transparent"
       />
       {/* Under the overlaid header, so the nav reads on any room. */}
       <div
@@ -273,15 +276,22 @@ export default function Stage({ initialSlug }) {
       {/* Clears the overlaid header. */}
       <div className="h-[72px] md:h-[84px]" />
 
-      <div className="mx-auto grid w-full max-w-[1280px] flex-1 items-center gap-6 px-5 md:px-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-8">
-        <div key={`copy-${look}`} className="b4w-stage-copy relative z-10 order-2 flex min-w-0 flex-col items-start gap-4 pb-4 md:gap-5 lg:order-1 lg:py-2">
+      {/* Below lg the copy and lobby have fixed geometry — every game fills
+          the same slots — and the hero takes whatever height is left, so
+          nothing moves when the game changes. */}
+      <div className="mx-auto grid w-full max-w-[1280px] flex-1 grid-rows-[minmax(0,1fr)_auto] gap-4 px-5 md:px-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:grid-rows-none lg:items-center lg:gap-8">
+        <div key={`copy-${look}`} className="b4w-stage-copy relative z-10 order-2 flex min-w-0 flex-col items-start gap-3 pb-2 md:gap-4 lg:order-1 lg:gap-5 lg:py-2">
           {inSeason && (
-            <p className="!mb-0 inline-flex items-center gap-2 font-Text text-[15px] font-semibold" style={{ color: SEASONS[season].tint }}>
+            // Above the copy rather than in it, so dressing a game for a
+            // season never pushes the copy down.
+            <p className="!mb-0 absolute bottom-full left-0 mb-3 inline-flex items-center gap-2 rounded-full bg-black/55 px-3 py-1 font-Text text-[14px] font-semibold" style={{ color: SEASONS[season].tint }}>
               {React.createElement(SEASONS[season].Icon, { className: "h-4 w-4" })}
               {SEASONS[season].label} edition
             </p>
           )}
-          <h2 className="!mb-0 w-full">
+          {/* One height for every title's slot (the tallest a mark gets is
+              letter / 0.7), marks sitting on its baseline. */}
+          <h2 className="!mb-0 flex w-full items-end" style={{ height: `calc(${STAGE_LETTER} / 0.7)` }}>
             <Wordmark
               art={art}
               alt={game.title}
@@ -293,20 +303,20 @@ export default function Stage({ initialSlug }) {
               className="drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
             />
           </h2>
-          <p className="!mb-0 max-w-[30rem] font-Text !text-[clamp(0.9rem,0.78rem+0.5vw,1.05rem)] !font-medium !leading-[1.45] !text-ink">
+          <p className="!mb-0 max-w-[30rem] font-Text !text-[clamp(0.9rem,0.78rem+0.5vw,1.05rem)] !font-medium !leading-[1.45] !text-ink max-lg:line-clamp-3 max-lg:min-h-[3lh] max-lg:!text-[15px]">
             {line}
           </p>
-          <dl className="!mb-0 flex flex-wrap gap-x-8 gap-y-3">
+          <dl className="!mb-0 flex gap-x-6 gap-y-3 lg:flex-wrap lg:gap-x-8">
             {figures.map(([k, v]) => (
               <div key={k} className="flex flex-col">
-                <dt className="order-2 font-Text text-[14px] text-ink/65">{k}</dt>
-                <dd className="b4w-figure order-1 !mb-0 text-[clamp(1.15rem,0.9rem+1vw,1.4rem)] font-bold leading-tight text-ink">
+                <dt className="order-2 font-Text text-[12px] text-ink/65 lg:text-[14px]">{k}</dt>
+                <dd className="b4w-figure order-1 !mb-0 whitespace-nowrap text-[17px] font-bold leading-tight text-ink lg:text-[clamp(1.15rem,0.9rem+1vw,1.4rem)]">
                   <Reel value={v} />
                 </dd>
               </div>
             ))}
           </dl>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+          <div className="flex w-full items-center gap-x-6 lg:w-auto">
             <a
               href={`/games/${slug}`}
               onClick={(e) => {
@@ -319,12 +329,13 @@ export default function Stage({ initialSlug }) {
               Play the demo
             </a>
             <Link href={`/games/${slug}`} className="b4w-btn b4w-btn--quiet b4w-btn--lg !px-0">
-              About {game.title}
+              <span className="lg:hidden">Game details</span>
+              <span className="max-lg:hidden">About {game.title}</span>
             </Link>
           </div>
         </div>
 
-        <div className="b4w-parallax-hero relative order-1 h-[32svh] min-h-[200px] lg:order-2 lg:h-full lg:min-h-[420px]">
+        <div className="b4w-parallax-hero relative order-1 min-h-[150px] lg:order-2 lg:h-full lg:min-h-[420px]">
           <div className="b4w-float absolute inset-0">
             <Image
               key={`art-${look}`}
@@ -341,9 +352,9 @@ export default function Stage({ initialSlug }) {
 
       {/* The lobby. Full cards, not thumbnails: this is the catalogue an
           operator is buying, and the thing they choose with. */}
-      <div className="relative pb-6 md:pb-8">
-        <div className="mx-auto mb-1 flex max-w-[1280px] flex-wrap items-end justify-between gap-x-6 gap-y-3 px-5 md:px-12">
-          <h2 className="!mb-0 font-Display text-[clamp(1.1rem,0.95rem+0.6vw,1.45rem)] font-extrabold !leading-none tracking-[-0.02em] !text-ink [font-stretch:125%]">
+      <div className="relative pb-4 md:pb-8">
+        <div className="mx-auto mb-1 flex max-w-[1280px] items-end justify-between gap-x-3 px-5 md:gap-x-6 md:px-12">
+          <h2 className="!mb-0 max-md:sr-only font-Display text-[clamp(1.1rem,0.95rem+0.6vw,1.45rem)] font-extrabold !leading-none tracking-[-0.02em] !text-ink [font-stretch:125%]">
             The lobby
             <span className="b4w-figure ml-3 hidden font-Text text-[15px] font-medium tracking-normal text-ink/60 [font-stretch:100%] sm:inline">
               {liveCatalogue.length} games
@@ -352,7 +363,7 @@ export default function Stage({ initialSlug }) {
 
           {/* Dress the lobby for a season. */}
           {SEASON_TABS.length > 0 && (
-            <div role="group" aria-label="Show the lobby in a season" className="order-3 flex w-full items-center gap-1 rounded-lg border border-white/15 bg-black/40 p-1 sm:order-none sm:w-auto">
+            <div role="group" aria-label="Show the lobby in a season" className="flex min-w-0 flex-1 items-center gap-1 rounded-lg border border-white/15 bg-black/40 p-1 md:flex-none">
               {[{ id: null, count: liveCatalogue.length }, ...SEASON_TABS].map(({ id, count }) => {
                 const on = season === id;
                 const meta = id ? SEASONS[id] : null;
@@ -362,24 +373,25 @@ export default function Stage({ initialSlug }) {
                     type="button"
                     onClick={() => pickSeason(id)}
                     aria-pressed={on}
-                    className={`flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-2 font-Text text-[13px] font-semibold transition-colors sm:flex-none sm:gap-2 sm:px-3 sm:text-[14px] ${
+                    className={`flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-1.5 py-2 font-Text text-[12px] font-semibold transition-colors sm:text-[13px] md:flex-none md:gap-2 md:px-3 md:text-[14px] ${
                       on ? "bg-white text-bg" : "text-ink/75 hover:bg-white/10 hover:text-ink"
                     }`}
                   >
                     {meta &&
                       React.createElement(meta.Icon, {
-                        className: "b4w-glyph h-4 w-4",
+                        className: "b4w-glyph h-4 w-4 shrink-0",
                         style: { color: on ? undefined : meta.tint },
                       })}
-                    {meta ? meta.label : "Standard"}
-                    {meta && <span className={`b4w-figure hidden text-[12px] sm:inline ${on ? "text-bg/60" : "text-ink/50"}`}>{count}</span>}
+                    {/* Under 390px the seasons are their glyphs alone. */}
+                    <span className={meta ? "max-[389px]:sr-only" : undefined}>{meta ? meta.label : "Standard"}</span>
+                    {meta && <span className={`b4w-figure hidden text-[12px] md:inline ${on ? "text-bg/60" : "text-ink/50"}`}>{count}</span>}
                   </button>
                 );
               })}
             </div>
           )}
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <Link href="/games" className="b4w-btn b4w-btn--quiet mr-2 hidden lg:inline-flex">
               See them all
             </Link>
@@ -397,7 +409,7 @@ export default function Stage({ initialSlug }) {
               type="button"
               onClick={() => step(-1)}
               aria-label="Previous game"
-              className="b4w-btn b4w-btn--ghost b4w-btn--icon !border-white/25"
+              className="b4w-btn b4w-btn--ghost b4w-btn--icon !border-white/25 max-md:!hidden"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
@@ -405,7 +417,7 @@ export default function Stage({ initialSlug }) {
               type="button"
               onClick={() => step(1)}
               aria-label="Next game"
-              className="b4w-btn b4w-btn--ghost b4w-btn--icon !border-white/25"
+              className="b4w-btn b4w-btn--ghost b4w-btn--icon !border-white/25 max-md:!hidden"
             >
               <ArrowRight className="h-4 w-4" />
             </button>
@@ -417,7 +429,7 @@ export default function Stage({ initialSlug }) {
           aria-label="Choose a game"
           onPointerEnter={() => setRailHover(true)}
           onPointerLeave={() => setRailHover(false)}
-          className="!mb-0 flex list-none gap-3 overflow-x-auto pb-2 pt-5 [scrollbar-width:none] md:gap-4"
+          className="!mb-0 flex list-none gap-3 overflow-x-auto pb-2 pt-4 [scrollbar-width:none] md:gap-4 md:pt-5"
           style={{ paddingInline: GUTTER, scrollPaddingInline: GUTTER }}
         >
           {liveCatalogue.map((e, i) => {
@@ -435,7 +447,7 @@ export default function Stage({ initialSlug }) {
                   onFocus={() => preloadLook(artIn(e, season))}
                   aria-pressed={on}
                   aria-label={e.game.title}
-                  className={`group block w-[128px] rounded-xl text-left transition-[transform,opacity] duration-300 sm:w-[148px] lg:w-[158px] ${
+                  className={`group block w-[104px] rounded-xl text-left transition-[transform,opacity] duration-300 sm:w-[148px] lg:w-[158px] ${
                     on
                       ? "-translate-y-3 opacity-100"
                       : off

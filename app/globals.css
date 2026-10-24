@@ -346,8 +346,17 @@ body.age-gate-locked {
   padding-right: 0.25rem;
   color: var(--color-ink);
   text-decoration: underline;
-  text-decoration-color: var(--color-line);
+  /* The link's own colour, faded — the panel line colour read as a stray
+     blue-grey rule wherever the link sits on a game's art. */
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-decoration-thickness: 1px;
   text-underline-offset: 0.3em;
+}
+.b4w-btn.b4w-btn--quiet {
+  transition:
+    color 0.15s ease,
+    text-decoration-color 0.2s ease,
+    scale 0.12s var(--b4w-ease-out);
 }
 .b4w-btn--quiet:hover {
   text-decoration-color: currentColor;

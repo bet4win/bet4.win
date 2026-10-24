@@ -43,7 +43,7 @@ export default function PageHeader({
             aria-hidden="true"
             className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,9,14,0.94)_0%,rgba(8,9,14,0.7)_45%,rgba(8,9,14,0.2)_85%)] max-md:bg-[rgba(8,9,14,0.72)]"
           />
-          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-bg to-transparent" />
+          <div aria-hidden="true" className="absolute inset-x-0 -bottom-px -z-10 h-24 bg-gradient-to-t from-bg to-transparent" />
         </>
       )}
 

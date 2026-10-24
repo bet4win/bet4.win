@@ -92,7 +92,7 @@ export default async function GamePage({ params }) {
             >
               More originals
             </h2>
-            <ul className="!mb-0 mt-8 grid list-none grid-cols-2 gap-x-5 gap-y-10 p-0 md:grid-cols-4">
+            <ul className="!mb-0 mt-6 grid list-none grid-cols-2 gap-x-3 gap-y-7 p-0 sm:gap-x-5 md:mt-8 md:grid-cols-4 md:gap-y-10">
               {others.map((entry) => (
                 <li key={entry.slug}>
                   <LobbyCard entry={entry} source="more_games" sizes="(min-width:768px) 300px, 46vw" />

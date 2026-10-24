@@ -90,7 +90,7 @@ export default function FairnessVerifier() {
       onSubmit={onVerify}
       className="relative overflow-hidden rounded-2xl border border-line bg-panel-high p-5 shadow-2xl"
     >
-      <div className="mb-4 flex items-center justify-between border-b border-line pb-3 font-JetBrainsMono text-[12px] text-muted">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-line pb-3 font-JetBrainsMono text-[12px] text-muted">
         <span>Verification terminal</span>
         <span className="text-faint">live · SHA-256</span>
       </div>

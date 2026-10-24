@@ -58,7 +58,7 @@ export default function GameDetail({ game, content }) {
               aria-hidden="true"
               className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,9,14,0.92)_0%,rgba(8,9,14,0.55)_45%,rgba(8,9,14,0.08)_80%)] max-lg:bg-[linear-gradient(180deg,rgba(8,9,14,0.45)_0%,rgba(8,9,14,0.85)_60%)]"
             />
-            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-28 bg-gradient-to-t from-bg to-transparent" />
+            <div aria-hidden="true" className="absolute inset-x-0 -bottom-px -z-10 h-28 bg-gradient-to-t from-bg to-transparent" />
           </>
         )}
 
@@ -96,11 +96,11 @@ export default function GameDetail({ game, content }) {
                 {game.featured.headline}
               </p>
             )}
-            <dl className="!mb-0 flex flex-wrap gap-x-8 gap-y-3">
+            <dl className="!mb-0 flex gap-x-6 gap-y-3 lg:flex-wrap lg:gap-x-8">
               {figures.slice(0, 3).map(([k, v]) => (
                 <div key={k} className="flex flex-col">
-                  <dt className="order-2 font-Text text-[14px] text-ink/65">{k}</dt>
-                  <dd className="b4w-figure order-1 !mb-0 text-[clamp(1.15rem,0.9rem+1vw,1.4rem)] font-bold leading-tight text-ink">
+                  <dt className="order-2 font-Text text-[12px] text-ink/65 lg:text-[14px]">{k}</dt>
+                  <dd className="b4w-figure order-1 !mb-0 whitespace-nowrap text-[17px] font-bold leading-tight text-ink lg:text-[clamp(1.15rem,0.9rem+1vw,1.4rem)]">
                     <Reel value={v} />
                   </dd>
                 </div>

@@ -22,13 +22,13 @@ export default function GameGrid() {
           trackEvent("catalogue_filter", { category: next });
         }}
       />
-      <ul className="!mb-0 mt-8 grid list-none grid-cols-1 gap-x-5 gap-y-10 p-0 min-[400px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <ul className="!mb-0 mt-6 grid list-none grid-cols-2 gap-x-3 gap-y-7 p-0 sm:gap-x-5 md:mt-8 md:grid-cols-3 md:gap-y-10 lg:grid-cols-4">
         {visible.map((entry, i) => (
           <li key={`${filter}-${entry.slug}`} className="b4w-redeal" style={{ "--i": i }}>
             <LobbyCard
               entry={entry}
               source="catalogue"
-              sizes="(min-width:992px) 300px, (min-width:768px) 31vw, 46vw"
+              sizes="(min-width:992px) 300px, (min-width:768px) 31vw, 47vw"
             />
           </li>
         ))}

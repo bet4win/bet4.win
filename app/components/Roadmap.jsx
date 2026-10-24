@@ -32,31 +32,37 @@ export default function Roadmap({ releases }) {
     <section ref={ref} id="roadmap" aria-labelledby="roadmap-heading" className="relative isolate overflow-hidden bg-bg">
       {art && (
         <>
-          <Image src={art.scene} alt="" fill sizes="100vw" className="-z-10 object-cover" />
+          {/* Stops 2px short: at a fractional section edge the picture's last
+              row otherwise rounds out past the fade as a light hairline. */}
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-[2px] top-0 -z-10">
+            <Image src={art.scene} alt="" fill sizes="100vw" className="object-cover" />
+          </div>
           <div
             aria-hidden="true"
             className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,9,14,0.92)_0%,rgba(8,9,14,0.6)_45%,rgba(8,9,14,0.1)_80%)] max-lg:bg-[linear-gradient(180deg,rgba(8,9,14,0.35)_0%,rgba(8,9,14,0.9)_60%)]"
           />
           <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-32 bg-gradient-to-b from-bg to-transparent" />
-          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-bg to-transparent" />
+          <div aria-hidden="true" className="absolute inset-x-0 -bottom-px -z-10 h-40 bg-gradient-to-t from-bg to-transparent" />
         </>
       )}
 
-      <div className="mx-auto grid max-w-[1280px] gap-8 px-5 py-12 md:px-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-center">
-        <div className="order-2 flex flex-col items-start gap-5 lg:order-1">
+      {/* Below lg the copy column dissolves (display: contents) so the heading
+          and date can come before the art, and the rest after it. */}
+      <div className="mx-auto flex max-w-[1280px] flex-col items-start gap-5 px-5 py-12 md:px-12 lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-center lg:gap-8">
+        <div className="contents lg:order-1 lg:flex lg:flex-col lg:items-start lg:gap-5">
           <h2
             id="roadmap-heading"
-            className="b4w-display !mb-0 !text-[clamp(1.8rem,1.2rem+2vw,3rem)] !text-ink"
+            className="order-1 b4w-display !mb-0 !text-[clamp(1.8rem,1.2rem+2vw,3rem)] !text-ink"
           >
             Coming next
           </h2>
           {next && (
             <>
-              <p className="b4w-figure !mb-0 font-Text text-[17px] font-semibold text-ink">
+              <p className="order-2 b4w-figure !mb-0 -mt-2 font-Text text-[17px] font-semibold text-ink lg:mt-0">
                 {next.label} · {next.category}
               </p>
               {art ? (
-                <h3 className="b4w-wipe !mb-0 w-full">
+                <h3 className="order-4 b4w-wipe !mb-0 w-full">
                   <Wordmark
                     art={art}
                     alt={next.title}
@@ -68,16 +74,16 @@ export default function Roadmap({ releases }) {
                   />
                 </h3>
               ) : (
-                <h3 className="b4w-display !mb-0 !text-[clamp(1.6rem,1.2rem+1.4vw,2.4rem)] !text-ink">
+                <h3 className="order-4 b4w-display !mb-0 !text-[clamp(1.6rem,1.2rem+1.4vw,2.4rem)] !text-ink">
                   {next.title}
                 </h3>
               )}
-              <p className="!mb-0 max-w-[30rem] font-Text !text-[clamp(0.9rem,0.78rem+0.5vw,1.05rem)] !leading-[1.5] !text-ink">
+              <p className="order-5 !mb-0 max-w-[30rem] font-Text !text-[clamp(0.9rem,0.78rem+0.5vw,1.05rem)] !leading-[1.5] !text-ink">
                 {next.teaser}
               </p>
             </>
           )}
-          <p className="!mb-0 max-w-md b4w-copy font-Text text-muted">
+          <p className="order-6 !mb-0 max-w-md b4w-copy font-Text text-muted">
             One original a month, each on the integration you already have. The
             full schedule, including titles we haven&rsquo;t announced, goes out
             under NDA.
@@ -85,14 +91,14 @@ export default function Roadmap({ releases }) {
           <a
             href="mailto:info@bet4.win?subject=Full%20roadmap%20request"
             onClick={() => trackEvent("cta_click", { label: "request_roadmap", cta_type: "email" })}
-            className="b4w-btn b4w-btn--primary b4w-btn--lg"
+            className="order-7 b4w-btn b4w-btn--primary b4w-btn--lg"
           >
             Request the full roadmap
           </a>
         </div>
 
         {art && (
-          <div className="relative order-1 h-[38svh] min-h-[240px] lg:order-2 lg:h-[46svh] lg:max-h-[480px]">
+          <div className="relative order-3 h-[34svh] min-h-[220px] self-stretch lg:order-2 lg:h-[46svh] lg:max-h-[480px]">
             <div className="b4w-unveil absolute inset-0">
               <div className="b4w-float absolute inset-0">
                 <Image

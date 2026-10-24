@@ -200,7 +200,7 @@ export default function Header({ overlay = false }) {
         <div
           id="mobile-nav"
           ref={panelRef}
-          className="border-t border-line/40 bg-bg lg:hidden"
+          className="b4w-pop border-t border-line/40 bg-bg lg:hidden"
         >
           <nav aria-label="Main" className="flex flex-col px-5 py-3">
             {NAV.map((item) => (

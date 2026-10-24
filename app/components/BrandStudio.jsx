@@ -90,7 +90,7 @@ export default function BrandStudio() {
             </p>
           </div>
 
-          <div role="group" aria-label="Choose an operator" className="flex shrink-0 flex-wrap gap-2 md:flex-nowrap">
+          <div role="group" aria-label="Choose an operator" className="grid shrink-0 grid-cols-3 gap-2 md:flex">
             {BRANDS.map((b) => {
               const on = b.id === brand.id;
               return (
@@ -102,11 +102,11 @@ export default function BrandStudio() {
                     setSwitched(true);
                   }}
                   aria-pressed={on}
-                  className={`flex items-center gap-2.5 rounded-lg border px-3.5 py-2.5 font-Text text-[15px] font-semibold transition-colors ${
+                  className={`flex flex-col items-center justify-center gap-1.5 rounded-lg border px-2 py-2.5 text-center font-Text text-[13px] font-semibold leading-tight transition-colors md:flex-row md:gap-2.5 md:px-3.5 md:text-[15px] ${
                     on ? "border-white bg-white text-bg" : "border-line text-ink/80 hover:border-ink/50 hover:text-ink"
                   }`}
                 >
-                  <span className="h-3.5 w-3.5 rounded-full" style={{ backgroundColor: b.accent }} />
+                  <span className="h-3.5 w-3.5 shrink-0 rounded-full" style={{ backgroundColor: b.accent }} />
                   {b.label}
                 </button>
               );
@@ -195,7 +195,7 @@ export default function BrandStudio() {
                 </span>
               ))}
               <span
-                className="rounded-md px-6 py-2.5 text-[16px] transition-colors duration-500"
+                className="rounded-md px-6 py-2.5 text-center text-[16px] transition-colors duration-500 max-sm:basis-full"
                 style={{ backgroundColor: brand.accent, color: brand.onAccent, ...type }}
               >
                 Cash out 2.47×

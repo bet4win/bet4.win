@@ -20,14 +20,14 @@ export default function NewsPreview() {
 
   return (
     <Section surface="base" aria-labelledby="news-heading" innerClassName="py-14 md:py-16">
-      <div className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-end md:gap-8">
+      <div className="flex items-end justify-between gap-4 md:gap-8">
         <h2
           id="news-heading"
           className="b4w-display !mb-0 !text-[clamp(1.8rem,1.2rem+2vw,3rem)] !text-ink"
         >
           Recent news
         </h2>
-        <Link href="/news" className="b4w-btn b4w-btn--quiet -ml-1 shrink-0 md:ml-0">
+        <Link href="/news" className="b4w-btn b4w-btn--quiet shrink-0">
           All news
           <span className="b4w-arrow-loop">
             <ArrowRight className="h-4 w-4" />
@@ -70,12 +70,12 @@ export default function NewsPreview() {
             <li key={post.slug} className="border-t border-line py-5 first:border-t-0 first:pt-0 last:pb-0">
               <Link
                 href={`/news/${post.slug}`}
-                className="group grid grid-cols-[minmax(0,5fr)_minmax(0,6fr)] items-center gap-5 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+                className="group grid grid-cols-[112px_minmax(0,1fr)] items-center gap-4 rounded-lg sm:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] sm:gap-5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
               >
                 <NewsArt
                   post={post}
                   index={i + 1}
-                  sizes="(min-width:992px) 200px, 40vw"
+                  sizes="(min-width:992px) 200px, (min-width:576px) 40vw, 112px"
                   aspect="aspect-[4/3]"
                   className="rounded-lg"
                 />
@@ -86,7 +86,7 @@ export default function NewsPreview() {
                     </time>
                     {post.kicker && <span> · {post.kicker}</span>}
                   </p>
-                  <h3 className="!mb-0 font-Text !text-[clamp(1rem,0.92rem+0.35vw,1.15rem)] font-bold !leading-snug !text-ink underline decoration-transparent underline-offset-4 transition-colors [text-wrap:balance] group-hover:decoration-white/40">
+                  <h3 className="!mb-0 font-Text !text-[15px] font-bold sm:!text-[clamp(1rem,0.92rem+0.35vw,1.15rem)] !leading-snug !text-ink underline decoration-transparent underline-offset-4 transition-colors [text-wrap:balance] group-hover:decoration-white/40">
                     {post.title}
                   </h3>
                   <p className="!mb-0 hidden font-Text text-[14px] leading-snug text-muted sm:line-clamp-2">{post.dek}</p>
