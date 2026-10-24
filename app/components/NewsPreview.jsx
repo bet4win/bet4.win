@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Section from "./Section";
 import NewsCard from "./NewsCard";
+import Arrive from "./Arrive";
 import { ArrowRight } from "./Icons";
 import { latestPosts } from "@/app/lib/news";
 
@@ -28,15 +29,18 @@ export default function NewsPreview() {
         </h2>
         <Link href="/news" className="b4w-btn b4w-btn--quiet -ml-1 shrink-0 md:ml-0">
           All news
-          <ArrowRight className="h-4 w-4" />
+          <span className="b4w-arrow-loop">
+            <ArrowRight className="h-4 w-4" />
+            <ArrowRight className="h-4 w-4" />
+          </span>
         </Link>
       </div>
 
-      <div className="mt-8 grid gap-x-6 gap-y-10 md:mt-10 md:grid-cols-2 lg:grid-cols-4">
-        {POSTS.map((post) => (
-          <NewsCard key={post.slug} post={post} compact />
+      <Arrive className="mt-8 grid gap-x-6 gap-y-10 md:mt-10 md:grid-cols-2 lg:grid-cols-4">
+        {POSTS.map((post, i) => (
+          <NewsCard key={post.slug} post={post} compact index={i} />
         ))}
-      </div>
+      </Arrive>
     </Section>
   );
 }

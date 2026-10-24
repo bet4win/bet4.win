@@ -149,12 +149,7 @@ export default function Header({ overlay = false }) {
               {/* The current section is underscored as well as coloured — the
                   colour alone is the only signal a screen reader can't use and
                   a colour-blind reader may not catch. */}
-              {isActive(item.href) && (
-                <span
-                  aria-hidden="true"
-                  className="absolute -bottom-1.5 left-0 h-0.5 w-full bg-ink"
-                />
-              )}
+              <span aria-hidden="true" className="b4w-nav-line absolute -bottom-1.5 left-0 h-0.5 w-full bg-ink" />
             </Link>
           ))}
         </nav>

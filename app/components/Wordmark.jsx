@@ -13,6 +13,11 @@ import Image from "next/image";
 // `letter` is any CSS length. `maxWidth` still caps the widest marks, which
 // then come out smaller — a 10:1 title cannot match a 2:1 one inside a column
 // without overflowing it.
+//
+// `glint` sweeps a band of light across the letters: "arrive" once as it lands,
+// "hover" whenever the surrounding `.group` is hovered. The band is masked by
+// the wordmark file itself, so a glinting mark is served unoptimised — the
+// mask and the picture are then one download (the files are 900px webp).
 export default function Wordmark({
   art,
   alt,
@@ -20,17 +25,35 @@ export default function Wordmark({
   maxWidth = "100%",
   align = "left",
   priority = false,
+  glint = null,
   sizes,
   className = "",
 }) {
+  const center = align === "center";
   return (
-    <Image
-      src={art.wordmark}
-      alt={alt}
-      priority={priority}
-      sizes={sizes}
-      className={`block w-auto object-contain ${align === "center" ? "mx-auto object-center" : "object-left"} ${className}`}
-      style={{ height: `calc(${letter} / ${art.letter || 0.85})`, maxWidth }}
-    />
+    <span
+      className={`b4w-wordmark relative block w-fit ${center ? "mx-auto" : ""} ${className}`}
+      style={{ maxWidth }}
+    >
+      <Image
+        src={art.wordmark}
+        alt={alt}
+        priority={priority}
+        sizes={sizes}
+        unoptimized={glint === "arrive"}
+        className={`block w-auto max-w-full object-contain ${center ? "object-center" : "object-left"}`}
+        style={{ height: `calc(${letter} / ${art.letter || 0.85})` }}
+      />
+      {glint && (
+        <span
+          aria-hidden="true"
+          className={`b4w-glint b4w-glint--${glint}`}
+          style={{
+            "--glint-mask": `url("${art.wordmark.src}")`,
+            "--glint-pos": center ? "center" : "left center",
+          }}
+        />
+      )}
+    </span>
   );
 }

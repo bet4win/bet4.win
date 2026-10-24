@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 
 // Scroll-reveal plumbing shared by every animated element on the page.
 //
@@ -64,4 +65,30 @@ export function onceInView(el, cb) {
     observer?.unobserve(el);
     callbacks.delete(el);
   };
+}
+
+// For a section that arrives with a choreography of its own (see "Arrivals" in
+// globals.css). Returns a ref; if the element starts below the fold it is
+// marked `data-motion="pending"`, and `"in"` once its top crosses 70% of the
+// screen. Anything already on screen is left alone, so nothing visible ever
+// blinks out to animate back in.
+export function useArrival() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion() || typeof IntersectionObserver === "undefined") return;
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.7) return;
+    el.dataset.motion = "pending";
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        el.dataset.motion = "in";
+        io.disconnect();
+      },
+      { rootMargin: "0px 0px -30% 0px", threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
 }

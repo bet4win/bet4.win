@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useArrival } from "@/app/lib/motion";
 import Image from "next/image";
 import Wordmark from "./Wordmark";
 import { STAGE_LETTER, STAGE_WORDMARK_MAX } from "./Stage";
@@ -25,9 +26,10 @@ export default function Roadmap({ releases }) {
   const next = releases.find((r) => r.isNext);
   const art = next ? artFor(next.id) : null;
   const rest = releases.filter((r) => r !== next);
+  const ref = useArrival();
 
   return (
-    <section id="roadmap" aria-labelledby="roadmap-heading" className="relative isolate overflow-hidden bg-bg">
+    <section ref={ref} id="roadmap" aria-labelledby="roadmap-heading" className="relative isolate overflow-hidden bg-bg">
       {art && (
         <>
           <Image src={art.scene} alt="" fill sizes="100vw" className="-z-10 object-cover" />
@@ -54,12 +56,13 @@ export default function Roadmap({ releases }) {
                 {next.label} · {next.category}
               </p>
               {art ? (
-                <h3 className="!mb-0 w-full">
+                <h3 className="b4w-wipe !mb-0 w-full">
                   <Wordmark
                     art={art}
                     alt={next.title}
                     letter={STAGE_LETTER}
                     maxWidth={STAGE_WORDMARK_MAX}
+                    glint="arrive"
                     sizes="(min-width:768px) 680px, 90vw"
                     className="drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
                   />
@@ -90,13 +93,17 @@ export default function Roadmap({ releases }) {
 
         {art && (
           <div className="relative order-1 h-[38svh] min-h-[240px] lg:order-2 lg:h-[46svh] lg:max-h-[480px]">
-            <Image
-              src={art.art}
-              alt=""
-              fill
-              sizes="(min-width:992px) 55vw, 90vw"
-              className="object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.55)]"
-            />
+            <div className="b4w-unveil absolute inset-0">
+              <div className="b4w-float absolute inset-0">
+                <Image
+                  src={art.art}
+                  alt=""
+                  fill
+                  sizes="(min-width:992px) 55vw, 90vw"
+                  className="object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.55)]"
+                />
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -104,8 +111,8 @@ export default function Roadmap({ releases }) {
       {rest.length > 0 && (
         <div className="mx-auto max-w-[1280px] px-5 pb-12 md:px-12">
           <ol className="!mb-0 flex list-none flex-col gap-px overflow-hidden rounded-xl border border-line bg-line p-0 sm:flex-row">
-            {rest.map((r) => (
-              <li key={r.id} className="flex flex-1 flex-col gap-1 bg-bg/90 p-5">
+            {rest.map((r, i) => (
+              <li key={r.id} className="b4w-step flex flex-1 flex-col gap-1 bg-bg/90 p-5" style={{ "--i": i }}>
                 <p className="b4w-figure !mb-0 font-Text text-[14px] text-muted">
                   {r.label}
                   {r.delivered && <span className="ml-2 font-semibold text-accent">Delivered</span>}
@@ -118,7 +125,10 @@ export default function Roadmap({ releases }) {
                       aria-label={`${r.title} — game page`}
                       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/30 text-ink transition-colors hover:border-white hover:bg-white hover:text-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                     >
-                      <ArrowRight className="h-4 w-4" />
+                      <span className="b4w-arrow-loop">
+                        <ArrowRight className="h-4 w-4" />
+                        <ArrowRight className="h-4 w-4" />
+                      </span>
                     </Link>
                   )}
                 </div>

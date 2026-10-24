@@ -8,7 +8,7 @@ import { formatDate, readingMinutes } from "@/app/lib/news";
 // facts, the headline and the dek, the way a newsroom lists a story.
 // `compact` is the four-across row on the homepage: a smaller headline and the
 // dek held to three lines, so four cards still fit one screen.
-export default function NewsCard({ post, headingLevel: H = "h3", compact = false }) {
+export default function NewsCard({ post, headingLevel: H = "h3", compact = false, index = 0 }) {
   const facts = [post.kicker, post.partner?.name, `${readingMinutes(post)} min read`].filter(
     Boolean,
   );
@@ -22,11 +22,13 @@ export default function NewsCard({ post, headingLevel: H = "h3", compact = false
         {/* `alt=""` because the headline directly underneath says the same
             thing. The post page, where the picture is the hero rather than a
             thumbnail, does describe it. */}
-        <NewsArt
-          post={post}
-          sizes={compact ? "(min-width:992px) 300px, (min-width:768px) 46vw, 92vw" : "(min-width:992px) 560px, (min-width:768px) 46vw, 92vw"}
-          className="rounded-lg"
-        />
+        <div className="b4w-develop" style={{ "--i": index }}>
+          <NewsArt
+            post={post}
+            sizes={compact ? "(min-width:992px) 300px, (min-width:768px) 46vw, 92vw" : "(min-width:992px) 560px, (min-width:768px) 46vw, 92vw"}
+            className="rounded-lg"
+          />
+        </div>
 
         <p className="!mb-0 font-Text text-[14px] text-muted">
           <time dateTime={post.date} className="b4w-figure text-ink">

@@ -5,6 +5,7 @@ import { trackEvent } from "@/app/lib/analytics";
 import { bookingUrl } from "@/app/lib/site";
 import { openBooking } from "@/app/lib/booking";
 import { artFor } from "@/data/gameArt";
+import { useArrival } from "@/app/lib/motion";
 
 // The ask, at a table: Blackjack's empty felt under a single lamp, which is
 // what a meeting about games should look like. Said plainly, left-aligned like
@@ -13,9 +14,10 @@ import { artFor } from "@/data/gameArt";
 const SCENE = artFor("blackjack").scene;
 
 export default function ClosingCta() {
+  const ref = useArrival();
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="relative isolate overflow-hidden bg-bg">
-      <Image src={SCENE} alt="" fill sizes="100vw" className="-z-10 object-cover object-[50%_70%] brightness-125" />
+    <section ref={ref} id="contact" aria-labelledby="contact-heading" className="relative isolate overflow-hidden bg-bg">
+      <Image src={SCENE} alt="" fill sizes="100vw" className="b4w-lamp -z-10 object-cover object-[50%_70%] brightness-125" />
       <div
         aria-hidden="true"
         className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,9,14,0.9)_0%,rgba(8,9,14,0.45)_55%,rgba(8,9,14,0.1)_100%)]"

@@ -23,8 +23,8 @@ export default function GameGrid() {
         }}
       />
       <ul className="!mb-0 mt-8 grid list-none grid-cols-1 gap-x-5 gap-y-10 p-0 min-[400px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {visible.map((entry) => (
-          <li key={entry.slug}>
+        {visible.map((entry, i) => (
+          <li key={`${filter}-${entry.slug}`} className="b4w-redeal" style={{ "--i": i }}>
             <LobbyCard
               entry={entry}
               source="catalogue"

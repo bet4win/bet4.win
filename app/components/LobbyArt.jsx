@@ -48,6 +48,7 @@ export default function LobbyArt({ entry, sizes, season = null, showMarks = true
           letter="13cqw"
           maxWidth="88%"
           align="center"
+          glint="hover"
           sizes={sizes}
           className="drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]"
         />

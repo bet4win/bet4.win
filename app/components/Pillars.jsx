@@ -5,6 +5,7 @@ import { ArrowRight } from "./Icons";
 import { claims } from "@/data/proof";
 import { artFor } from "@/data/gameArt";
 import CertMark from "./CertMark";
+import Arrive from "./Arrive";
 
 // What an operator gets besides the games, and the page that proves each part.
 // Three tall panels, each set in a game's room so the section belongs to the
@@ -44,7 +45,7 @@ const PILLARS = [
 
 export default function Pillars() {
   return (
-    <section aria-labelledby="pillars-heading" className="bg-bg pb-10 pt-12">
+    <Arrive as="section" aria-labelledby="pillars-heading" className="bg-bg pb-10 pt-12">
       <div className="mx-auto max-w-[1280px] px-5 md:px-12">
         <h2
           id="pillars-heading"
@@ -54,7 +55,7 @@ export default function Pillars() {
         </h2>
 
         <ul className="!mb-0 mt-8 grid list-none gap-5 p-0 md:mt-10 md:grid-cols-3 [&>li]:h-full">
-          {PILLARS.map((p) => (
+          {PILLARS.map((p, i) => (
             <li key={p.href}>
               <Link
                 href={p.href}
@@ -75,7 +76,7 @@ export default function Pillars() {
                     titles line up across the row; the link sits at the bottom.
                     The cut-outs are cropped to their outline at import, so
                     object-contain sizes each one to the box, not its canvas. */}
-                <div className="relative h-[150px] md:h-[150px]">
+                <div className="b4w-drop relative h-[150px]" style={{ "--i": i }}>
                   <Image
                     src={artFor(p.scene).art}
                     alt=""
@@ -91,13 +92,16 @@ export default function Pillars() {
                 {p.cert && <CertMark tone="light" className="mt-3 !text-[13px]" />}
                 <span className="mt-auto inline-flex items-center gap-2 pt-5 font-Text text-[15px] font-semibold text-ink">
                   {p.link}
-                  <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  <span className="b4w-arrow-loop">
+                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
                 </span>
               </Link>
             </li>
           ))}
         </ul>
       </div>
-    </section>
+    </Arrive>
   );
 }

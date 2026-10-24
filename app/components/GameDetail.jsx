@@ -5,6 +5,7 @@ import Link from "next/link";
 import GameModal from "./GameModal";
 import SeasonLaunch from "./SeasonLaunch";
 import Wordmark from "./Wordmark";
+import Reel from "./Reel";
 import { STAGE_LETTER, STAGE_WORDMARK_MAX } from "./Stage";
 import { ArrowLeft, Play } from "./Icons";
 import { trackEvent } from "@/app/lib/analytics";
@@ -52,7 +53,7 @@ export default function GameDetail({ game, content }) {
       <section className="relative isolate overflow-hidden border-b border-line/60 bg-bg">
         {art && (
           <>
-            <Image src={art.scene} alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
+            <Image src={art.scene} alt="" fill priority sizes="100vw" className="b4w-settle-scene -z-10 object-cover" />
             <div
               aria-hidden="true"
               className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,9,14,0.92)_0%,rgba(8,9,14,0.55)_45%,rgba(8,9,14,0.08)_80%)] max-lg:bg-[linear-gradient(180deg,rgba(8,9,14,0.45)_0%,rgba(8,9,14,0.85)_60%)]"
@@ -72,7 +73,7 @@ export default function GameDetail({ game, content }) {
 
         <div className="mx-auto grid max-w-[1280px] items-center gap-6 px-5 pb-14 md:px-12 md:pb-20 lg:min-h-[560px] lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
           <div className="relative z-10 order-2 flex min-w-0 flex-col items-start gap-6 lg:order-1">
-            <h1 className="!mb-0 w-full">
+            <h1 className="b4w-wipe !mb-0 w-full">
               {art ? (
                 <Wordmark
                   art={art}
@@ -80,6 +81,7 @@ export default function GameDetail({ game, content }) {
                   letter={STAGE_LETTER}
                   maxWidth={STAGE_WORDMARK_MAX}
                   priority
+                  glint="arrive"
                   sizes="(min-width:768px) 680px, 90vw"
                   className="drop-shadow-[0_8px_20px_rgba(0,0,0,0.6)]"
                 />
@@ -99,7 +101,7 @@ export default function GameDetail({ game, content }) {
                 <div key={k} className="flex flex-col">
                   <dt className="order-2 font-Text text-[14px] text-ink/65">{k}</dt>
                   <dd className="b4w-figure order-1 !mb-0 text-[clamp(1.15rem,0.9rem+1vw,1.4rem)] font-bold leading-tight text-ink">
-                    {v}
+                    <Reel value={v} />
                   </dd>
                 </div>
               ))}
@@ -128,7 +130,7 @@ export default function GameDetail({ game, content }) {
                 fill
                 priority
                 sizes="(min-width:992px) 55vw, 90vw"
-                className="object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.6)]"
+                className="b4w-land-hero object-contain drop-shadow-[0_30px_40px_rgba(0,0,0,0.6)]"
               />
             </div>
           )}

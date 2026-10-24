@@ -38,7 +38,7 @@ export default function PageHeader({
     <section className={`relative isolate overflow-hidden bg-bg ${sceneArt ? "border-b border-line/60" : ""}`}>
       {sceneArt && (
         <>
-          <Image src={sceneArt.scene} alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
+          <Image src={sceneArt.scene} alt="" fill priority sizes="100vw" className="b4w-settle-scene -z-10 object-cover" />
           <div
             aria-hidden="true"
             className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,9,14,0.94)_0%,rgba(8,9,14,0.7)_45%,rgba(8,9,14,0.2)_85%)] max-md:bg-[rgba(8,9,14,0.72)]"
@@ -72,7 +72,7 @@ export default function PageHeader({
               fill
               priority
               sizes="(min-width:768px) 40vw, 0px"
-              className="object-contain drop-shadow-[0_24px_32px_rgba(0,0,0,0.55)]"
+              className="b4w-land-hero object-contain drop-shadow-[0_24px_32px_rgba(0,0,0,0.55)]"
             />
           </div>
         )}

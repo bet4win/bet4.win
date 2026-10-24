@@ -68,6 +68,9 @@ const ROW = ["punch", "plinko", "dice", "crash", "keno", "roulette"]
 
 export default function BrandStudio() {
   const [brand, setBrand] = useState(BRANDS[0]);
+  // The first operator is on the board when the page loads; only a switch
+  // re-deals it.
+  const [switched, setSwitched] = useState(false);
   const type = { fontFamily: brand.font, ...brand.fontStyle };
 
   return (
@@ -94,7 +97,10 @@ export default function BrandStudio() {
                 <button
                   key={b.id}
                   type="button"
-                  onClick={() => setBrand(b)}
+                  onClick={() => {
+                    setBrand(b);
+                    setSwitched(true);
+                  }}
                   aria-pressed={on}
                   className={`flex items-center gap-2.5 rounded-lg border px-3.5 py-2.5 font-Text text-[15px] font-semibold transition-colors ${
                     on ? "border-white bg-white text-bg" : "border-line text-ink/80 hover:border-ink/50 hover:text-ink"
@@ -129,7 +135,7 @@ export default function BrandStudio() {
                 >
                   {brand.mark}
                 </span>
-                <span className="text-[18px] text-white transition-all duration-500" style={type}>
+                <span key={brand.id} className={`text-[18px] text-white ${switched ? "b4w-swap" : ""}`} style={type}>
                   {brand.name}
                 </span>
               </div>
@@ -143,14 +149,15 @@ export default function BrandStudio() {
 
             {/* The board */}
             <div className="flex justify-center px-4 py-7 md:py-10">
-              <div className="grid w-full max-w-[400px] grid-cols-5 gap-2">
+              <div key={brand.id} className="grid w-full max-w-[400px] grid-cols-5 gap-2">
                 {Array.from({ length: 25 }).map((_, i) => {
                   const open = REVEALED.has(i);
                   return (
                     <div
                       key={i}
-                      className="relative aspect-square rounded-lg transition-colors duration-500"
+                      className={`relative aspect-square rounded-lg ${switched ? "b4w-tile" : ""}`}
                       style={{
+                        "--i": (i % 5) + Math.floor(i / 5),
                         backgroundColor: open ? `${brand.accent}26` : brand.tile,
                         border: `1px solid ${open ? brand.accent : brand.edge}`,
                       }}

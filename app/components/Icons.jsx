@@ -30,6 +30,7 @@ import {
   RiMailLine,
   RiMenuLine,
   RiPaletteLine,
+  RiPauseFill,
   RiPlayFill,
   RiPulseLine,
   RiRefreshLine,
@@ -64,6 +65,7 @@ export const Close = decorative(RiCloseLine, "Close");
 export const Menu = decorative(RiMenuLine, "Menu");
 export const Refresh = decorative(RiRefreshLine, "Refresh");
 export const Play = decorative(RiPlayFill, "Play");
+export const Pause = decorative(RiPauseFill, "Pause");
 // "Leaves this page" — the box-with-an-arrow, not the bare ArrowUpRight above.
 // The plain arrow already means "go deeper into the site" wherever it appears
 // here, and the demo pop-out is the one control that hands the reader to a
