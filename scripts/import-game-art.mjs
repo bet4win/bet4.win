@@ -96,13 +96,9 @@ const DESPILL_GREEN = new Set(["sunset-peak"]);
 const SCENE_FROM_BLUR = new Set(["punch-halloween"]);
 
 // A room is drawn edge to edge, so it needs ~2880px on a Retina laptop and
-// 2560px on a 2K desktop. The packs' rooms are 1920px banner sources; where a
-// larger original of the same room exists it is used instead: a pack's own
-// `<dir>_bg-hires.png` (regenerated at 4K for the site) or the game's in-game
-// background, named here.
-const SCENE_SOURCE = {
-  "punch-game": "../ui/apps/punch-game/src/assets/sprites/bg_wide.webp",
-};
+// 2560px on a 2K desktop. The packs' rooms are 1920px banner sources; a pack's
+// own `<dir>_bg-hires.png`, regenerated at 4K for the site, wins wherever it
+// exists — over the blurred-room fallback too.
 const SCENE_MAX = 3840;
 
 const SEASONAL = {
@@ -234,16 +230,15 @@ async function fadeBleed(pipeline, bleed, despill = false, ramp = 0.24) {
 // Writes one art set (art, wordmark, scene) into outDir and returns its facts.
 async function importSet(dir, outDir, { hero = false } = {}) {
   const kg = path.join(SRC, dir, "key-graphics");
+  const hires = path.join(SRC, dir, "backgrounds", `${dir}_bg-hires.png`);
+  const fromBlur = SCENE_FROM_BLUR.has(dir) && !existsSync(hires);
   const sources = {
     // A `_hero` cut-out wins wherever one exists: isolated from the key visual
     // with Photoshop Select Subject (tools/marketing-gen/ps-select-subject.mjs
     // --file), or regenerated at 2K on a chroma screen and keyed for the site.
     art: path.join(kg, `${dir}_${hero || existsSync(path.join(kg, `${dir}_hero.png`)) ? "hero" : "key-visual"}.png`),
     wordmark: path.join(SRC, dir, "wordmarks", `${dir}_wordmark-h.png`),
-    scene:
-      SCENE_SOURCE[dir] ??
-      [path.join(SRC, dir, "backgrounds", `${dir}_bg-hires.png`)].find(existsSync) ??
-      path.join(SRC, dir, "backgrounds", `${dir}_bg-main-clear.png`),
+    scene: existsSync(hires) ? hires : path.join(SRC, dir, "backgrounds", `${dir}_bg-main-clear.png`),
     blur: path.join(SRC, dir, "backgrounds", `${dir}_bg-main-blur.png`),
   };
   mkdirSync(outDir, { recursive: true });
@@ -273,10 +268,10 @@ async function importSet(dir, outDir, { hero = false } = {}) {
       facts.letter = Math.round(letter * 1000) / 1000;
       await img.extract(crop).resize(1800, 600, { fit: "inside", withoutEnlargement: true }).webp({ quality: 90 }).toFile(out);
     }
-    if (kind === "scene" && !SCENE_FROM_BLUR.has(dir)) {
+    if (kind === "scene" && !fromBlur) {
       await img.resize({ width: SCENE_MAX, withoutEnlargement: true }).webp({ quality: 90 }).toFile(out);
     }
-    if (kind === "blur" && SCENE_FROM_BLUR.has(dir)) {
+    if (kind === "blur" && fromBlur) {
       await img.resize({ width: SCENE_MAX, withoutEnlargement: true }).webp({ quality: 90 }).toFile(path.join(outDir, "scene.webp"));
       continue;
     }
