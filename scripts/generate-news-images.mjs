@@ -112,8 +112,13 @@ const esc = (s) =>
 //                deep blue floor. Rings coming off it. The only green card.
 //   statement    NEAR-BLACK. Horizontal rules, a hard vignette, one narrow band
 //                off the top edge. The quietest, because it is one line of type.
+//   launch       PERIWINKLE. Rings spreading from the lockup, one wash from
+//                below: our games going out on a brand's floor. The same
+//                lockup as an integration, so the hue is all that tells them
+//                apart, and it has to.
 //
-// The 4px top rule is coloured to match: blue joins, mint ships, grey states.
+// The 4px top rule is coloured to match: blue joins, mint ships, grey states,
+// periwinkle goes live.
 //
 // Built from explicit elements rather than <pattern>/<mask> so it renders
 // identically under librsvg and resvg.
@@ -136,12 +141,12 @@ function lattice() {
 // part of what makes it the green one. Opacity falls with radius rather than
 // being masked — a <radialGradient> in a stroke is the kind of thing the two
 // renderers disagree about.
-function rings(cx, cy) {
+function rings(cx, cy, colour = C.accent, first = 190) {
   const out = [];
-  for (let r = 190; r <= 820; r += 52) {
-    const o = Math.max(0.06, 0.46 - (r - 190) / 1900);
+  for (let r = first; r <= 820; r += 52) {
+    const o = Math.max(0.06, 0.46 - (r - first) / 1900);
     out.push(
-      `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C.accent}" stroke-width="1.5" stroke-opacity="${o.toFixed(3)}"/>`,
+      `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${colour}" stroke-width="1.5" stroke-opacity="${o.toFixed(3)}"/>`,
     );
   }
   return out.join("");
@@ -162,6 +167,9 @@ const FIELDS = {
   // 274 is the centre of the 300px plate at y=124 in the release layout.
   release: () => `${rings(W / 2, 274)}${FILL("vignette")}${FILL("burst")}${FILL("mintFloor")}`,
   statement: () => `${rules()}${FILL("vignetteHard")}${FILL("crown")}`,
+  // 318 is the lockup's centre line in the integration layout, which launch
+  // cards share.
+  launch: () => `${rings(W / 2, 318, C.brand, 330)}${FILL("vignette")}${FILL("liftoff")}`,
 };
 
 // Also the top rule's colour. Defined here rather than in DEFS because the
@@ -170,6 +178,7 @@ const RULE_COLOUR = {
   integration: C.brand,
   release: C.accent,
   statement: C.faint,
+  launch: C.brand,
 };
 
 function background(kind = "integration") {
@@ -234,6 +243,12 @@ const DEFS = `
       <stop offset="38%" stop-color="${C.brandDeep}" stop-opacity="0"/>
       <stop offset="100%" stop-color="${C.brandDeep}" stop-opacity="0.42"/>
     </linearGradient>
+
+    <!-- LAUNCH — periwinkle rising from the bottom edge, under the rings. -->
+    <radialGradient id="liftoff" cx="50%" cy="100%" r="70%">
+      <stop offset="0%" stop-color="${C.brand}" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="${C.brand}" stop-opacity="0"/>
+    </radialGradient>
 
     <!-- STATEMENT — one narrow band off the top edge, and nothing else. -->
     <linearGradient id="crown" x1="0" y1="0" x2="0" y2="1">
@@ -303,7 +318,7 @@ function findPartnerLogo(name) {
 
 // [Bet4.win] x [partner]. The default for an integration announcement, and the
 // one that earns its place: the whole story is which two names are now joined.
-async function integration(post) {
+async function integration(post, kind = "integration") {
   const { partner } = post;
   const cfg = post.image || {};
   const cy = 318;
@@ -363,7 +378,7 @@ async function integration(post) {
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
     ${DEFS}
-    ${background("integration")}
+    ${background(kind)}
     ${mono(cfg.kicker || post.kicker || "Integration", { y: 96, size: 22, fill: C.accent, tracking: 7 })}
     <image href="${logoData}" x="${startX}" y="${cy - logoH / 2}" width="${logoW}" height="${logoH}"/>
     ${cross(crossCx, cy, CROSS_R)}
@@ -463,7 +478,10 @@ async function release(post) {
   };
 }
 
-const LAYOUTS = { integration, statement, release };
+// A brand going live with our games: the integration lockup, on its own field.
+const launch = (post) => integration(post, "launch");
+
+const LAYOUTS = { integration, statement, release, launch };
 
 // Every cut of a slug's card except the one just written. Matches the legacy
 // unhashed name too, so the first run after this change clears the old files

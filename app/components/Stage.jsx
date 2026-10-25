@@ -36,8 +36,8 @@ const hasSeason = (entry, season) => Boolean(season && entry.art?.seasons?.[seas
 // loads.
 //
 // The season switch on the lobby dresses the whole lobby for a holiday: every
-// game with that build swaps to its seasonal art, the rest step back, and the
-// stage and its Play button follow. It is how the catalogue's seasonal builds
+// game with that build swaps to its seasonal art, the rest leave the rail, and
+// the stage and its Play button follow. It is how the catalogue's seasonal builds
 // are shown — one click turns the floor to Christmas.
 // Pads the rail so its first card lines up with the page's content edge,
 // while the row itself still runs to both edges of the screen.
@@ -214,6 +214,15 @@ export default function Stage({ initialSlug }) {
     trackEvent("stage_season", { season: id ?? "standard" });
     select(seasonTarget(id), id, "season", 1);
   };
+
+  // The rail is rebuilt for the new season's games; bring the one on stage
+  // back into view along it.
+  const seasonShown = useRef(season);
+  useEffect(() => {
+    if (seasonShown.current === season) return;
+    seasonShown.current = season;
+    keepInView(index, false);
+  }, [season]);
 
   const keepInView = (i, page) => {
     // Keep the picked card in view along the rail. Computed rather than
@@ -497,6 +506,7 @@ export default function Stage({ initialSlug }) {
         </div>
 
         <ul
+          key={season ?? "standard"}
           ref={railRef}
           aria-label="Choose a game"
           onPointerEnter={() => setRailHover(true)}
@@ -504,13 +514,11 @@ export default function Stage({ initialSlug }) {
           className="!mb-0 flex list-none gap-3 overflow-x-auto pb-2 pt-4 [scrollbar-width:none] md:gap-4 md:pt-5"
           style={{ paddingInline: GUTTER, scrollPaddingInline: GUTTER }}
         >
-          {liveCatalogue.map((e, i) => {
+          {poolIn(season).map((i, n) => {
+            const e = liveCatalogue[i];
             const on = i === index;
-            // Out of season: still pickable, but stepped back so the dressed
-            // games read as the set.
-            const off = season && !hasSeason(e, season) && !on;
             return (
-              <li key={e.slug} className="b4w-deal relative shrink-0" style={{ "--i": i }}>
+              <li key={e.slug} className="b4w-deal relative shrink-0" style={{ "--i": n }}>
                 <button
                   type="button"
                   data-i={i}
@@ -522,9 +530,7 @@ export default function Stage({ initialSlug }) {
                   className={`group block w-[104px] rounded-lg text-left transition-[transform,opacity] duration-300 sm:w-[148px] lg:w-[158px] ${
                     on
                       ? "-translate-y-3 opacity-100"
-                      : off
-                        ? "opacity-25 grayscale hover:opacity-60 focus-visible:opacity-60"
-                        : "opacity-60 hover:-translate-y-1.5 hover:opacity-100 focus-visible:opacity-100"
+                      : "opacity-60 hover:-translate-y-1.5 hover:opacity-100 focus-visible:opacity-100"
                   } focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand`}
                 >
                   <LobbyArt

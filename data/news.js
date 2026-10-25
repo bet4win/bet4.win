@@ -27,7 +27,9 @@
 // commit that with the images.
 //
 //   image.kind        "integration" (Bet4.win x partner lockup) | "statement"
-//                     | "release" (the game's own key art)
+//                     | "release" (the game's own key art) | "launch" (the
+//                     integration lockup with a brand that went live, on its
+//                     own field)
 //   image.partnerLogo file in public/assets/img/news/logos/ — the partner's own
 //                     asset. Omit it and their name is set as type instead.
 //   image.art         release cards only: the lobby tile in
@@ -145,6 +147,300 @@ export const posts = [
       {
         type: "p",
         text: "The catalogue grows by one original a month, and new titles reach Upgaming operators on the same integration. What is in production, and when it is due, is published on our roadmap.",
+      },
+    ],
+  },
+
+  // --- Launches -------------------------------------------------------------
+  // A brand that has taken the catalogue live. `date` is the brand's FIRST
+  // settled round in the production backoffice, not an editorial date.
+  //
+  // Only brands with real play are listed: at least 100 settled rounds in the
+  // month they were checked (1-25 Oct 2026), with test operators and test brands
+  // (revolver, b4w, bet4win, test) excluded. Brands with a backoffice id but
+  // no confirmed public name (betfnd-*, relaxiom-3229) are left out until
+  // someone can name them. Re-check before adding one: a brand that stops
+  // playing doesn't take its post down by itself.
+  //
+  // !! Like the integration posts, these name commercial partners in public.
+  // Confirm each brand is happy to be named before this ships.
+  {
+    slug: "peakplay-launch",
+    kicker: "Launch",
+    date: "2026-08-11",
+    title: "Bet4.win originals are live on PeakPlay",
+    dek: "The Rubystone social casino has added our provably-fair originals to its lobby, a day after the catalogue went out on Revolver Gaming.",
+    partner: {
+      name: "PeakPlay",
+      url: "https://peakplay.com",
+    },
+    image: {
+      kind: "launch",
+      partnerLogo: "peakplay",
+      alt: "Bet4.win and PeakPlay, side by side",
+    },
+    body: [
+      {
+        type: "p",
+        text: "PeakPlay now carries the Bet4.win originals. Its players can open our provably-fair games straight from the PeakPlay lobby, alongside everything else on the site.",
+      },
+      {
+        type: "p",
+        text: "The games reach it through Revolver Gaming, on the single integration that carries the whole catalogue. There was nothing to build per title, and every original we ship from here lands in the same lobby as it releases.",
+      },
+      { type: "h2", text: "Fair, and checkable" },
+      {
+        type: "p",
+        text: "Every round on the catalogue is provably fair. The server seed is hashed and shown before the bet and published once the round settles, so a player can recompute their own result in the browser instead of taking anyone's word for it.",
+      },
+      {
+        type: "p",
+        text: "Play runs on PeakPlay's own coins, under its own rules; the games are the same provably-fair originals that run on real-money floors, branded to sit in PeakPlay's lobby.",
+      },
+    ],
+  },
+  {
+    slug: "pridespins-launch",
+    kicker: "Launch",
+    date: "2026-08-13",
+    title: "PrideSpins takes the Bet4.win catalogue live in Ghana",
+    dek: "Players on PrideSpins can now play our provably-fair originals in cedis, from the lobby they already use.",
+    partner: {
+      name: "PrideSpins",
+      url: "https://pridespins.com.gh",
+    },
+    image: {
+      kind: "launch",
+      partnerLogo: "pridespins",
+      alt: "Bet4.win and PrideSpins, side by side",
+    },
+    body: [
+      {
+        type: "p",
+        text: "PrideSpins is now running the Bet4.win originals. Its players in Ghana can play the catalogue in cedis, inside the casino they already have an account with.",
+      },
+      {
+        type: "p",
+        text: "The games reach it through Betfounders and Revolver Gaming, on the single integration that carries the whole catalogue. There was nothing to build per title, and every original we ship from here lands in the same lobby as it releases.",
+      },
+      { type: "h2", text: "Fair, and checkable" },
+      {
+        type: "p",
+        text: "Every round on the catalogue is provably fair. The server seed is hashed and shown before the bet and published once the round settles, so a player can recompute their own result in the browser instead of taking anyone's word for it.",
+      },
+      {
+        type: "p",
+        text: "PrideSpins sets its own lobby, limits and market, against its own licence. The games are branded to fit it, so they read as part of PrideSpins, not as a third-party window.",
+      },
+    ],
+  },
+  {
+    slug: "funz-launch",
+    kicker: "Launch",
+    date: "2026-09-01",
+    title: "Funz goes live with Bet4.win originals",
+    dek: "The Funz social casino has added our provably-fair originals to its lobby.",
+    partner: {
+      name: "Funz",
+      url: "https://funzcasino.com",
+    },
+    image: {
+      kind: "launch",
+      partnerLogo: "funz",
+      alt: "Bet4.win and Funz, side by side",
+    },
+    body: [
+      {
+        type: "p",
+        text: "Funz now carries the Bet4.win originals. Its players can open our provably-fair games from the Funz lobby, next to the rest of the site's catalogue.",
+      },
+      {
+        type: "p",
+        text: "The games reach it through Revolver Gaming, on the single integration that carries the whole catalogue. There was nothing to build per title, and every original we ship from here lands in the same lobby as it releases.",
+      },
+      { type: "h2", text: "Fair, and checkable" },
+      {
+        type: "p",
+        text: "Every round on the catalogue is provably fair. The server seed is hashed and shown before the bet and published once the round settles, so a player can recompute their own result in the browser instead of taking anyone's word for it.",
+      },
+      {
+        type: "p",
+        text: "Play runs on Funz's own coins, under its own rules; the games are the same provably-fair originals that run on real-money floors, branded to sit in Funz's lobby.",
+      },
+    ],
+  },
+  {
+    slug: "spincity-mozambique-launch",
+    kicker: "Launch",
+    date: "2026-09-08",
+    title: "SpinCity brings Bet4.win originals to Mozambique",
+    dek: "SpinCity Mozambique's players can now play our provably-fair originals in meticais.",
+    partner: {
+      name: "SpinCity Mozambique",
+      url: "https://spincity.co.mz",
+    },
+    image: {
+      kind: "launch",
+      partnerLogo: "spincity-mozambique",
+      alt: "Bet4.win and SpinCity Mozambique, side by side",
+    },
+    body: [
+      {
+        type: "p",
+        text: "SpinCity Mozambique is now running the Bet4.win originals. Its players can play the catalogue in meticais, inside the casino they already have an account with.",
+      },
+      {
+        type: "p",
+        text: "The games reach it through Betfounders and Revolver Gaming, on the single integration that carries the whole catalogue. There was nothing to build per title, and every original we ship from here lands in the same lobby as it releases.",
+      },
+      { type: "h2", text: "Fair, and checkable" },
+      {
+        type: "p",
+        text: "Every round on the catalogue is provably fair. The server seed is hashed and shown before the bet and published once the round settles, so a player can recompute their own result in the browser instead of taking anyone's word for it.",
+      },
+      {
+        type: "p",
+        text: "SpinCity Mozambique sets its own lobby, limits and market, against its own licence. The games are branded to fit it, so they read as part of SpinCity Mozambique, not as a third-party window.",
+      },
+    ],
+  },
+  {
+    slug: "spincity-namibia-launch",
+    kicker: "Launch",
+    date: "2026-09-08",
+    title: "SpinCity Namibia goes live with Bet4.win originals",
+    dek: "Our provably-fair catalogue is now in SpinCity's Namibian lobby, played in Namibian dollars.",
+    partner: {
+      name: "SpinCity Namibia",
+      url: "https://spincity.co.na",
+    },
+    image: {
+      kind: "launch",
+      partnerLogo: "spincity-namibia",
+      alt: "Bet4.win and SpinCity Namibia, side by side",
+    },
+    body: [
+      {
+        type: "p",
+        text: "SpinCity Namibia is now running the Bet4.win originals. Its players can play the catalogue in Namibian dollars, inside the casino they already have an account with.",
+      },
+      {
+        type: "p",
+        text: "The games reach it through Betfounders and Revolver Gaming, on the single integration that carries the whole catalogue. There was nothing to build per title, and every original we ship from here lands in the same lobby as it releases.",
+      },
+      { type: "h2", text: "Fair, and checkable" },
+      {
+        type: "p",
+        text: "Every round on the catalogue is provably fair. The server seed is hashed and shown before the bet and published once the round settles, so a player can recompute their own result in the browser instead of taking anyone's word for it.",
+      },
+      {
+        type: "p",
+        text: "SpinCity Namibia sets its own lobby, limits and market, against its own licence. The games are branded to fit it, so they read as part of SpinCity Namibia, not as a third-party window.",
+      },
+    ],
+  },
+  {
+    slug: "winpesa-nigeria-launch",
+    kicker: "Launch",
+    date: "2026-09-08",
+    title: "Winpesa Nigeria launches Bet4.win originals",
+    dek: "Winpesa's Nigerian players can now play our provably-fair originals in naira.",
+    partner: {
+      name: "Winpesa Nigeria",
+      url: "https://winpesa.ng",
+    },
+    image: {
+      kind: "launch",
+      partnerLogo: "winpesa-nigeria",
+      alt: "Bet4.win and Winpesa Nigeria, side by side",
+    },
+    body: [
+      {
+        type: "p",
+        text: "Winpesa Nigeria is now running the Bet4.win originals. Its players can play the catalogue in naira, inside the casino they already have an account with.",
+      },
+      {
+        type: "p",
+        text: "The games reach it through Betfounders and Revolver Gaming, on the single integration that carries the whole catalogue. There was nothing to build per title, and every original we ship from here lands in the same lobby as it releases.",
+      },
+      { type: "h2", text: "Fair, and checkable" },
+      {
+        type: "p",
+        text: "Every round on the catalogue is provably fair. The server seed is hashed and shown before the bet and published once the round settles, so a player can recompute their own result in the browser instead of taking anyone's word for it.",
+      },
+      {
+        type: "p",
+        text: "Winpesa Nigeria sets its own lobby, limits and market, against its own licence. The games are branded to fit it, so they read as part of Winpesa Nigeria, not as a third-party window.",
+      },
+    ],
+  },
+  {
+    slug: "winbucks-launch",
+    kicker: "Launch",
+    date: "2026-09-08",
+    title: "Winbucks adds the Bet4.win originals",
+    dek: "Our provably-fair catalogue is live on Winbucks, played in US dollars.",
+    partner: {
+      name: "Winbucks",
+      url: "https://winbucks.co.zw",
+    },
+    image: {
+      kind: "launch",
+      partnerLogo: "winbucks",
+      alt: "Bet4.win and Winbucks, side by side",
+    },
+    body: [
+      {
+        type: "p",
+        text: "Winbucks is now running the Bet4.win originals. Its players can play the catalogue in US dollars, inside the casino they already have an account with.",
+      },
+      {
+        type: "p",
+        text: "The games reach it through Betfounders and Revolver Gaming, on the single integration that carries the whole catalogue. There was nothing to build per title, and every original we ship from here lands in the same lobby as it releases.",
+      },
+      { type: "h2", text: "Fair, and checkable" },
+      {
+        type: "p",
+        text: "Every round on the catalogue is provably fair. The server seed is hashed and shown before the bet and published once the round settles, so a player can recompute their own result in the browser instead of taking anyone's word for it.",
+      },
+      {
+        type: "p",
+        text: "Winbucks sets its own lobby, limits and market, against its own licence. The games are branded to fit it, so they read as part of Winbucks, not as a third-party window.",
+      },
+    ],
+  },
+  {
+    slug: "slotpesa-launch",
+    kicker: "Launch",
+    date: "2026-09-18",
+    title: "Slotpesa takes Bet4.win originals live in Tanzania",
+    dek: "Slotpesa's players can now play our provably-fair originals in Tanzanian shillings.",
+    partner: {
+      name: "Slotpesa",
+      url: "https://slotpesa.co.tz",
+    },
+    image: {
+      kind: "launch",
+      partnerLogo: "slotpesa",
+      alt: "Bet4.win and Slotpesa, side by side",
+    },
+    body: [
+      {
+        type: "p",
+        text: "Slotpesa is now running the Bet4.win originals. Its players in Tanzania can play the catalogue in shillings, inside the casino they already have an account with.",
+      },
+      {
+        type: "p",
+        text: "The games reach it through Betfounders and Revolver Gaming, on the single integration that carries the whole catalogue. There was nothing to build per title, and every original we ship from here lands in the same lobby as it releases.",
+      },
+      { type: "h2", text: "Fair, and checkable" },
+      {
+        type: "p",
+        text: "Every round on the catalogue is provably fair. The server seed is hashed and shown before the bet and published once the round settles, so a player can recompute their own result in the browser instead of taking anyone's word for it.",
+      },
+      {
+        type: "p",
+        text: "Slotpesa sets its own lobby, limits and market, against its own licence. The games are branded to fit it, so they read as part of Slotpesa, not as a third-party window.",
       },
     ],
   },

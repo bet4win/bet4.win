@@ -3,6 +3,7 @@ import Stage from "@/app/components/Stage";
 import DemoHost from "@/app/components/DemoHost";
 import Roadmap from "@/app/components/Roadmap";
 import Pillars from "@/app/components/Pillars";
+import Aggregators from "@/app/components/Aggregators";
 import NewsPreview from "@/app/components/NewsPreview";
 import ClosingCta from "@/app/components/ClosingCta";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/app/lib/site";
@@ -115,7 +116,8 @@ const jsonLd = {
 // Home is a games studio's front page: the stage puts one game at a time on
 // the whole first screen with the lobby along its bottom to choose from, then
 // what ships next,
-// what comes with the integration, the news and the ask. Platform /
+// what comes with the integration, where to get the games, the news and the
+// ask. Platform /
 // provably-fair / branding live at their own routes.
 export default function HomePage() {
   return (
@@ -130,6 +132,7 @@ export default function HomePage() {
           disagree with this markup across a month boundary. */}
       <Roadmap releases={upcomingReleases()} />
       <Pillars />
+      <Aggregators />
       <NewsPreview />
       <ClosingCta />
       <DemoHost />
