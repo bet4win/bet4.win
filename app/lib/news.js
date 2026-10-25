@@ -8,6 +8,14 @@ export function allPosts() {
   return [...posts].sort((a, b) => b.date.localeCompare(a.date));
 }
 
+// The kinds of post the /news tabs split the newsroom into, keyed on each
+// post's `kicker`. A kicker with no entry here still shows under "All".
+export const POST_TYPES = [
+  { id: "integrations", kicker: "Integration", label: "Integrations" },
+  { id: "games", kicker: "Release", label: "Game launches" },
+  { id: "casinos", kicker: "Launch", label: "Casino launches" },
+];
+
 export function latestPosts(count) {
   return allPosts().slice(0, count);
 }
