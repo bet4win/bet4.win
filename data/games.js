@@ -100,6 +100,10 @@ import diamondMineBackdrop from "@/public/assets/img/backdrops/diamond-mine.jpg"
 // deployed host the client is its own backend (../ui/lib/demo-backend): no
 // RGS, so no game id, operator or site to pass. `client` is the build's folder
 // on the CDN; `season` dresses it. The language follows the visitor's browser.
+//
+// `rgsGameId` is the game's id on the RGS. The demo no longer needs it, but the
+// provably-fair verifier does: it recomputes a round through the RGS's own
+// fairness endpoint (app/lib/fairness.js).
 const CDN = "https://b4wcdn.com/dev";
 const demo = (client, season) =>
   `${CDN}/${client}/index.html?token=DEMO${season ? `&season=${season}` : ""}`;
@@ -149,6 +153,7 @@ export const games = [
     image: punch,
     status: "active",
     url: demo("punch-game"),
+    rgsGameId: "5539fc3e4671414fb3229a9eee641720",
     aspectRatio: "16/9",
     // Seasonal variants: season id -> its own launch URL — see
     // app/lib/seasons.js. Punch, Dragon, Chicken, Keno, Keno Party and Plinko
@@ -200,6 +205,7 @@ export const games = [
     image: chicken,
     status: "active",
     url: demo("chicken"),
+    rgsGameId: "3c5e5c0ebd5f4e76b8465300b2f5f50b",
     seasons: {
       christmas:
         demo("chicken", "christmas"),
@@ -221,6 +227,7 @@ export const games = [
     image: crash,
     status: "active",
     url: demo("crash"),
+    rgsGameId: "a444355ce84b419ea48869d9c15734ab",
   },
   {
     id: "23",
@@ -244,6 +251,7 @@ export const games = [
     image: kenoParty,
     status: "active",
     url: demo("multiplayer-keno"),
+    rgsGameId: "88cf5bf1f9114f319763ecaf4f1a7a15",
     seasons: {
       christmas:
         demo("multiplayer-keno", "christmas"),
@@ -267,6 +275,7 @@ export const games = [
     image: diamondMine,
     status: "active",
     url: demo("diamond-mine"),
+    rgsGameId: "d3c40d524d9346118c835272955e21ac",
   },
   {
     id: "9",
@@ -282,6 +291,7 @@ export const games = [
     image: dragon,
     status: "active",
     url: demo("dragon-tower"),
+    rgsGameId: "14fdde34d95011f08de90242ac120002",
     seasons: {
       christmas:
         demo("dragon-tower", "christmas"),
@@ -307,6 +317,7 @@ export const games = [
     image: videoPoker,
     status: "active",
     url: demo("video-poker"),
+    rgsGameId: "4518a8a7b97b475f83f16e473a78e3ab",
   },
   {
     id: "21",
@@ -331,6 +342,7 @@ export const games = [
     image: blackjack,
     status: "active",
     url: demo("blackjack"),
+    rgsGameId: "97c9ed6766cd46e7a8bb1c711069d655",
   },
   {
     id: "22",
@@ -357,6 +369,7 @@ export const games = [
     image: baccarat,
     status: "active",
     url: demo("baccarat"),
+    rgsGameId: "dde705cf2dfe4d26bf0b9306d6c7515d",
   },
   {
     id: "17",
@@ -376,6 +389,7 @@ export const games = [
     image: roulette,
     status: "active",
     url: demo("roulette"),
+    rgsGameId: "9abd83cf9b4542909b127c814eba03cb",
   },
   {
     id: "19",
@@ -395,6 +409,7 @@ export const games = [
     image: coin,
     status: "active",
     url: demo("coin"),
+    rgsGameId: "86eb86d3a9cf4141bc9ef30e20ea514b",
   },
   {
     id: "5",
@@ -413,6 +428,7 @@ export const games = [
     image: hilo,
     status: "active",
     url: demo("hilo"),
+    rgsGameId: "cd1a3052f0cb479aa7c167e4f377ec96",
   },
   {
     id: "1",
@@ -428,6 +444,7 @@ export const games = [
     image: mines,
     status: "active",
     url: demo("mines"),
+    rgsGameId: "9943920c44b211f0be34cdfe93e2b2d7",
   },
   {
     id: "2",
@@ -442,6 +459,7 @@ export const games = [
     image: plinko,
     status: "active",
     url: demo("plinko"),
+    rgsGameId: "78106d6ed4d247fbb7ac517ad8aa40d5",
     seasons: {
       christmas:
         demo("plinko", "christmas"),
@@ -464,6 +482,7 @@ export const games = [
     image: americanRoulette,
     status: "active",
     url: demo("american-roulette"),
+    rgsGameId: "35886cb3d441489a845c089d47264058",
   },
   {
     id: "4",
@@ -479,6 +498,7 @@ export const games = [
     image: dice,
     status: "active",
     url: demo("dice"),
+    rgsGameId: "5dcfc14083094c6b963d0dc6ad82ba68",
   },
   {
     id: "6",
@@ -493,6 +513,7 @@ export const games = [
     image: wheel,
     status: "active",
     url: demo("wheel"),
+    rgsGameId: "8d74f1b250c74e0ca003ca551ec9bd90",
   },
   {
     id: "7",
@@ -508,6 +529,7 @@ export const games = [
     image: diamonds,
     status: "active",
     url: demo("diamonds"),
+    rgsGameId: "e07d949ed84911f08de90242ac120002",
   },
   {
     id: "8",
@@ -522,6 +544,7 @@ export const games = [
     image: keno,
     status: "active",
     url: demo("keno"),
+    rgsGameId: "25eb025cd4bf11f08de90242ac120002",
     seasons: {
       christmas:
         demo("keno", "christmas"),
@@ -540,5 +563,6 @@ export const games = [
     image: limbo,
     status: "active",
     url: demo("limbo"),
+    rgsGameId: "17709360010649fa8f081e5c9920c42c",
   },
 ];

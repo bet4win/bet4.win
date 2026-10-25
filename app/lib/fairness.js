@@ -7,6 +7,11 @@ import { games } from "@/data/games";
 
 const RGS_URL = "https://remote-gaming-dev.systems.bet4.win/api";
 
+// The demo session the verifier AUTHs with: the site's demo operator, on the
+// dev RGS. Demos themselves no longer go through the RGS, so these live here
+// rather than in each game's launch URL.
+const DEMO_LAUNCH_VARS = { operator: "5e41c28de3724d1290bbafbf6ee31cee", token: "DEMO", site: "bet4.win" };
+
 function obfuscate(payload) {
   const bytes = new TextEncoder().encode(JSON.stringify(payload));
   let bin = "";
@@ -209,16 +214,13 @@ export const PARAM_SCHEMAS = {
 export function getVerifiableGames() {
   return games
     .filter((g) => g.status === "active")
-    .map((g) => {
-      const q = new URL(g.url).searchParams;
-      return {
-        title: g.title,
-        gameId: q.get("game"),
-        launchVars: { operator: q.get("operator"), token: q.get("token"), site: q.get("site") },
-        params: PARAM_SCHEMAS[g.title] ?? [],
-      };
-    })
-    .filter((g) => g.gameId && g.gameId !== "{}");
+    .filter((g) => g.rgsGameId)
+    .map((g) => ({
+      title: g.title,
+      gameId: g.rgsGameId,
+      launchVars: DEMO_LAUNCH_VARS,
+      params: PARAM_SCHEMAS[g.title] ?? [],
+    }));
 }
 
 // Convert a field's raw string value into the typed value the API expects.
